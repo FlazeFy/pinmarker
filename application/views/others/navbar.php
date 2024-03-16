@@ -33,10 +33,10 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#">Dashboard</a>
+                    <a class="nav-link <?php if($active_page == 'dashboard'){ echo 'active'; } ?>" aria-current="page" href="/dashboardcontroller">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Maps</a>
+                    <a class="nav-link <?php if($active_page == 'maps'){ echo 'active'; } ?>" href="/mapscontroller">Maps</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Global-Collection</a>
