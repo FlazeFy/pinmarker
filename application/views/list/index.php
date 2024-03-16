@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PinMarker | Dashboard</title>
+    <title>PinMarker | List</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,8 +28,8 @@
 <body>
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
-        <h2 class="text-center" style="font-weight:600;">Summary</h2>
-        <?php $this->load->view('dashboard/dash'); ?>
+        <h2 class="text-center" style="font-weight:600;">My Marker</h2><br>
+        <?php $this->load->view('list/list'); ?>
         <hr>
     </div>
 </body>

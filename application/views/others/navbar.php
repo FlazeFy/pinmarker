@@ -42,7 +42,7 @@
                     <a class="nav-link" href="#">Global-Collection</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">List</a>
+                    <a class="nav-link <?php if($active_page == 'list'){ echo 'active'; } ?>" href="listcontroller">List</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">History</a>

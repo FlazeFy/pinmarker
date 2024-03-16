@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class MapsController extends CI_Controller {
+class ListController extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -26,8 +26,8 @@ class MapsController extends CI_Controller {
 	public function index()
 	{
 		$data = [];
-		$data['active_page']= 'maps';
-		$data['dt_my_pin']= $this->PinModel->get_all_my_pin('maps');
-		$this->load->view('maps/index', $data);
+		$data['active_page']= 'list';
+		$data['dt_my_pin']= $this->PinModel->get_all_my_pin('list');
+		$this->load->view('list/index', $data);
 	}
 }
