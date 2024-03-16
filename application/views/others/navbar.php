@@ -5,17 +5,16 @@
         border-radius: 0 0 20px 20px;
         padding: 20px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        background: white;
     }
     .nav-item {
         -webkit-transition: all 0.4s;
         -o-transition: all 0.4s;
         transition: all 0.4s;
-        border-bottom: 2px solid white;
+        border-bottom: 2px solid transparent;
         margin-right: 10px;
     }
     .nav-item:hover {
-        border-bottom: 2px solid black;
+        border-bottom: 2px solid white;
     }
     .navbar-brand {
         font-weight: bold;
@@ -25,7 +24,7 @@
     }
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Pinmarker</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">

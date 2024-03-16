@@ -18,8 +18,15 @@ class MapsController extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/userguide3/general/urls.html
 	 */
+	function __construct(){
+		parent::__construct();
+		$this->load->model('PinModel');
+	}
+
 	public function index()
 	{
-		$this->load->view('maps/index');
+		$data = [];
+		$data['dt_my_pin']= $this->PinModel->get_all_my_pin();
+		$this->load->view('maps/index', $data);
 	}
 }
