@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class MapsController extends CI_Controller {
+class AddController extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -20,7 +20,6 @@ class MapsController extends CI_Controller {
 	 */
 	function __construct(){
 		parent::__construct();
-		$this->load->model('PinModel');
 		$this->load->model('DictionaryModel');
 	}
 
@@ -28,8 +27,7 @@ class MapsController extends CI_Controller {
 	{
 		$data = [];
 		$data['active_page']= 'maps';
-		$data['dt_my_pin']= $this->PinModel->get_all_my_pin('maps');
 		$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
-		$this->load->view('maps/index', $data);
+		$this->load->view('add/index', $data);
 	}
 }

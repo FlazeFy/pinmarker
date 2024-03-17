@@ -7,7 +7,8 @@
             if($from == 'list'){
                 $extra = ", pin_call, pin_email, pin_address, COUNT(1) as total_visit";
             }
-			$this->db->select("pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, is_favorite, pin.created_at $extra");
+			$this->db->select("pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, is_favorite, pin.created_at, dictionary_color as pin_color, $extra");
+			$this->db->join('dictionary','dictionary.dictionary_name = pin.pin_category');
 
             if($from == 'list'){
                 $this->db->join('visit','visit.pin_id = pin.id','left');

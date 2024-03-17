@@ -49,6 +49,10 @@
                 foreach($dt_my_pin as $dt){
                     echo "{
                         coords: {lat: $dt->pin_lat, lng: $dt->pin_long},
+                        icon: {
+                            url: 'https://maps.google.com/mapfiles/ms/icons/$dt->pin_color.png',
+                            scaledSize: new google.maps.Size(40, 40),
+                        },
                         content: 
                         `<div>
                             <h6>$dt->pin_name</h6>
@@ -95,8 +99,9 @@
 
         function addMarker(props){
             var marker = new google.maps.Marker({
-                position:props.coords,
-                map:map,
+                position: props.coords,
+                map: map,
+                icon: props.icon
             });
 
             if(props.iconImage){
