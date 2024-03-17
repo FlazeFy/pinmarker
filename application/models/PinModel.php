@@ -105,5 +105,9 @@
 
 			return $data = $this->db->get()->row();
 		}
+
+		public function insert_marker($data){
+			$this->db->insert('pin',$data);	
+		}
 	}
 ?>
