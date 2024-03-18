@@ -21,9 +21,27 @@
             ];
 			$this->db->where($condition);
 
+			$search_pin_name = $this->session->userdata('search_pin_name_key');
+			if($search_pin_name != null && $search_pin_name != ""){
+				$this->db->like('pin_name', $search_pin_name, 'both');
+			}
+
             if($from == 'list'){
                 $this->db->group_by('id');
+				$this->db->order_by('is_favorite','DESC');
             }
+			$this->db->order_by('created_at','DESC');
+
+			return $data = $this->db->get()->result();
+		}
+
+		public function get_all_my_pin_name(){
+			$this->db->select('pin_name');
+			$this->db->from('pin');
+			$condition = [
+                'deleted_at' => null
+            ];
+			$this->db->where($condition);
 
 			return $data = $this->db->get()->result();
 		}

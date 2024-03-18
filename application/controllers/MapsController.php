@@ -29,7 +29,20 @@ class MapsController extends CI_Controller {
 		$data = [];
 		$data['active_page']= 'maps';
 		$data['dt_my_pin']= $this->PinModel->get_all_my_pin('maps');
+		$data['dt_my_pin_name']= $this->PinModel->get_all_my_pin_name();
 		$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
 		$this->load->view('maps/index', $data);
+	}
+
+	public function search_pin_name(){
+		$this->session->set_userdata('search_pin_name_key',$this->input->post('pin_name'));
+		
+		redirect('/mapscontroller');
+	}
+
+	public function reset_search_pin_name(){
+		$this->session->unset_userdata('search_pin_name_key');
+			
+		redirect('/mapscontroller');
 	}
 }

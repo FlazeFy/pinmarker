@@ -1,10 +1,7 @@
 <style>
     #map-board {
         height:70vh;
-        border-radius: 20px;
-        margin-top: 6px;
-        margin-bottom: 6px;
-        border: 5px solid black;
+        border-radius: 0 0 15px 15px;
     }
 
     /* Maps Dialog */
@@ -27,14 +24,33 @@
     .gmnoprint div{
         background: transparent !important;
         box-shadow: none !important;
+        position: absolute;
+        top: -30px;
+        right: -15px;
     }
     .gm-control-active span {
         background: white !important;
     }
+
+    .maps-toolbar {
+        border-radius: 20px;
+        border: 5px solid black;
+        padding: 0 !important;
+        background: black;
+    }
+    .maps-toolbar button {
+        margin: 10px !important;
+        border-radius: 10px !important;
+    }
 </style>
 
-<div class="position-relative">
-    <div id="map-board"></div>
+<div class="maps-toolbar">
+    <div class="d-flex justify-content-end">
+        <?php $this->load->view('maps/search'); ?>
+    </div>
+    <div class="position-relative">
+        <div id="map-board"></div>
+    </div>
 </div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
@@ -83,7 +99,14 @@
         ];
 
         map = new google.maps.Map(document.getElementById("map-board"), {
-            center: { lat: -6.226838579766097, lng: 106.82157923228753},
+            center: <?php 
+                $search_pin_name = $this->session->userdata('search_pin_name_key');
+                if($search_pin_name != null && $search_pin_name != ""){
+                    echo "{ lat: "; echo $dt_my_pin[0]->pin_lat; echo", lng: "; echo $dt_my_pin[0]->pin_long; echo"}";
+                } else {
+                    echo "{ lat: -6.226838579766097, lng: 106.82157923228753}";
+                }
+            ?>,
             zoom: 12,
         });
 
