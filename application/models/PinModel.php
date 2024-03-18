@@ -2,6 +2,7 @@
 	defined('BASEPATH') OR exit('No direct script access alowed');
 
 	class PinModel extends CI_Model {
+		// Query
 		public function get_all_my_pin($from){
             $extra = "";
             if($from == 'list'){
@@ -50,7 +51,7 @@
 			return $data = $this->db->get()->row();
 		}
 
-        public function get_most_category(){
+        public function get_most_category($limit){
 			$this->db->select('pin_category as context, COUNT(1) as total');
 			$this->db->from('pin');
 			$condition = [
@@ -59,9 +60,13 @@
 			$this->db->where($condition);
             $this->db->order_by('total','desc');
             $this->db->group_by('pin_category');
-            $this->db->limit(1);
+            $this->db->limit($limit);
 
-			return $data = $this->db->get()->row();
+			if($limit == 1){
+				return $data = $this->db->get()->row();
+			} else if($limit > 1) {
+				return $data = $this->db->get()->result();
+			}
 		}
 
         public function get_latest_pin(){
@@ -77,19 +82,23 @@
 			return $data = $this->db->get()->row();
 		}
 
-        public function get_most_visit(){
-			$this->db->select('pin_name as context, COUNT(1) as total');
+        public function get_most_visit($ctx, $limit){
+			$this->db->select("$ctx as context, COUNT(1) as total");
 			$this->db->from('pin');
             $this->db->join('visit','visit.pin_id = pin.id');
 			$condition = [
                 'deleted_at' => null
             ];
 			$this->db->where($condition);
-            $this->db->group_by('pin_name');
+            $this->db->group_by($ctx);
             $this->db->order_by('total','desc');
-            $this->db->limit(1);
+            $this->db->limit($limit);
 
-			return $data = $this->db->get()->row();
+			if($limit == 1){
+				return $data = $this->db->get()->row();
+			} else if($limit > 1) {
+				return $data = $this->db->get()->result();
+			}
 		}
 
         public function get_last_visit(){
@@ -106,6 +115,7 @@
 			return $data = $this->db->get()->row();
 		}
 
+		// Command
 		public function insert_marker($data){
 			$this->db->insert('pin',$data);	
 		}
