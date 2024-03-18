@@ -45,7 +45,7 @@
                     <a class="nav-link <?php if($active_page == 'list'){ echo 'active'; } ?>" href="listcontroller">List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">History</a>
+                    <a class="nav-link <?php if($active_page == 'history'){ echo 'active'; } ?>" href="/historycontroller">History</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
