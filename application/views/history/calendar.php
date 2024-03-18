@@ -299,10 +299,15 @@
                     $i = 0;
                     
                     foreach($dt_all_my_visit_header as $dt){
+                        $desc = 'Visit';
+                        if($dt->visit_desc != null){
+                            $desc = $dt->visit_desc;
+                        }
+
                         echo "
                             {
                                 groupId: '$dt->id',
-                                title: `$dt->visit_desc at $dt->pin_name `,
+                                title: `$desc at $dt->pin_name `,
                                 start: getDateToContext('$dt->created_at','calendar'),
                                 end: getDateToContext('$dt->created_at','calendar'),
                                 extendedProps: {

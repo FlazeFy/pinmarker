@@ -36,7 +36,7 @@
 		}
 
 		public function get_all_my_pin_name(){
-			$this->db->select('pin_name');
+			$this->db->select('id, pin_name');
 			$this->db->from('pin');
 			$condition = [
                 'deleted_at' => null
@@ -95,39 +95,6 @@
             ];
 			$this->db->where($condition);
             $this->db->order_by('created_at','desc');
-            $this->db->limit(1);
-
-			return $data = $this->db->get()->row();
-		}
-
-        public function get_most_visit($ctx, $limit){
-			$this->db->select("$ctx as context, COUNT(1) as total");
-			$this->db->from('pin');
-            $this->db->join('visit','visit.pin_id = pin.id');
-			$condition = [
-                'deleted_at' => null
-            ];
-			$this->db->where($condition);
-            $this->db->group_by($ctx);
-            $this->db->order_by('total','desc');
-            $this->db->limit($limit);
-
-			if($limit == 1){
-				return $data = $this->db->get()->row();
-			} else if($limit > 1) {
-				return $data = $this->db->get()->result();
-			}
-		}
-
-        public function get_last_visit(){
-			$this->db->select('pin_name, visit_desc');
-			$this->db->from('pin');
-            $this->db->join('visit','visit.pin_id = pin.id');
-			$condition = [
-                'deleted_at' => null
-            ];
-			$this->db->where($condition);
-            $this->db->order_by('visit.created_at','desc');
             $this->db->limit(1);
 
 			return $data = $this->db->get()->row();

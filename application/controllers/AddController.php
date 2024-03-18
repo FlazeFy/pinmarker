@@ -57,7 +57,7 @@ class AddController extends CI_Controller {
 			'deleted_at' => null
 		];
 
-		$this->PinModel->insert_marker($data, 'pengguna');
+		$this->PinModel->insert_marker($data);
 		redirect('listcontroller');
 	}
 }

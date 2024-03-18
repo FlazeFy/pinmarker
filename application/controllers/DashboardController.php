@@ -21,6 +21,7 @@ class DashboardController extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model('PinModel');
+		$this->load->model('VisitModel');
 	}
 
 	public function index()
@@ -31,10 +32,10 @@ class DashboardController extends CI_Controller {
 		$data['dt_count_my_fav_pin']= $this->PinModel->count_my_fav_pin();
 		$data['dt_get_most_category']= $this->PinModel->get_most_category(1);
 		$data['dt_get_latest_pin']= $this->PinModel->get_latest_pin();
-		$data['dt_get_last_visit']= $this->PinModel->get_last_visit();
-		$data['dt_get_most_visit']= $this->PinModel->get_most_visit('pin_name',1);
+		$data['dt_get_last_visit']= $this->VisitModel->get_last_visit();
+		$data['dt_get_most_visit']= $this->VisitModel->get_most_visit('pin_name',1);
 		$data['dt_get_stats_total_pin_by_category']= $this->PinModel->get_most_category(6); // for now
-		$data['dt_get_stats_total_visit_by_category']= $this->PinModel->get_most_visit('pin_category',6); // for now
+		$data['dt_get_stats_total_visit_by_category']= $this->VisitModel->get_most_visit('pin_category',6); // for now
 
 		$this->load->view('dashboard/index', $data);
 	}
