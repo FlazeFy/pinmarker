@@ -62,6 +62,25 @@
 			return $data = $this->db->get()->row();
 		}
 
+		public function get_pin_by_category($cat, $id){
+			$this->db->select('id, pin_name, pin_desc, pin_lat, pin_long, created_at');
+			$this->db->from('pin');
+
+			$condition = [
+				'pin_category' => $cat,
+                'deleted_at' => null,
+				'pin.created_by' => $this->session->userdata('user_id')
+            ];
+
+			if($id != null){
+				$condition['id !='] = $id;
+			}
+			
+			$this->db->where($condition);
+
+			return $data = $this->db->get()->result();
+		}
+
         public function count_my_pin(){
 			$this->db->select('count(1) as total');
 			$this->db->from('pin');
