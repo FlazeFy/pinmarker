@@ -23,6 +23,7 @@ class AddVisitController extends CI_Controller {
 		$this->load->model('DictionaryModel');
 		$this->load->model('PinModel');
 		$this->load->model('VisitModel');
+		$this->load->model('AuthModel');
 
 		$this->load->helper('Generator_helper');
 
@@ -30,11 +31,15 @@ class AddVisitController extends CI_Controller {
 
 	public function index()
 	{
-		$data = [];
-		$data['active_page']= 'history';
-		$data['dt_dct_visit_by']= $this->DictionaryModel->get_dictionary_by_type('visit_by');
-		$data['dt_all_my_pin_name']= $this->PinModel->get_all_my_pin_name();
-		$this->load->view('add_visit/index', $data);
+		if($this->AuthModel->current_user()){
+			$data = [];
+			$data['active_page']= 'history';
+			$data['dt_dct_visit_by']= $this->DictionaryModel->get_dictionary_by_type('visit_by');
+			$data['dt_all_my_pin_name']= $this->PinModel->get_all_my_pin_name();
+			$this->load->view('add_visit/index', $data);
+		} else {
+			redirect('logincontroller');
+		}
 	}
 
 	public function add_visit(){

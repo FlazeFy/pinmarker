@@ -285,10 +285,9 @@
             locale: sessionStorage.getItem('locale'),
             initialView: 'dayGridMonth',
             headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                //right: 'dayGridMonth'
-                right: 'dayGridMonth',
+                left: 'title',
+                right: 'prev,next today',
+                center: null,
             },
             selectable: true,
             navLinks: true, 

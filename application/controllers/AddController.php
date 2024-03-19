@@ -22,6 +22,7 @@ class AddController extends CI_Controller {
 		parent::__construct();
 		$this->load->model('DictionaryModel');
 		$this->load->model('PinModel');
+		$this->load->model('AuthModel');
 
 		$this->load->helper('Generator_helper');
 
@@ -29,10 +30,14 @@ class AddController extends CI_Controller {
 
 	public function index()
 	{
-		$data = [];
-		$data['active_page']= 'maps';
-		$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
-		$this->load->view('add/index', $data);
+		if($this->AuthModel->current_user()){
+			$data = [];
+			$data['active_page']= 'maps';
+			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
+			$this->load->view('add/index', $data);
+		} else {
+			redirect('logincontroller');
+		}
 	}
 
 	public function add_marker(){
