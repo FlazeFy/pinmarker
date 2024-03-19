@@ -90,7 +90,7 @@
                             echo"
                             <p class='mt-2 mb-0 fw-bold'>Created At</p>
                             <p>"; echo date("Y-m-d H:i",strtotime($dt->created_at)); echo"</p>
-                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2' style='font-size:12px;'><i class='fa-solid fa-circle-info'></i> See Detail</a>
+                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2' style='font-size:12px;' href='/detailcontroller/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
                             <a class='btn btn-dark rounded-pill px-2 py-1' style='font-size:12px;'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
                         </div>`
                     },";

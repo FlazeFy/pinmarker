@@ -37,6 +37,20 @@
 			}
 		}
 
+		public function get_visit_history_by_pin_id($id){
+			$this->db->select('visit_by, visit_desc, visit.created_at, visit_with');
+			$this->db->from('pin');
+            $this->db->join('visit','visit.pin_id = pin.id');
+			$condition = [
+				'visit.pin_id' => $id,
+                'deleted_at' => null,
+				'visit.created_by' => $this->session->userdata('user_id')
+            ];
+			$this->db->where($condition);
+
+			return $data = $this->db->get()->result();
+		}
+
         public function get_last_visit(){
 			$this->db->select('pin_name, visit_desc');
 			$this->db->from('pin');

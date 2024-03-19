@@ -48,6 +48,20 @@
 			return $data = $this->db->get()->result();
 		}
 
+		public function get_pin_by_id($id){
+			$this->db->select('pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, pin_call, pin_email, pin_address, is_favorite, pin.created_at, pin.created_by, pin.updated_at, pin.deleted_at, dictionary_color as pin_color');
+			$this->db->from('pin');
+			$this->db->join('dictionary','dictionary.dictionary_name = pin.pin_category');
+			$condition = [
+				'pin.id' => $id,
+                'deleted_at' => null,
+				'pin.created_by' => $this->session->userdata('user_id')
+            ];
+			$this->db->where($condition);
+
+			return $data = $this->db->get()->row();
+		}
+
         public function count_my_pin(){
 			$this->db->select('count(1) as total');
 			$this->db->from('pin');
