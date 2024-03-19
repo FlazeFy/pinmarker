@@ -55,10 +55,30 @@
                         <li><a class="dropdown-item" href="#">My Profile</a></li>
                         <li><a class="dropdown-item" href="#">Help Center</a></li>
                         <li><a class="dropdown-item" href="#">Feedback</a></li>
-                        <li><a class="dropdown-item" href="#">Sign Out</a></li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Sign Out</a></li>
                     </ul>
                 </li>
             </ul>
+        </div>
+    </div>
+
+    <!-- Signout Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" >
+            <div class="modal-content shadow" style="border-radius:15px; border: 3px solid black;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Sign Out</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure want to leave this app?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="/logincontroller/logout" method="POST">
+                        <button type="submit" class="btn btn-dark rounded-pill px-3 py-2"><i class="fa-regular fa-circle-xmark"></i> Yes, Sign Out</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

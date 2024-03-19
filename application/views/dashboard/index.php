@@ -35,6 +35,8 @@
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
 
+        <?php $this->load->view('dashboard/welcome'); ?>
+
         <h2 class="text-center" style="font-weight:600;">Summary</h2>
         <?php $this->load->view('dashboard/dash'); ?>
         <hr>

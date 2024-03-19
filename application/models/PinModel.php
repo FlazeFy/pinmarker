@@ -17,7 +17,8 @@
 
 			$this->db->from('pin');
 			$condition = [
-                'pin.deleted_at' => null
+                'pin.deleted_at' => null,
+				'pin.created_by' => $this->session->userdata('user_id')
             ];
 			$this->db->where($condition);
 
@@ -39,7 +40,8 @@
 			$this->db->select('id, pin_name');
 			$this->db->from('pin');
 			$condition = [
-                'deleted_at' => null
+                'deleted_at' => null,
+				'created_by' => $this->session->userdata('user_id')
             ];
 			$this->db->where($condition);
 
@@ -50,7 +52,8 @@
 			$this->db->select('count(1) as total');
 			$this->db->from('pin');
 			$condition = [
-                'deleted_at' => null
+                'deleted_at' => null,
+				'created_by' => $this->session->userdata('user_id')
             ];
 			$this->db->where($condition);
 
@@ -62,7 +65,8 @@
 			$this->db->from('pin');
 			$condition = [
                 'deleted_at' => null,
-                'is_favorite' => 1
+                'is_favorite' => 1,
+				'created_by' => $this->session->userdata('user_id')
             ];
 			$this->db->where($condition);
 
@@ -73,7 +77,8 @@
 			$this->db->select('pin_category as context, COUNT(1) as total');
 			$this->db->from('pin');
 			$condition = [
-                'deleted_at' => null
+                'deleted_at' => null,
+				'created_by' => $this->session->userdata('user_id')
             ];
 			$this->db->where($condition);
             $this->db->order_by('total','desc');
@@ -91,7 +96,8 @@
 			$this->db->select('pin_name');
 			$this->db->from('pin');
 			$condition = [
-                'deleted_at' => null
+                'deleted_at' => null,
+				'created_by' => $this->session->userdata('user_id')
             ];
 			$this->db->where($condition);
             $this->db->order_by('created_at','desc');

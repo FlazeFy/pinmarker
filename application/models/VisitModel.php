@@ -8,7 +8,8 @@
 			$this->db->from('visit');
 			$this->db->join('pin','visit.pin_id = pin.id');
 			$condition = [
-                'pin.deleted_at' => null
+                'pin.deleted_at' => null,
+				'pin.created_by' => $this->session->userdata('user_id')
             ];
 			$this->db->where($condition);
             $this->db->order_by('visit.created_at','desc');
@@ -21,7 +22,8 @@
 			$this->db->from('pin');
             $this->db->join('visit','visit.pin_id = pin.id');
 			$condition = [
-                'deleted_at' => null
+                'deleted_at' => null,
+				'pin.created_by' => $this->session->userdata('user_id')
             ];
 			$this->db->where($condition);
             $this->db->group_by($ctx);
@@ -40,7 +42,8 @@
 			$this->db->from('pin');
             $this->db->join('visit','visit.pin_id = pin.id');
 			$condition = [
-                'deleted_at' => null
+                'deleted_at' => null,
+				'pin.created_by' => $this->session->userdata('user_id')
             ];
 			$this->db->where($condition);
             $this->db->order_by('visit.created_at','desc');

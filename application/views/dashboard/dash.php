@@ -1,4 +1,4 @@
-<div class="row mt-4 mb-2 text-center">
+<div class="row mb-2 text-center">
     <div class="col-lg-4 col-md-6 col-sm-12 p-2">
         <h1 style="font-size: 60px; font-weight:bold;"><?= $dt_count_my_pin->total; ?></h1>
         <h4>Total Marker</h4>
