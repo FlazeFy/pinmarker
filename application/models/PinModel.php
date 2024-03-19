@@ -37,7 +37,7 @@
 		}
 
 		public function get_all_my_pin_name(){
-			$this->db->select('id, pin_name');
+			$this->db->select('id, pin_name, pin_lat, pin_long');
 			$this->db->from('pin');
 			$condition = [
                 'deleted_at' => null,

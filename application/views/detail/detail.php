@@ -114,10 +114,15 @@
             }
         ?>
         </ol>
+        <hr>
+
+        <p class='mt-2 mb-0 fw-bold'>Count Distance to Other Pin</p>
+        <?php $this->load->view('detail/count_distance'); ?>
+        <hr>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div id="map-board"></div>
-
+        <hr>
         <p class='mt-2 mb-0 fw-bold'>Distance to My Personal Pin</p>
         <?php $this->load->view('detail/distance'); ?>
     </div>
