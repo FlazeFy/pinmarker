@@ -35,74 +35,172 @@
     }
 </style>
 
-<h2 class="text-center" style="font-weight:600;"><?= $dt_detail_pin->pin_name; ?> 
-    <span class="bg-dark rounded-pill text-light px-3 py-2" style="font-size: 16px;"><?= $dt_detail_pin->pin_category; ?></span>
-</h2>
-<a class="btn btn-dark mb-4 rounded-pill py-3 px-4" href="/mapscontroller"><i class="fa-solid fa-arrow-left"></i> Back</a>
-<div class="row">
+<?php $is_edit = $this->session->userdata('is_edit_mode'); ?>
+
+<div class="d-flex justify-content-between mt-4">
+    <a class="btn btn-dark mb-4 rounded-pill py-3 px-4 me-2" href="/mapscontroller"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    <span>
+        <form action="/detailcontroller/edit_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
+            <?php 
+                if($this->session->userdata('is_edit_mode') == false){
+                    echo "<button class='btn btn-light mb-4 rounded-pill py-3 px-4' style='border: 2px solid black;'><i class='fa-solid fa-pen-to-square'></i> Switch to Edit Mode</button>";
+                } else {
+                    echo "<button class='btn btn-dark mb-4 rounded-pill py-3 px-4'><i class='fa-solid fa-pen-to-square'></i> Switch to View Mode</button>";
+                }
+            ?>
+        </form>
+        <form action="/detailcontroller/favorite_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
+            <?php 
+                if($dt_detail_pin->is_favorite == '1'){
+                    echo "<input name='is_favorite' value='0' hidden><button class='btn btn-dark mb-4 rounded-pill py-3 px-4 me-2'><i class='fa-solid fa-heart'></i> Saved to Favorite</button>";
+                } else {
+                    echo "<input name='is_favorite' value='1' hidden><button class='btn btn-light mb-4 rounded-pill py-3 px-4' style='border: 2px solid black;'><i class='fa-solid fa-heart'></i> Add To Favorite</button>";
+                }
+            ?>
+        </form>
+    </span>
+</div>
+
+<?php 
+    if($is_edit){
+        echo "
+            <div class='row'>
+                <div class='col-lg-6 col-md-6 col-sm-12'>
+                    <p class='mt-2 mb-0 fw-bold'>Pin Name</p>
+                    <input name='pin_name' id='pin_name' type='text' class='form-control' value="; echo '"'.$dt_detail_pin->pin_name.'"'; echo" required/>
+                    <a class='msg-error-input'></a>
+                </div>
+                <div class='col-lg-6 col-md-6 col-sm-12'>
+                    <p class='mt-2 mb-0 fw-bold'>Pin Category</p>
+                    <select name='pin_category' class='form-select' id='pin_category'>";
+                        foreach($dt_dct_pin_category as $dt){
+                            echo "<option value='$dt->dictionary_name-$dt->dictionary_color'";
+                            if($dt->id == $dt_detail_pin->id){
+                                echo " selected>$dt->dictionary_name</option>";
+                            } else {
+                                echo ">$dt->dictionary_name</option>";
+                            }
+                        }
+                    echo"</select>
+                    <a class='msg-error-input'></a>
+                </div>
+            </div>";
+    } else {
+        echo "<h2 class='text-center' style='font-weight:600;'>$dt_detail_pin->pin_name 
+            <span class='bg-dark rounded-pill text-light px-3 py-2' style='font-size: 16px;'>$dt_detail_pin->pin_category</span>
+        </h2>";
+    }
+?>
+
+<div class="row mt-4">
     <div class="col-lg-6 col-md-6 col=sm-12">
         <div class="row">
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <p class='mt-2 mb-0 fw-bold'>Latitude</p>
-                <p><?= $dt_detail_pin->pin_lat ?></p>
+                <?php 
+                    if($is_edit){
+                        echo "<input name='pin_lat' id='pin_lat' type='text' class='form-control' value='$dt_detail_pin->pin_lat' required/>
+                            <a class='msg-error-input'></a>";
+                    } else {
+                        echo "<p>$dt_detail_pin->pin_lat</p>";
+                    }
+                ?>
             </div>
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <p class='mt-2 mb-0 fw-bold'>Longitude</p>
-                <p><?= $dt_detail_pin->pin_long ?></p>
+                <?php 
+                    if($is_edit){
+                        echo "<input name='pin_long' id='pin_long' type='text' class='form-control' value='$dt_detail_pin->pin_long' required/>
+                            <a class='msg-error-input'></a>";
+                    } else {
+                        echo "<p>$dt_detail_pin->pin_long</p>";
+                    }
+                ?>
             </div>
         </div>
 
         <p class='mt-2 mb-0 fw-bold'>Person In Touch</p>
-        <p><?php 
-            if($dt_detail_pin->pin_person != null){ 
-                echo $dt_detail_pin->pin_person;
+        <?php 
+            if($is_edit){
+                echo "<input name='pin_name' id='pin_name' type='text' class='form-control' value='$dt_detail_pin->pin_person' required/>
+                    <a class='msg-error-input'></a>";
             } else {
-                echo "-";
+                if($dt_detail_pin->pin_person != null){ 
+                    echo "<p>$dt_detail_pin->pin_person</p>";
+                } else {
+                    echo "<p>-</p>";
+                }
             }
-        ?></p>
+        ?>
 
         <div class="row">
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <p class='mt-2 mb-0 fw-bold'>Email</p>
-                <p><?php 
-                    if($dt_detail_pin->pin_email != null){ 
-                        echo $dt_detail_pin->pin_email;
+                <?php 
+                    if($is_edit){
+                        echo "<input name='pin_email' id='pin_email' type='email' class='form-control' value='$dt_detail_pin->pin_email'/>
+                            <a class='msg-error-input'></a>";
                     } else {
-                        echo "-";
+                        if($dt_detail_pin->pin_email != null){ 
+                            echo "<p>$dt_detail_pin->pin_email</p>";
+                        } else {
+                            echo "<p>-</p>";
+                        }
                     }
-                ?></p>
+                ?>
             </div>
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <p class='mt-2 mb-0 fw-bold'>Phone Number</p>
-                <p><?php 
-                    if($dt_detail_pin->pin_call != null){ 
-                        echo $dt_detail_pin->pin_call;
+                <?php 
+                    if($is_edit){
+                        echo "<input name='pin_call' id='pin_call' type='phone' class='form-control' value='$dt_detail_pin->pin_call'/>
+                            <a class='msg-error-input'></a>";
                     } else {
-                        echo "-";
+                        if($dt_detail_pin->pin_call != null){ 
+                            echo "<p>$dt_detail_pin->pin_call</p>";
+                        } else {
+                            echo "<p>-</p>";
+                        }
                     }
-                ?></p>
+                ?>
             </div>
         </div>
 
         <p class='mt-2 mb-0 fw-bold'>Address</p>
         <?php 
-            if($dt_detail_pin->pin_address != null){
-                echo "<p>$dt_detail_pin->pin_address</p>";
+            if($is_edit){
+                echo "<textarea name='pin_address' id='pin_address' rows='5' class='form-control'>$dt_detail_pin->pin_address</textarea>
+                    <a class='msg-error-input'></a>";
             } else {
-                echo '<p>-</p>';
+                if($dt_detail_pin->pin_address != null){
+                    echo "<p>$dt_detail_pin->pin_address</p>";
+                } else {
+                    echo '<p>-</p>';
+                }
             }
         ?>
 
         <p class='mt-2 mb-0 fw-bold'>Description</p>
         <?php 
-            if($dt_detail_pin->pin_desc != null){
-                echo "<p>$dt_detail_pin->pin_desc</p>";
+            if($is_edit){
+                echo "<textarea name='pin_desc' id='pin_desc' rows='5' class='form-control'>$dt_detail_pin->pin_desc</textarea>
+                    <a class='msg-error-input'></a>";
             } else {
-                echo '<p class="text-secondary fst-italic">- No Description Provided -</p>';
+                if($dt_detail_pin->pin_desc != null){
+                    echo "<p>$dt_detail_pin->pin_desc</p>";
+                } else {
+                    echo '<p class="text-secondary fst-italic">- No Description Provided -</p>';
+                }
             }
         ?>
 
-        <p class='mt-2 mb-0 fw-bold'>Visit History</p>
+        <?php 
+            if($is_edit){
+                echo "<button class='btn btn-dark rounded-pill w-100 py-3 my-4' type='Submit'><i class='fa-solid fa-floppy-disk'></i> Save Marker</button>";
+            } 
+        ?>
+
+        <hr><p class='mt-2 mb-0 fw-bold'>Visit History</p>
         <ol>
         <?php 
             foreach($dt_visit_history as $dt){

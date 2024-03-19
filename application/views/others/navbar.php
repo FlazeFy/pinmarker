@@ -5,6 +5,8 @@
         border-radius: 0 0 20px 20px;
         padding: 20px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        opacity: 1 !important;
+        z-index: 999;
     }
     .nav-item {
         -webkit-transition: all 0.4s;
@@ -24,7 +26,7 @@
     }
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark position-sticky w-100" style="top: 0;">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Pinmarker</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +44,7 @@
                     <a class="nav-link" href="#">Global-Collection</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if($active_page == 'list'){ echo 'active'; } ?>" href="listcontroller">List</a>
+                    <a class="nav-link <?php if($active_page == 'list'){ echo 'active'; } ?>" href="/listcontroller">List</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php if($active_page == 'history'){ echo 'active'; } ?>" href="/historycontroller">History</a>

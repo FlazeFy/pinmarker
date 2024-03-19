@@ -3,7 +3,7 @@
 
 	class DictionaryModel extends CI_Model {
         public function get_dictionary_by_type($type){
-			$this->db->select('dictionary_name, dictionary_color');
+			$this->db->select('id, dictionary_name, dictionary_color');
 			$this->db->from('dictionary');
 			$condition = [
                 'dictionary_type' => $type,

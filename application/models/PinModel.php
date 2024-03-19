@@ -143,5 +143,10 @@
 		public function insert_marker($data){
 			$this->db->insert('pin',$data);	
 		}
+
+		public function update_marker($data, $id){
+			$this->db->where('id', $id);
+			$this->db->update('pin',$data);	
+		}
 	}
 ?>
