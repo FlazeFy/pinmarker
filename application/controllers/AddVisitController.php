@@ -7,6 +7,7 @@ class AddVisitController extends CI_Controller {
 		$this->load->model('DictionaryModel');
 		$this->load->model('PinModel');
 		$this->load->model('VisitModel');
+		$this->load->model('HistoryModel');
 		$this->load->model('AuthModel');
 
 		$this->load->helper('Generator_helper');
@@ -27,10 +28,14 @@ class AddVisitController extends CI_Controller {
 	}
 
 	public function add_visit(){
+		$visit_desc = $this->input->post('visit_desc');
+		$pin_id_split = explode("/", $this->input->post('pin_id'));
+		$pin_id = $pin_id_split[0];
+
 		$data = [
 			'id' => get_UUID(), 
-			'pin_id' => $this->input->post('pin_id'), 
-			'visit_desc' => $this->input->post('visit_desc'), 
+			'pin_id' => $pin_id, 
+			'visit_desc' => $visit_desc, 
 			'visit_by' => $this->input->post('visit_by'), 
 			'visit_with' => $this->input->post('visit_with'), 
 			'created_at' => $this->input->post('visit_date')." ".$this->input->post('visit_hour'), 
@@ -39,6 +44,14 @@ class AddVisitController extends CI_Controller {
 		];
 
 		$this->VisitModel->insert_visit($data);
+
+		if($visit_desc == null){
+			$pin_name = $pin_id_split[1];
+			$this->HistoryModel->insert_history('Add Visit', $pin_name);
+		} else {
+			$this->HistoryModel->insert_history('Add Visit', $visit_desc);
+		}
+
 		redirect('historycontroller');
 	}
 }

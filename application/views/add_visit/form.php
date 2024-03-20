@@ -5,7 +5,7 @@
             <select name="pin_id" class="form-select" id="pin_id" onchange="">
                 <?php 
                     foreach($dt_all_my_pin_name as $dt){
-                        echo "<option value='$dt->id'>$dt->pin_name</option>";
+                        echo "<option value='$dt->id/$dt->pin_name'>$dt->pin_name</option>";
                     }
                 ?>
             </select>

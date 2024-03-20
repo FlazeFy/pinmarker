@@ -38,6 +38,8 @@
         <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" href="/addvisitcontroller"><i class="fa-solid fa-plus"></i> Add New Visit</a>
         <?php $this->load->view('history/calendar'); ?>
         <hr>
+        <h2 class="text-center" style="font-weight:600;">My Activity</h2><br>
+        <?php $this->load->view('history/activity'); ?>
     </div>
 </body>
 </html>

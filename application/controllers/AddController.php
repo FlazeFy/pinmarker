@@ -7,6 +7,7 @@ class AddController extends CI_Controller {
 		$this->load->model('DictionaryModel');
 		$this->load->model('PinModel');
 		$this->load->model('AuthModel');
+		$this->load->model('HistoryModel');
 
 		$this->load->helper('Generator_helper');
 
@@ -27,10 +28,11 @@ class AddController extends CI_Controller {
 	public function add_marker(){
 		$split_pin_cat = explode("-", $this->input->post('pin_category'));
 		$pin_cat = $split_pin_cat[0];
+		$pin_name = $this->input->post('pin_name');
 
 		$data = [
 			'id' => get_UUID(), 
-			'pin_name' => $this->input->post('pin_name'), 
+			'pin_name' => $pin_name, 
 			'pin_desc' => $this->input->post('pin_desc'), 
 			'pin_lat' => $this->input->post('pin_lat'), 
 			'pin_long' => $this->input->post('pin_long'), 
@@ -47,6 +49,8 @@ class AddController extends CI_Controller {
 		];
 
 		$this->PinModel->insert_marker($data);
+		$this->HistoryModel->insert_history('Add Marker', $pin_name);
+
 		redirect('listcontroller');
 	}
 }
