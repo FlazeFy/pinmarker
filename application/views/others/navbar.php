@@ -54,7 +54,7 @@
                         Setting
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">My Profile</a></li>
+                        <li><a class="dropdown-item <?php if($active_page == 'myprofile'){ echo 'active'; } ?>" href="/myprofilecontroller">My Profile</a></li>
                         <li><a class="dropdown-item" href="#">Help Center</a></li>
                         <li><a class="dropdown-item" href="#">Feedback</a></li>
                         <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Sign Out</a></li>

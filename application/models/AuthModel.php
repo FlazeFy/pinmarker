@@ -68,5 +68,10 @@
 
             return $this->db->update($this->table, $data, ['id' => $id]);
         }
+
+        public function update_user($id,$data)
+        {
+            return $this->db->update($this->table, $data, ['id' => $id]);
+        }
     }
 ?>

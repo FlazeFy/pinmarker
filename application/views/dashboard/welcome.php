@@ -3,6 +3,8 @@
         width: 20vh;
         border: 3px solid black;
         border-radius: 100%;
+        display: block;
+        margin-inline: auto;
     }
 </style>
 <br>
