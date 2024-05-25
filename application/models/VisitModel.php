@@ -83,6 +83,23 @@
 			return $data = $this->db->get()->result();
 		}
 
+		public function get_visit_activity_by_date($date){
+			$date_query = "DATE_FORMAT(visit.created_at, '%Y-%m-%d') =";
+
+			$this->db->select('pin_name, visit_desc, visit_by, visit_with, visit.created_at');
+			$this->db->from('visit');
+			$this->db->join('pin','visit.pin_id = pin.id');
+			$condition = [
+                'pin.deleted_at' => null,
+				$date_query => $date,
+				'pin.created_by' => $this->session->userdata('user_id')
+            ];
+			$this->db->where($condition);
+            $this->db->order_by('visit.created_at','desc');
+
+			return $data = $this->db->get()->result();
+		}
+
 		// Command
 		public function insert_visit($data){
 			$this->db->insert('visit',$data);	

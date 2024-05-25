@@ -63,6 +63,7 @@
             </div>
             <div class="col-lg-9 col-md-12 col-sm-12">
                 <?php $this->load->view('myprofile/visit_activity'); ?>
+                <?php $this->load->view('myprofile/date_visit'); ?>
             </div>
         </div>
         <hr>

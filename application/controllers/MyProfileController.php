@@ -12,8 +12,11 @@ class MyProfileController extends CI_Controller {
 	{
 		$data = [];
 		$year = date('Y');
+		$date = date('Y-m-d');
+
 		$data['dt_my_profile'] = $this->AuthModel->current_user();
 		$data['dt_visit_activity'] = $this->VisitModel->get_visit_activity($year);
+		$data['dt_visit_activity_by_date'] = $this->VisitModel->get_visit_activity_by_date($date);
 
 		if($data['dt_my_profile']){
 			$data['active_page']= 'myprofile';
