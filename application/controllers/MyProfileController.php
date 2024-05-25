@@ -5,12 +5,16 @@ class MyProfileController extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model('AuthModel');
+		$this->load->model('VisitModel');
 	}
 
 	public function index()
 	{
 		$data = [];
+		$year = date('Y');
 		$data['dt_my_profile'] = $this->AuthModel->current_user();
+		$data['dt_visit_activity'] = $this->VisitModel->get_visit_activity($year);
+
 		if($data['dt_my_profile']){
 			$data['active_page']= 'myprofile';
 

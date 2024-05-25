@@ -66,6 +66,23 @@
 			return $data = $this->db->get()->row();
 		}
 
+		public function get_visit_activity($year){
+			$user_id = $this->session->userdata('user_id');
+			$date_query = "DATE_FORMAT(created_at, '%Y-%m-%d')";
+			
+			$this->db->select("$date_query AS context, COUNT(1) AS total");
+			$this->db->from('visit');
+			$condition = [
+                'YEAR(created_at)' => $year,
+				'created_by' => $user_id
+            ];
+			$this->db->where($condition);
+            $this->db->group_by("$date_query");
+            $this->db->order_by('created_at','asc');
+
+			return $data = $this->db->get()->result();
+		}
+
 		// Command
 		public function insert_visit($data){
 			$this->db->insert('visit',$data);	

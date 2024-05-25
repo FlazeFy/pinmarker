@@ -18,7 +18,7 @@
 
     <style>
         .content {
-            width: 1080px;
+            width: 1280px;
             display: block;
             margin-inline: auto;
             padding: 0 20px 20px 20px;
