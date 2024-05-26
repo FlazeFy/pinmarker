@@ -41,4 +41,22 @@ class MyProfileController extends CI_Controller {
 
 		redirect('myprofilecontroller');
 	}
+
+	public function edit_image(){
+		$user_id = $this->session->userdata('user_id');
+		$img_url = $this->input->post('img_url');
+
+		$data = [
+			'img_url' => $img_url, 
+			'updated_at' => date('Y-m-d H:i:s'), 
+		];
+
+		$this->AuthModel->update_user($user_id,$data);
+
+		$this->session->set_userdata([
+			'user_img_url' => $img_url
+		]);
+
+		redirect('myprofilecontroller');
+	}
 }

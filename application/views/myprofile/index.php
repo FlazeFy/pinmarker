@@ -18,6 +18,8 @@
 
     <!--Apex Chart-->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script src="http://127.0.0.1:8080/public/js/global.js"></script>
     
     <style>
         .content {
@@ -59,6 +61,7 @@
         <?php $this->load->view('others/navbar'); ?>
         <div class="row">
             <div class="col-lg-3 col-md-12 col-sm-12">
+                <?php $this->load->view('myprofile/edit_image'); ?>
                 <?php $this->load->view('myprofile/profile'); ?>
             </div>
             <div class="col-lg-9 col-md-12 col-sm-12">

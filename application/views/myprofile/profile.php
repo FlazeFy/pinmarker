@@ -1,4 +1,3 @@
-<img class="avatar_dashboard" src="http://127.0.0.1:8080/public/images/avatar_man_1.png"><br>
 <form method="POST" action="/myprofilecontroller/edit_profile">
     <label>Username</label>
     <input name="username" id="username" type="text" value="<?= $dt_my_profile->username ?>" class="form-control"/>

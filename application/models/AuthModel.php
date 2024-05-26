@@ -37,7 +37,10 @@
                 return FALSE;
             }
 
-            $this->session->set_userdata([self::SESSION_KEY => $user->id]);
+            $this->session->set_userdata([
+                self::SESSION_KEY => $user->id,
+                'user_img_url' => $user->img_url
+            ]);
             $this->update_last_login($user->id);
 
             return $this->session->has_userdata(self::SESSION_KEY);
