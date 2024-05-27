@@ -66,7 +66,7 @@ input, select, textarea {
     font-size: var(--textSM);
     font-style: italic;
     text-decoration: none;
-    color: black;
+    color: black !important;
 }
 .avatar_dashboard {
     width: 20vh;

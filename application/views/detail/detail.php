@@ -217,6 +217,12 @@
         <p class='mt-2 mb-0 fw-bold'>Count Distance to Other Pin</p>
         <?php $this->load->view('detail/count_distance'); ?>
         <hr>
+
+        <div class="d-flex justify-content-between mt-2 mb-0">
+            <p class='fw-bold mt-1'>Galleries</p>
+            <?php $this->load->view('detail/add_galleries'); ?>
+        </div>
+        <hr>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div id="map-board"></div>

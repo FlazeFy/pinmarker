@@ -8,6 +8,9 @@ class DetailController extends CI_Controller {
         $this->load->model('PinModel');
         $this->load->model('VisitModel');
 		$this->load->model('DictionaryModel');
+		$this->load->model('GalleryModel');
+
+		$this->load->helper('Generator_helper');
 	}
 
 	public function view($id)
@@ -43,6 +46,24 @@ class DetailController extends CI_Controller {
 		} else {
 			$this->session->set_userdata('is_edit_mode', false);
 		}
+
+		redirect("/detailcontroller/view/$id");
+	}
+
+	public function add_gallery($id){
+		$user_id = $this->session->userdata('user_id');
+
+		$data = [
+			'id' => get_UUID(), 
+			'pin_id' => $id, 
+			'gallery_type' => $this->input->post('gallery_type'), 
+			'gallery_url' => $this->input->post('gallery_url'), 
+			'gallery_caption' => $this->input->post('gallery_caption'), 
+			'created_at' => date('Y-m-d H:i:s'), 
+			'created_by' => $user_id
+		];
+
+		$this->GalleryModel->insert_gallery($data);
 
 		redirect("/detailcontroller/view/$id");
 	}
