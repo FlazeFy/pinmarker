@@ -100,6 +100,36 @@
 			return $data = $this->db->get()->result();
 		}
 
+		public function get_total_visit_by_month() {
+			$this->db->select("DATE_FORMAT(visit.created_at, '%M') as context, COUNT(1) as total");
+			$this->db->from('visit');
+			$this->db->join('pin', 'visit.pin_id = pin.id');
+			$condition = [
+				'pin.deleted_at' => null,
+				'pin.created_by' => $this->session->userdata('user_id'),
+				'visit.created_at >=' => date('Y-m-d', strtotime('-12 months'))
+			];
+			$this->db->where($condition);
+			$this->db->group_by("context");
+			$this->db->order_by("context", 'desc');
+			$data = $this->db->get()->result();
+
+			$months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		
+			$result = array_fill_keys($months, 0);
+		
+			foreach ($data as $row) {
+				$result[$row->context] = $row->total;
+			}
+		
+			$res = [];
+			foreach ($result as $month => $total) {
+				$res[] = (object) ['context' => $month, 'total' => $total];
+			}			
+		
+			return $res;
+		}
+
 		// Command
 		public function insert_visit($data){
 			$this->db->insert('visit',$data);	
