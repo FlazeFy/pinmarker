@@ -1,3 +1,85 @@
+:root {   
+    /* Typography */
+    --textXJumbo : 24px;
+    --textJumbo : 20px;
+    --textXLG : 18px;
+    --textLG : 16px;
+    --textXMD : 14px;
+    --textMD : 13px;
+    --textSM : 12px;
+    --textXSM : 11px;
+
+    /* Rounded */
+    --roundedCircle : 100%;
+    --roundedJumbo : 30px;
+    --roundedXLG : 24px;
+    --roundedLG : 18px;
+    --roundedMD : 14px;
+    --roundedSM : 12px;
+    --roundedMini : 6px;
+
+    /* Spacing */
+    --spaceJumbo : 35px;
+    --spaceXLG : 24px;
+    --spaceLG : 20px;
+    --spaceXMD : 16px;
+    --spaceMD : 12px;
+    --spaceSM : 10px;
+    --spaceXSM : 8px;
+    --spaceXXSM : 6px;
+    --spaceMini : 4px;
+
+    /* Color Pallete */
+    --successBG : #00A35D;
+    --dangerBG : #F02273;
+    --warningBG : #e8ae00;
+    --infoBG : #5065D9;
+
+    --primaryColor : black;
+    --whiteColor : white;
+    --secondaryColor : #414141;
+}
+
 label {
     font-weight: 600 !important;
+}
+.content {
+    width: 1280px;
+    display: block;
+    margin-inline: auto;
+    padding: 0 var(--spaceLG) var(--spaceLG) var(--spaceLG);
+}
+
+label {
+    font-weight: 600;
+}
+input, select, textarea {
+    border-radius: var(--roundedMD) !important;
+    margin-top: var(--spaceXXSM);
+    margin-bottom: var(--spaceSM);
+    border: 1.5px solid black !important;
+}
+.form-check-label {
+    font-weight: 500;
+}
+.msg-error-input {
+    font-size: var(--textSM);
+    font-style: italic;
+    text-decoration: none;
+    color: black;
+}
+.avatar_dashboard {
+    width: 20vh;
+    border: var(--roundedMini) solid black;
+    border-radius: 100%;
+    display: block;
+    margin-inline: auto;
+}
+
+.image-upload{
+    position: absolute;
+    bottom: var(--spaceXXSM);
+}
+.image-upload>input {
+    display: none;
 }

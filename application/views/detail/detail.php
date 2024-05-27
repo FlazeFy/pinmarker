@@ -1,5 +1,5 @@
 <style>
-    #map-board {
+    #map-board, #maps-count-distance {
         height:50vh;
         border-radius: 20px;
         margin-bottom: 6px;
@@ -226,51 +226,70 @@
     </div>
 </div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
-
 <script type="text/javascript">
     let map;
+    let markers = [
+        <?php 
+            echo "{
+                coords: {lat: $dt_detail_pin->pin_lat, lng: $dt_detail_pin->pin_long},
+                icon: {
+                    url: 'https://maps.google.com/mapfiles/ms/icons/$dt_detail_pin->pin_color.png',
+                    scaledSize: {width: 40, height: 40}
+                }
+            }";
+        ?>
+    ]
 
     function initMap() {
-        //Map starter
-        var markers = [
-            <?php 
-                echo "{
-                    coords: {lat: $dt_detail_pin->pin_lat, lng: $dt_detail_pin->pin_long},
-                    icon: {
-                        url: 'https://maps.google.com/mapfiles/ms/icons/$dt_detail_pin->pin_color.png',
-                        scaledSize: new google.maps.Size(40, 40)
-                    }
-                }";
-            ?>
-        ];
-
         map = new google.maps.Map(document.getElementById("map-board"), {
-            center: <?= 
-                "{ lat: $dt_detail_pin->pin_lat, lng: $dt_detail_pin->pin_long}";
-            ?>,
+            center: { lat: parseFloat(<?= $dt_detail_pin->pin_lat ?>), lng: parseFloat(<?= $dt_detail_pin->pin_long ?>) },
             zoom: 12,
         });
 
-        addMarker(markers[0]);
+        for (let i = 0; i < markers.length; i++) {
+            addMarker(markers[i])
+        }
 
-        function addMarker(props){
-            var marker = new google.maps.Marker({
-                position: props.coords,
-                map: map,
-                icon: props.icon
-            });
-
-            if(props.iconImage){
-                marker.setIcon(props.iconImage);
-            }
-            if(props.content){
-                var infoWindow = new google.maps.InfoWindow({
-                content:props.content
-            });
-            }
+        if (markers.length > 1) {
+            drawPolyline()
         }
     }
 
-    window.initMap = initMap;
+    function drawPolyline() {
+        const pathCoordinates = markers.map(marker => marker.coords)
+
+        const polyline = new google.maps.Polyline({
+            path: pathCoordinates,
+            geodesic: true,
+            strokeColor: '#F02273',
+            strokeOpacity: 1.0,
+            strokeWeight: 4,
+        })
+
+        polyline.setMap(map)
+    }
+
+    function addMarker(props) {
+        let marker = new google.maps.Marker({
+            position: props.coords,
+            map: map,
+            icon: props.icon
+        });
+
+        if (props.iconImage) {
+            marker.setIcon(props.iconImage)
+        }
+
+        if (props.content) {
+            let infoWindow = new google.maps.InfoWindow({
+                content: props.content
+            });
+
+            marker.addListener('click', function() {
+                infoWindow.open(map, marker)
+            });
+        }
+    }
+
+    window.initMap = initMap
 </script>

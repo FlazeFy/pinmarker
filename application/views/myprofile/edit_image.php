@@ -1,12 +1,4 @@
 <style>
-    .image-upload{
-        position: absolute;
-        bottom: 3px;
-        right: 10px;
-    }
-    .image-upload>input {
-        display: none;
-    }
     .btn.change-image{
         width:40px; 
         height:40px; 
@@ -32,15 +24,15 @@
     }
     .btn-change-image{
         position: absolute;
-        background: var( --infoBG);
+        background: var(--secondaryColor);
         height: 50px;
         width: 50px;
         cursor: pointer;
         padding: var(--spaceSM);
         border-radius: 100%;
-        top: 55px;
-        right: 20px;
-        border: 3px solid var(--whiteColor);
+        bottom: 10px;
+        left: 40px;
+        border: 3px solid var(--primaryColor);
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         -webkit-transition: all 0.6s;
         -o-transition: all 0.5s;
@@ -49,21 +41,23 @@
     .btn-reset-image{
         height:50px; 
         width:50px; 
-        background: var(--warningDarkBG);
+        background: var(--secondaryColor);
         border-radius: 100%; 
         padding: var(--spaceMD);
         position: absolute;
         cursor: pointer;
         color: var(--whiteColor) !important;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        border: 3px solid var(--whiteColor);
+        border: 3px solid var(--primaryColor);
         -webkit-transition: all 0.6s;
         -o-transition: all 0.5s;
         transition: all 0.5s;
+        bottom: 10px; 
+        right: 50px;
     } 
 </style>
 
-<span class="position-relative">
+<span class="position-relative mb-3">
     <?php 
         $img_url = $this->session->userdata('user_img_url');
         if($img_url == null){
@@ -74,7 +68,7 @@
     ?>
     <div class='image-upload' id='formFileImg'>
         <label for='file-input'>
-            <span class="btn-change-image" id="btn-change-image"><img class="img img-fluid" src="http://127.0.0.1:8080/public/images/camera.png"></span>
+            <span class="btn-change-image" id="btn-change-image"><img class="img img-fluid" style="height:27.5px;" src="http://127.0.0.1:8080/public/images/camera.png"></span>
         </label>
         <input id='file-input' type='file' accept="image/*" value="" onchange='setValueProfileImage()'/>
     </div>
@@ -84,7 +78,7 @@
     <?php 
         $img_url = $this->session->userdata('user_img_url');
         if($img_url){
-            echo "<a class='btn btn-reset-image' id='btn-reset-image' style='top: 47.5px; right: -27.5px;' title='Reset to default image' onclick='clearImage()'><i class='fa-solid fa-trash-can fa-lg'></i></a>";
+            echo "<a class='btn btn-reset-image' id='btn-reset-image' title='Reset to default image' onclick='clearImage()'><i class='fa-solid fa-trash-can fa-lg'></i></a>";
         }
     ?>
     <span class="status-holder">

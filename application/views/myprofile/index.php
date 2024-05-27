@@ -20,41 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <script src="http://127.0.0.1:8080/public/js/global.js"></script>
-    
-    <style>
-        .content {
-            width: 1280px;
-            display: block;
-            margin-inline: auto;
-            padding: 0 20px 20px 20px;
-        }
-
-        label {
-            font-weight: 600;
-        }
-        input, select, textarea {
-            border-radius: 15px !important;
-            margin-top: 5px;
-            margin-bottom: 10px;
-            border: 1.5px solid black !important;
-        }
-        .form-check-label {
-            font-weight: 500;
-        }
-        .msg-error-input {
-            font-size: 12px;
-            font-style: italic;
-            text-decoration: none;
-            color: black;
-        }
-        .avatar_dashboard {
-            width: 20vh;
-            border: 3px solid black;
-            border-radius: 100%;
-            display: block;
-            margin-inline: auto;
-        }
-    </style>
+    <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
 </head>
 <body>
     <div class="content">

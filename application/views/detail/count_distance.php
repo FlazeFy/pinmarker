@@ -44,7 +44,6 @@
         return rad * (180 / Math.PI)
     }
 
-
     function count_distance_pin(coor){
         if(coor != ""){
             const coor_split = coor.split('/')
@@ -55,6 +54,16 @@
 
             const dis = calculateDistance(lat_to, long_to, lat_from, long_from, 'km')
             document.getElementById('pin_to_pin_distance_count').value = dis+' Km'
+
+            markers[1] = {
+                coords: {lat: parseFloat(lat_to), lng: parseFloat(long_to)},
+                icon: {
+                    url: 'https://maps.google.com/mapfiles/ms/icons/red.png',
+                    scaledSize: {width: 40, height: 40}
+                }
+            }
+            addMarker(markers)
+            initMap()
         }
     }
 </script>
