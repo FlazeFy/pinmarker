@@ -222,6 +222,7 @@
             <p class='fw-bold mt-1'>Galleries</p>
             <?php $this->load->view('detail/add_galleries'); ?>
         </div>
+        <?php $this->load->view('detail/galleries'); ?>
         <hr>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12">

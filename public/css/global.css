@@ -83,3 +83,14 @@ input, select, textarea {
 .image-upload>input {
     display: none;
 }
+
+.gallery-btn {
+    -webkit-transition: all 0.35s;
+    -o-transition: all 0.35s;
+    transition: all 0.35s;
+}
+
+.modal-content {
+    border: 3px solid black; 
+    border-radius: var(--roundedLG);
+}

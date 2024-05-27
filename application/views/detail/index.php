@@ -25,6 +25,18 @@
 
     <!--Apex Chart-->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <style>
+        .gallery-btn {
+            border: 2px solid black; border-radius: 15px;
+            padding: var(--spaceMD);
+            text-align: left;
+            background: var(--whiteColor);
+        }
+        .gallery-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>

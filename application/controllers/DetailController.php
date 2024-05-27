@@ -23,6 +23,8 @@ class DetailController extends CI_Controller {
             $data['dt_my_personal_pin']= $this->PinModel->get_pin_by_category('Personal', $id);
 			$data['dt_all_my_pin_name']= $this->PinModel->get_all_my_pin_name();
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
+			$data['dt_all_gallery_by_pin']= $this->GalleryModel->get_all_gallery_by_pin($id);
+
 			$this->load->view('detail/index', $data);
 		} else {
 			redirect('logincontroller');
