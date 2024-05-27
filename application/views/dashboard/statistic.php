@@ -13,4 +13,11 @@
             $this->load->view('others/pie_chart', $stats);
         ?>
     </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+        <?php
+            $stats['data'] = $dt_get_stats_total_gallery;
+            $stats['ctx'] = 'total_gallery_by_pin';
+            $this->load->view('others/pie_chart', $stats);
+        ?>
+    </div>
 </div>

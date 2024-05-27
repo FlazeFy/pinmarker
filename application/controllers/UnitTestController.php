@@ -7,6 +7,7 @@ class UnitTestController extends CI_Controller {
 		$this->load->model('AuthModel');
         $this->load->model('PinModel');
         $this->load->model('VisitModel');
+        $this->load->model('GalleryModel');
 
         $this->load->library('unit_test');
 	}
@@ -69,8 +70,10 @@ class UnitTestController extends CI_Controller {
 
         $test_get_most_visit_pin_name = $this->VisitModel->get_most_visit('pin_name',1);
         $test_get_most_visit_pin_category = $this->VisitModel->get_most_visit('pin_category',6);
+        $test_get_most_gallery = $this->GalleryModel->get_most_gallery('pin_category',6);
         
         $this->unit->run($test_get_most_visit_pin_name, 'is_object', $test_name);
         $this->unit->run($test_get_most_visit_pin_category, 'is_array', $test_name);
+        $this->unit->run($test_get_most_gallery, 'is_array', $test_name);
     }
 }
