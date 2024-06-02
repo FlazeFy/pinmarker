@@ -6,6 +6,7 @@ class MyProfileController extends CI_Controller {
 		parent::__construct();
 		$this->load->model('AuthModel');
 		$this->load->model('VisitModel');
+		$this->load->model('GalleryModel');
 	}
 
 	public function index()
@@ -17,6 +18,7 @@ class MyProfileController extends CI_Controller {
 		$data['dt_my_profile'] = $this->AuthModel->current_user();
 		$data['dt_visit_activity'] = $this->VisitModel->get_visit_activity($year);
 		$data['dt_visit_activity_by_date'] = $this->VisitModel->get_visit_activity_by_date($date);
+		$data['dt_my_gallery'] = $this->GalleryModel->get_all_my_gallery();
 
 		if($data['dt_my_profile']){
 			$data['active_page']= 'myprofile';

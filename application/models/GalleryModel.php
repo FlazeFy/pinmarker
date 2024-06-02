@@ -16,6 +16,19 @@
 			return $data = $this->db->get()->result();
 		}
 
+		public function get_all_my_gallery(){
+			$this->db->select('pin.id as pin_id, gallery.id, pin_name, pin_category, gallery_type, gallery_url, gallery_caption, gallery.created_at');
+			$this->db->from('gallery');
+			$this->db->join('pin','pin.id = gallery.pin_id');
+			$condition = [
+				'gallery.created_by' => $this->session->userdata('user_id')
+            ];
+			$this->db->where($condition);
+			$this->db->order_by('gallery.created_at','desc');
+
+			return $data = $this->db->get()->result();
+		}
+
 		public function get_most_gallery($limit){
 			$this->db->select('pin_name as context, COUNT(1) as total');
 			$this->db->from('gallery');
