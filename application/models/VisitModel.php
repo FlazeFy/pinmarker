@@ -107,7 +107,7 @@
 			$condition = [
 				'pin.deleted_at' => null,
 				'pin.created_by' => $this->session->userdata('user_id'),
-				'visit.created_at >=' => date('Y-m-d', strtotime('-12 months'))
+				'YEAR(visit.created_at)' => date('Y')
 			];
 			$this->db->where($condition);
 			$this->db->group_by("context");

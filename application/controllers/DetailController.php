@@ -69,4 +69,11 @@ class DetailController extends CI_Controller {
 
 		redirect("/detailcontroller/view/$id");
 	}
+
+	public function delete_gallery($id){
+		$gallery_id = $this->input->post('id');
+		$this->GalleryModel->delete_gallery($gallery_id);
+
+		redirect("/detailcontroller/view/$id");
+	}
 }

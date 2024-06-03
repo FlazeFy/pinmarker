@@ -47,5 +47,9 @@
 		public function insert_gallery($data){
 			$this->db->insert('gallery',$data);	
 		}
+
+		public function delete_gallery($id){
+			$this->db->delete('gallery',['id'=>$id]);	
+		}
 	}
 ?>
