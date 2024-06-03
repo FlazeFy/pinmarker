@@ -14,7 +14,10 @@ class MyProfileController extends CI_Controller {
 		$this->load->model('ValidateRequestModel');
 
 		$this->load->helper('Generator_helper');
-		$this->telegram = new Api('');
+
+		$this->load->model('TokenModel');
+		$telegram_token = $this->TokenModel->get_token('TELEGRAM_TOKEN');
+		$this->telegram = new Api($telegram_token);
 	}
 
 	public function index()
