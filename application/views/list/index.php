@@ -24,6 +24,7 @@
         <?php $this->load->view('others/navbar'); ?>
         <h2 class="text-center" style="font-weight:600;">My Marker</h2><br>
         <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" href="/addcontroller"><i class="fa-solid fa-plus"></i> Add New Marker</a>
+        <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" href="/listcontroller/print_pin"><i class="fa-solid fa-print"></i> Print</a>
         <?php $this->load->view('list/list'); ?>
         <hr>
     </div>
