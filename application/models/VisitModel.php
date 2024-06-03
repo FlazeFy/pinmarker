@@ -100,6 +100,19 @@
 			return $data = $this->db->get()->result();
 		}
 
+		public function get_total_visit_by_by_pin_id($id){
+			$this->db->select('visit_by as context, COUNT(1) as total');
+			$this->db->from('visit');
+			$condition = [
+				'created_by' => $this->session->userdata('user_id'),
+				'pin_id' => $id
+            ];
+			$this->db->where($condition);
+            $this->db->group_by('context');
+
+			return $data = $this->db->get()->result();
+		}
+
 		public function get_total_visit_by_month() {
 			$this->db->select("DATE_FORMAT(visit.created_at, '%M') as context, COUNT(1) as total");
 			$this->db->from('visit');

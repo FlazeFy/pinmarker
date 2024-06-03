@@ -48,6 +48,18 @@
 			return $data = $this->db->get()->result();
 		}
 
+		public function get_pin_name_by_id($id){
+			$this->db->select('pin_name');
+			$this->db->from('pin');
+			$condition = [
+                'id' => $id,
+            ];
+			$this->db->where($condition);
+			$query = $this->db->get();
+    
+            return $query->row()->pin_name;
+		}
+
 		public function get_pin_by_id($id){
 			$this->db->select('pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, pin_call, pin_email, pin_address, is_favorite, pin.created_at, pin.created_by, pin.updated_at, pin.deleted_at, dictionary_color as pin_color');
 			$this->db->from('pin');

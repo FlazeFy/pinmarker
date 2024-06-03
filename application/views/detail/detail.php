@@ -203,15 +203,31 @@
         <hr><p class='mt-2 mb-0 fw-bold'>Visit History</p>
         <ol>
         <?php 
-            foreach($dt_visit_history as $dt){
-                echo "<li>$dt->visit_desc using "; echo strtolower($dt->visit_by);
-                    if($dt->visit_with != null){
-                        echo " with $dt->visit_with";
-                    }    
-                echo " at "; echo date('Y-m-d H:i', strtotime($dt->created_at)); echo"</li>";
+            if(count($dt_visit_history) > 0){
+                foreach($dt_visit_history as $dt){
+                    echo "<li>$dt->visit_desc using "; echo strtolower($dt->visit_by);
+                        if($dt->visit_with != null){
+                            echo " with $dt->visit_with";
+                        }    
+                    echo " at "; echo date('Y-m-d H:i', strtotime($dt->created_at)); echo"</li>";
+                }
+            } else {
+                echo "
+                    <div class='text-center text-secondary'>
+                        <img class='img img-fluid m-1' style='width:200px;' src='http://127.0.0.1:8080/public/images/empty_item.png'>
+                        <h6>No History Visit found on this Pin</h6>
+                    </div>
+                ";
             }
         ?>
         </ol>
+        <hr>
+
+        <?php
+            $stats['data'] = $dt_total_visit_by_by_pin;
+            $stats['ctx'] = 'visit_using_stats';
+            $this->load->view('others/pie_chart', $stats);
+        ?>
         <hr>
 
         <p class='mt-2 mb-0 fw-bold'>Count Distance to Other Pin</p>
