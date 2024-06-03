@@ -13,6 +13,7 @@ class ListController extends CI_Controller {
 		parent::__construct();
 		$this->load->model('PinModel');
 		$this->load->model('AuthModel');
+		$this->load->model('HistoryModel');
 
 		$this->load->model('TokenModel');
 		$telegram_token = $this->TokenModel->get_token('TELEGRAM_TOKEN');
@@ -76,7 +77,7 @@ class ListController extends CI_Controller {
         $html = "
         <html>
             <head>
-                <title>$user->username's Marker</title>
+                <title>$user->username's Visit</title>
 				<style>
 					th, td{
 						border: 1px solid black;
@@ -143,6 +144,8 @@ class ListController extends CI_Controller {
 		]);
 	
 		unlink($pdfFilePath);
+
+		// $this->HistoryModel->insert_history('Generate Document', 'Marker List');
 
 		redirect('listcontroller');
 	}

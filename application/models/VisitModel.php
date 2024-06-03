@@ -17,6 +17,20 @@
 			return $data = $this->db->get()->result();
 		}
 
+		public function get_all_my_visit_detail(){
+			$this->db->select('visit_desc, visit_by, visit_with, pin_name, pin_category, visit.created_at');
+			$this->db->from('visit');
+			$this->db->join('pin','visit.pin_id = pin.id');
+			$condition = [
+                'pin.deleted_at' => null,
+				'pin.created_by' => $this->session->userdata('user_id')
+            ];
+			$this->db->where($condition);
+            $this->db->order_by('visit.created_at','desc');
+
+			return $data = $this->db->get()->result();
+		}
+
 		public function get_most_visit($ctx, $limit){
 			$this->db->select("$ctx as context, COUNT(1) as total");
 			$this->db->from('pin');
