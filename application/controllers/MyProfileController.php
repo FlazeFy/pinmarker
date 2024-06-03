@@ -101,4 +101,45 @@ class MyProfileController extends CI_Controller {
 			redirect('myprofilecontroller');
 		}
 	}
+
+	public function edit_telegram_id(){
+		$user_id = $this->session->userdata('user_id');
+		$user = $this->AuthModel->get_user_by_id($user_id);
+		$token_length = 6;
+		$token = get_token_validation($token_length);
+		$new_tele_id = $this->input->post('telegram_user_id');
+
+		$data_user = [
+			'telegram_user_id' => $new_tele_id,
+			'telegram_is_valid' => 0
+		];
+
+		$update_user = $this->AuthModel->update_user($user_id,$data_user);
+
+		if($update_user){
+			$data_request = [
+				'id' => get_UUID(), 
+				'request_type' => 'telegram_id_validation',
+				'request_context' => $token, 
+				'created_at' => date('Y-m-d H:i:s'), 
+				'created_by' => $user_id
+			];
+	
+			$insert_validate = $this->ValidateRequestModel->insert_request($data_request);
+			
+			if($insert_validate){
+				$this->telegram->sendMessage([
+					'chat_id' => $new_tele_id,
+					'text' => "Hello,\n\nWe received a request to validate PinMarker apps's account with username <b>$user->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, PinMarker",
+					'parse_mode' => 'HTML'
+				]);
+		
+				redirect('myprofilecontroller');
+			} else {
+				redirect('myprofilecontroller');
+			}
+		} else {
+			redirect('myprofilecontroller');
+		}
+	}
 }

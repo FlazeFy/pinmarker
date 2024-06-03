@@ -11,8 +11,9 @@
     <button class="btn btn-dark rounded-pill w-100 mt-3" type="submit">Save Changes</button>
 </form><hr>
 <label>Telegram ID</label>
-<input name="telegram_user_id" id="telegram_user_id" type="text" value="<?= $dt_my_profile->telegram_user_id ?>" class="form-control"/>
-<a class="msg-error-input">
+<input name="telegram_user_id" id="telegram_user_id" oninput="check_telegram_user_id_change()" type="text" value="<?= $dt_my_profile->telegram_user_id ?>" class="form-control"/>
+<input name="telegram_user_id_old" id="telegram_user_id_old" value="<?= $dt_my_profile->telegram_user_id ?>" hidden/>
+<a class="msg-error-input" id="msg-error-telegram_user_id">
     <?php
         if($dt_my_profile->telegram_is_valid == 0){
             echo "<i class='fa-solid fa-triangle-exclamation'></i> Your telegram ID is not validated yet! 
@@ -22,5 +23,28 @@
         }
     ?>
 </a>
+<span id="submit_telegram_user_id_edit"></span>
 
-<script></script>
+<script>
+    function check_telegram_user_id_change(){
+        const tele_id_old = $("#telegram_user_id_old").val()
+        const tele_id_new = $("#telegram_user_id").val()
+
+        if(tele_id_new != tele_id_old){
+            $("#msg-error-telegram_user_id").css({
+                'display':'none'
+            })
+            $("#submit_telegram_user_id_edit").empty().append(`
+                <form action='/myprofilecontroller/edit_telegram_id' method='POST'>
+                    <input hidden value='${tele_id_new}' name='telegram_user_id' id='telegram_user_id'>
+                    <button class='btn btn-link' type='submit' style='font-size: var(--textXMD);'><i class='fa-solid fa-floppy-disk'></i> Save Changes</button>
+                </form>
+            `)
+        } else {
+            $("#msg-error-telegram_user_id").css({
+                'display':'block'
+            })
+            $("#submit_telegram_user_id_edit").empty()
+        }
+    }
+</script>

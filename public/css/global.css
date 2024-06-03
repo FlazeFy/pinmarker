@@ -69,8 +69,12 @@ input, select, textarea {
     color: var(--dangerBG) !important;
 }
 .btn-link {
-    color: var(--successBG);
-    padding: 0;
+    color: var(--successBG) !important;
+    padding: var(--spaceXXSM);
+    border: 2px solid var(--successBG);
+    text-decoration: none;
+    width: 100%;
+    margin-top: var(--spaceXXSM);
 }
 .avatar_dashboard {
     width: 20vh;
