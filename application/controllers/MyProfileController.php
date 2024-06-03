@@ -25,11 +25,13 @@ class MyProfileController extends CI_Controller {
 		$data = [];
 		$year = date('Y');
 		$date = date('Y-m-d');
+		$user_id = $this->session->userdata('user_id');
 
 		$data['dt_my_profile'] = $this->AuthModel->current_user();
 		$data['dt_visit_activity'] = $this->VisitModel->get_visit_activity($year);
 		$data['dt_visit_activity_by_date'] = $this->VisitModel->get_visit_activity_by_date($date);
 		$data['dt_my_gallery'] = $this->GalleryModel->get_all_my_gallery();
+		$data['dt_active_telegram_user_id_request'] = $this->ValidateRequestModel->get_my_active_request('telegram_id_validation', $user_id);
 
 		if($data['dt_my_profile']){
 			$data['active_page']= 'myprofile';
@@ -135,6 +137,34 @@ class MyProfileController extends CI_Controller {
 				]);
 		
 				redirect('myprofilecontroller');
+			} else {
+				redirect('myprofilecontroller');
+			}
+		} else {
+			redirect('myprofilecontroller');
+		}
+	}
+
+	public function validate_token_telegram(){
+		$user_id = $this->session->userdata('user_id');
+		$user = $this->AuthModel->get_user_by_id($user_id);
+		$check = $this->ValidateRequestModel->get_my_active_request('telegram_id_validation', $user_id);
+
+		if($check->request_context == $this->input->post('token')){
+			$data_user = [
+				'telegram_is_valid' => 1
+			];
+	
+			$update_user = $this->AuthModel->update_user($user_id,$data_user);
+	
+			if($update_user){
+				$this->ValidateRequestModel->delete_request($check->id);
+				
+				$this->telegram->sendMessage([
+					'chat_id' => $user->telegram_user_id,
+					'text' => "Hello <b>$user->username</b>, Welcome to PinMarker!",
+					'parse_mode' => 'HTML'
+				]);
 			} else {
 				redirect('myprofilecontroller');
 			}

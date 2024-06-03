@@ -111,3 +111,9 @@ input, select, textarea {
     margin-bottom: var(--spaceLG);
     width: 100%;
 }
+
+.bg-danger-light {
+    background-color: rgba(240, 34, 116, 0.2);
+    border: 2px solid var(--dangerBG);
+}
+  
