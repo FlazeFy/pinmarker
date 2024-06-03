@@ -12,7 +12,9 @@
 	},
 	"require": {
 		"php": ">=5.3.7",
-		"guzzlehttp/guzzle": "*"
+		"guzzlehttp/guzzle": "*",
+		"irazasyed/telegram-bot-sdk": "*",
+		"vlucas/phpdotenv": "*"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

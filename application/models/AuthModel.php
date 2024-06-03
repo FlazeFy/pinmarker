@@ -57,6 +57,18 @@
             return $query->row();
         }
 
+        public function get_user_by_id($id){
+			$this->db->select('id, fullname, username, email, telegram_user_id, telegram_is_valid, password, img_url, created_at, updated_at, last_login');
+			$this->db->from('user');
+            $condition = [
+				'id' => $id
+            ];
+			$this->db->where($condition);
+            $query = $this->db->get();
+    
+            return $query->row();
+		}
+
         public function logout()
         {
             $this->session->unset_userdata(self::SESSION_KEY);

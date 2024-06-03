@@ -1,12 +1,20 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use Telegram\Bot\Api;
+
 class MyProfileController extends CI_Controller {
+	private $telegram;
+
 	function __construct(){
 		parent::__construct();
 		$this->load->model('AuthModel');
 		$this->load->model('VisitModel');
 		$this->load->model('GalleryModel');
+		$this->load->model('ValidateRequestModel');
+
+		$this->load->helper('Generator_helper');
+		$this->telegram = new Api('');
 	}
 
 	public function index()
@@ -60,5 +68,34 @@ class MyProfileController extends CI_Controller {
 		]);
 
 		redirect('myprofilecontroller');
+	}
+
+	public function send_validation_token(){
+		$user_id = $this->session->userdata('user_id');
+		$user = $this->AuthModel->get_user_by_id($user_id);
+		$token_length = 6;
+		$token = get_token_validation($token_length);
+
+		$data = [
+			'id' => get_UUID(), 
+			'request_type' => 'telegram_id_validation',
+            'request_context' => $token, 
+			'created_at' => date('Y-m-d H:i:s'), 
+			'created_by' => $user_id
+		];
+
+		$insert_validate = $this->ValidateRequestModel->insert_request($data);
+		
+		if($insert_validate){
+			$this->telegram->sendMessage([
+				'chat_id' => $user->telegram_user_id,
+				'text' => "Hello,\n\nWe received a request to validate PinMarker apps's account with username <b>$user->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, PinMarker",
+				'parse_mode' => 'HTML'
+			]);
+	
+			redirect('myprofilecontroller');
+		} else {
+			redirect('myprofilecontroller');
+		}
 	}
 }
