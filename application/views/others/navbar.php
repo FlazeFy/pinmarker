@@ -49,6 +49,9 @@
                 <li class="nav-item">
                     <a class="nav-link <?php if($active_page == 'history'){ echo 'active'; } ?>" href="/historycontroller">History</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php if($active_page == 'track'){ echo 'active'; } ?>" href="/trackcontroller">Track</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Setting
