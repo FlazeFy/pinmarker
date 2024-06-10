@@ -46,7 +46,9 @@
         <?php $this->load->view('others/navbar'); ?>
         <h2 class="text-center" style="font-weight:600;">Live Track</h2><br>
         <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" data-bs-toggle="modal" data-bs-target="#historyTrackModal" onclick="getHistoryTrack()"><i class="fa-solid fa-table"></i> Detail</a>
+        <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" data-bs-toggle="modal" data-bs-target="#relatedPinTrackModal"><i class="fa-solid fa-table"></i> Related Pin x Track</a>
         <?php $this->load->view('track/history_track'); ?>
+        <?php $this->load->view('track/related_pin_track'); ?>
         <?php $this->load->view('track/maps_board'); ?>
     </div>
 </body>

@@ -32,11 +32,12 @@ function calculateDistance(coord1, coord2) {
 
     const a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2) + Math.cos(latRad1) * Math.cos(latRad2) * Math.sin(lonDiff / 2) * Math.sin(lonDiff / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-    const res = earthRadius * c
+    let res = earthRadius * c
 
     let unit = 'm'
     if(res > 1000){
         unit = 'km'
+        res = res / 1000
     }
 
     return res.toFixed(2)+' '+unit
