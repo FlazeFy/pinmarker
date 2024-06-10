@@ -24,6 +24,7 @@
                             <th scope="col">Route</th>
                             <th scope="col">Distance</th>
                             <th scope="col">Time Taken</th>
+                            <th scope="col">Speed</th>
                             <th scope="col">Battery Indicator</th>
                             <th scope="col">Action</th>
                         </tr>
@@ -92,9 +93,16 @@
         })
         .done(function (response) {
             $("#tb_history_track_body").empty()
-
+            
             let data = response.data
             data.forEach((dt,idx) => {
+                const distance = calculateDistance(`${data[idx].track_lat},${data[idx].track_lat}`, `${data[idx+1].track_lat},${data[idx+1].track_lat}`)
+                const time = countDatetimeStrInterval(data[idx].created_at, data[idx+1].created_at)
+                let speed = 0
+                if(distance != null && time != null){
+                    speed = (distance / time) * 3.6
+                }
+
                 $("#tb_history_track_body").append(`
                     <tr class="text-center">
                         <th scope="row" class="text-center">${dt.created_at}</th>
@@ -105,8 +113,9 @@
                             <b>To</b>
                             <p class="m-0">${data[idx+1].track_lat}, ${data[idx+1].track_long}</p>
                         </td>
-                        <td>${calculateDistance(`${data[idx].track_lat},${data[idx].track_lat}`, `${data[idx+1].track_lat},${data[idx+1].track_lat}`)}</td>
-                        <td>${countDatetimeStrInterval(data[idx].created_at, data[idx+1].created_at)}</td>
+                        <td>${distanceUnit(distance)}</td>
+                        <td>${timeUnit(time)}</td>
+                        <td>${speed.toFixed(2)} Km/h</td>
                         <td>${dt.battery_indicator}%</td>
                         <td><a class='btn btn-dark rounded-pill'>Track on Maps</a></td>
                     </tr>

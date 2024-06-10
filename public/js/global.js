@@ -9,12 +9,7 @@ function countDatetimeStrInterval(startTime, endTime) {
     const formattedEndTime = endTime.replace(" ", "T") + "Z"
     const diffInMs = new Date(formattedEndTime) - new Date(formattedStartTime)
 
-    if (Math.abs(diffInMs) < 1000) {
-        return `${Math.round(diffInMs)} ms`
-    } else {
-        const diffInSeconds = Math.floor(diffInMs / 1000);
-        return `${diffInSeconds} s`
-    }
+    return Math.round(diffInMs) // in second
 }
 
 function calculateDistance(coord1, coord2) {
@@ -34,13 +29,27 @@ function calculateDistance(coord1, coord2) {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
     let res = earthRadius * c
 
+    return res // in m
+}
+
+function distanceUnit(val){
     let unit = 'm'
-    if(res > 1000){
+    let res
+    if(val > 1000){
         unit = 'km'
         res = res / 1000
-    }
+    } 
 
-    return res.toFixed(2)+' '+unit
+    return `${val.toFixed(2)} ${unit}`
+}
+
+function timeUnit(val){
+    if (val < 1000) {
+        return `${val} ms`
+    } else {
+        const diffInSeconds = Math.floor(val / 1000);
+        return `${diffInSeconds}s`
+    }
 }
 
 function toRadians(degrees) {

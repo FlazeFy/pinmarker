@@ -27,4 +27,9 @@
             $this->load->view('others/line_chart', $stats);
         ?>
     </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 pt-3">
+        <?php
+            $this->load->view('dashboard/distance_monthly');
+        ?>
+    </div>
 </div>

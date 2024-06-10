@@ -65,7 +65,7 @@
                         <tr>
                             <td>${el.pin_name}</td>
                             <td>${el.coordinate}</td>
-                            <td>${calculateDistance(el.coordinate, `${current_lat},${current_long}`)}</td>
+                            <td>${distanceUnit(calculateDistance(el.coordinate, `${current_lat},${current_long}`))}</td>
                         </tr>
                     `)
                 });
