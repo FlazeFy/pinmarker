@@ -18,17 +18,35 @@
 
     <!-- CSS -->
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
-    
+
+    <!-- Javascript -->
+    <script src="http://127.0.0.1:8080/public/js/global.js"></script>
+
     <!-- Jquery -->
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
     <!--Full calendar.-->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+
+    <!-- Jquery DataTables -->
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+    <!-- Bootstrap dataTables Javascript -->
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function () {
+            $('#tb_history_track').DataTable();
+        });
+    </script>
 </head>
 <body>
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
         <h2 class="text-center" style="font-weight:600;">Live Track</h2><br>
+        <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" data-bs-toggle="modal" data-bs-target="#historyTrackModal" onclick="getHistoryTrack()"><i class="fa-solid fa-table"></i> Detail</a>
+        <?php $this->load->view('track/history_track'); ?>
         <?php $this->load->view('track/maps_board'); ?>
     </div>
 </body>

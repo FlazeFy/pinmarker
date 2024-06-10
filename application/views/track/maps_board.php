@@ -66,11 +66,11 @@
             zoom: 12,
         })
 
-        fetchAndUpdateMarkers()
-        setInterval(fetchAndUpdateMarkers, 3000)
+        getUpdateMarkers()
+        setInterval(getUpdateMarkers, 3000)
     }
 
-    function fetchAndUpdateMarkers() {
+    function getUpdateMarkers() {
         $.ajax({
             url: `http://127.0.0.1:2000/api/v1/track/journey/<?= $this->session->userdata('user_id'); ?>`,
             datatype: "json",
