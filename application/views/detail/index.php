@@ -26,6 +26,9 @@
     <!--Apex Chart-->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+    <!-- Swal -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         .gallery-btn {
             border: 2px solid black; border-radius: 15px;

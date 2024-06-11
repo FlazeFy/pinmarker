@@ -34,6 +34,8 @@
     <!-- Bootstrap dataTables Javascript -->
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
+    <!-- Swal -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function () {
@@ -45,8 +47,11 @@
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
         <h2 class="text-center" style="font-weight:600;">Live Track</h2><br>
-        <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" data-bs-toggle="modal" data-bs-target="#historyTrackModal" onclick="getHistoryTrack()"><i class="fa-solid fa-table"></i> Detail</a>
-        <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" data-bs-toggle="modal" data-bs-target="#relatedPinTrackModal"><i class="fa-solid fa-table"></i> Related Pin x Track</a>
+        <div class="d-flex justify-content-start">
+            <a class="btn btn-dark mb-4 rounded-pill py-3 px-4 me-2" data-bs-toggle="modal" data-bs-target="#historyTrackModal" onclick="getHistoryTrack()"><i class="fa-solid fa-table"></i> Detail</a>
+            <a class="btn btn-dark mb-4 rounded-pill py-3 px-4 me-2" data-bs-toggle="modal" data-bs-target="#relatedPinTrackModal"><i class="fa-solid fa-table"></i> Related Pin x Track</a>
+            <?php $this->load->view('track/day_route'); ?>
+        </div>
         <?php $this->load->view('track/history_track'); ?>
         <?php $this->load->view('track/related_pin_track'); ?>
         <?php $this->load->view('track/maps_board'); ?>

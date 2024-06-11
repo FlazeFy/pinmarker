@@ -56,18 +56,22 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
 
 <script type="text/javascript">
-    let map;
-    let markers = [];
+    let map
+    let markers = []
+    let polyline
+    let is_show_path = <?php if($this->session->userdata('filter_date_track') != null){ echo 'true'; } else { echo 'false'; } ?>
 
     function initMap() {
         // Initialize the map
         map = new google.maps.Map(document.getElementById("map-board"), {
             center: { lat: -6.226838579766097, lng: 106.82157923228753 },
             zoom: 12,
-        })
+        });
 
-        getUpdateMarkers()
-        setInterval(getUpdateMarkers, 3000)
+        if (is_show_path == false) {
+            getUpdateMarkers()
+            setInterval(getUpdateMarkers, 3000)
+        }
     }
 
     function getUpdateMarkers() {
@@ -88,24 +92,47 @@
         });
     }
 
+    function drawPolyline() {
+        const pathCoordinates = markers.map(marker => marker.position)
+
+        if (polyline) {
+            polyline.setMap(null)
+        }
+
+        polyline = new google.maps.Polyline({
+            path: pathCoordinates,
+            geodesic: true,
+            strokeColor: '#F02273',
+            strokeOpacity: 1.0,
+            strokeWeight: 4,
+        });
+
+        polyline.setMap(map)
+    }
+
     function updateMarkers(data) {
-        markers.forEach(marker => marker.setMap(null));
-        markers = [];
+        markers.forEach(marker => marker.setMap(null))
+        markers = []
+        let iconProps = {
+            scaledSize: new google.maps.Size(40, 40),
+        }
+
+        if (is_show_path) {
+            iconProps = { scaledSize: new google.maps.Size(10, 10) }
+        }
 
         data.forEach(el => {
             const marker = new google.maps.Marker({
                 position: { lat: el.track_lat, lng: el.track_long },
                 map: map,
-                icon: {
-                    scaledSize: new google.maps.Size(40, 40),
-                },
+                icon: iconProps,
             });
 
             if (el.content) {
                 const infoWindow = new google.maps.InfoWindow({
                     content: `<div>
                                 <h6>Battery Status : ${el.battery_indicator}%</h6>
-                                <p style='font-style: italic;'>Capture at ${el.created_at}%</p>
+                                <p style='font-style: italic;'>Capture at ${el.created_at}</p>
                               </div>`
                 });
                 marker.addListener('click', function () {
@@ -115,6 +142,10 @@
 
             markers.push(marker)
         });
+
+        if (is_show_path) {
+            drawPolyline()
+        }
     }
 
     window.initMap = initMap

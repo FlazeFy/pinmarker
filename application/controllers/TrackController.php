@@ -19,4 +19,16 @@ class TrackController extends CI_Controller {
 			redirect('logincontroller');
 		}
 	}
+
+	public function filter_date(){
+		$this->session->set_userdata('filter_date_track',$this->input->post('filter_date_track'));
+
+		redirect('trackcontroller');
+	}
+
+	public function reset_filter_date(){
+		$this->session->unset_userdata('filter_date_track');
+		
+		redirect('trackcontroller');
+	}
 }

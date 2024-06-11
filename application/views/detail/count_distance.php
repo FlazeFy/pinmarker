@@ -33,6 +33,12 @@
 
         distance = distance.toFixed(2)
 
+        Swal.fire({
+            title: distance <= 10 ? "Do you want to walk?" : distance <= 50 ? "Let's check the traffic first!" : distance <= 500 ? "It's gonna take a long ride" : "Maybe book a Flight" ,
+            text: `It's about ${distance} km`,
+            icon: "success"
+        });
+
         return distance
     }
 

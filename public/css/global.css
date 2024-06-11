@@ -124,3 +124,9 @@ table thead {
     background: var(--primaryColor);
     color: var(--whiteColor); 
 }
+
+.swal2-popup {
+    border: 4px solid black !important;
+    border-radius: var(--roundedLG);
+    box-shadow: rgba(255, 255, 255, 0.75) 0px 5px 15px;
+}
