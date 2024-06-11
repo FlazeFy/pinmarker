@@ -246,6 +246,9 @@
         <hr>
         <p class='mt-2 mb-0 fw-bold'>Distance to My Personal Pin</p>
         <?php $this->load->view('detail/distance'); ?>
+        <hr>
+        <p class='mt-2 mb-0 fw-bold'>Tracked Activity Around</p>
+        <?php $this->load->view('detail/tracker_activity_around'); ?>
     </div>
 </div>
 
