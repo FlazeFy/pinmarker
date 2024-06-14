@@ -49,7 +49,7 @@
 
 <script>
     let requestData = {
-        start_time: "2024-06-09T00:00:00",
+        start_time: "2024-06-10T10:20:00",
         end_time: "2024-06-11T00:00:00"
     };
 
@@ -85,8 +85,8 @@
             url: `http://127.0.0.1:2000/api/v1/track/journey/period/<?= $this->session->userdata('user_id'); ?>`,
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify(requestData),
-            type: "get",
+            data: JSON.stringify(requestData), // Stringify the request data
+            type: "POST", // Change to POST or PUT
             beforeSend: function (xhr) {
                 // ...
             }
@@ -120,10 +120,20 @@
                         <td><a class='btn btn-dark rounded-pill'>Track on Maps</a></td>
                     </tr>
                 `)
+
+                Swal.fire({
+                    title: "Track is Filtered!",
+                    text: `With range from ${requestData.start_time} until ${requestData.end_time}`,
+                    icon: "success"
+                });
             });
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            // Do something
+            Swal.fire({
+                title: "Oops!",
+                text: `No track found from ${requestData.start_time} until ${requestData.end_time}`,
+                icon: "error"
+            });
         });
     }
 </script>

@@ -1,3 +1,6 @@
+<form action="trackcontroller/reset_filter_date" method="POST">
+    <button class="btn btn-dark mb-4 rounded-pill py-3 px-4 me-2"><i class="fa-solid fa-rotate"></i> Reset</button>
+</form>
 <span style="width: 160px;" class="me-2">
     <label>Show Route For</label>
     <form action="trackcontroller/filter_date" method="POST">
@@ -6,12 +9,11 @@
             name="filter_date_track" onchange="this.form.submit()" style="height: 30px;" type="date">
     </form>
 </span>
-<form action="trackcontroller/reset_filter_date" method="POST">
-    <button class="btn btn-dark mb-4 rounded-pill py-3 px-4 me-2"><i class="fa-solid fa-rotate"></i> Reset</button>
-</form>
+
 
 <script>
-    if(<?= $this->session->userdata('filter_date_track')?> != null){
+    let date_filter = <?php if($this->session->userdata('filter_date_track') != null){ echo $this->session->userdata('filter_date_track;'); } else {echo 'null;';} ?>
+    if(date_filter != null){
         getRouteDay()
     }
     function getRouteDay() {

@@ -59,7 +59,9 @@
     let map
     let markers = []
     let polyline
-    let is_show_path = <?php if($this->session->userdata('filter_date_track') != null){ echo 'true'; } else { echo 'false'; } ?>
+    let is_show_path = <?php if($this->session->userdata('filter_date_track') != null){ echo 'true;'; } else { echo 'false;'; } ?>
+    let is_live_tracked = <?php if($this->session->userdata('view_mode_track') == 'track'){ echo 'true;'; } else { echo 'false;'; } ?>
+    let is_show_related = <?php if($this->session->userdata('view_mode_track') == 'related_pin'){ echo 'true;'; } else { echo 'false;'; } ?>
 
     function initMap() {
         // Initialize the map
@@ -84,8 +86,25 @@
             }
         })
         .done(function (response) {
-            let data = response.data
-            updateMarkers(data)
+            let data_track = response.data
+            const data_pin = [<?php 
+            if($this->session->userdata('view_mode_track') == 'related_pin'){
+                foreach($dt_my_pin as $dt){
+                    echo "{
+                        track_lat: $dt->pin_lat,
+                        track_long: $dt->pin_long,
+                        name: '$dt->pin_name',
+                        color: '$dt->pin_color',
+                    },";
+                }    
+            }
+            ?>]
+
+            if(is_show_related == true){
+                data_track = data_track.concat(data_pin)
+            }
+            
+            updateMarkers(data_track)
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             // Do something
@@ -121,11 +140,51 @@
             iconProps = { scaledSize: new google.maps.Size(10, 10) }
         }
 
-        data.forEach(el => {
+        console.log(data)
+
+        data.forEach((el, idx) => {
+            label = null
+            if(is_live_tracked == true){
+                if(idx == 0 || idx == data.length - 1){
+                    iconProps = {
+                        scaledSize: new google.maps.Size(40, 40),
+                    } 
+                    label = {
+                        text: idx == 0 ? 'Start' : 'End',
+                        color: '#FFF', 
+                        fontSize: '14px', 
+                        fontWeight: 'bold',
+                    }
+                } else {
+                    iconProps = {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        fillColor: '#FF0000',
+                        fillOpacity: 1,
+                        scale: 3, 
+                        strokeColor: '#FF0000',
+                        strokeWeight: 1
+                    };         
+                    label = null
+                }
+            }
+            if(el.color != null){
+                iconProps = { 
+                    url: `https://maps.google.com/mapfiles/ms/icons/${el.color}.png`,
+                    scaledSize: new google.maps.Size(40, 40),
+                } 
+                label = { 
+                    text: el.name,
+                    color: '#FFF', 
+                    fontSize: '14px', 
+                    fontWeight: 'bold',
+                }
+            }
+
             const marker = new google.maps.Marker({
                 position: { lat: el.track_lat, lng: el.track_long },
                 map: map,
                 icon: iconProps,
+                label: label
             });
 
             if (el.content) {
@@ -133,7 +192,7 @@
                     content: `<div>
                                 <h6>Battery Status : ${el.battery_indicator}%</h6>
                                 <p style='font-style: italic;'>Capture at ${el.created_at}</p>
-                              </div>`
+                            </div>`
                 });
                 marker.addListener('click', function () {
                     infoWindow.open(map, marker)
@@ -143,7 +202,7 @@
             markers.push(marker)
         });
 
-        if (is_show_path) {
+        if (is_show_path || is_live_tracked == true) {
             drawPolyline()
         }
     }
