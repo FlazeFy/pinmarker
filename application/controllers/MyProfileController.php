@@ -38,7 +38,7 @@ class MyProfileController extends CI_Controller {
 
 			$this->load->view('myprofile/index', $data);
 		} else {
-			redirect('logincontroller');
+			redirect('LoginController');
 		}
 	}
 
@@ -54,7 +54,7 @@ class MyProfileController extends CI_Controller {
 
 		$this->AuthModel->update_user($user_id,$data);
 
-		redirect('myprofilecontroller');
+		redirect('MyProfileController');
 	}
 
 	public function edit_image(){
@@ -72,7 +72,7 @@ class MyProfileController extends CI_Controller {
 			'user_img_url' => $img_url
 		]);
 
-		redirect('myprofilecontroller');
+		redirect('MyProfileController');
 	}
 
 	public function send_validation_token(){
@@ -98,9 +98,9 @@ class MyProfileController extends CI_Controller {
 				'parse_mode' => 'HTML'
 			]);
 	
-			redirect('myprofilecontroller');
+			redirect('MyProfileController');
 		} else {
-			redirect('myprofilecontroller');
+			redirect('MyProfileController');
 		}
 	}
 
@@ -136,12 +136,12 @@ class MyProfileController extends CI_Controller {
 					'parse_mode' => 'HTML'
 				]);
 		
-				redirect('myprofilecontroller');
+				redirect('MyProfileController');
 			} else {
-				redirect('myprofilecontroller');
+				redirect('MyProfileController');
 			}
 		} else {
-			redirect('myprofilecontroller');
+			redirect('MyProfileController');
 		}
 	}
 
@@ -166,10 +166,10 @@ class MyProfileController extends CI_Controller {
 					'parse_mode' => 'HTML'
 				]);
 			} else {
-				redirect('myprofilecontroller');
+				redirect('MyProfileController');
 			}
 		} else {
-			redirect('myprofilecontroller');
+			redirect('MyProfileController');
 		}
 	}
 }

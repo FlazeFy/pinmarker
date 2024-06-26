@@ -38,9 +38,9 @@
 <?php $is_edit = $this->session->userdata('is_edit_mode'); ?>
 
 <div class="d-flex justify-content-between mt-4">
-    <a class="btn btn-dark mb-4 rounded-pill py-3 px-4 me-2" href="/mapscontroller"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    <a class="btn btn-dark mb-4 rounded-pill py-3 px-4 me-2" href="/MapsController"><i class="fa-solid fa-arrow-left"></i> Back</a>
     <span>
-        <form action="/detailcontroller/edit_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
+        <form action="/DetailController/edit_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
             <?php 
                 if($this->session->userdata('is_edit_mode') == false){
                     echo "<button class='btn btn-light mb-4 rounded-pill py-3 px-4' style='border: 2px solid black;'><i class='fa-solid fa-pen-to-square'></i> Switch to Edit Mode</button>";
@@ -49,7 +49,7 @@
                 }
             ?>
         </form>
-        <form action="/detailcontroller/favorite_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
+        <form action="/DetailController/favorite_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
             <?php 
                 if($dt_detail_pin->is_favorite == '1'){
                     echo "<input name='is_favorite' value='0' hidden><button class='btn btn-dark mb-4 rounded-pill py-3 px-4 me-2'><i class='fa-solid fa-heart'></i> Saved to Favorite</button>";

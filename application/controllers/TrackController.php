@@ -21,25 +21,25 @@ class TrackController extends CI_Controller {
 			$data['dt_get_my_pin_coor'] = $this->PinModel->get_all_my_pin_name();
 			$this->load->view('track/index', $data);
 		} else {
-			redirect('logincontroller');
+			redirect('LoginController');
 		}
 	}
 
 	public function filter_date(){
 		$this->session->set_userdata('filter_date_track',$this->input->post('filter_date_track'));
 
-		redirect('trackcontroller');
+		redirect('TrackController');
 	}
 
 	public function set_view_mode(){
 		$this->session->set_userdata('view_mode_track',$this->input->post('view_mode'));
 
-		redirect('trackcontroller');
+		redirect('TrackController');
 	}
 
 	public function reset_filter_date(){
 		$this->session->unset_userdata('filter_date_track');
 		
-		redirect('trackcontroller');
+		redirect('TrackController');
 	}
 }

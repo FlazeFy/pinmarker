@@ -40,7 +40,7 @@
                             <p class='mb-0'>"; echo date("Y-m-d H:i",strtotime($dt->created_at)); echo"</p>
                         </div>
                         <div class='col-8'>
-                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/detailcontroller/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
+                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
                             <a class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
                         </div>
                     </div>

@@ -87,7 +87,7 @@
         <a class="attach-upload-status warning" id="header-warning"></a>
     </span>
 
-    <form method="POST" id="form-image-edit" action="/myprofilecontroller/edit_image">
+    <form method="POST" id="form-image-edit" action="/MyProfileController/edit_image">
         <input hidden name="img_url" id="img_url">
     </form>
 </span>

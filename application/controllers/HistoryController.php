@@ -29,7 +29,7 @@ class HistoryController extends CI_Controller {
 			$data['dt_my_activity']= $this->HistoryModel->get_my_activity();
 			$this->load->view('history/index', $data);
 		} else {
-			redirect('logincontroller');
+			redirect('LoginController');
 		}
 	}
 
@@ -137,6 +137,6 @@ class HistoryController extends CI_Controller {
 
 		// $this->HistoryModel->insert_history('Generate Document', 'Visit List');
 
-		redirect('historycontroller');
+		redirect('HistoryController');
 	}
 }

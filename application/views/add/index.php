@@ -23,7 +23,7 @@
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
         <h2 class="text-center" style="font-weight:600;">Add New Marker</h2>
-        <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" href="/mapscontroller"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" href="/MapsController"><i class="fa-solid fa-arrow-left"></i> Back</a>
         <?php $this->load->view('add/form'); ?>
         <hr>
     </div>

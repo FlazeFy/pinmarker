@@ -37,7 +37,7 @@
     }
 </style>
 
-<form autocomplete="off" action="/mapscontroller/search_pin_name" method="POST">
+<form autocomplete="off" action="/MapsController/search_pin_name" method="POST">
     <div class="autocomplete">
         <input id="pin_name" type="text" class="form-control" name="pin_name" placeholder="Search by pin name" 
             value="<?php 
@@ -49,7 +49,7 @@
     </div>
     <button class="btn btn-light m-0" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
 </form>
-<form autocomplete="off" action="/mapscontroller/reset_search_pin_name" method="POST">
+<form autocomplete="off" action="/MapsController/reset_search_pin_name" method="POST">
     <button class="btn btn-light m-0" type="submit" title="Reset search"><i class="fa-solid fa-rotate-left"></i></button>
 </form>
 

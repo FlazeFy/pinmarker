@@ -1,4 +1,4 @@
-<form action="/logincontroller/login" method="post" style="max-width: 480px; border: 2px solid black; border-radius: 15px; margin-top:25vh;" class="d-block mx-auto p-4">
+<form action="/LoginController/login" method="post" style="max-width: 480px; border: 2px solid black; border-radius: 15px; margin-top:25vh;" class="d-block mx-auto p-4">
     <h2 class="text-center" style="font-weight:600;">Welcome to PinMarker</h2><br>
     <div>
         <label for="name">Email/Username</label>

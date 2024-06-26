@@ -8,7 +8,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="d-inline" method="POST" action="/detailcontroller/add_gallery/<?= $dt_detail_pin->id ?>">
+                <form class="d-inline" method="POST" action="/DetailController/add_gallery/<?= $dt_detail_pin->id ?>">
                     <input hidden type="text" name="gallery_url" id="gallery_url">
                     <span id="gallery_preview"></span>
                     <span id="caption-holder"></span>

@@ -26,7 +26,7 @@ class LoginController extends CI_Controller {
 		$password = $this->input->post('password');
 
 		if($this->AuthModel->login($username, $password)){
-			redirect('/dashboardcontroller');
+			redirect('/DashboardController');
 		} else {
 			$this->session->set_flashdata('message_login_error', 'Failed to login, username or password incorrect');
 		}
@@ -37,6 +37,6 @@ class LoginController extends CI_Controller {
     public function logout()
 	{
 		$this->AuthModel->logout();
-		redirect('logincontroller');
+		redirect('LoginController');
 	}
 }

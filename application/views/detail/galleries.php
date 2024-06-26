@@ -28,7 +28,7 @@
                                 </div>
                                 <div class='modal-body text-center'>
                                     <p>Are you sure want to delete this gallery?</p>
-                                    <form id='form-delete-gallery-$dt->id' method='POST' action='/detailcontroller/delete_gallery/"; echo $dt_detail_pin->id; echo"'>
+                                    <form id='form-delete-gallery-$dt->id' method='POST' action='/DetailController/delete_gallery/"; echo $dt_detail_pin->id; echo"'>
                                         <input hidden value='$dt->id' name='id'>
                                         <a class='btn btn-dark rounded-pill' onclick='deleteFile("; echo '"'.$dt->id.'"'; echo","; echo '"'.$dt->gallery_url.'"'; echo")'>Yes, Delete</a>
                                     </form>

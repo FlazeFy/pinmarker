@@ -1,9 +1,9 @@
-<form action="trackcontroller/reset_filter_date" method="POST">
+<form action="TrackController/reset_filter_date" method="POST">
     <button class="btn btn-dark mb-4 rounded-pill py-3 px-4 me-2"><i class="fa-solid fa-rotate"></i> Reset</button>
 </form>
 <span style="width: 160px;" class="me-2">
     <label>Show Route For</label>
-    <form action="trackcontroller/filter_date" method="POST">
+    <form action="TrackController/filter_date" method="POST">
         <input class="form-control d-inline-block my-0 mt-1 rounded-pill" 
             value="<?= $this->session->userdata('filter_date_track') ?>" 
             name="filter_date_track" onchange="this.form.submit()" style="height: 30px;" type="date">

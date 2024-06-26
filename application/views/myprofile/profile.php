@@ -1,4 +1,4 @@
-<form method="POST" action="/myprofilecontroller/edit_profile">
+<form method="POST" action="/MyProfileController/edit_profile">
     <label>Username</label>
     <input name="username" id="username" type="text" value="<?= $dt_my_profile->username ?>" class="form-control"/>
     <a class="msg-error-input"></a>
@@ -20,14 +20,14 @@
     <?php
         if($dt_my_profile->telegram_is_valid == 0 && !$dt_active_telegram_user_id_request){
             echo "<i class='fa-solid fa-triangle-exclamation'></i> Your telegram ID is not validated yet! 
-            <form action='/myprofilecontroller/send_validation_token' method='POST'>
+            <form action='/MyProfileController/send_validation_token' method='POST'>
                 <button class='btn btn-link' type='submit' style='font-size: var(--textXMD);'><i class='fa-solid fa-arrow-right'></i> Send Validation Token</button>
             </form>";
         } else if($dt_active_telegram_user_id_request){
             echo "
             <div class='bg-danger-light p-3 rounded'>
                 <i class='fa-solid fa-triangle-exclamation'></i> We have send you Token validation to related user ID. Please fill this token below! 
-                <form action='/myprofilecontroller/validate_token_telegram' method='POST'>
+                <form action='/MyProfileController/validate_token_telegram' method='POST'>
                     <input class='form-control bg-transparent' id='token' name='token' type='text'>
                     <button class='btn btn-link' type='submit' style='font-size: var(--textXMD);'><i class='fa-solid fa-arrow-right'></i> Validate Token</button>
                 </form>
@@ -47,7 +47,7 @@
                 'display':'none'
             })
             $("#submit_telegram_user_id_edit").empty().append(`
-                <form action='/myprofilecontroller/edit_telegram_id' method='POST'>
+                <form action='/MyProfileController/edit_telegram_id' method='POST'>
                     <input hidden value='${tele_id_new}' name='telegram_user_id' id='telegram_user_id'>
                     <button class='btn btn-link' type='submit' style='font-size: var(--textXMD);'><i class='fa-solid fa-floppy-disk'></i> Save Changes</button>
                 </form>

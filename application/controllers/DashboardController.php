@@ -29,7 +29,7 @@ class DashboardController extends CI_Controller {
 
 			$this->load->view('dashboard/index', $data);
 		} else {
-			redirect('logincontroller');
+			redirect('LoginController');
 		}
 	}
 }

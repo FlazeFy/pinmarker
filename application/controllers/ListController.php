@@ -28,7 +28,7 @@ class ListController extends CI_Controller {
 			$data['dt_my_pin']= $this->PinModel->get_all_my_pin('list');
 			$this->load->view('list/index', $data);
 		} else {
-			redirect('logincontroller');
+			redirect('LoginController');
 		}
 	}
 
@@ -147,6 +147,6 @@ class ListController extends CI_Controller {
 
 		// $this->HistoryModel->insert_history('Generate Document', 'Marker List');
 
-		redirect('listcontroller');
+		redirect('ListController');
 	}
 }

@@ -29,7 +29,7 @@ class AddController extends CI_Controller {
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
 			$this->load->view('add/index', $data);
 		} else {
-			redirect('logincontroller');
+			redirect('LoginController');
 		}
 	}
 
@@ -82,6 +82,6 @@ class AddController extends CI_Controller {
             log_message('error', 'API request exception: ' . $e->getMessage());
         }
 
-		redirect('listcontroller');
+		redirect('ListController');
 	}
 }

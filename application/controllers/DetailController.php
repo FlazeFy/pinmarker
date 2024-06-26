@@ -29,7 +29,7 @@ class DetailController extends CI_Controller {
 
 			$this->load->view('detail/index', $data);
 		} else {
-			redirect('logincontroller');
+			redirect('LoginController');
 		}
 	}
 
@@ -40,7 +40,7 @@ class DetailController extends CI_Controller {
 		];
 
 		$this->PinModel->update_marker($data, $id);
-		redirect("/detailcontroller/view/$id");
+		redirect("/DetailController/view/$id");
 	}
 
 	public function edit_toogle($id){
@@ -51,7 +51,7 @@ class DetailController extends CI_Controller {
 			$this->session->set_userdata('is_edit_mode', false);
 		}
 
-		redirect("/detailcontroller/view/$id");
+		redirect("/DetailController/view/$id");
 	}
 
 	public function add_gallery($id){
@@ -78,9 +78,9 @@ class DetailController extends CI_Controller {
 			}	
 			$this->HistoryModel->insert_history('Add Gallery', $history_ctx);
 
-			redirect("/detailcontroller/view/$id");
+			redirect("/DetailController/view/$id");
 		} else {
-			redirect("/detailcontroller/view/$id");
+			redirect("/DetailController/view/$id");
 		}
 	}
 
@@ -92,9 +92,9 @@ class DetailController extends CI_Controller {
 			$history_ctx = "From $pin_name";
 			$this->HistoryModel->insert_history('Remove Gallery', $history_ctx);
 
-			redirect("/detailcontroller/view/$id");
+			redirect("/DetailController/view/$id");
 		} else {
-			redirect("/detailcontroller/view/$id");
+			redirect("/DetailController/view/$id");
 		}
 	}
 }

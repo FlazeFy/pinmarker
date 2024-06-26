@@ -35,29 +35,29 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link <?php if($active_page == 'dashboard'){ echo 'active'; } ?>" aria-current="page" href="/dashboardcontroller">Dashboard</a>
+                    <a class="nav-link <?php if($active_page == 'dashboard'){ echo 'active'; } ?>" aria-current="page" href="/DashboardController">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if($active_page == 'maps'){ echo 'active'; } ?>" href="/mapscontroller">Maps</a>
+                    <a class="nav-link <?php if($active_page == 'maps'){ echo 'active'; } ?>" href="/MapsController">Maps</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Global-Collection</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if($active_page == 'list'){ echo 'active'; } ?>" href="/listcontroller">List</a>
+                    <a class="nav-link <?php if($active_page == 'list'){ echo 'active'; } ?>" href="/ListController">List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if($active_page == 'history'){ echo 'active'; } ?>" href="/historycontroller">History</a>
+                    <a class="nav-link <?php if($active_page == 'history'){ echo 'active'; } ?>" href="/HistoryController">History</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php if($active_page == 'track'){ echo 'active'; } ?>" href="/trackcontroller">Track</a>
+                    <a class="nav-link <?php if($active_page == 'track'){ echo 'active'; } ?>" href="/TrackController">Track</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Setting
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item <?php if($active_page == 'myprofile'){ echo 'active'; } ?>" href="/myprofilecontroller">My Profile</a></li>
+                        <li><a class="dropdown-item <?php if($active_page == 'myprofile'){ echo 'active'; } ?>" href="/MyProfileController">My Profile</a></li>
                         <li><a class="dropdown-item" href="#">Help Center</a></li>
                         <li><a class="dropdown-item" href="#">Feedback</a></li>
                         <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Sign Out</a></li>
@@ -79,7 +79,7 @@
                     <p>Are you sure want to leave this app?</p>
                 </div>
                 <div class="modal-footer">
-                    <form action="/logincontroller/logout" method="POST">
+                    <form action="/LoginController/logout" method="POST">
                         <button type="submit" class="btn btn-dark rounded-pill px-3 py-2"><i class="fa-regular fa-circle-xmark"></i> Yes, Sign Out</button>
                     </form>
                 </div>
