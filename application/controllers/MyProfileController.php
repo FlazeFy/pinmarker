@@ -13,7 +13,7 @@ class MyProfileController extends CI_Controller {
 		$this->load->model('GalleryModel');
 		$this->load->model('ValidateRequestModel');
 
-		$this->load->helper('Generator_helper');
+		$this->load->helper('generator_helper');
 
 		$this->load->model('TokenModel');
 		$telegram_token = $this->TokenModel->get_token('TELEGRAM_TOKEN');

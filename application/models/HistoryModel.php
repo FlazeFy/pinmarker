@@ -4,7 +4,7 @@
 	class HistoryModel extends CI_Model {
         function __construct(){
             parent::__construct();
-            $this->load->helper('Generator_helper');
+            $this->load->helper('generator_helper');
         }
 
         // Query

@@ -11,7 +11,7 @@ class DetailController extends CI_Controller {
 		$this->load->model('GalleryModel');
 		$this->load->model('HistoryModel');
 
-		$this->load->helper('Generator_helper');
+		$this->load->helper('generator_helper');
 	}
 
 	public function view($id)

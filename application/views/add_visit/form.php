@@ -48,7 +48,7 @@
                 </select>
                 <a class="msg-error-input"></a>
                 <div class="d-flex justify-content-start mb-3">
-                    <a class="btn btn-dark rounded-pill"><i class="fa-solid fa-map"></i> Custom Location</a>
+                    <a class="btn btn-dark rounded-pill" onclick="usingCustomLocation()"><i class="fa-solid fa-map"></i> Custom Location</a>
                     <a class="btn btn-dark rounded-pill ms-2" onclick="addCreatePinForm()"><i class="fa-solid fa-map-location-dot"></i> New Pin</a>
                     <a class="btn btn-dark rounded-pill ms-2"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
                 </div>
@@ -90,7 +90,7 @@
         </div>
     </div>
     <div class="row mt-4">
-        <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="col-lg-6 col-md-6 col-sm-12" id="save_visit_n_go">
             <a class="btn btn-white rounded-pill w-100 py-3" style="border: 2.5px solid black;"><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
@@ -143,10 +143,10 @@
         document.getElementById('pin_long').value = coor['lng']
     }
 
-    function removeCreatePinForm(){
+    function resetForm(){
         $('#type_add').val('visit')
         $('#add_pin_form').empty()
-        $('#pin_name_init_holder').empty().append(`
+        $('#pin_name_init_holder').html(`
             <label>Pin Name</label>
             <select name="pin_id" class="form-select" id="pin_id" onchange="">
                 <?php 
@@ -157,17 +157,35 @@
             </select>
             <a class="msg-error-input"></a>
             <div class="d-flex justify-content-start mb-3">
-                <a class="btn btn-dark rounded-pill"><i class="fa-solid fa-map"></i> Custom Location</a>
+                <a class="btn btn-dark rounded-pill" onclick="usingCustomLocation()"><i class="fa-solid fa-map"></i> Custom Location</a>
                 <a class="btn btn-dark rounded-pill ms-2" onclick="addCreatePinForm()"><i class="fa-solid fa-map-location-dot"></i> New Pin</a>
                 <a class="btn btn-dark rounded-pill ms-2"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
             </div>
         `)
+        $('#save_visit_n_go').html(`
+            <a class="btn btn-white rounded-pill w-100 py-3" style="border: 2.5px solid black;"><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
+        `)
     }   
+
+    function usingCustomLocation(){
+        $('#type_add').val('visit_custom')
+        $('#pin_name_init_holder').html(`
+            <label>Location Name</label>
+            <input name="location_name" id="location_name" type="text" class="form-control"/>
+            <a class="msg-error-input"></a>
+            <div class="d-flex justify-content-start mb-3">
+                <a class="btn btn-dark rounded-pill" onclick="resetForm()"><i class="fa-solid fa-location-dot"></i> Saved Pin</a>
+                <a class="btn btn-dark rounded-pill ms-2" onclick="addCreatePinForm()"><i class="fa-solid fa-map-location-dot"></i> New Pin</a>
+                <a class="btn btn-dark rounded-pill ms-2"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
+            </div>
+        `)
+        $('#save_visit_n_go').empty()
+    }
 
     function addCreatePinForm() {
         $('#type_add').val('pin_visit')
         $('#pin_name_init_holder').empty()
-        $('#add_pin_form').empty().append(`
+        $('#add_pin_form').html(`
             <h4 class="mb-2">Pin Form</h4>
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12">
@@ -176,7 +194,7 @@
                     <a class="msg-error-input"></a>
                     <div class="d-flex justify-content-start mb-3">
                         <a class="btn btn-dark rounded-pill"><i class="fa-solid fa-map"></i> Custom Location</a>
-                        <a class="btn btn-dark rounded-pill ms-2" onclick="removeCreatePinForm()"><i class="fa-solid fa-house"></i> Visit Only</a>
+                        <a class="btn btn-dark rounded-pill ms-2" onclick="resetForm()"><i class="fa-solid fa-house"></i> Visit Only</a>
                         <a class="btn btn-dark rounded-pill ms-2"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
                     </div>
                 </div>

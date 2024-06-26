@@ -12,7 +12,7 @@ class AddVisitController extends CI_Controller {
 		$this->load->model('HistoryModel');
 		$this->load->model('AuthModel');
 
-		$this->load->helper('Generator_helper');
+		$this->load->helper('generator_helper');
 		
 		$this->httpClient = new Client([
             'base_uri' => 'http://127.0.0.1:1323',
@@ -85,12 +85,17 @@ class AddVisitController extends CI_Controller {
 			} catch (Exception $e) {
 				log_message('error', 'API request exception: ' . $e->getMessage());
 			}
+		} else if($this->input->post('type_add') == 'visit_custom'){
+			$pin_id = null;
+			$visit_desc = $this->input->post('visit_desc')." at ".$this->input->post('location_name');
 		}
 
 		// Add visit
-		$visit_desc = $this->input->post('visit_desc');
-		$pin_id_split = explode("/", $this->input->post('pin_id'));
 
+		if($this->input->post('type_add') != 'visit_custom'){
+			$visit_desc = $this->input->post('visit_desc');
+		}
+		$pin_id_split = explode("/", $this->input->post('pin_id'));
 		if($this->input->post('type_add') == 'visit'){
 			$pin_id = $pin_id_split[0];
 		}

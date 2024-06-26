@@ -303,10 +303,14 @@
                             $desc = $dt->visit_desc;
                         }
 
+                        if($dt->pin_name){
+                            $desc = "$desc at $dt->pin_name";
+                        } 
+
                         echo "
                             {
                                 groupId: '$dt->id',
-                                title: `$desc at $dt->pin_name `,
+                                title: `$desc`,
                                 start: getDateToContext('$dt->created_at','calendar'),
                                 end: getDateToContext('$dt->created_at','calendar'),
                                 extendedProps: {

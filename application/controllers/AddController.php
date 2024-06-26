@@ -13,7 +13,7 @@ class AddController extends CI_Controller {
 		$this->load->model('AuthModel');
 		$this->load->model('HistoryModel');
 
-		$this->load->helper('Generator_helper');
+		$this->load->helper('generator_helper');
 		
 		$this->httpClient = new Client([
             'base_uri' => 'http://127.0.0.1:1323',

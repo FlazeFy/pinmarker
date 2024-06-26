@@ -4,42 +4,51 @@
 	class VisitModel extends CI_Model {
 		// Query
         public function get_all_my_visit_header(){
+			$user_id = $this->session->userdata('user_id');
+
 			$this->db->select('visit.id, visit_desc, pin_name ,visit.created_at');
 			$this->db->from('visit');
-			$this->db->join('pin','visit.pin_id = pin.id');
+			$this->db->join('pin','visit.pin_id = pin.id', 'left');
 			$condition = [
                 'pin.deleted_at' => null,
-				'pin.created_by' => $this->session->userdata('user_id')
+				'pin.created_by' => $user_id
             ];
 			$this->db->where($condition);
+			$this->db->or_where('visit.created_by', $user_id);
             $this->db->order_by('visit.created_at','desc');
 
 			return $data = $this->db->get()->result();
 		}
 
 		public function get_all_my_visit_detail(){
+			$user_id = $this->session->userdata('user_id');
+
 			$this->db->select('visit_desc, visit_by, visit_with, pin_name, pin_category, visit.created_at');
 			$this->db->from('visit');
-			$this->db->join('pin','visit.pin_id = pin.id');
+			$this->db->join('pin','visit.pin_id = pin.id', 'left');
 			$condition = [
                 'pin.deleted_at' => null,
-				'pin.created_by' => $this->session->userdata('user_id')
+				'pin.created_by' => $user_id
             ];
 			$this->db->where($condition);
+			$this->db->or_where('visit.created_by', $user_id);
             $this->db->order_by('visit.created_at','desc');
 
 			return $data = $this->db->get()->result();
 		}
 
 		public function get_most_visit($ctx, $limit){
+			$user_id = $this->session->userdata('user_id');
+
 			$this->db->select("$ctx as context, COUNT(1) as total");
 			$this->db->from('pin');
-            $this->db->join('visit','visit.pin_id = pin.id');
+            $this->db->join('visit','visit.pin_id = pin.id','left');
 			$condition = [
                 'deleted_at' => null,
 				'pin.created_by' => $this->session->userdata('user_id')
             ];
 			$this->db->where($condition);
+			$this->db->or_where('visit.created_by', $user_id);
             $this->db->group_by($ctx);
             $this->db->order_by('total','desc');
             $this->db->limit($limit);
@@ -98,17 +107,23 @@
 		}
 
 		public function get_visit_activity_by_date($date){
+			$user_id = $this->session->userdata('user_id');
 			$date_query = "DATE_FORMAT(visit.created_at, '%Y-%m-%d') =";
 
 			$this->db->select('pin_name, visit_desc, visit_by, visit_with, visit.created_at');
 			$this->db->from('visit');
-			$this->db->join('pin','visit.pin_id = pin.id');
+			$this->db->join('pin','visit.pin_id = pin.id', 'left');
 			$condition = [
                 'pin.deleted_at' => null,
 				$date_query => $date,
-				'pin.created_by' => $this->session->userdata('user_id')
+				'pin.created_by' => $user_id
+            ];
+			$condition_external_visit = [
+				$date_query => $date,
+				'visit.created_by' => $user_id
             ];
 			$this->db->where($condition);
+			$this->db->or_where($condition_external_visit);
             $this->db->order_by('visit.created_at','desc');
 
 			return $data = $this->db->get()->result();
@@ -128,15 +143,22 @@
 		}
 
 		public function get_total_visit_by_month() {
+			$user_id = $this->session->userdata('user_id');
+
 			$this->db->select("DATE_FORMAT(visit.created_at, '%M') as context, COUNT(1) as total");
 			$this->db->from('visit');
-			$this->db->join('pin', 'visit.pin_id = pin.id');
+			$this->db->join('pin', 'visit.pin_id = pin.id', 'left');
 			$condition = [
 				'pin.deleted_at' => null,
-				'pin.created_by' => $this->session->userdata('user_id'),
+				'pin.created_by' => $user_id,
+				'YEAR(visit.created_at)' => date('Y')
+			];
+			$condition_external_visit = [
+				'visit.created_by' => $user_id,
 				'YEAR(visit.created_at)' => date('Y')
 			];
 			$this->db->where($condition);
+			$this->db->or_where($condition_external_visit);
 			$this->db->group_by("context");
 			$this->db->order_by("context", 'desc');
 			$data = $this->db->get()->result();
