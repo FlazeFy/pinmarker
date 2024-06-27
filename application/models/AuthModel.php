@@ -88,5 +88,10 @@
         {
             return $this->db->update($this->table, $data, ['id' => $id]);
         }
+
+        public function insert_user($data)
+        {
+            return $this->db->insert($this->table, $data);
+        }
     }
 ?>

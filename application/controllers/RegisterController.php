@@ -25,8 +25,25 @@ class RegisterController extends CI_Controller {
 	}
 
 	public function register(){
-		
+		$data = [
+			'id' => get_UUID(),
+			'fullname' => $this->input->post('fullname'), 
+			'username' => $this->input->post('username'), 
+			'email' => $this->input->post('email'), 
+			'telegram_user_id' => null, 
+			'telegram_is_valid' => 0, 
+			'password' => password_hash($this->input->post('password'), PASSWORD_BCRYPT), 
+			'img_url' => null, 
+			'created_at' => date('Y-m-d H:i:s'), 
+			'updated_at' => null, 
+			'last_login' => date('Y-m-d H:i:s')
+		];
 
-		redirect('DashboardController');
+		$res = $this->AuthModel->insert_user($data);
+
+		if($res){
+			$this->AuthModel->login($data['username'], $this->input->post('password'));
+			redirect('/DashboardController');
+		}
 	}
 }
