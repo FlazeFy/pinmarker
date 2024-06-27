@@ -123,7 +123,7 @@
 				'visit.created_by' => $user_id
             ];
 			$this->db->where($condition);
-			$this->db->or_where($condition_external_visit);
+			$this->db->where($condition_external_visit);
             $this->db->order_by('visit.created_at','desc');
 
 			return $data = $this->db->get()->result();

@@ -66,24 +66,24 @@
             </ul>
         </div>
     </div>
+</nav>
 
-    <!-- Signout Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" >
-            <div class="modal-content shadow" style="border-radius:15px; border: 3px solid black;">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Sign Out</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure want to leave this app?</p>
-                </div>
-                <div class="modal-footer">
-                    <form action="/LoginController/logout" method="POST">
-                        <button type="submit" class="btn btn-dark rounded-pill px-3 py-2"><i class="fa-regular fa-circle-xmark"></i> Yes, Sign Out</button>
-                    </form>
-                </div>
+<!-- Signout Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+        <div class="modal-content shadow" style="border-radius:15px; border: 3px solid black;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sign Out</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure want to leave this app?</p>
+            </div>
+            <div class="modal-footer">
+                <form action="/LoginController/logout" method="POST">
+                    <button type="submit" class="btn btn-dark rounded-pill px-3 py-2"><i class="fa-regular fa-circle-xmark"></i> Yes, Sign Out</button>
+                </form>
             </div>
         </div>
     </div>
-</nav>
+</div>
