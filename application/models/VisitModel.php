@@ -158,7 +158,7 @@
 				'YEAR(visit.created_at)' => date('Y')
 			];
 			$this->db->where($condition);
-			$this->db->or_where($condition_external_visit);
+			$this->db->where($condition_external_visit);
 			$this->db->group_by("context");
 			$this->db->order_by("context", 'desc');
 			$data = $this->db->get()->result();

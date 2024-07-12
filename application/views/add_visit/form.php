@@ -38,17 +38,30 @@
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div id="pin_name_init_holder">
-                <label>Pin Name</label>
-                <select name="pin_id" class="form-select" id="pin_id" onchange="">
-                    <?php 
-                        foreach($dt_all_my_pin_name as $dt){
-                            echo "<option value='$dt->id/$dt->pin_name'>$dt->pin_name</option>";
-                        }
-                    ?>
-                </select>
+                <?php
+                    if(count($dt_all_my_pin_name) > 0){ 
+                        echo "
+                            <label>Pin Name</label>
+                            <select name='pin_id' class='form-select' id='pin_id' onchange=''>";
+                            foreach($dt_all_my_pin_name as $dt){
+                                echo "<option value='$dt->id/$dt->pin_name'>$dt->pin_name</option>";
+                            }
+                        echo "</select>";
+                    } else {
+                        echo "
+                            <label>Location Name</label>
+                            <input name='location_name' id='location_name' type='text' class='form-control'/>
+                            <a class='msg-error-input'></a>
+                        ";
+                    }
+                ?>
                 <a class="msg-error-input"></a>
                 <div class="d-flex justify-content-start mb-3">
-                    <a class="btn btn-dark rounded-pill" onclick="usingCustomLocation()"><i class="fa-solid fa-map"></i> Custom Location</a>
+                    <?php 
+                        if(count($dt_all_my_pin_name) > 0){
+                            echo "<a class='btn btn-dark rounded-pill' onclick='usingCustomLocation()'><i class='fa-solid fa-map'></i> Custom Location</a>";
+                        }
+                    ?>
                     <a class="btn btn-dark rounded-pill ms-2" onclick="addCreatePinForm()"><i class="fa-solid fa-map-location-dot"></i> New Pin</a>
                     <a class="btn btn-dark rounded-pill ms-2"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
                 </div>

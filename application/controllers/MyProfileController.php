@@ -165,10 +165,15 @@ class MyProfileController extends CI_Controller {
 					'text' => "Hello <b>$user->username</b>, Welcome to PinMarker!",
 					'parse_mode' => 'HTML'
 				]);
+				$this->session->set_flashdata('message_token_success', 'Token validated!');
+
+				redirect('MyProfileController');
 			} else {
 				redirect('MyProfileController');
 			}
 		} else {
+			$this->session->set_flashdata('message_token_error', 'Wrong token!');
+
 			redirect('MyProfileController');
 		}
 	}

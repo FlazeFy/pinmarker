@@ -1,5 +1,6 @@
 .DS_Store
 
+public/images/*
 application/cache/*
 !application/cache/index.html
 

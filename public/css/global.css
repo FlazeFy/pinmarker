@@ -130,3 +130,7 @@ table thead {
     border-radius: var(--roundedLG);
     box-shadow: rgba(255, 255, 255, 0.75) 0px 5px 15px;
 }
+
+.nodata-icon {
+    width: 120px;
+}

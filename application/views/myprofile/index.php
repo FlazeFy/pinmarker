@@ -22,6 +22,9 @@
     <!--Apex Chart-->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+    <!-- Swal -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="http://127.0.0.1:8080/public/js/global.js"></script>
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
 

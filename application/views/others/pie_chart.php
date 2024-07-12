@@ -4,8 +4,11 @@
             echo "<h4>"; echo ucwords(str_replace('_',' ',$ctx)); echo"</h4>
             <div id='Pie_$ctx'></div>";
         } else {
-            echo "<img src='' class='img nodata-icon'>
-            <h6 class='text-center'>No Data</h6>";
+            echo "
+                <h4>".ucwords(str_replace('_',' ',$ctx))."</h4>
+                <img src='http://127.0.0.1:8080/public/images/chart.png' class='img nodata-icon'>
+                <h5>No Data</h5>
+            ";
         }
     ?>
 </div>

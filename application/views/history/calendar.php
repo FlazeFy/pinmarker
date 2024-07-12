@@ -259,10 +259,13 @@
                 return ` ${result.getFullYear()}/${(result.getMonth() + 1)}/${("0" + result.getDate()).slice(-2)} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`;
             } else if (type == "date") {
                 return `${result.getFullYear()}-${("0" + (result.getMonth() + 1)).slice(-2)}-${("0" + result.getDate()).slice(-2)}`;
-            } else if (type == "calendar") {
-                const result = new Date(datetime);
-                const offsetHours = getUTCHourOffset();
-                result.setUTCHours(result.getUTCHours() + offsetHours);
+            } else if (type == "calendar" || type == "calendar_server") {
+                const result = new Date(datetime)
+
+                if(type == "calendar"){
+                    const offsetHours = getUTCHourOffset()
+                    result.setUTCHours(result.getUTCHours() + offsetHours)
+                }
             
                 return `${result.getFullYear()}-${("0" + (result.getMonth() + 1)).slice(-2)}-${("0" + result.getDate()).slice(-2)} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}:00`;
             }        
@@ -277,6 +280,16 @@
         return offsetHr;
     }
 
+    function checkFullcalendarMidnight(datetime) {
+        // For fullcalendar end date missmatch day
+        datetime = new Date(datetime) 
+        const hr = datetime.getHours()
+        if(hr == 23){
+            return `${datetime.getFullYear()}-${("0" + (datetime.getMonth() + 1)).slice(-2)}-${("0" + datetime.getDate()).slice(-2)} ${("0" + datetime.getHours()).slice(-2)}:59:00`;
+        } else {
+            return datetime
+        }
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar_all_my_visit');
@@ -311,8 +324,8 @@
                             {
                                 groupId: '$dt->id',
                                 title: `$desc`,
-                                start: getDateToContext('$dt->created_at','calendar'),
-                                end: getDateToContext('$dt->created_at','calendar'),
+                                start: getDateToContext('$dt->created_at','calendar_server'),
+                                end: checkFullcalendarMidnight(getDateToContext('$dt->created_at','calendar_server')),
                                 extendedProps: {
                                     id: '$dt->id'
                                 }

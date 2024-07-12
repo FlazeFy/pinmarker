@@ -24,6 +24,9 @@
 
     <!--Full calendar.-->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+
+    <!-- Swal -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="content">
@@ -36,5 +39,30 @@
         <h2 class="text-center" style="font-weight:600;">My Activity</h2><br>
         <?php $this->load->view('history/activity'); ?>
     </div>
+
+    <?php 
+        if($this->session->flashdata('message_generated_error')){
+            echo "
+                <script>
+                    Swal.fire({
+                        title: 'Failed!',
+                        text: '".$this->session->flashdata('message_generated_error')."',
+                        icon: 'error'
+                    });
+                </script>
+            ";
+        }
+        if($this->session->flashdata('message_generated_success')){
+            echo "
+                <script>
+                    Swal.fire({
+                        title: 'Success!',
+                        text: '".$this->session->flashdata('message_generated_success')."',
+                        icon: 'success'
+                    });
+                </script>
+            ";
+        }
+    ?>
 </body>
 </html>
