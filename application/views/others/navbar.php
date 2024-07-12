@@ -59,7 +59,7 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item <?php if($active_page == 'myprofile'){ echo 'active'; } ?>" href="/MyProfileController">My Profile</a></li>
                         <li><a class="dropdown-item" href="#">Help Center</a></li>
-                        <li><a class="dropdown-item" href="#">Feedback</a></li>
+                        <li><a class="dropdown-item <?php if($active_page == 'feedback'){ echo 'active'; } ?>" href="/FeedbackController">Feedback</a></li>
                         <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Sign Out</a></li>
                     </ul>
                 </li>
