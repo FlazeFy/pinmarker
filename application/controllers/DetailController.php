@@ -12,6 +12,7 @@ class DetailController extends CI_Controller {
 		$this->load->model('HistoryModel');
 
 		$this->load->helper('generator_helper');
+		$this->load->library('form_validation');
 	}
 
 	public function view($id)
@@ -96,5 +97,43 @@ class DetailController extends CI_Controller {
 		} else {
 			redirect("/DetailController/view/$id");
 		}
+	}
+
+	public function edit_marker($id){
+		$rules = $this->PinModel->rules(null);
+		$this->form_validation->set_rules($rules);
+
+		if($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('message_error', 'Pin failed to updated. Validation failed');
+			$this->session->set_flashdata('validation_error', validation_errors());
+		} else {
+			$split_pin_cat = explode("-", $this->input->post('pin_category'));
+			$pin_cat = $split_pin_cat[0];
+			$pin_name = $this->input->post('pin_name');
+
+			if($this->PinModel->get_pin_availability($pin_name, $id, 'update')){
+				$data = [
+					'pin_name' => $pin_name, 
+					'pin_desc' => $this->input->post('pin_desc'), 
+					'pin_lat' => $this->input->post('pin_lat'), 
+					'pin_long' => $this->input->post('pin_long'), 
+					'pin_category' => $pin_cat, 
+					'pin_person' => $this->input->post('pin_person'), 
+					'pin_call' => $this->input->post('pin_call'), 
+					'pin_email' => $this->input->post('pin_email'), 
+					'pin_address' => $this->input->post('pin_address'), 
+					'updated_at' => date('Y-m-d H:i:s'), 
+				];
+
+				if($this->PinModel->update_marker($data, $id)){	
+					$this->session->set_flashdata('message_success', 'Pin updated');
+				} else {
+					$this->session->set_flashdata('message_error', 'Pin failed to updated');
+				}
+			} else {
+				$this->session->set_flashdata('message_error', 'Pin failed to updated. Name already exist');
+			}
+		}
+		redirect("/DetailController/view/$id");
 	}
 }

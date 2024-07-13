@@ -61,13 +61,25 @@
     </span>
 </div>
 
+<form action="/DetailController/edit_marker/<?= $dt_detail_pin->id ?>" method="POST">
+<?php 
+    if($this->session->flashdata('validation_error')){
+        echo "
+            <div class='alert alert-danger' role='alert'>
+                <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
+                ".$this->session->flashdata('validation_error')."
+            </div>
+        "; 
+    }
+?>
+
 <?php 
     if($is_edit){
         echo "
             <div class='row'>
                 <div class='col-lg-6 col-md-6 col-sm-12'>
                     <p class='mt-2 mb-0 fw-bold'>Pin Name</p>
-                    <input name='pin_name' id='pin_name' type='text' class='form-control' value="; echo '"'.$dt_detail_pin->pin_name.'"'; echo" required/>
+                    <input name='pin_name' id='pin_name' type='text' class='form-control' value='$dt_detail_pin->pin_name' required/>
                     <a class='msg-error-input'></a>
                 </div>
                 <div class='col-lg-6 col-md-6 col-sm-12'>
@@ -122,7 +134,7 @@
         <p class='mt-2 mb-0 fw-bold'>Person In Touch</p>
         <?php 
             if($is_edit){
-                echo "<input name='pin_name' id='pin_name' type='text' class='form-control' value='$dt_detail_pin->pin_person' required/>
+                echo "<input name='pin_person' id='pin_person' type='text' class='form-control' value='$dt_detail_pin->pin_person'/>
                     <a class='msg-error-input'></a>";
             } else {
                 if($dt_detail_pin->pin_person != null){ 
@@ -199,6 +211,8 @@
                 echo "<button class='btn btn-dark rounded-pill w-100 py-3 my-4' type='Submit'><i class='fa-solid fa-floppy-disk'></i> Save Marker</button>";
             } 
         ?>
+    </form>
+
 
         <hr><p class='mt-2 mb-0 fw-bold'>Visit History</p>
         <ol>
@@ -251,6 +265,31 @@
         <?php $this->load->view('detail/tracker_activity_around'); ?>
     </div>
 </div>
+
+<?php 
+    if($this->session->flashdata('message_error')){
+        echo "
+            <script>
+                Swal.fire({
+                    title: 'Failed!',
+                    text: '".$this->session->flashdata('message_error')."',
+                    icon: 'error'
+                });
+            </script>
+        ";
+    }
+    if($this->session->flashdata('message_success')){
+        echo "
+            <script>
+                Swal.fire({
+                    title: 'Success!',
+                    text: '".$this->session->flashdata('message_success')."',
+                    icon: 'success'
+                });
+            </script>
+        ";
+    }
+?>
 
 <script type="text/javascript">
     let map;

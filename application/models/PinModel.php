@@ -2,6 +2,62 @@
 	defined('BASEPATH') OR exit('No direct script access alowed');
 
 	class PinModel extends CI_Model {
+		public function rules($ext)
+        {
+            return [
+				[
+					'field' => 'pin_name',
+					'label' => 'Pin Name',
+					'rules' => 'required|max_length[75]|min_length[3]'
+				],
+				[
+					'field' => 'pin_desc',
+					'label' => 'Pin Description',
+					'rules' => 'max_length[500]',
+					'null' => TRUE
+				],
+				[
+					'field' => 'pin_lat',
+					'label' => 'Pin Latitude',
+					'rules' => 'required|decimal'
+				],
+				[
+					'field' => 'pin_long',
+					'label' => 'Pin Longitude',
+					'rules' => 'required|decimal'
+				],
+				[
+					'field' => 'pin_category',
+					'label' => 'Pin Category',
+					'rules' => 'required|max_length[36]'
+				],
+				[
+					'field' => 'pin_person',
+					'label' => 'Pin Person',
+					'rules' => 'max_length[75]',
+					'null' => TRUE
+				],
+				[
+					'field' => 'pin_call',
+					'label' => 'Pin Call',
+					'rules' => 'max_length[16]',
+					'null' => TRUE
+				],
+				[
+					'field' => 'pin_email',
+					'label' => 'Pin Email',
+					'rules' => 'valid_email|max_length[255]',
+					'null' => TRUE
+				],
+				[
+					'field' => 'pin_address',
+					'label' => 'Pin Address',
+					'rules' => 'max_length[500]',
+					'null' => TRUE
+				],
+			];
+        }
+
 		// Query
 		public function get_all_my_pin($from){
             $extra = "";
@@ -151,6 +207,31 @@
 			return $data = $this->db->get()->row();
 		}
 
+		public function get_pin_availability($pin_name, $id, $type){
+			$this->db->select('pin_name');
+			$this->db->from('pin');
+
+			$condition = [
+				'pin_name' => $pin_name,
+				'created_by' => $this->session->userdata('user_id')
+			];
+
+			$this->db->where($condition);
+
+			if($type == 'update'){
+				$this->db->where('id !=', $id);
+			}
+
+            $this->db->limit(1);
+			$query = $this->db->get();
+
+			if ($query->num_rows() > 0) {
+				return false; 
+			} else {
+				return true;
+			}
+		}
+
 		// Command
 		public function insert_marker($data){
 			$this->db->insert('pin',$data);	
@@ -158,7 +239,7 @@
 
 		public function update_marker($data, $id){
 			$this->db->where('id', $id);
-			$this->db->update('pin',$data);	
+			return $this->db->update('pin',$data);	
 		}
 	}
 ?>
