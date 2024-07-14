@@ -7,6 +7,8 @@ class MapsController extends CI_Controller {
 		$this->load->model('PinModel');
 		$this->load->model('DictionaryModel');
 		$this->load->model('AuthModel');
+
+		$this->load->library('form_validation');
 	}
 
 	public function index()

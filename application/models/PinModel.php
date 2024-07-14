@@ -8,7 +8,7 @@
 				[
 					'field' => 'pin_name',
 					'label' => 'Pin Name',
-					'rules' => 'required|max_length[75]|min_length[3]'
+					'rules' => 'required|max_length[75]|min_length[2]'
 				],
 				[
 					'field' => 'pin_desc',

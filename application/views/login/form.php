@@ -17,10 +17,13 @@
         </div>
     </div>
     <?php 
-        if($this->session->flashdata('message_login_error')){
-            echo "<div class='msg-error-input'>
-                    "; echo $this->session->flashdata('message_login_error'); echo"
-            </div>";
+        if($this->session->flashdata('validation_error')){
+            echo "
+                <div class='alert alert-danger' role='alert'>
+                    <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
+                    ".$this->session->flashdata('validation_error')."
+                </div>
+            "; 
         }
     ?>
 
@@ -30,12 +33,12 @@
 </form>
 
 <?php 
-    if($this->session->flashdata('message_login_error')){
+    if($this->session->flashdata('message_error')){
         echo "
             <script>
                 Swal.fire({
                     title: 'Failed!',
-                    text: '".$this->session->flashdata('message_login_error')."',
+                    text: '".$this->session->flashdata('message_error')."',
                     icon: 'error'
                 });
             </script>

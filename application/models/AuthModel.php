@@ -16,7 +16,28 @@
                 [
                     'field' => 'password',
                     'label' => 'Password',
-                    'rules' => 'required|max_length[255]'
+                    'rules' => 'required|max_length[255]|min_length[5]'
+                ]
+            ];
+        }
+
+        public function rules_user()
+        {
+            return [
+                [
+                    'field' => 'username',
+                    'label' => 'Username or Email',
+                    'rules' => 'required'
+                ],
+                [
+                    'field' => 'fullname',
+                    'label' => 'Fullname',
+                    'rules' => 'required|max_length[50]|min_length[2]'
+                ],
+                [
+                    'field' => 'email',
+                    'label' => 'Email',
+                    'rules' => 'required|max_length[255]|min_length[10]'
                 ]
             ];
         }

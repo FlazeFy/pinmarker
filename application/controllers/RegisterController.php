@@ -11,6 +11,7 @@ class RegisterController extends CI_Controller {
 		$this->load->model('AuthModel');
 
 		$this->load->helper('generator_helper');
+		$this->load->library('form_validation');
 
 		$this->load->model('TokenModel');
 		$telegram_token = $this->TokenModel->get_token('TELEGRAM_TOKEN');

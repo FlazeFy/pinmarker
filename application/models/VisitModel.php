@@ -2,6 +2,34 @@
 	defined('BASEPATH') OR exit('No direct script access alowed');
 
 	class VisitModel extends CI_Model {
+		public function rules($ext)
+        {
+            return [
+				[
+					'field' => 'pin_id',
+					'label' => 'Pin ID',
+					'rules' => 'required|callback_valid_length[36]'
+				],
+				[
+					'field' => 'visit_desc',
+					'label' => 'Visit Desc',
+					'rules' => 'max_length[255]',
+					'null' => TRUE
+				],
+				[
+					'field' => 'visit_by',
+					'label' => 'Visit By',
+					'rules' => 'required|max_length[75]'
+				],
+				[
+					'field' => 'visit_with',
+					'label' => 'Visit With',
+					'rules' => 'max_length[500]',
+					'null' => TRUE
+				],
+			];
+        }
+		
 		// Query
         public function get_all_my_visit_header(){
 			$user_id = $this->session->userdata('user_id');

@@ -19,19 +19,20 @@ class LoginController extends CI_Controller {
 		$this->form_validation->set_rules($rules);
 
 		if($this->form_validation->run() == FALSE){
-			return $this->load->view('login/index');
-		}
-
-		$username = $this->input->post('username');
-		$password = $this->input->post('password');
-
-		if($this->AuthModel->login($username, $password)){
-			redirect('/DashboardController');
+			$this->session->set_flashdata('message_error', 'Failed to login. Validation failed');
+			$this->session->set_flashdata('validation_error', validation_errors());
+			redirect('/LoginController');
 		} else {
-			$this->session->set_flashdata('message_login_error', 'Failed to login, username or password incorrect');
-		}
+			$username = $this->input->post('username');
+			$password = $this->input->post('password');
 
-		$this->load->view('login/index');
+			if($this->AuthModel->login($username, $password)){
+				redirect('/DashboardController');
+			} else {
+				$this->session->set_flashdata('message_error', 'Failed to login. username or password incorrect');
+				redirect('/LoginController');
+			}
+		}
 	}
 
     public function logout()

@@ -14,8 +14,10 @@ class HistoryController extends CI_Controller {
 		$this->load->model('VisitModel');
 		$this->load->model('AuthModel');
 		$this->load->model('HistoryModel');
-
 		$this->load->model('TokenModel');
+
+		$this->load->library('form_validation');
+
 		$telegram_token = $this->TokenModel->get_token('TELEGRAM_TOKEN');
 		$this->telegram = new Api($telegram_token);
 	}

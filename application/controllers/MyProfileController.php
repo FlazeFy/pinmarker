@@ -43,17 +43,24 @@ class MyProfileController extends CI_Controller {
 	}
 
 	public function edit_profile(){
-		$user_id = $this->session->userdata('user_id');
+		$rules = $this->AuthModel->rules_user(null);
+		$this->form_validation->set_rules($rules);
 
-		$data = [
-			'fullname' => $this->input->post('fullname'), 
-			'username' => $this->input->post('username'), 
-			'email' => $this->input->post('email'), 
-			'updated_at' => date('Y-m-d H:i:s'), 
-		];
+		if($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('message_error', 'Profile failed to updated. Validation failed');
+			$this->session->set_flashdata('validation_error', validation_errors());
+		} else {
+			$user_id = $this->session->userdata('user_id');
 
-		$this->AuthModel->update_user($user_id,$data);
+			$data = [
+				'fullname' => $this->input->post('fullname'), 
+				'username' => $this->input->post('username'), 
+				'email' => $this->input->post('email'), 
+				'updated_at' => date('Y-m-d H:i:s'), 
+			];
 
+			$this->AuthModel->update_user($user_id,$data);
+		}
 		redirect('MyProfileController');
 	}
 
@@ -165,14 +172,14 @@ class MyProfileController extends CI_Controller {
 					'text' => "Hello <b>$user->username</b>, Welcome to PinMarker!",
 					'parse_mode' => 'HTML'
 				]);
-				$this->session->set_flashdata('message_token_success', 'Token validated!');
+				$this->session->set_flashdata('message_success', 'Token validated!');
 
 				redirect('MyProfileController');
 			} else {
 				redirect('MyProfileController');
 			}
 		} else {
-			$this->session->set_flashdata('message_token_error', 'Wrong token!');
+			$this->session->set_flashdata('message_error', 'Wrong token!');
 
 			redirect('MyProfileController');
 		}

@@ -1,4 +1,14 @@
 <form action="/AddController/add_marker" method="POST">
+    <?php 
+        if($this->session->flashdata('validation_error')){
+            echo "
+                <div class='alert alert-danger' role='alert'>
+                    <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
+                    ".$this->session->flashdata('validation_error')."
+                </div>
+            "; 
+        }
+    ?>
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12">
             <label>Pin Name</label>
@@ -69,6 +79,19 @@
         </div>
     </div>
 </form>
+<?php 
+    if($this->session->flashdata('message_error')){
+        echo "
+            <script>
+                Swal.fire({
+                    title: 'Failed!',
+                    text: '".$this->session->flashdata('message_error')."',
+                    icon: 'error'
+                });
+            </script>
+        ";
+    }
+?>
 
 <script>
     const pin_lat_input = document.getElementById('pin_lat')

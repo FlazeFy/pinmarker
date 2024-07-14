@@ -1,4 +1,14 @@
 <form method="POST" action="/MyProfileController/edit_profile">
+    <?php 
+        if($this->session->flashdata('validation_error')){
+            echo "
+                <div class='alert alert-danger' role='alert'>
+                    <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
+                    ".$this->session->flashdata('validation_error')."
+                </div>
+            "; 
+        }
+    ?>
     <label>Username</label>
     <input name="username" id="username" type="text" value="<?= $dt_my_profile->username ?>" class="form-control"/>
     <a class="msg-error-input"></a>
@@ -39,23 +49,23 @@
 </a>
 
 <?php 
-    if($this->session->flashdata('message_token_error')){
+    if($this->session->flashdata('message_error')){
         echo "
             <script>
                 Swal.fire({
                     title: 'Failed!',
-                    text: '".$this->session->flashdata('message_token_error')."',
+                    text: '".$this->session->flashdata('message_error')."',
                     icon: 'error'
                 });
             </script>
         ";
     }
-    if($this->session->flashdata('message_token_success')){
+    if($this->session->flashdata('message_success')){
         echo "
             <script>
                 Swal.fire({
                     title: 'Success!',
-                    text: '".$this->session->flashdata('message_token_success')."',
+                    text: '".$this->session->flashdata('message_success')."',
                     icon: 'success'
                 });
             </script>

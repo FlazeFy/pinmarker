@@ -134,3 +134,10 @@ table thead {
 .nodata-icon {
     width: 120px;
 }
+
+.alert {
+    font-size: var(--textXMD);
+}
+.alert h5 {
+    font-size: var(--textLG);
+}

@@ -11,6 +11,7 @@ class FeedbackController extends CI_Controller {
 		$this->load->model('AuthModel');
 
 		$this->load->helper('generator_helper');
+		$this->load->library('form_validation');
 	}
 
 	public function index()
@@ -25,22 +26,28 @@ class FeedbackController extends CI_Controller {
 	}
 
 	public function add_feedback(){
+		$rules = $this->FeedbackModel->rules();
+		$this->form_validation->set_rules($rules);
 
-		$data = [
-			'id' => get_UUID(), 
-			'feedback_rate' => $this->input->post('feedback_rate'), 
-			'feedback_body' => $this->input->post('feedback_body'),
-			'created_at' => date("Y-m-d H:i:s")
-		];
-
-		$res = $this->FeedbackModel->insert_feedback($data);
-
-		if($res){
-			$this->session->set_flashdata('message_insert_success', 'Feedback Sended. Thank you!');
+		if($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('message_error', 'Feedback failed to sended. Validation failed');
+			$this->session->set_flashdata('validation_error', validation_errors());
 		} else {
-			$this->session->set_flashdata('message_insert_error', 'Feedback failed to send');
-		}
+			$data = [
+				'id' => get_UUID(), 
+				'feedback_rate' => $this->input->post('feedback_rate'), 
+				'feedback_body' => $this->input->post('feedback_body'),
+				'created_at' => date("Y-m-d H:i:s")
+			];
 
+			$res = $this->FeedbackModel->insert_feedback($data);
+
+			if($res){
+				$this->session->set_flashdata('message_insert_success', 'Feedback Sended. Thank you!');
+			} else {
+				$this->session->set_flashdata('message_insert_error', 'Feedback failed to send');
+			}
+		}
 		redirect('FeedbackController');
 	}
 }

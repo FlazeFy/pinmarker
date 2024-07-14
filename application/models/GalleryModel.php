@@ -2,6 +2,32 @@
 	defined('BASEPATH') OR exit('No direct script access alowed');
 
 	class GalleryModel extends CI_Model {
+		public function rules($ext)
+        {
+            return [
+				[
+					'field' => 'pin_id',
+					'label' => 'Pin ID',
+					'rules' => 'required|callback_valid_length[36]'
+				],
+				[
+					'field' => 'gallery_type',
+					'label' => 'Gallery Type',
+					'rules' => 'required|max_length[14]',
+				],
+				[
+					'field' => 'gallery_url',
+					'label' => 'Gallery Url',
+					'rules' => 'required|max_length[1000]'
+				],
+				[
+					'field' => 'gallery_caption',
+					'label' => 'Gallery Caption',
+					'rules' => 'required|max_length[500]',
+				],
+			];
+        }
+
 		// Query
 		public function get_all_gallery_by_pin($pin_id){
 			$this->db->select('id, gallery_type, gallery_url, gallery_caption, created_at');

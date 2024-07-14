@@ -33,6 +33,16 @@
 </style>
 
 <form action="/AddVisitController/add_visit" method="POST">
+    <?php 
+        if($this->session->flashdata('validation_error')){
+            echo "
+                <div class='alert alert-danger' role='alert'>
+                    <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
+                    ".$this->session->flashdata('validation_error')."
+                </div>
+            "; 
+        }
+    ?>
     <input hidden id="type_add" name="type_add" value="visit">
     <div id="add_pin_form"></div>
     <div class="row">
@@ -111,6 +121,20 @@
         </div>
     </div>
 </form>
+
+<?php 
+    if($this->session->flashdata('message_error')){
+        echo "
+            <script>
+                Swal.fire({
+                    title: 'Failed!',
+                    text: '".$this->session->flashdata('message_error')."',
+                    icon: 'error'
+                });
+            </script>
+        ";
+    }
+?>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
 

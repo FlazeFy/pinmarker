@@ -18,6 +18,9 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="<?= base_url('public/css/global.css') ?>">
+
+    <!-- Swal -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="content">
