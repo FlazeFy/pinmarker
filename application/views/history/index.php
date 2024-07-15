@@ -41,23 +41,23 @@
     </div>
 
     <?php 
-        if($this->session->flashdata('message_generated_error')){
+        if($this->session->flashdata('message_error')){
             echo "
                 <script>
                     Swal.fire({
                         title: 'Failed!',
-                        text: '".$this->session->flashdata('message_generated_error')."',
+                        text: '".$this->session->flashdata('message_error')."',
                         icon: 'error'
                     });
                 </script>
             ";
         }
-        if($this->session->flashdata('message_generated_success')){
+        if($this->session->flashdata('message_success')){
             echo "
                 <script>
                     Swal.fire({
                         title: 'Success!',
-                        text: '".$this->session->flashdata('message_generated_success')."',
+                        text: '".$this->session->flashdata('message_success')."',
                         icon: 'success'
                     });
                 </script>

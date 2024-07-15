@@ -11,7 +11,7 @@
                 [
                     'field' => 'username',
                     'label' => 'Username or Email',
-                    'rules' => 'required'
+                    'rules' => 'required|min_length[5]'
                 ],
                 [
                     'field' => 'password',
@@ -27,7 +27,7 @@
                 [
                     'field' => 'username',
                     'label' => 'Username or Email',
-                    'rules' => 'required'
+                    'rules' => 'required|min_length[5]'
                 ],
                 [
                     'field' => 'fullname',

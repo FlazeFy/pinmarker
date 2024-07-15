@@ -152,9 +152,9 @@ class HistoryController extends CI_Controller {
 
 			// $this->HistoryModel->insert_history('Generate Document', 'Visit List');
 
-			$this->session->set_flashdata('message_generated_success', 'Document generated!');
+			$this->session->set_flashdata('message_success', 'Document generated!');
 		} else {
-			$this->session->set_flashdata('message_generated_error', 'No data to generated!');
+			$this->session->set_flashdata('message_error', 'No data to generated!');
 		}
 		redirect('HistoryController');
 	}

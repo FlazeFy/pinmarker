@@ -27,6 +27,15 @@
         <?php $this->load->view('others/navbar'); ?>
         <h2 class="text-center" style="font-weight:600;">My Marker</h2><br>
         <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" href="/AddController"><i class="fa-solid fa-plus"></i> Add New Marker</a>
+        <form class="d-inline" method="POST" action="/ListController/view_toogle">
+            <?php 
+                if($this->session->userdata('is_catalog_view') == false){
+                    echo "<button class='btn btn-dark mb-4 rounded-pill py-3 px-4'><i class='fa-solid fa-folder-open'></i> Catalog View</button>";
+                } else {
+                    echo "<button class='btn btn-dark mb-4 rounded-pill py-3 px-4'><i class='fa-solid fa-list'></i> List View</button>";
+                }
+            ?>
+        </form>
         <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" href="/ListController/print_pin"><i class="fa-solid fa-print"></i> Print</a>
         <?php $this->load->view('list/list'); ?>
         <hr>

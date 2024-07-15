@@ -116,6 +116,19 @@
             return $query->row()->pin_name;
 		}
 
+		public function get_pin_list_by_category($user_id){
+			$this->db->select("IFNULL(GROUP_CONCAT(COALESCE(pin.pin_name, null) ORDER BY pin.pin_name ASC SEPARATOR ', '), '') as pin_list, 
+				dictionary.dictionary_name, IFNULL(COUNT(pin.pin_name), 0) as total");
+			$this->db->from('dictionary');
+			$this->db->join('pin', 'pin.pin_category = dictionary.dictionary_name AND pin.created_by = "'.$user_id.'" AND pin.deleted_at IS NULL', 'left');
+			$this->db->where('dictionary.dictionary_type', 'pin_category');
+			$this->db->group_by('dictionary.dictionary_name');
+			$this->db->order_by('dictionary.dictionary_name', 'ASC');
+			$query = $this->db->get();
+
+			return $query->result();
+		}
+
 		public function get_pin_by_id($id){
 			$this->db->select('pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, pin_call, pin_email, pin_address, is_favorite, pin.created_at, pin.created_by, pin.updated_at, pin.deleted_at, dictionary_color as pin_color');
 			$this->db->from('pin');

@@ -6,11 +6,6 @@
         {
             return [
 				[
-					'field' => 'pin_id',
-					'label' => 'Pin ID',
-					'rules' => 'required|callback_valid_length[36]'
-				],
-				[
 					'field' => 'visit_desc',
 					'label' => 'Visit Desc',
 					'rules' => 'max_length[255]',
@@ -209,7 +204,7 @@
 
 		// Command
 		public function insert_visit($data){
-			$this->db->insert('visit',$data);	
+			return $this->db->insert('visit',$data);	
 		}
 	}
 ?>
