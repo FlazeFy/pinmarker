@@ -29,6 +29,8 @@ class AddVisitController extends CI_Controller {
 			$data['dt_dct_visit_by']= $this->DictionaryModel->get_dictionary_by_type('visit_by');
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
 			$data['dt_all_my_pin_name']= $this->PinModel->get_all_my_pin_name();
+			$data['is_mobile_device'] = is_mobile_device();
+
 			$this->load->view('add_visit/index', $data);
 		} else {
 			redirect('LoginController');

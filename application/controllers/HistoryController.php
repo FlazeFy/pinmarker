@@ -17,6 +17,7 @@ class HistoryController extends CI_Controller {
 		$this->load->model('TokenModel');
 
 		$this->load->library('form_validation');
+		$this->load->helper('generator_helper');
 
 		$telegram_token = $this->TokenModel->get_token('TELEGRAM_TOKEN');
 		$this->telegram = new Api($telegram_token);
@@ -29,6 +30,8 @@ class HistoryController extends CI_Controller {
 			$data['active_page']= 'history';
 			$data['dt_all_my_visit_header']= $this->VisitModel->get_all_my_visit_header();
 			$data['dt_my_activity']= $this->HistoryModel->get_my_activity();
+			$data['is_mobile_device'] = is_mobile_device();
+
 			$this->load->view('history/index', $data);
 		} else {
 			redirect('LoginController');

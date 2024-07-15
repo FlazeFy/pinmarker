@@ -32,6 +32,8 @@ class MyProfileController extends CI_Controller {
 		$data['dt_visit_activity_by_date'] = $this->VisitModel->get_visit_activity_by_date($date);
 		$data['dt_my_gallery'] = $this->GalleryModel->get_all_my_gallery();
 		$data['dt_active_telegram_user_id_request'] = $this->ValidateRequestModel->get_my_active_request('telegram_id_validation', $user_id);
+		$data['is_mobile_device'] = is_mobile_device();
+
 
 		if($data['dt_my_profile']){
 			$data['active_page']= 'myprofile';

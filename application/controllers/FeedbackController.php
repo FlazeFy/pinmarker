@@ -19,6 +19,8 @@ class FeedbackController extends CI_Controller {
 		if($this->AuthModel->current_user()){
 			$data = [];
 			$data['active_page']= 'feedback';
+			$data['is_mobile_device'] = is_mobile_device();
+
 			$this->load->view('feedback/index', $data);
 		} else {
 			redirect('LoginController');

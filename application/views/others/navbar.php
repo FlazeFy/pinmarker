@@ -28,7 +28,13 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark position-sticky w-100" style="top: 0;">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Pinmarker</a>
+        <a class="navbar-brand" href="#"><?php 
+            if($is_mobile_device){
+                echo ucfirst($active_page);
+            } else {
+                echo "PinMarker";
+            }
+        ?></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

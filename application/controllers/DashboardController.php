@@ -8,6 +8,8 @@ class DashboardController extends CI_Controller {
 		$this->load->model('VisitModel');
 		$this->load->model('GalleryModel');
 		$this->load->model('AuthModel');
+
+		$this->load->helper('generator_helper');
 	}
 
 	public function index()
@@ -26,6 +28,7 @@ class DashboardController extends CI_Controller {
 			$data['dt_get_stats_total_visit_by_category']= $this->VisitModel->get_most_visit('pin_category',6); // for now
 			$data['dt_get_total_visit_by_month']= $this->VisitModel->get_total_visit_by_month();
 			$data['dt_get_stats_total_gallery']= $this->GalleryModel->get_most_gallery(6);
+			$data['is_mobile_device'] = is_mobile_device();
 
 			$this->load->view('dashboard/index', $data);
 		} else {

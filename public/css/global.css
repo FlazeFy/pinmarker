@@ -43,12 +43,38 @@
 label {
     font-weight: 600 !important;
 }
+
 .content {
     width: 1280px;
     display: block;
     margin-inline: auto;
     padding: 0 var(--spaceLG) var(--spaceLG) var(--spaceLG);
 }
+
+.btn-main-page {
+    padding: var(--spaceLG);
+    margin-bottom: var(--spaceLG);
+}
+.btn-page {
+    color: var(--primaryColor);
+}
+.btn-page:hover, .btn-page.active{
+    color: var(--whiteColor);
+    background: var(--primaryColor);
+}
+
+/* Mobile & Tablet style */
+@media screen and (max-width: 1023px) {
+    .content {
+        width: 100%;
+        padding: 0 var(--spaceSM) var(--spaceSM) var(--spaceSM);
+    }
+    .btn-main-page {
+        padding: var(--spaceSM);
+        margin-bottom: var(--spaceXSM);
+    }
+}
+
 
 label {
     font-weight: 600;

@@ -59,7 +59,7 @@
         }
 
 		// Query
-		public function get_all_my_pin($from,$category){
+		public function get_all_my_pin($from,$category,$limit,$start){
             $extra = "";
             if($from == 'list'){
                 $extra = ", pin_call, pin_email, pin_address, COUNT(1) as total_visit";
@@ -93,7 +93,18 @@
 				$this->db->where('pin_category',$category);
 			}
 
-			return $data = $this->db->get()->result();
+			if($limit > 0 && $start >= 0){
+				$db_count = clone $this->db;
+				$total_rows = $db_count->get()->num_rows();
+				$total_pages = ceil($total_rows / $limit);
+
+				$this->db->limit($limit, $start);
+				$data['data'] = $this->db->get()->result();
+				$data['total_page'] = $total_pages;
+				return $data;
+			} else {
+				return $data = $this->db->get()->result();
+			}
 		}
 
 		public function get_all_my_pin_name(){

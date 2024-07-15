@@ -16,19 +16,19 @@
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
     .pin-box .pin-box-label {
-        position: absolute;
         background: var(--primaryColor);
         color: var(--whiteColor);
         padding: var(--spaceXXSM) var(--spaceSM);
         font-size: var(--textMD);
         font-weight: 500;
+        display: inline-block;
         border-radius: var(--roundedMD);
     }
 </style>
 <?php 
     if($this->session->userdata('is_catalog_view') == false || $this->session->userdata('open_pin_list_category')){
         if(count($dt_my_pin) > 0){
-            foreach($dt_my_pin as $dt){
+            foreach($dt_my_pin['data'] as $dt){
                 echo "
                     <div class='pin-box'>
                         <h3>$dt->pin_name</h3>
@@ -77,6 +77,27 @@
                     </div>
                 ";
             }
+
+            echo "<div class='d-inline-block'>
+                <h5>Page</h5>";
+
+            $active = 0;
+            if($this->session->userdata('page_pin')){
+                $active = $this->session->userdata('page_pin');
+            }
+
+            for($i = 0; $i < $dt_my_pin['total_page']; $i++){
+                $page = $i + 1;
+                echo "
+                    <form method='POST' class='d-inline' action='/ListController/navigate/$i'>
+                        <button class='btn btn-page"; 
+                        if($active == $i){echo " active";}
+                        echo" me-1' type='submit'>$page</button>
+                    </form>
+                ";
+            }
+
+            echo "</div>";
         } else {
             echo "
                 <div class='text-center my-3'>
@@ -92,7 +113,7 @@
                 echo "
                     <div class='col-lg-4 col-md-6 col-sm-12'>
                         <div class='pin-box mb-4'>
-                            <div class='pin-box-label position-absolute' style='right:-15px; top:-15px;'>$dt->total Marker</div>
+                            <div class='pin-box-label "; if(!$is_mobile_device){ echo "position-absolute"; } else { echo "float-end mb-1"; } echo "'"; if(!$is_mobile_device){ echo "style='right:-15px; top:-15px;'"; } echo ">$dt->total Marker</div>
                             <h3>$dt->dictionary_name</h3>
                             <p>"; 
                                 if($dt->pin_list){

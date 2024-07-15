@@ -14,6 +14,8 @@ class ListController extends CI_Controller {
 		$this->load->model('PinModel');
 		$this->load->model('AuthModel');
 		$this->load->model('HistoryModel');
+		
+		$this->load->helper('generator_helper');
 
 		$this->load->model('TokenModel');
 		$telegram_token = $this->TokenModel->get_token('TELEGRAM_TOKEN');
@@ -23,18 +25,28 @@ class ListController extends CI_Controller {
 	public function index()
 	{
 		if($this->AuthModel->current_user()){
+			$per_page = 10;
+			$offset = 0;
+
 			$data = [];
 			$data['active_page']= 'list';
+
 			if($this->session->userdata('is_catalog_view') == false || $this->session->userdata('open_pin_list_category')){
 				$category = null;
 				if($this->session->userdata('open_pin_list_category')){
 					$category = $this->session->userdata('open_pin_list_category');
 				}
-				$data['dt_my_pin']= $this->PinModel->get_all_my_pin('list', $category);
+
+				if($this->session->userdata('page_pin')){
+					$offset = $this->session->userdata('page_pin') * $per_page;
+				}
+
+				$data['dt_my_pin']= $this->PinModel->get_all_my_pin('list', $category, $per_page,$offset);
 			} else {
 				$user_id = $this->session->userdata('user_id');
 				$data['dt_my_pin']= $this->PinModel->get_pin_list_by_category($user_id);
 			}
+			$data['is_mobile_device'] = is_mobile_device();
 			$this->load->view('list/index', $data);
 		} else {
 			redirect('LoginController');
@@ -44,7 +56,7 @@ class ListController extends CI_Controller {
 	public function print_pin()
 	{		
 		$user_id = $this->session->userdata('user_id');
-		$dt_all_pin = $this->PinModel->get_all_my_pin('list',null);
+		$dt_all_pin = $this->PinModel->get_all_my_pin('list',null,null,null);
 
 		if($dt_all_pin){
 			require 'vendor/autoload.php';
@@ -182,6 +194,12 @@ class ListController extends CI_Controller {
 		} else {
 			$this->session->unset_userdata('open_pin_list_category');
 		}
+
+		redirect("ListController");
+	}
+
+	public function navigate($page){
+		$this->session->set_userdata('page_pin', $page);
 
 		redirect("ListController");
 	}

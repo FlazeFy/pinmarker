@@ -72,7 +72,7 @@
     </div>
     <div class="row mt-4">
         <div class="col-lg-6 col-md-6 col-sm-12">
-            <a class="btn btn-white rounded-pill w-100 py-3" style="border: 2.5px solid black;"><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</a>
+            <a class="btn btn-white rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;"><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</a>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
             <button class="btn btn-dark rounded-pill w-100 py-3" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Marker</button>

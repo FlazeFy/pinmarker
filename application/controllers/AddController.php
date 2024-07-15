@@ -28,6 +28,8 @@ class AddController extends CI_Controller {
 			$data = [];
 			$data['active_page']= 'maps';
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
+			$data['is_mobile_device'] = is_mobile_device();
+
 			$this->load->view('add/index', $data);
 		} else {
 			redirect('LoginController');
