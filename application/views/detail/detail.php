@@ -217,8 +217,10 @@
         <hr><p class='mt-2 mb-0 fw-bold'>Visit History</p>
         <ol>
         <?php 
-            if(count($dt_visit_history) > 0){
-                foreach($dt_visit_history as $dt){
+            $show_page = false;
+            if(count($dt_visit_history['data']) > 0){
+                $show_page = true;
+                foreach($dt_visit_history['data'] as $dt){
                     echo "<li>$dt->visit_desc using "; echo strtolower($dt->visit_by);
                         if($dt->visit_with != null){
                             echo " with $dt->visit_with";
@@ -235,6 +237,31 @@
             }
         ?>
         </ol>
+        <?php 
+            if($show_page){
+                echo "<div class='d-inline-block'>
+                <h6>Page History</h6>";
+
+                $active = 0;
+                if($this->session->userdata('page_detail_history')){
+                    $active = $this->session->userdata('page_detail_history');
+                }
+
+                for($i = 0; $i < $dt_visit_history['total_page']; $i++){
+                    $page = $i + 1;
+                    echo "
+                        <form method='POST' class='d-inline' action='/DetailController/navigate/$dt_detail_pin->id/$i'>
+                            <button class='btn btn-page"; 
+                            if($active == $i){echo " active";}
+                            echo" me-1' type='submit'>$page</button>
+                        </form>
+                    ";
+                }
+
+                echo "</div>";
+            }
+        ?>
+
         <hr>
 
         <?php

@@ -83,7 +83,7 @@
 			}
 		}
 
-		public function get_visit_history_by_pin_id($id){
+		public function get_visit_history_by_pin_id($id, $limit, $start){
 			$this->db->select('visit_by, visit_desc, visit.created_at, visit_with');
 			$this->db->from('pin');
             $this->db->join('visit','visit.pin_id = pin.id');
@@ -94,7 +94,14 @@
             ];
 			$this->db->where($condition);
 
-			return $data = $this->db->get()->result();
+			$db_count = clone $this->db;
+            $total_rows = $db_count->get()->num_rows();
+            $total_pages = ceil($total_rows / $limit);
+
+            $this->db->limit($limit, $start);
+            $data['data'] = $this->db->get()->result();
+            $data['total_page'] = $total_pages;
+            return $data;
 		}
 
         public function get_last_visit(){

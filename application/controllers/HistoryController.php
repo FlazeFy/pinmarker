@@ -26,10 +26,17 @@ class HistoryController extends CI_Controller {
 	public function index()
 	{
 		if($this->AuthModel->current_user()){
+			$per_page = 10;
+			$offset = 0;
 			$data = [];
+
+			if($this->session->userdata('page_activity')){
+				$offset = $this->session->userdata('page_activity') * $per_page;
+			}
+
 			$data['active_page']= 'history';
 			$data['dt_all_my_visit_header']= $this->VisitModel->get_all_my_visit_header();
-			$data['dt_my_activity']= $this->HistoryModel->get_my_activity();
+			$data['dt_my_activity']= $this->HistoryModel->get_my_activity($per_page, $offset);
 			$data['is_mobile_device'] = is_mobile_device();
 
 			$this->load->view('history/index', $data);
@@ -160,5 +167,11 @@ class HistoryController extends CI_Controller {
 			$this->session->set_flashdata('message_error', 'No data to generated!');
 		}
 		redirect('HistoryController');
+	}
+
+	public function navigate($page){
+		$this->session->set_userdata('page_activity', $page);
+
+		redirect("HistoryController");
 	}
 }

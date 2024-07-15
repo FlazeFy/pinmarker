@@ -18,10 +18,17 @@ class DetailController extends CI_Controller {
 	public function view($id)
 	{
 		if($this->AuthModel->current_user()){
+			$per_page = 10;
+			$offset = 0;
 			$data = [];
+
+			if($this->session->userdata('page_detail_history')){
+				$offset = $this->session->userdata('page_detail_history') * $per_page;
+			}
+
 			$data['active_page']= 'maps';
             $data['dt_detail_pin']= $this->PinModel->get_pin_by_id($id);
-            $data['dt_visit_history']= $this->VisitModel->get_visit_history_by_pin_id($id);
+            $data['dt_visit_history']= $this->VisitModel->get_visit_history_by_pin_id($id, $per_page, $offset);
             $data['dt_my_personal_pin']= $this->PinModel->get_pin_by_category('Personal', $id);
 			$data['dt_all_my_pin_name']= $this->PinModel->get_all_my_pin_name();
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
@@ -136,5 +143,11 @@ class DetailController extends CI_Controller {
 			}
 		}
 		redirect("/DetailController/view/$id");
+	}
+
+	public function navigate($id,$page){
+		$this->session->set_userdata('page_detail_history', $page);
+
+		redirect("DetailController/view/$id");
 	}
 }

@@ -48,17 +48,20 @@
                             echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Person In Touch</p>
                             <p>$dt->pin_person</p></div>";
                         }
-                        if($dt->pin_call){
+                        if($dt->pin_call && !$is_mobile_device){
                             echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Phone Number</p>
                             <p>$dt->pin_call</p></div>";
                         }
-                        if($dt->pin_email){
+                        if($dt->pin_email && !$is_mobile_device){
                             echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Email</p>
                             <p>$dt->pin_email</p></div>";
                         }
                         echo"
                         </div>
-                        <div class='row py-0 my-0'>
+                        <div class='row py-0 my-0'>";
+
+                        if(!$is_mobile_device){
+                            echo"
                             <div class='col-lg-4 col-md-6 col-sm-12'>
                                 <p class='mt-2 mb-0 fw-bold'>Created At</p>
                                 <p class='date-target'>$dt->created_at</p>
@@ -66,7 +69,9 @@
                             <div class='col-lg-4 col-md-6 col-sm-12'>
                                 <p class='mt-2 mb-0 fw-bold'>Total Visit</p>
                                 <p>$dt->total_visit</p>
-                            </div>
+                            </div>";
+                        }
+                            echo"
                             <div class='col-lg-4 col-md-6 col-sm-12'>
                                 <p class='mt-2 mb-0 fw-bold'>Last Visit</p>
                                 <p>dt->last_visit_desc</p>
