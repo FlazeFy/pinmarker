@@ -16,7 +16,7 @@ class MapsController extends CI_Controller {
 		if($this->AuthModel->current_user()){
 			$data = [];
 			$data['active_page']= 'maps';
-			$data['dt_my_pin']= $this->PinModel->get_all_my_pin('maps');
+			$data['dt_my_pin']= $this->PinModel->get_all_my_pin('maps',null);
 			$data['dt_my_pin_name']= $this->PinModel->get_all_my_pin_name();
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
 			$this->load->view('maps/index', $data);

@@ -25,8 +25,12 @@ class ListController extends CI_Controller {
 		if($this->AuthModel->current_user()){
 			$data = [];
 			$data['active_page']= 'list';
-			if($this->session->userdata('is_catalog_view') == false){
-				$data['dt_my_pin']= $this->PinModel->get_all_my_pin('list');
+			if($this->session->userdata('is_catalog_view') == false || $this->session->userdata('open_pin_list_category')){
+				$category = null;
+				if($this->session->userdata('open_pin_list_category')){
+					$category = $this->session->userdata('open_pin_list_category');
+				}
+				$data['dt_my_pin']= $this->PinModel->get_all_my_pin('list', $category);
 			} else {
 				$user_id = $this->session->userdata('user_id');
 				$data['dt_my_pin']= $this->PinModel->get_pin_list_by_category($user_id);
@@ -40,7 +44,7 @@ class ListController extends CI_Controller {
 	public function print_pin()
 	{		
 		$user_id = $this->session->userdata('user_id');
-		$dt_all_pin = $this->PinModel->get_all_my_pin('list');
+		$dt_all_pin = $this->PinModel->get_all_my_pin('list',null);
 
 		if($dt_all_pin){
 			require 'vendor/autoload.php';
@@ -167,6 +171,16 @@ class ListController extends CI_Controller {
 			$this->session->set_userdata('is_catalog_view', true);
 		} else {
 			$this->session->set_userdata('is_catalog_view', false);
+		}
+
+		redirect("ListController");
+	}
+
+	public function view_catalog_detail($category){
+		if($category != 'back'){
+			$this->session->set_userdata('open_pin_list_category', $category);
+		} else {
+			$this->session->unset_userdata('open_pin_list_category');
 		}
 
 		redirect("ListController");

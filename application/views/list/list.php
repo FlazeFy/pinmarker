@@ -26,7 +26,7 @@
     }
 </style>
 <?php 
-    if($this->session->userdata('is_catalog_view') == false){
+    if($this->session->userdata('is_catalog_view') == false || $this->session->userdata('open_pin_list_category')){
         if(count($dt_my_pin) > 0){
             foreach($dt_my_pin as $dt){
                 echo "
@@ -101,7 +101,9 @@
                                     echo '<span class="fst-italic text-secondary">- No Marker Found -</span>';
                                 }
                             echo"</p>
-                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/'><i class='fa-solid fa-circle-info'></i> See Detail</a>
+                            <form method='POST' action='/ListController/view_catalog_detail/$dt->dictionary_name' class='d-inline'>
+                                <button class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/'><i class='fa-solid fa-circle-info'></i> See Detail</button>
+                            </form>
                             <a class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-globe'></i> Publish to Global</a>
                         </div>
                     </div>

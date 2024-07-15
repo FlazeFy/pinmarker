@@ -15,7 +15,7 @@ class TrackController extends CI_Controller {
 			$data['active_page']= 'track';
 
 			if($this->session->userdata('view_mode_track') == 'related_pin'){
-				$data['dt_my_pin']= $this->PinModel->get_all_my_pin('maps');
+				$data['dt_my_pin']= $this->PinModel->get_all_my_pin('maps',null);
 			}
 
 			$data['dt_get_my_pin_coor'] = $this->PinModel->get_all_my_pin_name();

@@ -59,7 +59,7 @@
         }
 
 		// Query
-		public function get_all_my_pin($from){
+		public function get_all_my_pin($from,$category){
             $extra = "";
             if($from == 'list'){
                 $extra = ", pin_call, pin_email, pin_address, COUNT(1) as total_visit";
@@ -88,6 +88,10 @@
 				$this->db->order_by('is_favorite','DESC');
             }
 			$this->db->order_by('created_at','DESC');
+
+			if($category){
+				$this->db->where('pin_category',$category);
+			}
 
 			return $data = $this->db->get()->result();
 		}
