@@ -18,6 +18,9 @@
 
     <!-- CSS -->
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
+
+    <!-- Javascript -->
+    <script src="http://127.0.0.1:8080/public/js/global.js"></script>
 </head>
 <body>
     <div class="content">

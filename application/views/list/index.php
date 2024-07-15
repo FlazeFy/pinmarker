@@ -19,6 +19,9 @@
     <!-- CSS -->
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
 
+    <!-- Javascript -->
+    <script src="http://127.0.0.1:8080/public/js/global.js"></script>
+
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -32,26 +35,33 @@
                 }
             ?>
         </h2><br>
-        <a class="btn btn-dark rounded-pill btn-main-page" href="/AddController"><i class="fa-solid fa-plus"></i> Add New Marker</a>
-            <?php 
-                if($this->session->userdata('is_catalog_view') == false && !$this->session->userdata('open_pin_list_category')){
-                    echo "
-                    <form class='d-inline' method='POST' action='/ListController/view_toogle'>
-                        <button class='btn btn-dark rounded-pill btn-main-page'><i class='fa-solid fa-folder-open'></i> Catalog View</button>
-                    </form>";
-                } else if(!$this->session->userdata('open_pin_list_category')) {
-                    echo "
-                    <form class='d-inline' method='POST' action='/ListController/view_toogle'>
-                        <button class='btn btn-dark rounded-pill btn-main-page'><i class='fa-solid fa-list'></i> List View</button>
-                    </form>";
-                } else {
-                    echo "
-                    <form class='d-inline' method='POST' action='/ListController/view_catalog_detail/back'>
-                        <button class='btn btn-dark rounded-pill btn-main-page'><i class='fa-solid fa-arrow-left'></i> Back</button>
-                    </form>";
-                }
-            ?>
-        <a class="btn btn-dark rounded-pill btn-main-page" href="/ListController/print_pin"><i class="fa-solid fa-print"></i> Print</a>
+        <div class="d-flex justify-content-between">
+            <div>
+                <a class="btn btn-dark rounded-pill btn-main-page" href="/AddController"><i class="fa-solid fa-plus"></i> Add New Marker</a>
+                    <?php 
+                        if($this->session->userdata('is_catalog_view') == false && !$this->session->userdata('open_pin_list_category')){
+                            echo "
+                            <form class='d-inline' method='POST' action='/ListController/view_toogle'>
+                                <button class='btn btn-dark rounded-pill btn-main-page'><i class='fa-solid fa-folder-open'></i> Catalog View</button>
+                            </form>";
+                        } else if(!$this->session->userdata('open_pin_list_category')) {
+                            echo "
+                            <form class='d-inline' method='POST' action='/ListController/view_toogle'>
+                                <button class='btn btn-dark rounded-pill btn-main-page'><i class='fa-solid fa-list'></i> List View</button>
+                            </form>";
+                        } else {
+                            echo "
+                            <form class='d-inline' method='POST' action='/ListController/view_catalog_detail/back'>
+                                <button class='btn btn-dark rounded-pill btn-main-page'><i class='fa-solid fa-arrow-left'></i> Back</button>
+                            </form>";
+                        }
+                    ?>
+                <a class="btn btn-dark rounded-pill btn-main-page" href="/ListController/print_pin"><i class="fa-solid fa-print"></i> Print</a>
+            </div>
+            <div>
+                <a class="btn btn-dark rounded-pill btn-main-page" href="/TrashController"><i class="fa-solid fa-trash"></i> Trash</a>
+            </div>
+        </div>
         <?php $this->load->view('list/list'); ?>
         <hr>
     </div>

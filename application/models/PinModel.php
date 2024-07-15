@@ -260,6 +260,21 @@
 			}
 		}
 
+		public function get_deleted_pin(){
+			$user_id = $this->session->userdata('user_id');
+
+			$this->db->select("pin.id, pin_name, pin_category, pin.created_at, pin.updated_at, pin.deleted_at, COUNT(1) as visit_attached");
+			$this->db->from('pin');
+			$this->db->join('visit', 'visit.pin_id = pin.id', 'left');
+			$this->db->where('pin.created_by', $user_id);
+			$this->db->where('pin.deleted_at IS NOT NULL');
+			$this->db->group_by('pin.id');
+			$this->db->order_by('pin.deleted_at', 'DESC');
+			$query = $this->db->get();
+
+			return $query->result();
+		}
+
 		// Command
 		public function insert_marker($data){
 			$this->db->insert('pin',$data);	

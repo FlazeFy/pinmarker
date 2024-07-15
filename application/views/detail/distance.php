@@ -37,7 +37,7 @@
                     <div class='row'>
                         <div class='col-4'>
                             <h6 class='mb-0'>Created At</h6>
-                            <p class='mb-0'>"; echo date("Y-m-d H:i",strtotime($dt->created_at)); echo"</p>
+                            <p class='mb-0 date-target'>$dt->created_at</p>
                         </div>
                         <div class='col-8'>
                             <a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PinMarker | Detail</title>
+    <title>PinMarker | Trash</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,48 +18,30 @@
 
     <!-- CSS -->
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
-    
+
     <!-- Javascript -->
     <script src="http://127.0.0.1:8080/public/js/global.js"></script>
 
     <!-- Jquery -->
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
-    <!--Apex Chart-->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!--Full calendar.-->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+
+    <!-- Jquery DataTables -->
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+    <!-- Bootstrap dataTables Javascript -->
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <style>
-        .gallery-btn {
-            border: 2px solid black; border-radius: 15px;
-            padding: var(--spaceMD);
-            text-align: left;
-            background: var(--whiteColor);
-        }
-        .gallery-btn:hover {
-            transform: scale(1.05);
-        }
-    </style>
 </head>
 <body>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
-
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
-        <?php $this->load->view('detail/detail'); ?>
-        <hr>
-        <?php $this->load->view('detail/props'); ?>
+        <h2 class="text-center" style="font-weight:600;">Trash</h2><br>
+        <?php $this->load->view('trash/table'); ?>
     </div>
-
-    <script>
-        const date_holder = document.querySelectorAll('.date-target');
-
-        date_holder.forEach(e => {
-            const date = new Date(e.textContent);
-            e.textContent = getDateToContext(e.textContent, "calendar");
-        });
-    </script>
 </body>
 </html>

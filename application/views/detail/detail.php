@@ -223,7 +223,7 @@
                         if($dt->visit_with != null){
                             echo " with $dt->visit_with";
                         }    
-                    echo " at "; echo date('Y-m-d H:i', strtotime($dt->created_at)); echo"</li>";
+                    echo " at <span class='date-target'>$dt->created_at</span></li>";
                 }
             } else {
                 echo "

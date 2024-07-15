@@ -61,7 +61,7 @@
                         <div class='row py-0 my-0'>
                             <div class='col-lg-4 col-md-6 col-sm-12'>
                                 <p class='mt-2 mb-0 fw-bold'>Created At</p>
-                                <p>"; echo date("Y-m-d H:i",strtotime($dt->created_at)); echo"</p>
+                                <p class='date-target'>$dt->created_at</p>
                             </div>
                             <div class='col-lg-4 col-md-6 col-sm-12'>
                                 <p class='mt-2 mb-0 fw-bold'>Total Visit</p>
@@ -166,3 +166,12 @@
         ";
     }
 ?>
+
+<script>
+    const date_holder = document.querySelectorAll('.date-target');
+
+    date_holder.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "calendar");
+    });
+</script>

@@ -6,7 +6,7 @@
                     echo "
                         <div class='p-3 mb-2' style='border-radius: 15px; border: 2px solid black;'>
                             <h6 class='mb-0'>$dt->history_type | $dt->history_context</h6>
-                            <p class='mb-0'>"; echo date("Y-m-d H:i",strtotime($dt->created_at)); echo"</p>
+                            <p class='mb-0 date-target'>$dt->created_at</p>
                         </div>
                     ";
                 }
@@ -23,3 +23,13 @@
         
     </div>
 </div>
+
+
+<script>
+    const date_holder = document.querySelectorAll('.date-target');
+
+    date_holder.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "calendar");
+    });
+</script>
