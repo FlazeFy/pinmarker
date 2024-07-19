@@ -32,5 +32,6 @@
     <div class="content">
         <?php $this->load->view('register/form'); ?>
     </div>
+    <?php $this->load->view('others/footer'); ?>
 </body>
 </html>

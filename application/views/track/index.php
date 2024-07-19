@@ -57,5 +57,6 @@
         <?php $this->load->view('track/related_pin_track'); ?>
         <?php $this->load->view('track/maps_board'); ?>
     </div>
+    <?php $this->load->view('others/footer'); ?>
 </body>
 </html>

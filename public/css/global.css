@@ -43,7 +43,6 @@
 label {
     font-weight: 600 !important;
 }
-
 .content {
     width: 1280px;
     display: block;
@@ -136,6 +135,12 @@ input, select, textarea {
     text-align: start;
     margin-bottom: var(--spaceLG);
     width: 100%;
+}
+.btn-socmed {
+    border: 2px solid black;
+    border-radius: 100%;
+    font-size: var(--textJumbo);
+    padding: var(--spaceMD) var(--spaceXMD);
 }
 
 .bg-danger-light {

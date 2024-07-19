@@ -39,5 +39,6 @@
         <?php $this->load->view('dashboard/statistic', $dt_get_stats_total_pin_by_category); ?>
         <hr>
     </div>
+    <?php $this->load->view('others/footer'); ?>
 </body>
 </html>

@@ -30,5 +30,6 @@
         <?php $this->load->view('maps/legend'); ?>
         <hr>
     </div>
+    <?php $this->load->view('others/footer'); ?>
 </body>
 </html>

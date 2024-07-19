@@ -68,4 +68,5 @@
         }
     ?>
 </body>
+<?php $this->load->view('others/footer'); ?>
 </html>

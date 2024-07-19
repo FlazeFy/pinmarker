@@ -30,5 +30,6 @@
         <?php $this->load->view('add/form'); ?>
         <hr>
     </div>
+    <?php $this->load->view('others/footer'); ?>
 </body>
 </html>

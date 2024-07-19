@@ -61,5 +61,6 @@
             e.textContent = getDateToContext(e.textContent, "calendar");
         });
     </script>
+    <?php $this->load->view('others/footer'); ?>
 </body>
 </html>

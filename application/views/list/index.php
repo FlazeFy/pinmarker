@@ -74,5 +74,6 @@
         <?php $this->load->view('list/list'); ?>
         <hr>
     </div>
+    <?php $this->load->view('others/footer'); ?>
 </body>
 </html>

@@ -43,5 +43,6 @@
         <h2 class="text-center" style="font-weight:600;">Trash</h2><br>
         <?php $this->load->view('trash/table'); ?>
     </div>
+    <?php $this->load->view('others/footer'); ?>
 </body>
 </html>

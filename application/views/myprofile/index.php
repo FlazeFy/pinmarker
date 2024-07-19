@@ -57,5 +57,6 @@
         </div>
         <hr>
     </div>
+    <?php $this->load->view('others/footer'); ?>
 </body>
 </html>
