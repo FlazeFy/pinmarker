@@ -2,6 +2,9 @@
 	defined('BASEPATH') OR exit('No direct script access alowed');
 
 	class HistoryModel extends CI_Model {
+        private $table = "history";
+        const SESSION_KEY = 'user_id';
+
         function __construct(){
             parent::__construct();
             $this->load->helper('generator_helper');
@@ -10,9 +13,9 @@
         // Query
         public function get_my_activity($limit,$start){
 			$this->db->select('id, history_type, history_context, created_at');
-			$this->db->from('history');
+			$this->db->from($this->table);
 			$condition = [
-				'created_by' => $this->session->userdata('user_id')
+				'created_by' => $this->session->userdata(self::SESSION_KEY)
             ];
 			$this->db->where($condition);
             $this->db->order_by('created_at','desc');
@@ -34,10 +37,10 @@
                 'history_type' => $type,
                 'history_context' => $ctx, 
                 'created_at' => date("Y-m-d H:i:s"), 
-			    'created_by' => $this->session->userdata('user_id'),
+			    'created_by' => $this->session->userdata(self::SESSION_KEY),
             ];
 
-			$this->db->insert('history',$data);	
+			$this->db->insert($this->table,$data);	
 		}
 	}
 ?>

@@ -2,10 +2,12 @@
 	defined('BASEPATH') OR exit('No direct script access alowed');
 
 	class TokenModel extends CI_Model {
+		private $table = "token";
+
 		// Query
 		public function get_token($key){
 			$this->db->select('token_value');
-			$this->db->from('token');
+			$this->db->from($this->table);
 			$condition = [
                 'token_key' => $key
             ];

@@ -5,12 +5,20 @@ class LoginController extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model('AuthModel');
+		$this->load->model('PinModel');
+		$this->load->model('VisitModel');
+
         $this->load->library('form_validation');
 	}
 
     public function index()
 	{
-		$this->load->view('login/index');
+		$data = [];
+		$data['dt_total_pin'] = $this->PinModel->get_total_all();
+		$data['dt_total_user'] = $this->AuthModel->get_total_all();
+		$data['dt_total_visit'] = $this->VisitModel->get_total_all();
+
+		$this->load->view('login/index',$data);
 	}
 
 	public function login()

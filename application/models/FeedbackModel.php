@@ -2,6 +2,9 @@
 	defined('BASEPATH') OR exit('No direct script access alowed');
 
 	class FeedbackModel extends CI_Model {
+		private $table = "feedback";
+        const SESSION_KEY = 'user_id';
+
 		public function rules($ext)
         {
             return [
@@ -20,7 +23,7 @@
 
         // Command
 		public function insert_feedback($data){
-			return $this->db->insert('feedback',$data);	
+			return $this->db->insert($this->table,$data);	
 		}
 	}
 ?>

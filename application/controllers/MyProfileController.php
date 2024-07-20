@@ -14,6 +14,7 @@ class MyProfileController extends CI_Controller {
 		$this->load->model('ValidateRequestModel');
 
 		$this->load->helper('generator_helper');
+		$this->load->library('form_validation');
 
 		$this->load->model('TokenModel');
 		$telegram_token = $this->TokenModel->get_token('TELEGRAM_TOKEN');
@@ -61,7 +62,11 @@ class MyProfileController extends CI_Controller {
 				'updated_at' => date('Y-m-d H:i:s'), 
 			];
 
-			$this->AuthModel->update_user($user_id,$data);
+			if($this->AuthModel->update_user($user_id,$data)){
+				$this->session->set_flashdata('message_success', 'Profile updated');
+			} else {
+				$this->session->set_flashdata('message_error', 'Profile failed to updated');
+			}
 		}
 		redirect('MyProfileController');
 	}
@@ -75,11 +80,15 @@ class MyProfileController extends CI_Controller {
 			'updated_at' => date('Y-m-d H:i:s'), 
 		];
 
-		$this->AuthModel->update_user($user_id,$data);
+		if($this->AuthModel->update_user($user_id,$data)){
+			$this->session->set_userdata([
+				'user_img_url' => $img_url
+			]);
 
-		$this->session->set_userdata([
-			'user_img_url' => $img_url
-		]);
+			$this->session->set_flashdata('message_success', 'Profile image updated');
+		} else {
+			$this->session->set_flashdata('message_error', 'Profile image failed to updated');
+		}
 
 		redirect('MyProfileController');
 	}
@@ -97,20 +106,18 @@ class MyProfileController extends CI_Controller {
 			'created_at' => date('Y-m-d H:i:s'), 
 			'created_by' => $user_id
 		];
-
-		$insert_validate = $this->ValidateRequestModel->insert_request($data);
 		
-		if($insert_validate){
+		if($this->ValidateRequestModel->insert_request($data)){
 			$this->telegram->sendMessage([
 				'chat_id' => $user->telegram_user_id,
 				'text' => "Hello,\n\nWe received a request to validate PinMarker apps's account with username <b>$user->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, PinMarker",
 				'parse_mode' => 'HTML'
 			]);
-	
-			redirect('MyProfileController');
+			$this->session->set_flashdata('message_success', 'Validation Token has sended');
 		} else {
-			redirect('MyProfileController');
+			$this->session->set_flashdata('message_error', 'Validation Token failed to send');
 		}
+		redirect('MyProfileController');
 	}
 
 	public function edit_telegram_id(){
@@ -135,21 +142,22 @@ class MyProfileController extends CI_Controller {
 				'created_at' => date('Y-m-d H:i:s'), 
 				'created_by' => $user_id
 			];
-	
-			$insert_validate = $this->ValidateRequestModel->insert_request($data_request);
-			
-			if($insert_validate){
+				
+			if($this->ValidateRequestModel->insert_request($data_request)){
 				$this->telegram->sendMessage([
 					'chat_id' => $new_tele_id,
 					'text' => "Hello,\n\nWe received a request to validate PinMarker apps's account with username <b>$user->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, PinMarker",
 					'parse_mode' => 'HTML'
 				]);
-		
-				redirect('MyProfileController');
+				$this->session->set_flashdata('message_success', 'Validation Token has sended');
 			} else {
-				redirect('MyProfileController');
+				$this->session->set_flashdata('message_error', 'Validation Token failed to send');
 			}
+
+			redirect('MyProfileController');
 		} else {
+			$this->session->set_flashdata('message_error', 'Validation Token failed to send');
+
 			redirect('MyProfileController');
 		}
 	}

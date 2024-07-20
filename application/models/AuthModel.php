@@ -42,6 +42,13 @@
             ];
         }
 
+        public function get_total_all(){
+			$this->db->select('COUNT(1) as total');
+			$this->db->from($this->table);
+
+			return $data = $this->db->get()->result();
+		}
+
         public function login($uname, $pass)
         {
             $this->db->where('email', $uname)
@@ -80,7 +87,7 @@
 
         public function get_user_by_id($id){
 			$this->db->select('id, fullname, username, email, telegram_user_id, telegram_is_valid, password, img_url, created_at, updated_at, last_login');
-			$this->db->from('user');
+			$this->db->from($this->table);
             $condition = [
 				'id' => $id
             ];

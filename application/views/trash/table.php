@@ -24,7 +24,11 @@
                                 <h6>Deleted At</h6>
                                 <p class='mb-0 date-target'>$dt->deleted_at</p>
                             </td>
-                            <td><button class='btn btn-dark w-100 rounded-pill'><i class='fa-solid fa-rotate-left'></i> Recover</button></td>
+                            <td>
+                                <form action='/TrashController/recover/$dt->id' method='POST'>
+                                    <button class='btn btn-dark w-100 rounded-pill' type='submit'><i class='fa-solid fa-rotate-left'></i> Recover</button>
+                                </form>
+                            </td>
                             <td><button class='btn btn-dark w-100 rounded-pill'><i class='fa-solid fa-fire-flame-curved'></i> Destroy</button></td>
                         </tr>
                     ";

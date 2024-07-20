@@ -23,4 +23,17 @@ class TrashController extends CI_Controller {
 			redirect('LoginController');
 		}
 	}
+
+	public function recover($id){
+		$data = [
+			'deleted_at' => null
+		];
+		if($this->PinModel->update_marker($data, $id)){
+			$this->session->set_flashdata('message_success', 'Pin successfully recover');
+		} else {
+			$this->session->set_flashdata('message_error', 'Pin failed to recover');
+		}
+
+		redirect('TrashController');
+	}
 }

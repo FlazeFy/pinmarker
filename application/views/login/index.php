@@ -58,15 +58,15 @@
                 <h2 class="fw-bold" style="margin-top:10vh;">SOME FACTS!</h2>
                 <div class="row mt-4">
                     <div class="col">
-                        <h2 class="mb-0">1</h2>
+                        <h2 class="mb-0"><?= $dt_total_user[0]->total ?></h2>
                         <h5>Total User</h5>
                     </div>
                     <div class="col">
-                        <h2 class="mb-0">1</h2>
+                        <h2 class="mb-0"><?= $dt_total_pin[0]->total ?></h2>
                         <h5>Total Marker</h5>
                     </div>
                     <div class="col">
-                        <h2 class="mb-0">1</h2>
+                        <h2 class="mb-0"><?= $dt_total_visit[0]->total ?></h2>
                         <h5>Total Visit</h5>
                     </div>
                 </div>

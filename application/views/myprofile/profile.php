@@ -48,31 +48,6 @@
     ?>
 </a>
 
-<?php 
-    if($this->session->flashdata('message_error')){
-        echo "
-            <script>
-                Swal.fire({
-                    title: 'Failed!',
-                    text: '".$this->session->flashdata('message_error')."',
-                    icon: 'error'
-                });
-            </script>
-        ";
-    }
-    if($this->session->flashdata('message_success')){
-        echo "
-            <script>
-                Swal.fire({
-                    title: 'Success!',
-                    text: '".$this->session->flashdata('message_success')."',
-                    icon: 'success'
-                });
-            </script>
-        ";
-    }
-?>
-
 <span id="submit_telegram_user_id_edit"></span>
 
 <script>

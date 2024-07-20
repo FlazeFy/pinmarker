@@ -2,6 +2,9 @@
 	defined('BASEPATH') OR exit('No direct script access alowed');
 
 	class PinModel extends CI_Model {
+		private $table = "pin";
+        const SESSION_KEY = 'user_id';
+
 		public function rules($ext)
         {
             return [
@@ -71,10 +74,10 @@
                 $this->db->join('visit','visit.pin_id = pin.id','left');
             }
 
-			$this->db->from('pin');
+			$this->db->from($this->table);
 			$condition = [
                 'pin.deleted_at' => null,
-				'pin.created_by' => $this->session->userdata('user_id')
+				'pin.created_by' => $this->session->userdata(self::SESSION_KEY)
             ];
 			$this->db->where($condition);
 
@@ -107,12 +110,23 @@
 			}
 		}
 
+		public function get_total_all(){
+			$this->db->select('COUNT(1) as total');
+			$this->db->from($this->table);
+			$condition = [
+                'deleted_at' => null
+            ];
+			$this->db->where($condition);
+
+			return $data = $this->db->get()->result();
+		}
+
 		public function get_all_my_pin_name(){
 			$this->db->select('id, pin_name, pin_lat, pin_long');
-			$this->db->from('pin');
+			$this->db->from($this->table);
 			$condition = [
                 'deleted_at' => null,
-				'created_by' => $this->session->userdata('user_id')
+				'created_by' => $this->session->userdata(self::SESSION_KEY)
             ];
 			$this->db->where($condition);
 
@@ -121,7 +135,7 @@
 
 		public function get_pin_name_by_id($id){
 			$this->db->select('pin_name');
-			$this->db->from('pin');
+			$this->db->from($this->table);
 			$condition = [
                 'id' => $id,
             ];
@@ -146,12 +160,12 @@
 
 		public function get_pin_by_id($id){
 			$this->db->select('pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, pin_call, pin_email, pin_address, is_favorite, pin.created_at, pin.created_by, pin.updated_at, pin.deleted_at, dictionary_color as pin_color');
-			$this->db->from('pin');
+			$this->db->from($this->table);
 			$this->db->join('dictionary','dictionary.dictionary_name = pin.pin_category');
 			$condition = [
 				'pin.id' => $id,
                 'deleted_at' => null,
-				'pin.created_by' => $this->session->userdata('user_id')
+				'pin.created_by' => $this->session->userdata(self::SESSION_KEY)
             ];
 			$this->db->where($condition);
 
@@ -160,12 +174,12 @@
 
 		public function get_pin_by_category($cat, $id){
 			$this->db->select('id, pin_name, pin_desc, pin_lat, pin_long, created_at');
-			$this->db->from('pin');
+			$this->db->from($this->table);
 
 			$condition = [
 				'pin_category' => $cat,
                 'deleted_at' => null,
-				'pin.created_by' => $this->session->userdata('user_id')
+				'pin.created_by' => $this->session->userdata(self::SESSION_KEY)
             ];
 
 			if($id != null){
@@ -179,10 +193,10 @@
 
         public function count_my_pin(){
 			$this->db->select('count(1) as total');
-			$this->db->from('pin');
+			$this->db->from($this->table);
 			$condition = [
                 'deleted_at' => null,
-				'created_by' => $this->session->userdata('user_id')
+				'created_by' => $this->session->userdata(self::SESSION_KEY)
             ];
 			$this->db->where($condition);
 
@@ -191,11 +205,11 @@
 
         public function count_my_fav_pin(){
 			$this->db->select('count(1) as total');
-			$this->db->from('pin');
+			$this->db->from($this->table);
 			$condition = [
                 'deleted_at' => null,
                 'is_favorite' => 1,
-				'created_by' => $this->session->userdata('user_id')
+				'created_by' => $this->session->userdata(self::SESSION_KEY)
             ];
 			$this->db->where($condition);
 
@@ -204,10 +218,10 @@
 
         public function get_most_category($limit){
 			$this->db->select('pin_category as context, COUNT(1) as total');
-			$this->db->from('pin');
+			$this->db->from($this->table);
 			$condition = [
                 'deleted_at' => null,
-				'created_by' => $this->session->userdata('user_id')
+				'created_by' => $this->session->userdata(self::SESSION_KEY)
             ];
 			$this->db->where($condition);
             $this->db->order_by('total','desc');
@@ -223,10 +237,10 @@
 
         public function get_latest_pin(){
 			$this->db->select('pin_name');
-			$this->db->from('pin');
+			$this->db->from($this->table);
 			$condition = [
                 'deleted_at' => null,
-				'created_by' => $this->session->userdata('user_id')
+				'created_by' => $this->session->userdata(self::SESSION_KEY)
             ];
 			$this->db->where($condition);
             $this->db->order_by('created_at','desc');
@@ -237,11 +251,11 @@
 
 		public function get_pin_availability($pin_name, $id, $type){
 			$this->db->select('pin_name');
-			$this->db->from('pin');
+			$this->db->from($this->table);
 
 			$condition = [
 				'pin_name' => $pin_name,
-				'created_by' => $this->session->userdata('user_id')
+				'created_by' => $this->session->userdata(self::SESSION_KEY)
 			];
 
 			$this->db->where($condition);
@@ -261,10 +275,10 @@
 		}
 
 		public function get_deleted_pin(){
-			$user_id = $this->session->userdata('user_id');
+			$user_id = $this->session->userdata(self::SESSION_KEY);
 
 			$this->db->select("pin.id, pin_name, pin_category, pin.created_at, pin.updated_at, pin.deleted_at, COUNT(1) as visit_attached");
-			$this->db->from('pin');
+			$this->db->from($this->table);
 			$this->db->join('visit', 'visit.pin_id = pin.id', 'left');
 			$this->db->where('pin.created_by', $user_id);
 			$this->db->where('pin.deleted_at IS NOT NULL');
