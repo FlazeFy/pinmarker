@@ -37,6 +37,9 @@ class AddController extends CI_Controller {
 	}
 
 	public function add_marker($type){
+		$success_insert = 0;
+		$failed_insert = 0;
+
 		if($type == "single"){
 			$rules = $this->PinModel->rules(null);
 			$this->form_validation->set_rules($rules);
@@ -69,33 +72,135 @@ class AddController extends CI_Controller {
 				];
 
 				// This App db
-				$this->PinModel->insert_marker($data);
-				$this->HistoryModel->insert_history('Add Marker', $pin_name);
+				if($this->PinModel->insert_marker($data)){
+					$success_insert++;
+					$this->HistoryModel->insert_history('Add Marker', $pin_name);
 
-				// Tracker's App db
-				try {
-					$response = $this->httpClient->post("/api/v1/location", [
-						'form_params' => [
-							'location_name' => $data['pin_name'],
-							'location_desc' => $data['pin_desc'],
-							'location_lat' => $data['pin_lat'],
-							'location_long' => $data['pin_long'],
-							'location_category' => $data['pin_category'],
-							'location_apps' => 'PinMarker',
-							'location_address' => $data['pin_address'],
-						]
-					]);
+					// Tracker's App db
+					try {
+						$response = $this->httpClient->post("/api/v1/location", [
+							'form_params' => [
+								'location_name' => $data['pin_name'],
+								'location_desc' => $data['pin_desc'],
+								'location_lat' => $data['pin_lat'],
+								'location_long' => $data['pin_long'],
+								'location_category' => $data['pin_category'],
+								'location_apps' => 'PinMarker',
+								'location_address' => $data['pin_address'],
+							]
+						]);
 
-					if ($response->getStatusCode() == 200) {
-					} else {
-						log_message('error', 'API request failed: ' . $response->getBody());
+						if ($response->getStatusCode() == 200) {
+						} else {
+							log_message('error', 'API request failed: ' . $response->getBody());
+						}
+					} catch (Exception $e) {
+						log_message('error', 'API request exception: ' . $e->getMessage());
 					}
-				} catch (Exception $e) {
-					log_message('error', 'API request exception: ' . $e->getMessage());
+				} else {
+					$failed_insert++;
 				}
 			}
 		} else if($type == "multiple"){
+			$pin_names = $this->input->post('pin_name');
+			$pin_descs = $this->input->post('pin_desc');
+			$pin_lats = $this->input->post('pin_lat');
+			$pin_longs = $this->input->post('pin_long');
+			$pin_categories = $this->input->post('pin_category');
 
+			$validation_errors = [];
+			$data_to_insert = [];
+
+			for ($i = 0; $i < count($pin_names); $i++) {
+				$this->form_validation->set_data([
+					'pin_name' => $pin_names[$i],
+					'pin_desc' => $pin_descs[$i] ?? null,
+					'pin_lat' => $pin_lats[$i],
+					'pin_long' => $pin_longs[$i],
+					'pin_category' => $pin_categories[$i],
+					'pin_person' => null,
+					'pin_call' => null,
+					'pin_email' => null,
+					'pin_address' => null
+				]);
+
+				$rules = $this->PinModel->rules(null);
+				$this->form_validation->set_rules($rules);
+
+				if ($this->form_validation->run() == FALSE) {
+					$validation_errors[] = "Row " . ($i + 1) . ": " . validation_errors();
+				} else {
+					$split_pin_cat = explode("-", $pin_categories[$i]);
+					$pin_cat = $split_pin_cat[0];
+
+					$data_to_insert[] = [
+						'id' => get_UUID(),
+						'pin_name' => $pin_names[$i],
+						'pin_desc' => $pin_descs[$i] ?? null,
+						'pin_lat' => $pin_lats[$i],
+						'pin_long' => $pin_longs[$i],
+						'pin_category' => $pin_cat,
+						'pin_person' => null,
+						'pin_call' => null,
+						'pin_email' => null,
+						'pin_address' => null,
+						'is_favorite' => 0,
+						'created_at' => date("Y-m-d H:i:s"),
+						'created_by' => $this->session->userdata('user_id'),
+						'updated_at' => null,
+						'deleted_at' => null
+					];
+				}
+			}
+
+			if (!empty($validation_errors)) {
+				$this->session->set_flashdata('message_error', 'Pins failed to be created. Validation failed');
+				$this->session->set_flashdata('validation_error', implode('<br>', $validation_errors));
+				redirect('AddController');
+			} else {
+				foreach ($data_to_insert as $data) {
+					// Insert into this App db
+					if($this->PinModel->insert_marker($data)){
+						$success_insert++;
+						$this->HistoryModel->insert_history('Add Marker', $data['pin_name']);
+
+						// Insert into Tracker's App db
+						try {
+							$response = $this->httpClient->post("/api/v1/location", [
+								'form_params' => [
+									'location_name' => $data['pin_name'],
+									'location_desc' => $data['pin_desc']  ?? null,
+									'location_lat' => $data['pin_lat'],
+									'location_long' => $data['pin_long'],
+									'location_category' => $data['pin_category'],
+									'location_apps' => 'PinMarker',
+									'location_address' => null,
+								]
+							]);
+
+							if ($response->getStatusCode() != 200) {
+								log_message('error', 'API request failed: ' . $response->getBody());
+							}
+						} catch (Exception $e) {
+							log_message('error', 'API request exception: ' . $e->getMessage());
+						}
+					} else {
+						$failed_insert++;
+					}
+				}
+			}
+		}
+
+		if($success_insert > 0 && $failed_insert == 0){
+			if($type == "multiple"){
+				$this->session->set_flashdata('message_success', 'Successfully add all marker');
+			} else {
+				$this->session->set_flashdata('message_success', 'Successfully add marker');
+			}
+		} else if($success_insert > 0 && $failed_insert > 0){
+			$this->session->set_flashdata('message_success', "Successfully add $success_insert marker, and $failed_insert failed to add");
+		} else {
+			$this->session->set_flashdata('message_error', 'Failed to add marker');
 		}
 
 		redirect('ListController');

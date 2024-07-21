@@ -83,18 +83,19 @@
 </div>
 <div id="add_multiple_pin" style="display:none;">
     <form action="/AddController/add_marker/multiple" method="POST">
-        <table class="table table-bordered" id="tb_history_track">
+        <table class="table table-bordered" id="tb_imported_pin">
             <thead style="font-size: var(--textMD);">
                 <tr class="text-center">
                     <th scope="col">Pin Name</th>
-                    <th scope="col">Latitude</th>
-                    <th scope="col">Longitude</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Coordinate</th>
                     <th scope="col">Description</th>
                     <th scope="col">Delete</th>
                 </tr>
             </thead>
-            <tbody id="tb_imported_pin" style="font-size: var(--textSM);"></tbody>
+            <tbody style="font-size: var(--textSM);"></tbody>
         </table>
+        <button class="btn btn-dark rounded-pill w-100 py-2 px-3"><i class="fa-solid fa-floppy-disk"></i> Save All Marker</button>
     </form>
 </div>
 
@@ -176,7 +177,7 @@
                 let rowData = csvdata.split('\n')
                 let success_row = 0
                 let failed_row = 0
-                let map
+                let map2
                 let markers = []
 
                 if (rowData.length > 0 && rowData.length < 101) {
@@ -185,30 +186,28 @@
                     $('#add_pin').css('display', 'none')
 
                     function initMapImported() {
-                        map = new google.maps.Map(document.getElementById("map-board-imported"), {
+                        map2 = new google.maps.Map(document.getElementById("map-board-imported"), {
                             center: { lat: -6.226838579766097, lng: 106.82157923228753 },
                             zoom: 12,
                         });
                     }
 
-                    function addMarker(marker, pinName) {
-                        const markerObj = new google.maps.Marker({
-                            position: marker.position,
-                            map: map,
-                            icon: {
-                                url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
-                                scaledSize: new google.maps.Size(40, 40),
-                            },
-                            label: pinName,
+                    function addMarker(props) {
+                        var marker = new google.maps.Marker({
+                            position: props.coords,
+                            map: map2,
+                            icon: props.icon
                         });
 
-                        if (marker.content) {
-                            const infoWindow = new google.maps.InfoWindow({
-                                content: marker.content
+                        if(props.icon){
+                            marker.setIcon(props.icon);
+                        }
+                        if(props.content){
+                            var infoWindow = new google.maps.InfoWindow({
+                                content:props.content
                             });
-
-                            markerObj.addListener('click', function () {
-                                infoWindow.open(map, markerObj);
+                            marker.addListener('click', function(){
+                                infoWindow.open(map, marker);
                             });
                         }
                     }
@@ -218,24 +217,38 @@
 
                         if (rowColData.length >= 3) {
                             let pinName = rowColData[0].trim()
-                            let latitude = rowColData[1].trim()
-                            let longitude = rowColData[2].trim()
+                            let longitude = rowColData[1].trim()
+                            let latitude = rowColData[2].trim()
 
                             if (pinName && latitude && longitude) {
                                 if (latitude !== "0" && longitude !== "0") {
-                                    $('#tb_imported_pin').append(`
+                                    $('#tb_imported_pin tbody').append(`
                                         <tr id="pin_section_${row}">
                                             <td style="width:300px;">
-                                                <input class="form-control" name="pin_name[]" value="${pinName}">
+                                                <input class="form-control" name="pin_name[]" value="${pinName}" oninput="dt_search_config(${row},'pin_name', this)">
+                                                <span hidden id="pin_name_dt_holder_${row}">${pinName}</span>
                                             </td>
                                             <td>
-                                                <input class="form-control" name="pin_lat[]" value="${latitude}">
+                                                <select name="pin_category[]" class="form-select">
+                                                    <?php 
+                                                        foreach($dt_dct_pin_category as $dt){
+                                                            echo "<option value='$dt->dictionary_name-$dt->dictionary_color'>$dt->dictionary_name</option>";
+                                                        }
+                                                    ?>
+                                                </select>
+                                                <a class="btn btn-dark py-1 px-2 float-start" style='font-size:var(--textSM);' onclick="copy_all_cat(${row})"><i class="fa-solid fa-copy"></i> Using this category for all pin after this</a>
                                             </td>
                                             <td>
-                                                <input class="form-control" name="pin_long[]" value="${longitude}">
+                                                <label>Latitude</label>
+                                                <input class="form-control" name="pin_lat[]" value="${latitude}" oninput="dt_search_config(${row},'pin_lat', this)">
+                                                <span hidden id="pin_lat_dt_holder_${row}">${latitude}</span>
+
+                                                <label>Longitude</label>
+                                                <input class="form-control" name="pin_long[]" value="${longitude}" oninput="dt_search_config(${row},'pin_long', this)">
+                                                <span hidden id="pin_long_dt_holder_${row}">${longitude}</span>
                                             </td>
                                             <td>
-                                                <textarea class="form-control" name="pin_desc"></textarea>
+                                                <textarea class="form-control" name="pin_desc" value=""></textarea>
                                             </td>
                                             <td>
                                                 <a class='btn btn-dark d-block mx-auto' onclick="delete_imported_pin(${row})"><i class="fa-solid fa-trash"></i></a>
@@ -244,13 +257,18 @@
                                     `)
                                     success_row++
 
-                                    const markerProps = {
-                                        position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
-                                        content: `<div><strong>${pinName}</strong><br>Lat: ${latitude}<br>Lng: ${longitude}</div>`
-                                    };
-
-                                    markers.push(markerProps)
-                                    addMarker(markerProps, pinName)
+                                    // markers.push()
+                                    addMarker({
+                                        coords: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
+                                        icon: {
+                                            url: 'https://maps.google.com/mapfiles/ms/icons/red.png',
+                                            scaledSize: new google.maps.Size(40, 40),
+                                        },
+                                        content: `<div>
+                                            <h6>${pinName}</h6>
+                                        </div>
+                                        `
+                                    })
                                 } else {
                                     failed_row++
                                 }
@@ -264,9 +282,11 @@
 
                     Swal.hideLoading()
                     if (success_row > 0) {
-                        window.initMap = initMapImported
+                        window.initMap = initMapImported()
+                        // $('#tb_imported_pin').DataTable()
+
                         $('#imported_map_btn_holder').empty().append(`
-                            <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" data-bs-toggle="modal" data-bs-target="#importMarkerMap" onclick="open_imported_map()">
+                            <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" data-bs-toggle="modal" data-bs-target="#importMarkerMap">
                                 <i class="fa-solid fa-map"></i> See the Map
                             </a>
                         `)
@@ -298,9 +318,18 @@
         });
     };
 
-    const open_imported_map = () => {
-        if (typeof initMap === 'function') {
-            initMap();
-        }
-    };
+    const copy_all_cat = (idx) => {
+        const val = $('select[name="pin_category[]"]').eq(idx-1).val()
+        $('select[name="pin_category[]"]').slice(idx).val(val)
+
+        Swal.fire({ 
+            title: 'Success!', 
+            text: `Category has been copy ${val}`, 
+            icon: 'success' 
+        });
+    }
+
+    const dt_search_config = (idx, target, el) => {
+        $(`#${target}_dt_holder_${idx}`).text(el.value)
+    }
 </script>

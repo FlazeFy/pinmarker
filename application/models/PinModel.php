@@ -291,7 +291,7 @@
 
 		// Command
 		public function insert_marker($data){
-			$this->db->insert('pin',$data);	
+			return $this->db->insert('pin',$data);	
 		}
 
 		public function update_marker($data, $id){

@@ -24,6 +24,14 @@
         display: inline-block;
         border-radius: var(--roundedMD);
     }
+    .list-pin-desc {
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        display: -webkit-box; 
+        -webkit-line-clamp: 5; 
+        line-clamp: 5; 
+        -webkit-box-orient: vertical;
+    }
 </style>
 <?php 
     if($this->session->userdata('is_catalog_view') == false || $this->session->userdata('open_pin_list_category')){
@@ -120,7 +128,7 @@
                         <div class='pin-box mb-4'>
                             <div class='pin-box-label "; if(!$is_mobile_device){ echo "position-absolute"; } else { echo "float-end mb-1"; } echo "'"; if(!$is_mobile_device){ echo "style='right:-15px; top:-15px;'"; } echo ">$dt->total Marker</div>
                             <h3>$dt->dictionary_name</h3>
-                            <p>"; 
+                            <p class='list-pin-desc'>"; 
                                 if($dt->pin_list){
                                     echo $dt->pin_list;
                                 } else {
