@@ -26,7 +26,7 @@ class DetailController extends CI_Controller {
 				$offset = $this->session->userdata('page_detail_history') * $per_page;
 			}
 
-			$data['active_page']= 'maps';
+			$data['active_page']= 'list';
             $data['dt_detail_pin']= $this->PinModel->get_pin_by_id($id);
             $data['dt_visit_history']= $this->VisitModel->get_visit_history_by_pin_id($id, $per_page, $offset);
             $data['dt_my_personal_pin']= $this->PinModel->get_pin_by_category('Personal', $id);

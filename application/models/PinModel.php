@@ -65,7 +65,7 @@
 		public function get_all_my_pin($from,$category,$limit,$start){
             $extra = "";
             if($from == 'list'){
-                $extra = ", pin_call, pin_email, pin_address, COUNT(1) as total_visit";
+                $extra = ", pin_call, pin_email, pin_address, IFNULL(COUNT(visit.id), 0) as total_visit, MAX(visit.created_at) as last_visit";
             }
 			$this->db->select("pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, is_favorite, pin.created_at, dictionary_color as pin_color, $extra");
 			$this->db->join('dictionary','dictionary.dictionary_name = pin.pin_category');

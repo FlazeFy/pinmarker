@@ -26,7 +26,7 @@ class AddController extends CI_Controller {
 	{
 		if($this->AuthModel->current_user()){
 			$data = [];
-			$data['active_page']= 'maps';
+			$data['active_page']= 'list';
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
 			$data['is_mobile_device'] = is_mobile_device();
 

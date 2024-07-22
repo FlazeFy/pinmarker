@@ -33,3 +33,4 @@
         ?>
     </div>
 </div>
+<div id="statistic_test_target"></div>

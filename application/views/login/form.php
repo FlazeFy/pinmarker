@@ -5,7 +5,7 @@
         <h2 class="text-center" style="font-weight:600;">Welcome to PinMarker</h2><br>
         <div>
             <label for="name">Email/Username</label>
-            <input type="text" name="username" class="form-control <?= form_error('username') ? 'invalid' : '' ?>"
+            <input type="text" name="username" id="username" class="form-control <?= form_error('username') ? 'invalid' : '' ?>"
                 placeholder="Your username or email" value="<?= set_value('username') ?>" required />
             <div class="msg-error-input">
                 <?= form_error('username') ?>
@@ -13,7 +13,7 @@
         </div>
         <div class="mt-2">
             <label for="password">Password</label>
-            <input type="password" name="password" class="form-control <?= form_error('password') ? 'invalid' : '' ?>"
+            <input type="password" name="password" id="password" class="form-control <?= form_error('password') ? 'invalid' : '' ?>"
                 placeholder="Enter your password" value="<?= set_value('password') ?>" required />
             <div class="msg-error-input">
                 <?= form_error('password') ?>

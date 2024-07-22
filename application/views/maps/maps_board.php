@@ -29,6 +29,8 @@
 
 <script type="text/javascript">
     let map;
+    let openInfoWindows = []
+    let maxOpenInfoWindows = 2
 
     function initMap() {
         //Map starter
@@ -107,7 +109,12 @@
                 content:props.content
             });
             marker.addListener('click', function(){
-                infoWindow.open(map, marker);
+                if (openInfoWindows.length >= maxOpenInfoWindows) {
+                    var oldestInfoWindow = openInfoWindows.shift()
+                    oldestInfoWindow.close()
+                }
+                infoWindow.open(map, marker)
+                openInfoWindows.push(infoWindow)
             });
             }
         }

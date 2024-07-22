@@ -47,6 +47,7 @@ label {
     width: 1280px;
     display: block;
     margin-inline: auto;
+    min-height: 75vh;
     padding: 0 var(--spaceLG) var(--spaceLG) var(--spaceLG);
 }
 

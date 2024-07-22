@@ -37,7 +37,7 @@
     }
 </style>
 
-<form autocomplete="off" action="/MapsController/search_pin_name" method="POST">
+<form autocomplete="off" action="/MapsController/search_pin_name" method="POST" id="search_form">
     <div class="autocomplete">
         <input id="pin_name" type="text" class="form-control" name="pin_name" placeholder="Search by pin name" 
             value="<?php 
@@ -77,6 +77,7 @@
                     b.addEventListener("click", function(e) {
                         inp.value = this.getElementsByTagName("input")[0].value
                         closeAllLists()
+                        document.getElementById("search_form").submit()
                     });
                     a.appendChild(b)
                 }
@@ -128,7 +129,7 @@
         });
     }
 
-    var countries = [
+    var datas = [
         <?php 
             foreach($dt_my_pin_name as $dt){
                 echo "`$dt->pin_name`,";
@@ -136,5 +137,5 @@
         ?>
     ];
 
-    autocomplete(document.getElementById("pin_name"), countries);
+    autocomplete(document.getElementById("pin_name"), datas);
 </script>

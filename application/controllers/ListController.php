@@ -212,18 +212,22 @@ class ListController extends CI_Controller {
 			$this->session->set_flashdata('message_error', 'Failed to create category. Validation failed');
 			$this->session->set_flashdata('validation_error', validation_errors());
 		} else {
-			$data = [
-				'id' => get_UUID(), 
-				'dictionary_type' => 'pin_category',
-				'dictionary_name' => $this->input->post('dictionary_name'),
-				'dictionary_color' => $this->input->post('dictionary_color'),
-				'created_by' => $this->session->userdata('user_id'),
-			];
-
-			if($this->DictionaryModel->insert_table($data)){
-				$this->session->set_flashdata('message_success', 'Category created');
+			if($this->DictionaryModel->get_available_dct($this->input->post('dictionary_name'), 'pin_category')){
+				$data = [
+					'id' => get_UUID(), 
+					'dictionary_type' => 'pin_category',
+					'dictionary_name' => $this->input->post('dictionary_name'),
+					'dictionary_color' => $this->input->post('dictionary_color'),
+					'created_by' => $this->session->userdata('user_id'),
+				];
+	
+				if($this->DictionaryModel->insert_table($data)){
+					$this->session->set_flashdata('message_success', 'Category created');
+				} else {
+					$this->session->set_flashdata('message_error', 'Failed to create category');
+				}
 			} else {
-				$this->session->set_flashdata('message_error', 'Failed to create category');
+				$this->session->set_flashdata('message_error', 'Failed to create category. Name already used');
 			}
 		}
 
