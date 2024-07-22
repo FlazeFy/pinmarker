@@ -14,6 +14,7 @@ class ListController extends CI_Controller {
 		$this->load->model('PinModel');
 		$this->load->model('AuthModel');
 		$this->load->model('HistoryModel');
+		$this->load->model('DictionaryModel');
 		
 		$this->load->helper('generator_helper');
 
@@ -46,6 +47,7 @@ class ListController extends CI_Controller {
 				$user_id = $this->session->userdata('user_id');
 				$data['dt_my_pin']= $this->PinModel->get_pin_list_by_category($user_id);
 			}
+			$data['dt_my_category'] = $this->DictionaryModel->get_my_pin_category();
 			$data['is_mobile_device'] = is_mobile_device();
 			$this->load->view('list/index', $data);
 		} else {
@@ -183,6 +185,19 @@ class ListController extends CI_Controller {
 			$this->session->set_userdata('is_catalog_view', true);
 		} else {
 			$this->session->set_userdata('is_catalog_view', false);
+		}
+
+		redirect("ListController");
+	}
+
+	public function edit_category_color($id){
+		$data = [
+			'dictionary_color' => $this->input->post('dictionary_color')
+		];
+		if($this->DictionaryModel->update_table($data, $id)){
+			$this->session->set_flashdata('message_success', 'Category pin color updated');
+		} else {
+			$this->session->set_flashdata('message_error', 'Failed to update pin color');
 		}
 
 		redirect("ListController");
