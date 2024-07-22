@@ -32,10 +32,20 @@
         line-clamp: 5; 
         -webkit-box-orient: vertical;
     }
+    #map-category {
+        height:65vh;
+        border-radius: 20px;
+        margin-bottom: 6px;
+        border: 5px solid black;
+    }
 </style>
 <?php 
     if($this->session->userdata('is_catalog_view') == false || $this->session->userdata('open_pin_list_category')){
         if(count($dt_my_pin) > 0){
+            if($this->session->userdata('is_catalog_view') == true){
+                echo "<div class='row'>
+                    <div class='col-6'>";
+            }
             foreach($dt_my_pin['data'] as $dt){
                 echo "
                     <div class='pin-box'>
@@ -110,6 +120,15 @@
                 ";
             }
 
+            if($this->session->userdata('is_catalog_view') == true){
+                echo "</div>
+                    </div>
+                    <div class='col-6'>
+                        <h4>Maps</h4>
+                        <div id='map-category'></div>
+                    </div>
+                </div>";
+            }
             echo "</div>";
         } else {
             echo "
@@ -180,11 +199,101 @@
     }
 ?>
 
-<script>
-    const date_holder = document.querySelectorAll('.date-target');
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
 
-    date_holder.forEach(e => {
-        const date = new Date(e.textContent);
-        e.textContent = getDateToContext(e.textContent, "calendar");
+<script>
+    let map;
+
+    function initMap() {
+        //Map starter
+        var markers = [
+            <?php 
+                foreach($dt_my_pin['data'] as $dt){
+                    echo "{
+                        coords: {lat: $dt->pin_lat, lng: $dt->pin_long},
+                        icon: {
+                            url: 'https://maps.google.com/mapfiles/ms/icons/$dt->pin_color.png',
+                            scaledSize: new google.maps.Size(40, 40),
+                        },
+                        content: 
+                        `<div>
+                            <h6>$dt->pin_name</h6>
+                            <span class='bg-dark rounded-pill px-2 py-1 text-white'>$dt->pin_category</span>
+                            ";
+                            if($dt->is_favorite == 1){
+                                echo "<span class='bg-dark rounded-pill px-2 py-1 text-white'><i class='fa-solid fa-bookmark'></i></span>";
+                            }
+                            echo "<br><br>";
+                            if($dt->pin_desc){
+                                echo "<p>$dt->pin_desc</p>";
+                            } else {
+                                echo "<p class='text-secondary fst-italic'>- No Description -</p>";
+                            }
+                            if($dt->pin_person){
+                                echo "<p class='mt-2 mb-0 fw-bold'>Person In Touch</p>
+                                <p>$dt->pin_person</p>";
+                            }
+                            echo"
+                            <p class='mt-2 mb-0 fw-bold'>Created At</p>
+                            <p class='date-target'>$dt->created_at</p>
+                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2' style='font-size:12px;' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
+                            <a class='btn btn-dark rounded-pill px-2 py-1' style='font-size:12px;'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                        </div>`
+                    },";
+                }
+            ?>
+        ];
+
+        map = new google.maps.Map(document.getElementById("map-category"), {
+            center: <?php 
+                $search_pin_name = $this->session->userdata('search_pin_name_key');
+                if($search_pin_name != null && $search_pin_name != ""){
+                    echo "{ lat: "; echo $dt_my_pin[0]['data']->pin_lat; echo", lng: "; echo $dt_my_pin[0]['data']->pin_long; echo"}";
+                } else {
+                    echo "{ lat: -6.226838579766097, lng: 106.82157923228753}";
+                }
+            ?>,
+            zoom: 12,
+        });
+
+        <?php 
+            if($dt_my_pin){
+                $total = count($dt_my_pin['data']);
+
+                for($i = 0; $i < $total; $i++){
+                    echo "addMarker(markers[".$i."]);";
+                }
+            }
+        ?>
+
+        function addMarker(props){
+            var marker = new google.maps.Marker({
+                position: props.coords,
+                map: map,
+                icon: props.icon
+            });
+
+            if(props.iconImage){
+                marker.setIcon(props.iconImage);
+            }
+            if(props.content){
+                var infoWindow = new google.maps.InfoWindow({
+                content:props.content
+            });
+            marker.addListener('click', function(){
+                infoWindow.open(map, marker);
+            });
+            }
+        }
+    }
+    window.initMap = initMap
+
+    $( document ).ready(function() {
+        const date_holder = document.querySelectorAll('.date-target');
+
+        date_holder.forEach(e => {
+            const date = new Date(e.textContent);
+            e.textContent = getDateToContext(e.textContent, "calendar");
+        });
     });
 </script>

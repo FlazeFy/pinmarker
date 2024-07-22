@@ -4,34 +4,6 @@
         border-radius: 0 0 15px 15px;
     }
 
-    /* Maps Dialog */
-    .gm-ui-hover-effect {
-        background: black !important;
-        border-radius: 100%;
-        position: absolute !important;
-        right: 6px !important;
-        top: 6px !important;
-    }
-    .gm-ui-hover-effect span {
-        color: white !important;
-    }
-    .gm-control-active {
-        background: black !important;
-        border: 1.75px solid white !important;
-        border-radius: 10px !important;
-        margin-bottom: 10px !important;
-    }
-    .gmnoprint div{
-        background: transparent !important;
-        box-shadow: none !important;
-        position: absolute;
-        top: -30px;
-        right: -15px;
-    }
-    .gm-control-active span {
-        background: white !important;
-    }
-
     .maps-toolbar {
         border-radius: 20px;
         border: 5px solid black;

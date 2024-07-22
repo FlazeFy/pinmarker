@@ -93,6 +93,7 @@
 			$this->db->order_by('created_at','DESC');
 
 			if($category){
+				$category = str_replace("%20", " ", $category);
 				$this->db->where('pin_category',$category);
 			}
 

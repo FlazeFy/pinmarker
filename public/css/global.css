@@ -62,6 +62,23 @@ label {
     background: var(--primaryColor);
 }
 
+.dropdown-menu {
+    padding: var(--spaceSM);
+    margin-top: var(--spaceJumbo) !important;
+    border: calc(var(--spaceMini)/2) solid var(--primaryColor);
+    border-radius: var(--roundedLG);
+}
+.dropdown-menu li a{
+    padding: var(--spaceSM)  var(--spaceMD);
+    margin-bottom: var(--spaceXSM);
+}
+.dropdown-item.active {
+    background: var(--primaryColor);
+}
+.dropdown-item.active, .dropdown-item:hover {
+    border-radius: var(--roundedSM) !important;
+}
+
 /* Mobile & Tablet style */
 @media screen and (max-width: 1023px) {
     .content {
@@ -71,6 +88,9 @@ label {
     .btn-main-page {
         padding: var(--spaceSM);
         margin-bottom: var(--spaceXSM);
+    }
+    .dropdown-menu {
+        margin-top: 0 !important;
     }
 }
 
@@ -171,4 +191,32 @@ table thead {
 }
 .alert h5 {
     font-size: var(--textLG);
+}
+
+/* Maps Dialog */
+.gm-ui-hover-effect {
+    background: black !important;
+    border-radius: 100%;
+    position: absolute !important;
+    right: 6px !important;
+    top: 6px !important;
+}
+.gm-ui-hover-effect span {
+    color: white !important;
+}
+.gm-control-active {
+    background: black !important;
+    border: 1.75px solid white !important;
+    border-radius: 10px !important;
+    margin-bottom: 10px !important;
+}
+.gmnoprint div{
+    background: transparent !important;
+    box-shadow: none !important;
+    position: absolute;
+    top: -30px;
+    right: -15px;
+}
+.gm-control-active span {
+    background: white !important;
 }
