@@ -17,6 +17,7 @@ class ListController extends CI_Controller {
 		$this->load->model('DictionaryModel');
 		
 		$this->load->helper('generator_helper');
+		$this->load->library('form_validation');
 
 		$this->load->model('TokenModel');
 		$telegram_token = $this->TokenModel->get_token('TELEGRAM_TOKEN');
@@ -198,6 +199,32 @@ class ListController extends CI_Controller {
 			$this->session->set_flashdata('message_success', 'Category pin color updated');
 		} else {
 			$this->session->set_flashdata('message_error', 'Failed to update pin color');
+		}
+
+		redirect("ListController");
+	}
+
+	public function add_category(){
+		$rules = $this->DictionaryModel->rules();
+		$this->form_validation->set_rules($rules);
+
+		if($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('message_error', 'Failed to create category. Validation failed');
+			$this->session->set_flashdata('validation_error', validation_errors());
+		} else {
+			$data = [
+				'id' => get_UUID(), 
+				'dictionary_type' => 'pin_category',
+				'dictionary_name' => $this->input->post('dictionary_name'),
+				'dictionary_color' => $this->input->post('dictionary_color'),
+				'created_by' => $this->session->userdata('user_id'),
+			];
+
+			if($this->DictionaryModel->insert_table($data)){
+				$this->session->set_flashdata('message_success', 'Category created');
+			} else {
+				$this->session->set_flashdata('message_error', 'Failed to create category');
+			}
 		}
 
 		redirect("ListController");

@@ -5,6 +5,22 @@
 		private $table = "dictionary";
         const SESSION_KEY = 'user_id';
 
+		public function rules()
+        {
+            return [
+				[
+					'field' => 'dictionary_name',
+					'label' => 'Dictionary Name',
+					'rules' => 'required|min_length[2]|max_length[36]'
+				],
+				[
+					'field' => 'dictionary_color',
+					'label' => 'Dictionary Color',
+					'rules' => 'required|max_length[36]',
+				],
+			];
+        }
+
         public function get_dictionary_by_type($type){
 			$this->db->select('id, dictionary_name, dictionary_color');
 			$this->db->from($this->table);
@@ -40,6 +56,10 @@
 		public function update_table($data, $id){
 			$this->db->where('id', $id);
 			return $this->db->update($this->table,$data);	
+		}
+
+		public function insert_table($data){
+			return $this->db->insert($this->table,$data);
 		}
 	}
 ?>

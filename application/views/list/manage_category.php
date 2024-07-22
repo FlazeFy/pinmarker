@@ -1,9 +1,9 @@
-<div class="modal fade" id="manageCategory" tabindex="-1" aria-labelledby="addGalleriesLabel" aria-hidden="true">
+<div class="modal fade" id="manageCategory" data-bs-backdrop="static" tabindex="-1" aria-labelledby="addGalleriesLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addGalleriesLabel">Manage Category</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clear_form_add_category()"></button>
             </div>
             <div class="modal-body">
                 <?php
@@ -47,7 +47,11 @@
                                         </tr>
                                     ";
                                 }
-                            echo"</tbody>
+                            echo"
+                                <tr id='add_form_dct_holder'>
+                                    <td colspan='4'><a class='btn btn-dark w-100' onclick='add_form_dct_category()'>Add New Category</a></td>
+                                </tr>
+                            </tbody>
                         </table>";
                     }
                 ?>  
@@ -55,3 +59,38 @@
         </div>
     </div>
 </div>
+
+<script>
+    let add_i = 0
+    const add_form_dct_category = () => {
+        if(add_i == 0){
+            $('#add_form_dct_holder').remove()
+            $(`#tb_my_category tbody`).append(`
+                <tr id='add_category_tr'>
+                    <td colspan='4'>
+                        <form action='/ListController/add_category' method='POST' onsubmit='return handleFormSubmit(this);'>
+                            <div class="d-flex justify-content-start">
+                                <input class='form-control me-2' type='text' name='dictionary_name' placeholder='Category Name' required>
+                                <select name='dictionary_color' class='form-select me-2'>
+                                    <option value='red'>Red</option>
+                                    <option value='blue'>Blue</option>
+                                    <option value='yellow'>Yellow</option>
+                                    <option value='orange'>Orange</option>
+                                    <option value='purple'>Purple</option>
+                                    <option value='green'>Green</option>
+                                </select>
+                                <button class='btn btn-dark' style='width:180px;' type='submit'><i class='fa-solid fa-floppy-disk'></i> Save</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            `);
+            add_i++
+        }
+    }
+
+    const clear_form_add_category = () => {
+        add_i = 0
+        $('#add_category_tr').empty()
+    }
+</script>
