@@ -16,7 +16,7 @@
 				[
 					'field' => 'dictionary_color',
 					'label' => 'Dictionary Color',
-					'rules' => 'required|max_length[36]',
+					'rules' => 'required|min_length[2]|max_length[36]',
 				],
 			];
         }

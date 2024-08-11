@@ -47,7 +47,7 @@
                     <a class="nav-link <?php if($active_page == 'maps'){ echo 'active'; } ?>" href="/MapsController">Maps</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Global-Collection</a>
+                    <a class="nav-link <?php if($active_page == 'global_list'){ echo 'active'; } ?>" href="/GlobalListController">Global-Collection</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php if($active_page == 'list'){ echo 'active'; } ?>" href="/ListController">List</a>

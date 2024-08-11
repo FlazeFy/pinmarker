@@ -180,7 +180,7 @@
                 let map2
                 let markers = []
 
-                if (rowData.length > 0 && rowData.length < 101) {
+                if (rowData.length > 0 && rowData.length < 201) {
                     $('#importMarker').modal('hide')
                     $('#add_multiple_pin').css('display', 'block')
                     $('#add_pin').css('display', 'none')
