@@ -13,6 +13,9 @@ class GlobalListController extends CI_Controller {
 	{
 		if($this->AuthModel->current_user()){
 			$data = [];
+			if(!$this->session->userdata('view_mode_global_list_pin')){
+				$this->session->set_userdata('view_mode_global_list_pin', 'catalog');
+			}
 
 			$data['active_page']= 'global_list';
 			$data['dt_global_list']= $this->GlobalListModel->get_global_list();

@@ -1,9 +1,13 @@
 <style>
     .map-board {
         height:30vh;
-        border-radius: 0 0 15px 15px;
+        border-radius: 15px;
     }
 </style>
+
+<?php 
+    $view = $this->session->userdata('view_mode_global_list_pin');
+?>
 <a class="btn btn-dark mb-4 rounded-pill py-3 px-4 me-2" href="/GlobalListController"><i class="fa-solid fa-arrow-left"></i> Back</a>
 <div class='pin-box mb-4 no-animation'>
     <span class="d-flex justify-content-between">
@@ -31,57 +35,127 @@
             <h5>List Marker</h5>
         </div>
         <div>
-            <a class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-table'></i> See Table View</a>
+            <form action="/DetailGlobalController/view_global_list_pin/<?= $dt_detail->id ?>" method="POST" class="d-inline">
+                <button class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-table'></i> See <?php if($view == 'table'){ echo'Catalog'; } else { echo 'Table'; } ?> View</button>
+            </form>
             <a class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-map'></i> Whole Map</a>
         </div>
     </span>
     <div class="row mt-3 mx-2">
         <?php 
-            foreach($dt_pin_list as $dt){
-                echo "
-                    <div class='col-lg-6 col-md-12 col-sm-12 col-12'>
-                        <div class='pin-box'>
-                            <div id='map-board-$dt->id' class='map-board'></div>
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function() {
-                                    initMap({
-                                        coords: {lat: $dt->pin_lat, lng: $dt->pin_long}
-                                    }, 'map-board-$dt->id')
-                                })
-                            </script>
-                            <h3>$dt->pin_name</h3>
-                            ";
-                            echo "<br>";
-                            if($dt->pin_desc){
-                                echo "<p>$dt->pin_desc</p>";
-                            } else {
-                                echo "<p class='text-secondary fst-italic'>- No Description -</p>";
-                            }
-                                if($dt->pin_call){
-                                    echo "
-                                        <p class='mt-2 mb-0 fw-bold'>Person In Touch</p>
-                                        <p>$dt->pin_call</p>
-                                    ";
+            if($view == 'catalog'){
+                foreach($dt_pin_list as $dt){
+                    echo "
+                        <div class='col-lg-6 col-md-12 col-sm-12 col-12'>
+                            <div class='pin-box'>
+                                <div id='map-board-$dt->id' class='map-board'></div>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        initMap({
+                                            coords: {lat: $dt->pin_lat, lng: $dt->pin_long}
+                                        }, 'map-board-$dt->id')
+                                    })
+                                </script>
+                                <h3 class='mb-0'>$dt->pin_name</h3>
+                                <span class='pin-box-label me-2 mb-3'>$dt->pin_category</span>
+                                ";
+                                echo "<br>";
+                                if($dt->pin_desc){
+                                    echo "<p>$dt->pin_desc</p>";
+                                } else {
+                                    echo "<p class='text-secondary fst-italic'>- No Description -</p>";
                                 }
-                                if($dt->pin_address){
-                                    echo "
-                                        <p class='mt-2 mb-0 fw-bold'>Address</p>
-                                        <p>$dt->pin_address</p>
-                                    ";
+                                    if($dt->pin_call){
+                                        echo "
+                                            <p class='mt-2 mb-0 fw-bold'>Person In Touch</p>
+                                            <p>$dt->pin_call</p>
+                                        ";
+                                    }
+                                    if($dt->pin_address){
+                                        echo "
+                                            <p class='mt-2 mb-0 fw-bold'>Address</p>
+                                            <p>$dt->pin_address</p>
+                                        ";
+                                    }
+                                if(!$is_mobile_device){
+                                    echo"
+                                    <div class='col-lg-4 col-md-6 col-sm-12'>
+                                        <p class='mt-2 mb-0 fw-bold'>Added At</p>
+                                        <p class='date-target'>$dt->created_at</p>
+                                    </div>";
                                 }
-                            if(!$is_mobile_device){
-                                echo"
-                                <div class='col-lg-4 col-md-6 col-sm-12'>
-                                    <p class='mt-2 mb-0 fw-bold'>Added At</p>
-                                    <p class='date-target'>$dt->created_at</p>
-                                </div>";
-                            }
-                                echo"
-                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>
-                            <a class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                                    echo"
+                                <a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>
+                                <a class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                            </div>
                         </div>
-                    </div>
-                ";
+                    ";
+                }
+            } else {
+                    echo "
+                        <table class='table table-bordered' id='tb_related_pin_track'>
+                            <thead class='text-center'>
+                                <tr>
+                                    <th scope='col'>Name</th>
+                                    <th scope='col'>Location</th>
+                                    <th scope='col'>Context</th>
+                                    <th scope='col'>Props</th>
+                                    <th scope='col'>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>";
+                                foreach($dt_pin_list as $dt){
+                                    echo "
+                                        <tr>
+                                            <td style='width: 200px;'><h6>$dt->pin_name<h6></td>
+                                            <td style='width: 450px;'>
+                                                <div id='map-board-$dt->id' class='map-board'></div>
+                                                <script>
+                                                    document.addEventListener('DOMContentLoaded', function() {
+                                                        initMap({
+                                                            coords: {lat: $dt->pin_lat, lng: $dt->pin_long}
+                                                        }, 'map-board-$dt->id')
+                                                    })
+                                                </script>";
+                                                if($dt->pin_address){
+                                                    echo "
+                                                        <p class='mt-2 mb-0 fw-bold'>Address</p>
+                                                        <p>$dt->pin_address</p>
+                                                    ";
+                                                }
+                                                echo"
+                                            </td>
+                                            <td>
+                                                <p class='mt-2 mb-0 fw-bold'>Category</p>
+                                                <p>$dt->pin_category</p>
+                                                <p class='mt-2 mb-0 fw-bold'>Description</p>";
+                                                if($dt->pin_desc){
+                                                    echo "<p>$dt->pin_desc</p>";
+                                                } else {
+                                                    echo "<p class='text-secondary fst-italic'>- No Description -</p>";
+                                                }
+                                                if($dt->pin_call){
+                                                    echo "
+                                                        <p class='mt-2 mb-0 fw-bold'>Person In Touch</p>
+                                                        <p>$dt->pin_call</p>
+                                                    ";
+                                                }
+                                                echo"
+                                            </td>
+                                            <td>
+                                                <p class='mt-2 mb-0 fw-bold'>Added At</p>
+                                                <p class='date-target'>$dt->created_at</p>
+                                            </td>
+                                            <td style='width: 160px;'>
+                                                <a class='btn btn-dark rounded-pill px-2 py-1 me-2 w-100 mb-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>
+                                                <a class='btn btn-dark rounded-pill px-2 py-1 w-100'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                                            </td>
+                                        </tr>
+                                    "; 
+                                }
+                            echo"</tbody>
+                        </table>
+                    ";
             }
         ?>
     </div>
@@ -111,4 +185,12 @@
         }
     }
 
+    $( document ).ready(function() {
+        const date_holder = document.querySelectorAll('.date-target')
+
+        date_holder.forEach(e => {
+            const date = new Date(e.textContent);
+            e.textContent = getDateToContext(e.textContent, "calendar")
+        })
+    })
 </script>

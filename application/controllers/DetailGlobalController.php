@@ -24,4 +24,14 @@ class DetailGlobalController extends CI_Controller {
 			redirect('LoginController');
 		}
 	}
+
+	public function view_global_list_pin($id){
+		if($this->session->userdata('view_mode_global_list_pin') == 'catalog'){
+			$this->session->set_userdata('view_mode_global_list_pin', 'table');
+		} else {
+			$this->session->set_userdata('view_mode_global_list_pin', 'catalog');
+		}
+
+		redirect("DetailGlobalController/view/$id");
+	}
 }
