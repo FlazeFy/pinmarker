@@ -17,6 +17,7 @@ class TrashController extends CI_Controller {
 			$data['active_page']= 'trash';
 			$data['dt_deleted_pin']= $this->PinModel->get_deleted_pin();
 			$data['is_mobile_device'] = is_mobile_device();
+			$data['is_signed'] = true;
 
 			$this->load->view('trash/index', $data);
 		} else {

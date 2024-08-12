@@ -13,6 +13,6 @@
     <div class="col-4 py-3">
         <img class='img img-fluid mt-3 mx-auto d-block' style="height:40%;" src='http://127.0.0.1:8080/public/images/bot.png'>
         <h2 class="fw-bold">BOT</h2>
-        <p class="text-secondary mb-0">Get some data or get closest location using chat. Available on <b>Telegram</b>,<b>Discord</b>, and <b>LINE</b></p>
+        <p class="text-secondary mb-0">Get some data or get closest location using chat. Available on <b>Telegram</b> and <b>Discord</b></p>
     </div>        
 </div>

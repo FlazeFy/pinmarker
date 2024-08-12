@@ -29,6 +29,7 @@ class AddController extends CI_Controller {
 			$data['active_page']= 'list';
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
 			$data['is_mobile_device'] = is_mobile_device();
+			$data['is_signed'] = true;
 
 			$this->load->view('add/index', $data);
 		} else {

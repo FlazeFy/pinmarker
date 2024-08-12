@@ -18,6 +18,11 @@
     
     <!-- CSS -->
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
+    <?php 
+        if($dt_active_search){
+            echo '<link href="http://127.0.0.1:8080/public/css/pin.css" rel="stylesheet"/>';
+        }
+    ?>
 
     <!-- Jquery -->
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>

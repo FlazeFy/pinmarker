@@ -17,6 +17,7 @@ class GlobalListController extends CI_Controller {
 				$this->session->set_userdata('view_mode_global_list_pin', 'catalog');
 			}
 
+			$data['is_signed'] = true;
 			$data['active_page']= 'global_list';
 			$data['dt_global_list']= $this->GlobalListModel->get_global_list();
 			$data['is_mobile_device'] = is_mobile_device();

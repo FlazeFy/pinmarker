@@ -7,8 +7,10 @@ class LoginController extends CI_Controller {
 		$this->load->model('AuthModel');
 		$this->load->model('PinModel');
 		$this->load->model('VisitModel');
+		$this->load->model('GlobalListModel');
 
         $this->load->library('form_validation');
+		$this->load->helper('generator_helper');
 	}
 
     public function index()
@@ -17,6 +19,21 @@ class LoginController extends CI_Controller {
 		$data['dt_total_pin'] = $this->PinModel->get_total_all();
 		$data['dt_total_user'] = $this->AuthModel->get_total_all();
 		$data['dt_total_visit'] = $this->VisitModel->get_total_all();
+		$data['dt_active_search'] = null;
+		$data['is_mobile_device'] = is_mobile_device();
+
+		$this->load->view('login/index',$data);
+	}
+
+	public function view($search)
+	{
+		$data = [];
+		$data['dt_global'] = $this->GlobalListModel->get_global($search);
+		$data['dt_total_pin'] = $this->PinModel->get_total_all();
+		$data['dt_total_user'] = $this->AuthModel->get_total_all();
+		$data['dt_total_visit'] = $this->VisitModel->get_total_all();
+		$data['dt_active_search'] = $search;
+		$data['is_mobile_device'] = is_mobile_device();
 
 		$this->load->view('login/index',$data);
 	}

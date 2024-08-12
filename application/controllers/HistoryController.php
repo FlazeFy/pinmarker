@@ -35,6 +35,7 @@ class HistoryController extends CI_Controller {
 			}
 
 			$data['active_page']= 'history';
+			$data['is_signed'] = true;
 			$data['dt_all_my_visit_header']= $this->VisitModel->get_all_my_visit_header();
 			$data['dt_my_activity']= $this->HistoryModel->get_my_activity($per_page, $offset);
 			$data['is_mobile_device'] = is_mobile_device();

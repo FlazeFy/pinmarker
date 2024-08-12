@@ -32,6 +32,7 @@ class ListController extends CI_Controller {
 
 			$data = [];
 			$data['active_page']= 'list';
+			$data['is_signed'] = true;
 
 			if($this->session->userdata('is_catalog_view') == false || $this->session->userdata('open_pin_list_category')){
 				$category = null;

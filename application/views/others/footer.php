@@ -1,7 +1,7 @@
 <div style="margin-top:10vh;" class="position-relative">
     <div style="width:480px; display:block; bottom:calc(var(--spaceJumbo)*2); left:var(--spaceXLG)" class="position-absolute text-white">
         <h5>PinMarker</h5><hr>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nunc sed blandit libero volutpat sed cras ornare.</p>
+        <p>PinMarker is an apps that store data about marked location on your maps. You can save location and separate it based on category or list. You can collaborate and share your saved location with all people. We also provide stats so you can monitoring your saved location.</p>
     </div>
     <h4 class="text-white position-absolute" style="bottom:var(--spaceLG); left:var(--spaceXLG);">Part Of FlazenApps</h4>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">

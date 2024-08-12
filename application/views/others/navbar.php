@@ -40,35 +40,56 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link <?php if($active_page == 'dashboard'){ echo 'active'; } ?>" aria-current="page" href="/DashboardController">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php if($active_page == 'maps'){ echo 'active'; } ?>" href="/MapsController">Maps</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php if($active_page == 'global_list'){ echo 'active'; } ?>" href="/GlobalListController">Global-Collection</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php if($active_page == 'list'){ echo 'active'; } ?>" href="/ListController">List</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php if($active_page == 'history'){ echo 'active'; } ?>" href="/HistoryController">History</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php if($active_page == 'track'){ echo 'active'; } ?>" href="/TrackController">Track</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Setting
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item <?php if($active_page == 'myprofile'){ echo 'active'; } ?>" href="/MyProfileController">My Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Help Center</a></li>
-                        <li><a class="dropdown-item <?php if($active_page == 'feedback'){ echo 'active'; } ?>" href="/FeedbackController">Feedback</a></li>
-                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Sign Out</a></li>
-                    </ul>
-                </li>
+                <?php 
+                    if($is_signed){
+                        echo '
+                            <li class="nav-item">
+                                <a class="nav-link '; if($active_page == 'dashboard'){ echo 'active'; } echo'" aria-current="page" href="/DashboardController">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link '; if($active_page == 'maps'){ echo 'active'; } echo'" href="/MapsController">Maps</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link '; if($active_page == 'global_list'){ echo 'active'; } echo'" href="/GlobalListController">Global-Collection</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link '; if($active_page == 'list'){ echo 'active'; } echo'" href="/ListController">List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link '; if($active_page == 'history'){ echo 'active'; } echo'" href="/HistoryController">History</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link '; if($active_page == 'track'){ echo 'active'; } echo'" href="/TrackController">Track</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Setting
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item '; if($active_page == 'myprofile'){ echo 'active'; } echo'" href="/MyProfileController">My Profile</a></li>
+                                    <li><a class="dropdown-item" href="#">Help Center</a></li>
+                                    <li><a class="dropdown-item '; if($active_page == 'feedback'){ echo 'active'; } echo'" href="/FeedbackController">Feedback</a></li>
+                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Sign Out</a></li>
+                                </ul>
+                            </li>
+                        ';
+                    } else {
+                        echo '
+                            <li class="nav-item">
+                                <a class="nav-link" href="/LoginController#login-section">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link '; if($active_page == 'global_list'){ echo 'active'; } echo'" href="/DetailGlobalController/view/'; echo $this->session->userdata('search_global_id'); echo'">Global-Collection</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link '; if($active_page == 'feedback'){ echo 'active'; } echo'" aria-current="page" href="/FeedbackController">Feedback</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/RegisterController">Register</a>
+                            </li>
+                        ';
+                    }
+                ?>
             </ul>
         </div>
     </div>

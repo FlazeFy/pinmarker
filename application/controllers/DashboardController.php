@@ -29,6 +29,7 @@ class DashboardController extends CI_Controller {
 			$data['dt_get_total_visit_by_month']= $this->VisitModel->get_total_visit_by_month();
 			$data['dt_get_stats_total_gallery']= $this->GalleryModel->get_most_gallery(6);
 			$data['is_mobile_device'] = is_mobile_device();
+			$data['is_signed'] = true;
 
 			$this->load->view('dashboard/index', $data);
 		} else {

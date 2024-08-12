@@ -20,6 +20,7 @@ class TrackController extends CI_Controller {
 				$data['dt_my_pin']= $this->PinModel->get_all_my_pin('maps',null,null,null);
 			}
 
+			$data['is_signed'] = true;
 			$data['dt_get_my_pin_coor'] = $this->PinModel->get_all_my_pin_name();
 			$data['is_mobile_device'] = is_mobile_device();
 

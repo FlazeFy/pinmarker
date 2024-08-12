@@ -16,15 +16,16 @@ class FeedbackController extends CI_Controller {
 
 	public function index()
 	{
+		$data = [];
 		if($this->AuthModel->current_user()){
-			$data = [];
-			$data['active_page']= 'feedback';
-			$data['is_mobile_device'] = is_mobile_device();
-
-			$this->load->view('feedback/index', $data);
+			$data['is_signed'] = true;
 		} else {
-			redirect('LoginController');
+			$data['is_signed'] = false;
 		}
+		$data['active_page']= 'feedback';
+		$data['is_mobile_device'] = is_mobile_device();
+
+		$this->load->view('feedback/index', $data);
 	}
 
 	public function add_feedback(){

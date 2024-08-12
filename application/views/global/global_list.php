@@ -1,11 +1,25 @@
+<div class="row">
 <?php
     foreach($dt_global_list as $dt){
         echo "
             <div class='col-lg-4 col-md-6 col-sm-12'>
                 <div class='pin-box mb-4'>
                     <div class='pin-box-label "; if(!$is_mobile_device){ echo "position-absolute"; } else { echo "float-end mb-1"; } echo "'"; if(!$is_mobile_device){ echo "style='right:-15px; top:-15px;'"; } echo ">$dt->total Marker</div>
-                    <h3>$dt->list_name</h3>
-                    <hr>
+                    <h3>$dt->list_name</h3>";
+                    if($dt->list_desc){
+                        echo "<p>$dt->list_desc</p>";
+                    } else {
+                        echo "<p class='text-secondary fst-italic'>- No Description -</p>";
+                    }
+                    if($dt->list_tag){
+                        $list_tag = json_decode($dt->list_tag);
+                        foreach($list_tag as $tag){
+                            echo "<div class='pin-box-label me-2 mb-1'>#$tag->tag_name</div>";
+                        }
+                    } else {
+                        echo "<p class='text-secondary fst-italic'>- No Tag -</p>";
+                    }
+                    echo "<hr>
                     <h5>List Marker</h5>
                     <p class='list-pin-desc'>"; 
                         if($dt->pin_list){
@@ -23,6 +37,7 @@
         ";
     }
 ?>
+</div>
 <script>
     $( document ).ready(function() {
         const date_holder = document.querySelectorAll('.date-target')

@@ -20,13 +20,23 @@
         </div>
     </span>
     <?php 
-        $list_tag = json_decode($dt_detail->list_tag);
-        foreach($list_tag as $dt){
-            echo "<div class='pin-box-label me-2 mb-1'>#$dt->tag_name</div>";
+        if($dt_detail->list_tag){
+            $list_tag = json_decode($dt_detail->list_tag);
+            foreach($list_tag as $dt){
+                echo "<div class='pin-box-label me-2 mb-1'>#$dt->tag_name</div>";
+            }
+        } else {
+            echo "<p class='text-secondary fst-italic'>- No Description -</p>";
         }
     ?>
     <br><br>
-    <p><?= $dt_detail->list_desc ?></p>
+    <?php 
+        if($dt_detail->list_desc){
+            echo "<p>$dt_detail->list_desc</p>";
+        } else {
+            echo "<p class='text-secondary fst-italic'>- No Description -</p>";
+        }
+    ?>
     <?php $this->load->view('detail_global/props'); ?>
     <hr>
 

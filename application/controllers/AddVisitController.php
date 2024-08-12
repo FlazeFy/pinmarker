@@ -30,6 +30,7 @@ class AddVisitController extends CI_Controller {
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
 			$data['dt_all_my_pin_name']= $this->PinModel->get_all_my_pin_name();
 			$data['is_mobile_device'] = is_mobile_device();
+			$data['is_signed'] = true;
 
 			$this->load->view('add_visit/index', $data);
 		} else {

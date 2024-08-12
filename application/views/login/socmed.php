@@ -5,7 +5,6 @@
     <a>We also available on</a><br>
     <div class="mt-3">
         <a class="btn btn-socmed"><i class="fa-brands fa-telegram"></i></a>
-        <a class="btn btn-socmed"><i class="fa-brands fa-line"></i></a>
         <a class="btn btn-socmed"><i class="fa-brands fa-discord"></i></a>
     </div>
 </div>

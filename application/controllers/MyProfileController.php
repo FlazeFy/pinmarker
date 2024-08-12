@@ -28,6 +28,7 @@ class MyProfileController extends CI_Controller {
 		$date = date('Y-m-d');
 		$user_id = $this->session->userdata('user_id');
 
+		$data['is_signed'] = true;
 		$data['dt_my_profile'] = $this->AuthModel->current_user();
 		$data['dt_visit_activity'] = $this->VisitModel->get_visit_activity($year);
 		$data['dt_visit_activity_by_date'] = $this->VisitModel->get_visit_activity_by_date($date);

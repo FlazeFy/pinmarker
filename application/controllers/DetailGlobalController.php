@@ -13,16 +13,17 @@ class DetailGlobalController extends CI_Controller {
 	public function view($id)
 	{
 		if($this->AuthModel->current_user()){
-			$data['active_page']= 'global_list';
-			$data['dt_detail']= $this->GlobalListModel->get_detail_list_by_id($id);
-			$data['dt_pin_list']= $this->GlobalListModel->get_pin_list_by_id($id);
-
-			$data['is_mobile_device'] = is_mobile_device();
-
-			$this->load->view('detail_global/index', $data);
+			$data['is_signed'] = true;
 		} else {
-			redirect('LoginController');
+			$this->session->set_userdata('search_global_id', $id);
+			$data['is_signed'] = false;
 		}
+		$data['active_page']= 'global_list';
+		$data['dt_detail']= $this->GlobalListModel->get_detail_list_by_id($id);
+		$data['dt_pin_list']= $this->GlobalListModel->get_pin_list_by_id($id);
+		$data['is_mobile_device'] = is_mobile_device();
+
+		$this->load->view('detail_global/index', $data);
 	}
 
 	public function view_global_list_pin($id){
