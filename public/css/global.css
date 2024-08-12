@@ -221,3 +221,23 @@ table thead {
 .gm-control-active span {
     background: white !important;
 }
+
+.no-animation {
+    transform: none !important;
+}
+
+.btn-account-attach {
+    font-weight: 500;
+    color: var(--blackColor);
+    text-decoration: none;
+    -webkit-transition: all 0.25s;
+    -o-transition: all 0.25s;
+    transition: all 0.25s;
+    padding: var(--spaceXXSM) var(--spaceXSM);
+    border: 0;
+    border-radius: var(--spaceMD);
+}
+.btn-account-attach:hover {
+    color: var(--whiteColor);
+    background: var(--primaryColor);
+}

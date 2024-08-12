@@ -14,9 +14,7 @@
                             echo '<span class="fst-italic text-secondary">- No Marker Found -</span>';
                         }
                     echo"</p>
-                    <form method='POST' action='/DetailGlobalList/$dt->id' class='d-inline'>
-                        <button class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/'><i class='fa-solid fa-circle-info'></i> See Detail</button>
-                    </form>
+                    <a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailGlobalController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
                     <a class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-paper-plane'></i> Share</a>
                 </div>
             </div>

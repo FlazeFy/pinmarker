@@ -17,5 +17,27 @@
 
 			return $data = $this->db->get()->result();
 		}
+
+		public function get_detail_list_by_id($id){
+			$this->db->select("$this->table.id, list_name, list_desc, list_tag, $this->table.created_at, $this->table.updated_at, username as created_by");
+			$this->db->from($this->table);
+			$this->db->join('user',"user.id = $this->table.created_by");
+			$condition = [
+				"$this->table.id" => $id,
+            ];
+			$this->db->where($condition);
+
+			return $data = $this->db->get()->row();
+		}
+
+		public function get_pin_list_by_id($id){
+			$this->db->select("global_list_pin_relation.id, pin_name, pin_desc, pin_lat, pin_long, pin_call, pin_category, global_list_pin_relation.created_at, pin_address, user.username as created_by");
+			$this->db->from("global_list_pin_relation");
+			$this->db->join('pin',"global_list_pin_relation.pin_id = pin.id");
+			$this->db->join('user',"user.id = global_list_pin_relation.created_by");
+			$this->db->order_by("global_list_pin_relation.created_at",'desc');
+
+			return $data = $this->db->get()->result();
+		}
 	}
 ?>
