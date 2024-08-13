@@ -28,6 +28,8 @@ class LoginController extends CI_Controller {
 	public function view($search)
 	{
 		$data = [];
+		$search = str_replace('%20', ' ', $search);
+
 		$data['dt_global'] = $this->GlobalListModel->get_global($search);
 		$data['dt_total_pin'] = $this->PinModel->get_total_all();
 		$data['dt_total_user'] = $this->AuthModel->get_total_all();
@@ -55,7 +57,7 @@ class LoginController extends CI_Controller {
 				redirect('/DashboardController');
 			} else {
 				$this->session->set_flashdata('message_error', 'Failed to login. username or password incorrect');
-				redirect('/LoginController');
+				redirect('/LoginController#login-section');
 			}
 		}
 	}

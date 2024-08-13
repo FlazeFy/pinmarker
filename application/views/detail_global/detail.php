@@ -15,15 +15,19 @@
             <h3><?= $dt_detail->list_name ?></h3>
         </div>
         <div>
-            <a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/GlobalListController'><i class='fa-solid fa-bookmark'></i> Save All to My Pin</a>
-            <a class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-paper-plane'></i> Share</a>
+            <?php 
+                if($is_signed){
+                    echo "<a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/GlobalListController'><i class='fa-solid fa-bookmark'></i> Save All to My Pin</a>";
+                }
+            ?>
+            <a class='btn btn-dark rounded-pill px-2 py-1' id='share-global-pin'><i class='fa-solid fa-paper-plane'></i> Share</a>
         </div>
     </span>
     <?php 
         if($dt_detail->list_tag){
             $list_tag = json_decode($dt_detail->list_tag);
             foreach($list_tag as $dt){
-                echo "<div class='pin-box-label me-2 mb-1'>#$dt->tag_name</div>";
+                echo "<a class='pin-box-label me-2 mb-1 text-decoration-none' href='http://127.0.0.1:8080/LoginController/view/$dt->tag_name'>#$dt->tag_name</a>";
             }
         } else {
             echo "<p class='text-secondary fst-italic'>- No Description -</p>";
@@ -94,8 +98,10 @@
                                         <p class='date-target'>$dt->created_at</p>
                                     </div>";
                                 }
+                                if($is_signed){
+                                    echo "<a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>";
+                                }
                                     echo"
-                                <a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>
                                 <a class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
                             </div>
                         </div>
@@ -156,8 +162,11 @@
                                                 <p class='mt-2 mb-0 fw-bold'>Added At</p>
                                                 <p class='date-target'>$dt->created_at</p>
                                             </td>
-                                            <td style='width: 160px;'>
-                                                <a class='btn btn-dark rounded-pill px-2 py-1 me-2 w-100 mb-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>
+                                            <td style='width: 160px;'>";
+                                                if($is_signed){
+                                                    echo "<a class='btn btn-dark rounded-pill px-2 py-1 me-2 w-100 mb-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>";
+                                                }
+                                                echo "
                                                 <a class='btn btn-dark rounded-pill px-2 py-1 w-100'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
                                             </td>
                                         </tr>
@@ -201,6 +210,10 @@
         date_holder.forEach(e => {
             const date = new Date(e.textContent);
             e.textContent = getDateToContext(e.textContent, "calendar")
+        })
+
+        $('#share-global-pin').on('click', function() {
+            messageCopy('http://127.0.0.1:8080/DetailGlobalController/view/<?= $dt_detail->id ?>')
         })
     })
 </script>

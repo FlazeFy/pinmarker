@@ -116,3 +116,21 @@ function getUTCHourOffset() {
     const offsetHr = -offsetMi / 60;
     return offsetHr;
 }
+
+function messageCopy(val){
+    navigator.clipboard.writeText(val)
+    .then(function() {
+        Swal.fire({
+            title: 'Success!',
+            text: 'Data has been added to clipboard',
+            icon: 'success'
+        });
+    })
+    .catch(function(err) {
+        Swal.fire({ 
+            title: 'Failed!', 
+            text: err, 
+            icon: 'error' 
+        });
+    });
+}
