@@ -14,14 +14,17 @@
     transform: scale(1.05);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
-.pin-box .pin-box-label {
+.pin-box .pin-box-label, .pin-tag {
     background: var(--primaryColor);
-    color: var(--whiteColor);
+    color: var(--whiteColor) !important;
     padding: var(--spaceXXSM) var(--spaceSM);
     font-size: var(--textMD);
     font-weight: 500;
     display: inline-block;
     border-radius: var(--roundedMD);
+}
+.pin-tag {
+    cursor: pointer;
 }
 .list-pin-desc {
     overflow: hidden; 

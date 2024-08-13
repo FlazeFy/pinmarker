@@ -1,6 +1,6 @@
 <?php 
     if($this->session->userdata('is_catalog_view') == false || $this->session->userdata('open_pin_list_category')){
-        if(count($dt_my_pin) > 0){
+        if(count($dt_my_pin['data']) > 0){
             if($this->session->userdata('is_catalog_view') == true){
                 echo "<div class='row'>
                     <div class='col-6'>";
