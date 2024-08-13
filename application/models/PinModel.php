@@ -130,6 +130,8 @@
 				'created_by' => $this->session->userdata(self::SESSION_KEY)
             ];
 			$this->db->where($condition);
+			$this->db->order_by('is_favorite','DESC');
+			$this->db->order_by('pin_name','ASC');
 
 			return $data = $this->db->get()->result();
 		}

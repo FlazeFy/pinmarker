@@ -3,6 +3,7 @@
 
 	class GlobalListModel extends CI_Model {
 		private $table = "global_list";
+		private $table_rel = "global_list_pin_relation";
         const SESSION_KEY = 'user_id';
 
 		public function rules()
@@ -63,6 +64,10 @@
 			$this->db->from("global_list_pin_relation");
 			$this->db->join('pin',"global_list_pin_relation.pin_id = pin.id");
 			$this->db->join('user',"user.id = global_list_pin_relation.created_by");
+			$condition = [
+				"global_list_pin_relation.list_id" => $id,
+            ];
+			$this->db->where($condition);
 			$this->db->order_by("global_list_pin_relation.created_at",'desc');
 
 			return $data = $this->db->get()->result();
@@ -76,24 +81,26 @@
 			$res = [];
 			$addedSlugs = [];
 
-			foreach($data as $dt){
-				$tags = json_decode($dt->list_tag);
-		
-				foreach($tags as $tg){
-					if (!isset($addedSlugs[$tg->tag_name])) {
-						$addedSlugs[$tg->tag_name] = 1;
-		
-						array_push($res, (object)[
-							'tag_name' => $tg->tag_name,
-							'count' => 1
-						]);
-					} else {
-						$addedSlugs[$tg->tag_name]++;
-		
-						foreach ($res as $item) {
-							if ($item->tag_name == $tg->tag_name) {
-								$item->count = $addedSlugs[$tg->tag_name];
-								break;
+			foreach($data as $dt){		
+				if($dt->list_tag){
+					$tags = json_decode($dt->list_tag);
+
+					foreach($tags as $tg){
+						if (!isset($addedSlugs[$tg->tag_name])) {
+							$addedSlugs[$tg->tag_name] = 1;
+			
+							array_push($res, (object)[
+								'tag_name' => $tg->tag_name,
+								'count' => 1
+							]);
+						} else {
+							$addedSlugs[$tg->tag_name]++;
+			
+							foreach ($res as $item) {
+								if ($item->tag_name == $tg->tag_name) {
+									$item->count = $addedSlugs[$tg->tag_name];
+									break;
+								}
 							}
 						}
 					}
@@ -125,6 +132,9 @@
 		// Command
 		public function insert($data){
 			return $this->db->insert($this->table,$data);	
+		}
+		public function insert_rel($data){
+			return $this->db->insert($this->table_rel,$data);	
 		}
 	}
 ?>

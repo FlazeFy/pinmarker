@@ -9,6 +9,7 @@ class AddGlobalListController extends CI_Controller {
 		$this->load->model('PinModel');
 		$this->load->model('GlobalListModel');
 		$this->load->model('HistoryModel');
+		$this->load->model('PinModel');
 		$this->load->model('AuthModel');
 
 		$this->load->helper('generator_helper');
@@ -27,6 +28,7 @@ class AddGlobalListController extends CI_Controller {
 			$data['active_page']= 'global_list';
 			$data['is_mobile_device'] = is_mobile_device();
 			$data['dt_global_tag'] = $this->GlobalListModel->get_global_tag();
+			$data['dt_available_pin'] = $this->PinModel->get_all_my_pin_name();
 			$data['is_signed'] = true;
 
 			$this->load->view('add_global_list/index', $data);
@@ -47,6 +49,7 @@ class AddGlobalListController extends CI_Controller {
 			$list_name = $this->input->post('list_name');
 			$list_code = null;
 			$list_tag = null;
+			$id = get_UUID();
 			
 			if($this->input->post('list_code') != ""){
 				$list_code = $this->input->post('list_code');
@@ -56,7 +59,7 @@ class AddGlobalListController extends CI_Controller {
 			}
 
 			$data = [
-				'id' => get_UUID(), 
+				'id' => $id, 
 				'list_code' => $list_code,  
 				'list_name' => $list_name, 
 				'list_desc' => $this->input->post('list_desc'), 
@@ -68,8 +71,32 @@ class AddGlobalListController extends CI_Controller {
 
 			if($this->GlobalListModel->insert($data)){
 				$this->HistoryModel->insert_history('Add Global List', $list_name);
+				$list_pin = $this->input->post('list_pin');
+				$extra_msg = "";
 
-				$this->session->set_flashdata('message_success', 'Global List successfully added');
+				if($list_pin != ''){
+					$count_success = 0;
+					$count_failed = 0;
+
+					$pin_split = explode(",",$list_pin);
+					foreach($pin_split as $dt){
+						if($this->GlobalListModel->insert_rel([
+							'id' => get_UUID(),
+							'pin_id' => $dt,
+							'list_id' => $id,
+							'created_at' => date("Y-m-d H:i:s"), 
+							'created_by' => $this->session->userdata('user_id')
+						])){
+							$count_success++;
+						} else {
+							$count_failed++;
+						}
+					}
+
+					$extra_msg = ". With $count_success success and $count_failed failed pin attached";
+				}
+
+				$this->session->set_flashdata('message_success', "Global List successfully added$extra_msg");
 				redirect('GlobalListController');
 			} else {
 				$this->session->set_flashdata('message_failed', 'Global List failed to created');
