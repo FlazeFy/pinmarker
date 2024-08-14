@@ -99,7 +99,7 @@ class AddGlobalListController extends CI_Controller {
 				$this->session->set_flashdata('message_success', "Global List successfully added$extra_msg");
 				redirect('GlobalListController');
 			} else {
-				$this->session->set_flashdata('message_failed', 'Global List failed to created');
+				$this->session->set_flashdata('message_error', 'Global List failed to created');
 				redirect('AddGlobalListController');
 			}
 		}

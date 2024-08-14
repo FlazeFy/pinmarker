@@ -129,12 +129,34 @@
 			return $data = $this->db->get()->result();
 		}
 
+		public function check_pin_edit_mode($id, $user_id){
+			$this->db->select("1");
+			$this->db->from($this->table);
+			$condition = [
+				"$this->table.id" => $id,
+				"$this->table.created_by" => $user_id,
+            ];
+			$this->db->where($condition);
+			$data = $this->db->get()->result();
+
+			if($user_id && $data && count($data) > 0){
+				return true;
+			} else {
+				return false;
+			}
+		}
+
 		// Command
 		public function insert($data){
 			return $this->db->insert($this->table,$data);	
 		}
 		public function insert_rel($data){
 			return $this->db->insert($this->table_rel,$data);	
+		}
+		public function delete_global_list_rel($id){
+    		return $this->db->delete($this->table_rel,[
+				'id'=>$id
+			]);
 		}
 	}
 ?>

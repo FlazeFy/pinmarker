@@ -102,7 +102,11 @@
                                     echo "<a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>";
                                 }
                                     echo"
-                                <a class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                                <a class='btn btn-dark rounded-pill px-2 py-1 me-2'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>";
+                                if($is_editable){
+                                    echo "<a class='btn btn-dark rounded-pill px-2 py-1 me-2' onclick='remove_pin("; echo '"'; echo $dt->id; echo '"'; echo")'><i class='fa-solid fa-trash'></i> Remove</a>";
+                                }
+                                echo"
                             </div>
                         </div>
                     ";
@@ -167,7 +171,11 @@
                                                     echo "<a class='btn btn-dark rounded-pill px-2 py-1 me-2 w-100 mb-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>";
                                                 }
                                                 echo "
-                                                <a class='btn btn-dark rounded-pill px-2 py-1 w-100'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                                                <a class='btn btn-dark rounded-pill px-2 py-1 w-100 mb-2'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>";
+                                                if($is_editable){
+                                                    echo "<a class='btn btn-dark rounded-pill px-2 py-1 w-100' onclick='remove_pin("; echo '"'; echo $dt->id; echo '"'; echo")'><i class='fa-solid fa-trash'></i> Remove</a>";
+                                                }
+                                                echo "
                                             </td>
                                         </tr>
                                     "; 
@@ -178,6 +186,9 @@
             }
         ?>
     </div>
+    <form action="/DetailGlobalController/remove_pin/<?= $dt_detail->id ?>" method="POST" id="form-remove-pin">
+        <input hidden name="pin_rel_id" id="pin_rel_id">
+    </form>
 </div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
 
@@ -202,6 +213,22 @@
                 infoWindow.open(map, marker);
             });
         }
+    }
+
+    const remove_pin = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            html: `Want to remove this attached pin?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!"
+        })
+        .then((result) => {
+            if (result.isConfirmed) {
+                $('#pin_rel_id').val(id)
+                $('#form-remove-pin').submit()
+            }
+        });
     }
 
     $( document ).ready(function() {
