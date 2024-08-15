@@ -3,9 +3,13 @@
 
 	class MultiModel extends CI_Model {
 
-		public function get_all_data($table){
-			$this->db->select('*');
+		public function get_all_data($table, $des_table, $key,$ext){
+			$this->db->select("*$ext");
 			$this->db->from($table);
+
+			if($des_table){
+				$this->db->join("$des_table","$des_table.id = $table.created_by",'left');
+			}
 
 			return $data = $this->db->get()->result();
 		}

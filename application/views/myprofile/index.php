@@ -80,9 +80,18 @@
                                     <a aria-current='page' id='help-section-btn'>Help Center</a>
                                 </div>
                             </nav>
-                            <div>";
+                            <div id='user_manage_section'>";
                                 $this->load->view('myprofile/user_manage'); 
-                            echo "</div>
+                            echo "
+                            </div>
+                            <div id='dct_manage_section'>";
+                                $this->load->view('myprofile/dct_manage'); 
+                            echo "
+                            </div>
+                            <div id='feedback_manage_section'>";
+                                $this->load->view('myprofile/feedback_manage'); 
+                            echo "
+                            </div>
                         ";
                     }
                 ?>

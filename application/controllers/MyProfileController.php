@@ -41,11 +41,13 @@ class MyProfileController extends CI_Controller {
 			$data['active_page']= 'myprofile';
 
 			if($role_key == 0){
-				$data['dt_all_user'] = $this->MultiModel->get_all_data('user');
-				$data['dt_all_dct'] = $this->MultiModel->get_all_data('dictionary');
+				$data['dt_all_user'] = $this->MultiModel->get_all_data('user',null,null,null);
+				$data['dt_all_dct'] = $this->MultiModel->get_all_data('dictionary','user','created_by',',username as created_by');
+				$data['dt_all_feedback'] = $this->MultiModel->get_all_data('feedback',null,null,null);
 			} else {
 				$data['dt_all_user'] = null;
 				$data['dt_all_dct'] = null;
+				$data['dt_all_feedback'] = null;
 			}
 
 			$this->load->view('myprofile/index', $data);
