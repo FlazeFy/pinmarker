@@ -45,14 +45,47 @@
         <?php $this->load->view('others/navbar'); ?>
         <div class="row">
             <div class="col-lg-3 col-md-12 col-sm-12">
-                <?php $this->load->view('myprofile/edit_image'); ?>
+                <?php 
+                    if($this->session->userdata('role_key') == 1){
+                        $this->load->view('myprofile/edit_image'); 
+                    } else {
+                        echo "<h4>Profile</h4><hr>";
+                    }
+                ?>
                 <?php $this->load->view('myprofile/profile'); ?>
             </div>
             <div class="col-lg-9 col-md-12 col-sm-12">
-                <?php $this->load->view('myprofile/visit_activity'); ?>
-                <?php $this->load->view('myprofile/track_distance_hourly'); ?>
-                <?php $this->load->view('myprofile/date_visit'); ?>
-                <?php $this->load->view('myprofile/my_gallery'); ?>
+                <?php 
+                    if($this->session->userdata('role_key') == 1){
+                        $this->load->view('myprofile/visit_activity');
+                        $this->load->view('myprofile/date_visit');
+                        $this->load->view('myprofile/track_distance_hourly'); 
+                        $this->load->view('myprofile/my_gallery');
+                    } else {
+                        echo "
+                            <nav class='nav sub-tab'>
+                                <div class='nav-item active'>
+                                    <a aria-current='page' id='user-manage-section-btn'>User Manage</a>
+                                </div>
+                                <div class='nav-item'>
+                                    <a aria-current='page' id='dct-section-btn'>Dictionary</a>
+                                </div>
+                                <div class='nav-item'>
+                                    <a aria-current='page' id='gallery-section-btn'>Gallery</a>
+                                </div>
+                                <div class='nav-item'>
+                                    <a aria-current='page' id='feedback-section-btn'>Feedback</a>
+                                </div>
+                                <div class='nav-item'>
+                                    <a aria-current='page' id='help-section-btn'>Help Center</a>
+                                </div>
+                            </nav>
+                            <div>";
+                                $this->load->view('myprofile/user_manage'); 
+                            echo "</div>
+                        ";
+                    }
+                ?>
             </div>
         </div>
         <hr>

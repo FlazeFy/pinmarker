@@ -29,7 +29,9 @@
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 pt-3">
         <?php
-            $this->load->view('dashboard/distance_monthly');
+            if($this->session->userdata('role_key')){
+                $this->load->view('dashboard/distance_monthly');
+            }
         ?>
     </div>
 </div>

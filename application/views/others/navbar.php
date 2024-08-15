@@ -54,31 +54,35 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link '; if($active_page == 'list'){ echo 'active'; } echo'" href="/ListController">List</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link '; if($active_page == 'history'){ echo 'active'; } echo'" href="/HistoryController">History</a>
                             </li>';
 
-                            if($this->session->userdata('user_id') == 0){
+                            if($this->session->userdata('user_id') == 1){
                                 echo '
                                 <li class="nav-item">
+                                    <a class="nav-link '; if($active_page == 'history'){ echo 'active'; } echo'" href="/HistoryController">History</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link '; if($active_page == 'track'){ echo 'active'; } echo'" href="/TrackController">Track</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Setting
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <li><a class="dropdown-item '; if($active_page == 'myprofile'){ echo 'active'; } echo'" href="/MyProfileController">My Profile</a></li>
+                                        <li><a class="dropdown-item" href="#">Help Center</a></li>
+                                        <li><a class="dropdown-item '; if($active_page == 'feedback'){ echo 'active'; } echo'" href="/FeedbackController">Feedback</a></li>
+                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Sign Out</a></li>
+                                    </ul>
+                                </li>
+                                ';
+                            } else {
+                                echo '
+                                <li class="nav-item">
+                                    <a class="nav-link '; if($active_page == 'myprofile'){ echo 'active'; } echo'" href="/MyProfileController">Manage</a>
                                 </li>';
-                            } 
+                            }
                             
-                            echo'
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Setting
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <li><a class="dropdown-item '; if($active_page == 'myprofile'){ echo 'active'; } echo'" href="/MyProfileController">My Profile</a></li>
-                                    <li><a class="dropdown-item" href="#">Help Center</a></li>
-                                    <li><a class="dropdown-item '; if($active_page == 'feedback'){ echo 'active'; } echo'" href="/FeedbackController">Feedback</a></li>
-                                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Sign Out</a></li>
-                                </ul>
-                            </li>
-                        ';
                     } else {
                         echo '
                             <li class="nav-item">

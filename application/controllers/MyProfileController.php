@@ -12,6 +12,7 @@ class MyProfileController extends CI_Controller {
 		$this->load->model('VisitModel');
 		$this->load->model('GalleryModel');
 		$this->load->model('ValidateRequestModel');
+		$this->load->model('MultiModel');
 
 		$this->load->helper('generator_helper');
 		$this->load->library('form_validation');
@@ -23,22 +24,29 @@ class MyProfileController extends CI_Controller {
 
 	public function index()
 	{
-		$data = [];
-		$year = date('Y');
-		$date = date('Y-m-d');
-		$user_id = $this->session->userdata('user_id');
+		if($this->AuthModel->current_user()){
+			$data = [];
+			$year = date('Y');
+			$date = date('Y-m-d');
+			$user_id = $this->session->userdata('user_id');
+			$role_key = $this->session->userdata('role_key');
 
-		$data['is_signed'] = true;
-		$data['dt_my_profile'] = $this->AuthModel->current_user();
-		$data['dt_visit_activity'] = $this->VisitModel->get_visit_activity($year);
-		$data['dt_visit_activity_by_date'] = $this->VisitModel->get_visit_activity_by_date($date);
-		$data['dt_my_gallery'] = $this->GalleryModel->get_all_my_gallery();
-		$data['dt_active_telegram_user_id_request'] = $this->ValidateRequestModel->get_my_active_request('telegram_id_validation', $user_id);
-		$data['is_mobile_device'] = is_mobile_device();
-
-
-		if($data['dt_my_profile']){
+			$data['is_signed'] = true;
+			$data['dt_my_profile'] = $this->AuthModel->current_user();
+			$data['dt_visit_activity'] = $this->VisitModel->get_visit_activity($year);
+			$data['dt_visit_activity_by_date'] = $this->VisitModel->get_visit_activity_by_date($date);
+			$data['dt_my_gallery'] = $this->GalleryModel->get_all_my_gallery();
+			$data['dt_active_telegram_user_id_request'] = $this->ValidateRequestModel->get_my_active_request('telegram_id_validation', $user_id);
+			$data['is_mobile_device'] = is_mobile_device();
 			$data['active_page']= 'myprofile';
+
+			if($role_key == 0){
+				$data['dt_all_user'] = $this->MultiModel->get_all_data('user');
+				$data['dt_all_dct'] = $this->MultiModel->get_all_data('dictionary');
+			} else {
+				$data['dt_all_user'] = null;
+				$data['dt_all_dct'] = null;
+			}
 
 			$this->load->view('myprofile/index', $data);
 		} else {
