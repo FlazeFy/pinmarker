@@ -153,10 +153,13 @@
 		public function insert_rel($data){
 			return $this->db->insert($this->table_rel,$data);	
 		}
-		public function delete_global_list_rel($id){
-    		return $this->db->delete($this->table_rel,[
+		public function delete_global_list($id){
+    		return $this->db->delete($this->table,[
 				'id'=>$id
 			]);
+		}
+		public function delete_global_list_rel($data){
+    		return $this->db->delete($this->table_rel,$data);
 		}
 	}
 ?>

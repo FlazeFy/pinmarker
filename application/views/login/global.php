@@ -1,7 +1,7 @@
 <div class="<?php if(!$dt_active_search){ echo"text-center"; } ?> position-relative pt-4 w-100" style="margin-top:50vh;" id="global-section">
     <div class="position-absolute text-start" style="top:-60px;">
         <h1 class="mb-0">PINMARKER</h1>
-        <h4 class="text-secondary">Web-Based Location Marker</h4>
+        <h4 class="text-secondary"><img class='img img-fluid mb-1' style='width:var(--spaceJumbo);' src='http://127.0.0.1:8080/public/images/logo.png'> Web-Based Location Marker</h4>
     </div>
     <div style="border: var(--spaceMini) solid black; border-radius: 15px; <?php if(!$dt_active_search){ echo"height: 300px;"; } ?> z-index:1000; position: relative;" class="bg-white p-4">
         <h3>Search Global Pin</h3>

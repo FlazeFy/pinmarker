@@ -43,7 +43,7 @@ class DetailGlobalController extends CI_Controller {
 
 	public function remove_pin($list_id){
 		$pin_id = $this->input->post('pin_rel_id');
-		if($this->GlobalListModel->delete_global_list_rel($pin_id)){
+		if($this->GlobalListModel->delete_global_list_rel(['id'=>$pin_id])){
 			$this->session->set_flashdata('message_success', "Successfully remove pin");
 		} else {
 			$this->session->set_flashdata('message_error', 'Failed to remove pin');
@@ -78,10 +78,24 @@ class DetailGlobalController extends CI_Controller {
 
 			$this->session->set_flashdata('message_success', "Successfully added$extra_msg");
 		} else {
-			$this->session->set_flashdata('message_success', "Failed to add pin");
+			$this->session->set_flashdata('message_error', "Failed to add pin");
 		}
 
 		
 		redirect("DetailGlobalController/view/$list_id");
+	}
+
+	public function delete_global_list($list_id){
+		if($this->GlobalListModel->delete_global_list($list_id)){
+			if($this->GlobalListModel->delete_global_list_rel(['list_id'=>$list_id])){
+				$this->session->set_flashdata('message_success', "Successfully added$extra_msg");
+			} else {
+				$this->session->set_flashdata('message_error', "Failed to remove pin");
+			}
+		} else {
+			$this->session->set_flashdata('message_error', "Failed to remove global list");
+		}
+		
+		redirect("GlobalListController");
 	}
 }

@@ -21,6 +21,15 @@
                 }
             ?>
             <a class='btn btn-dark rounded-pill px-2 py-1' id='share-global-pin'><i class='fa-solid fa-paper-plane'></i> Share</a>
+            <?php 
+                if($is_signed){
+                    echo "
+                        <form action='/DetailGlobalController/delete_global_list/$dt_detail->id' method='POST' class='d-inline ms-2' id='form-remove-list'>
+                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2' onclick='remove_list()'><i class='fa-solid fa-trash'></i> Delete Global List</a>
+                        </form>
+                    ";
+                }
+            ?>
         </div>
     </span>
     <?php 
@@ -239,6 +248,21 @@
             if (result.isConfirmed) {
                 $('#pin_rel_id').val(id)
                 $('#form-remove-pin').submit()
+            }
+        });
+    }
+
+    const remove_list = () => {
+        Swal.fire({
+            title: "Are you sure?",
+            html: `Want to remove this list with attached pin?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!"
+        })
+        .then((result) => {
+            if (result.isConfirmed) {
+                $('#form-remove-list').submit()
             }
         });
     }
