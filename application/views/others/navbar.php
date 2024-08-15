@@ -57,10 +57,16 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link '; if($active_page == 'history'){ echo 'active'; } echo'" href="/HistoryController">History</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link '; if($active_page == 'track'){ echo 'active'; } echo'" href="/TrackController">Track</a>
-                            </li>
+                            </li>';
+
+                            if($this->session->userdata('user_id') == 0){
+                                echo '
+                                <li class="nav-item">
+                                    <a class="nav-link '; if($active_page == 'track'){ echo 'active'; } echo'" href="/TrackController">Track</a>
+                                </li>';
+                            } 
+                            
+                            echo'
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Setting

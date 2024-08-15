@@ -4,6 +4,12 @@
 	class DictionaryModel extends CI_Model {
 		private $table = "dictionary";
         const SESSION_KEY = 'user_id';
+		private $role_key;
+
+		public function __construct() {
+			parent::__construct();
+			$this->role_key = $this->session->userdata('role_key');
+		}
 
 		public function rules()
         {
@@ -22,9 +28,19 @@
         }
 
         public function get_dictionary_by_type($type){
-			$select_query = "$this->table.id, dictionary_name, dictionary_color";
-			if($type == "pin_category"){
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+			$this->db->select('1');
+			$this->db->from('pin');
+			$this->db->where([
+				'created_by' => $user_id
+			]);
+			$check = $this->db->get()->row();
+
+			$select_query = "$this->table.id, dictionary_name, dictionary_color, $this->table.created_by";
+			if($type == "pin_category" && ($check || $this->role_key == 0)){
 				$select_query .= ", IFNULL(count(pin.id), 0) as total_pin";
+			} else {
+				$select_query .= ", 0 as total_pin";
 			}
 
 			$this->db->select($select_query);
@@ -33,25 +49,61 @@
 			if($type == "pin_category"){
 				$this->db->join('pin',"pin.pin_category = $this->table.dictionary_name",'left');
 			}
-			$condition = [
-                'dictionary_type' => $type,
-				"$this->table.created_by" => null
-            ];
-			$condition2 = [
-                'dictionary_type' => $type,
-				"$this->table.created_by" => $this->session->userdata(self::SESSION_KEY)
-            ];
-			$this->db->where($condition);
-			$this->db->or_where($condition2);
 
+			if($this->role_key == 1){
+				$condition1 = [
+					'dictionary_type' => $type,
+					"$this->table.created_by" => null
+				];
+				$condition2 = [
+					'dictionary_type' => $type,
+					"$this->table.created_by" => $user_id
+				];
+
+				if(!$check){
+					$this->db->group_start();
+					$this->db->where($condition1);
+					$this->db->or_where($condition2);
+					$this->db->group_end();
+				} else {
+					$this->db->where($condition1);
+					$this->db->or_where($condition2);
+				}
+				
+				if ($type == "pin_category" && $check) {
+					$this->db->where('pin.created_by', $user_id);
+				}
+			} else {
+				$condition = [
+					'dictionary_type' => $type,
+				];
+
+				$this->db->where($condition);
+			}
+			
 			if($type == "pin_category"){
-				$this->db->order_by('total_pin','desc');
+				if($check){
+					$this->db->order_by('total_pin','desc');
+				}
 				$this->db->group_by("$this->table.id");
 			} else {
 				$this->db->order_by('dictionary_name','asc');
 			}
 
-			return $data = $this->db->get()->result();
+			$data = $this->db->get()->result();
+
+			if(!$check && $this->role_key == 1){
+				$dct = [];
+				foreach($data as $dt){
+					if($dt->created_by == null || $dt->created_by == $user_id){
+						array_push($dct, $dt);
+					}
+				}
+			} else {
+				$dct = $data;
+			}
+
+			return $dct;
 		}
 
 		public function get_my_pin_category(){

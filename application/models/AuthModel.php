@@ -2,7 +2,9 @@
 	defined('BASEPATH') OR exit('No direct script access alowed');
     class AuthModel extends CI_Model
     {
-        private $table = "user";
+        private $table_user = "user";
+        private $table_admin = "admin";
+
         const SESSION_KEY = 'user_id';
 
         public function rules()
@@ -44,19 +46,33 @@
 
         public function get_total_all(){
 			$this->db->select('COUNT(1) as total');
-			$this->db->from($this->table);
+			$this->db->from($this->table_user);
 
 			return $data = $this->db->get()->result();
 		}
 
-        public function login($uname, $pass)
+        private function find_user($uname, $table)
         {
             $this->db->where('email', $uname)
-                ->or_where('username', $uname);
-                
-            $query = $this->db->get($this->table);
-            $user = $query->row();
+                    ->or_where('username', $uname);
+                    
+            $query = $this->db->get($table);
+            return $query->row();
+        }
 
+        public function login($uname, $pass)
+        {
+            $role = 1;
+            $img_url = null;
+
+            $user = $this->find_user($uname, $this->table_user);
+            if (!$user) {
+                $role = 0;
+                $user = $this->find_user($uname, $this->table_admin);
+            } else {
+                $img_url = $user->img_url;
+            }
+            
             if (!$user) {
                 return FALSE;
             }
@@ -67,9 +83,13 @@
 
             $this->session->set_userdata([
                 self::SESSION_KEY => $user->id,
-                'user_img_url' => $user->img_url
+                'user_img_url' => $img_url,
+                'role_key' => $role
             ]);
-            $this->update_last_login($user->id);
+
+            if($role == 1){
+                $this->update_last_login($user->id);
+            }
 
             return $this->session->has_userdata(self::SESSION_KEY);
         }
@@ -81,13 +101,18 @@
             }
 
             $user_id = $this->session->userdata(self::SESSION_KEY);
-            $query = $this->db->get_where($this->table, ['id' => $user_id]);
-            return $query->row();
+            $user = $this->db->get_where($this->table_user, ['id' => $user_id]);
+
+            if (!$user->row()) {
+                $user = $this->db->get_where($this->table_admin, ['id' => $user_id]);
+            }
+
+            return $user->row();
         }
 
         public function get_user_by_id($id){
 			$this->db->select('id, fullname, username, email, telegram_user_id, telegram_is_valid, password, img_url, created_at, updated_at, last_login');
-			$this->db->from($this->table);
+			$this->db->from($this->table_user);
             $condition = [
 				'id' => $id
             ];
@@ -109,17 +134,17 @@
                 'last_login' => date("Y-m-d H:i:s"),
             ];
 
-            return $this->db->update($this->table, $data, ['id' => $id]);
+            return $this->db->update($this->table_user, $data, ['id' => $id]);
         }
 
         public function update_user($id,$data)
         {
-            return $this->db->update($this->table, $data, ['id' => $id]);
+            return $this->db->update($this->table_user, $data, ['id' => $id]);
         }
 
         public function insert_user($data)
         {
-            return $this->db->insert($this->table, $data);
+            return $this->db->insert($this->table_user, $data);
         }
     }
 ?>

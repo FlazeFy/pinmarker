@@ -4,6 +4,12 @@
 	class PinModel extends CI_Model {
 		private $table = "pin";
         const SESSION_KEY = 'user_id';
+		private $role_key;
+
+		public function __construct() {
+			parent::__construct();
+			$this->role_key = $this->session->userdata('role_key');
+		}
 
 		public function rules($ext)
         {
@@ -75,10 +81,12 @@
             }
 
 			$this->db->from($this->table);
-			$condition = [
-                'pin.deleted_at' => null,
-				'pin.created_by' => $this->session->userdata(self::SESSION_KEY)
-            ];
+
+			$condition['pin.deleted_at'] = null;
+			if($this->role_key == 1){
+				$condition['pin.created_by'] = $this->session->userdata(self::SESSION_KEY);
+			} 
+			
 			$this->db->where($condition);
 
 			$search_pin_name = $this->session->userdata('search_pin_name_key');
@@ -153,7 +161,30 @@
 				dictionary.dictionary_name, IFNULL(COUNT(pin.pin_name), 0) as total");
 			$this->db->from('dictionary');
 			$this->db->join('pin', 'pin.pin_category = dictionary.dictionary_name AND pin.created_by = "'.$user_id.'" AND pin.deleted_at IS NULL', 'left');
-			$this->db->where('dictionary.dictionary_type', 'pin_category');
+			$condition = [
+				'dictionary.dictionary_type' => 'pin_category', 
+                'pin.created_by' => $user_id,
+            ];
+			$condition_2 = [
+				'dictionary.dictionary_type' => 'pin_category', 
+                'pin.created_by' => null
+            ];
+			$this->db->group_start();
+			$this->db->where($condition);
+			$this->db->or_where($condition_2);
+			$this->db->group_end();
+
+			if($this->role_key == 1){
+				$condition3 = [
+					'dictionary.created_by' => null
+				];
+				$condition4 = [
+					'dictionary.created_by' => $this->session->userdata(self::SESSION_KEY)
+				];
+				$this->db->where($condition3);
+				$this->db->or_where($condition4);
+			}
+
 			$this->db->group_by('dictionary.dictionary_name');
 			$this->db->order_by('dictionary.dictionary_name', 'ASC');
 			$query = $this->db->get();

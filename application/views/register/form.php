@@ -128,10 +128,18 @@
 </div>
 
 <script>
-    var pinContainer = document.querySelector(".pin-code")
-    var pin_holder = document.getElementById('pin-holder')
-    var timer = document.getElementById("timer")
-    var remain = 900
+    let pinContainer = document.querySelector(".pin-code")
+    let pin_holder = document.getElementById('pin-holder')
+    let timer = document.getElementById("timer")
+    let remain = 900
+    let is_process = false
+
+    window.addEventListener('beforeunload', function(event) {
+        if(is_process){
+            event.preventDefault()
+            event.returnValue = ''
+        }
+    });
 
     pinContainer.addEventListener('keyup', function (event) {
         var target = event.srcElement
@@ -267,6 +275,7 @@
     }, false);
 
     function navTerms(){
+        is_process = true
         $(document).ready(function() {
             $('#tnc_indicator').attr('class', 'active')
             $('#user_profile_holder').css({'display':'block'})
