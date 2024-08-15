@@ -35,6 +35,18 @@
 
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Isotope -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.grid').isotope({
+                itemSelector: '.grid-item',
+                layoutMode: 'masonry', 
+            });
+        })
+    </script>
 </head>
 <body>
     <div class="content">

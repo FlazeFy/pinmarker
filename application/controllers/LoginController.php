@@ -30,7 +30,7 @@ class LoginController extends CI_Controller {
 		$data = [];
 		$search = str_replace('%20', ' ', $search);
 
-		$data['dt_global'] = $this->GlobalListModel->get_global($search);
+		$data['dt_global'] = $this->GlobalListModel->get_global_list($search);
 		$data['dt_total_pin'] = $this->PinModel->get_total_all();
 		$data['dt_total_user'] = $this->AuthModel->get_total_all();
 		$data['dt_total_visit'] = $this->VisitModel->get_total_all();

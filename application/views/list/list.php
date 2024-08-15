@@ -99,10 +99,10 @@
         }
     } else {
         if(count($dt_my_pin) > 0){
-            echo "<div class='row'>";
+            echo "<div class='row grid'>";
             foreach($dt_my_pin as $dt){
                 echo "
-                    <div class='col-lg-4 col-md-6 col-sm-12'>
+                    <div class='col-lg-4 col-md-6 col-sm-12 col-12 grid-item'>
                         <div class='pin-box mb-4'>
                             <div class='pin-box-label "; if(!$is_mobile_device){ echo "position-absolute"; } else { echo "float-end mb-1"; } echo "'"; if(!$is_mobile_device){ echo "style='right:-15px; top:-15px;'"; } echo ">$dt->total Marker</div>
                             <h3>$dt->dictionary_name</h3>

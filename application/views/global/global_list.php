@@ -1,8 +1,8 @@
-<div class="row">
+<div class="row grid">
 <?php
     foreach($dt_global_list as $idx => $dt){
         echo "
-            <div class='col-lg-4 col-md-6 col-sm-12'>
+            <div class='col-lg-4 col-md-6 col-sm-12 col-12 grid-item'>
                 <div class='pin-box mb-4'>
                     <div class='pin-box-label "; if(!$is_mobile_device){ echo "position-absolute"; } else { echo "float-end mb-1"; } echo "'"; if(!$is_mobile_device){ echo "style='right:-15px; top:-15px;'"; } echo ">$dt->total Marker</div>
                     <h3 id='list-name-holder-$idx'>$dt->list_name</h3>";

@@ -49,18 +49,26 @@
             <h5>List Marker</h5>
         </div>
         <div>
+            <?php 
+                if($is_editable){
+                    echo "
+                        <a class='btn btn-dark rounded-pill px-2 py-1' data-bs-target='#addMarker' id='btn-add-marker' data-bs-toggle='modal'><i class='fa-solid fa-plus'></i> Add Marker</a>
+                    ";
+                    $this->load->view('detail_global/add_pin');
+                }
+            ?>
             <form action="/DetailGlobalController/view_global_list_pin/<?= $dt_detail->id ?>" method="POST" class="d-inline">
                 <button class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-table'></i> See <?php if($view == 'table'){ echo'Catalog'; } else { echo 'Table'; } ?> View</button>
             </form>
             <a class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-map'></i> Whole Map</a>
         </div>
     </span>
-    <div class="row mt-3 mx-2">
+    <div class="row mt-3 mx-2 <?php if($view == 'catalog'){ echo 'grid';} ?>">
         <?php 
             if($view == 'catalog'){
                 foreach($dt_pin_list as $dt){
                     echo "
-                        <div class='col-lg-6 col-md-12 col-sm-12 col-12'>
+                        <div class='col-lg-6 col-md-12 col-sm-12 col-12 grid-item'>
                             <div class='pin-box'>
                                 <div id='map-board-$dt->id' class='map-board'></div>
                                 <script>
@@ -93,10 +101,12 @@
                                     }
                                 if(!$is_mobile_device){
                                     echo"
-                                    <div class='col-lg-4 col-md-6 col-sm-12'>
                                         <p class='mt-2 mb-0 fw-bold'>Added At</p>
-                                        <p class='date-target'>$dt->created_at</p>
-                                    </div>";
+                                        <p>
+                                            <span class='date-target'>$dt->created_at</span> 
+                                            <span>by <button class='btn-account-attach'>@$dt_detail->created_by</button></span>
+                                        </p>
+                                    ";
                                 }
                                 if($is_signed){
                                     echo "<a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>";
@@ -165,6 +175,8 @@
                                             <td>
                                                 <p class='mt-2 mb-0 fw-bold'>Added At</p>
                                                 <p class='date-target'>$dt->created_at</p>
+                                                <p class='mt-2 mb-0 fw-bold'>Added By</p>
+                                                <button class='btn-account-attach'>@$dt_detail->created_by</button>
                                             </td>
                                             <td style='width: 160px;'>";
                                                 if($is_signed){
