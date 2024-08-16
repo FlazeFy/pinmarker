@@ -8,6 +8,7 @@ class TrashController extends CI_Controller {
 		parent::__construct();
 		$this->load->model('PinModel');
 		$this->load->model('AuthModel');
+		$this->load->model('HistoryModel');
 	}
 
 	public function index()
@@ -30,6 +31,11 @@ class TrashController extends CI_Controller {
 			'deleted_at' => null
 		];
 		if($this->PinModel->update_marker($data, $id)){
+			$pin_name = $this->PinModel->get_pin_name_by_id($id);
+
+			$history_ctx = "From $pin_name";
+			$this->HistoryModel->insert_history('Recover pin', $history_ctx);
+			
 			$this->session->set_flashdata('message_success', 'Pin successfully recover');
 		} else {
 			$this->session->set_flashdata('message_error', 'Pin failed to recover');

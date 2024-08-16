@@ -43,20 +43,23 @@
         <form action="/DetailController/edit_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
             <?php 
                 if($this->session->userdata('is_edit_mode') == false){
-                    echo "<button class='btn btn-light mb-4 rounded-pill py-3 px-4' style='border: 2px solid black;'><i class='fa-solid fa-pen-to-square'></i> Switch to Edit Mode</button>";
+                    echo "<button class='btn btn-light mb-4 rounded-pill py-3 px-4 me-1' style='border: 2px solid black;'><i class='fa-solid fa-pen-to-square'></i> Switch to Edit Mode</button>";
                 } else {
-                    echo "<button class='btn btn-dark mb-4 rounded-pill py-3 px-4'><i class='fa-solid fa-pen-to-square'></i> Switch to View Mode</button>";
+                    echo "<button class='btn btn-dark mb-4 rounded-pill py-3 px-4 me-1'><i class='fa-solid fa-pen-to-square'></i> Switch to View Mode</button>";
                 }
             ?>
         </form>
         <form action="/DetailController/favorite_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
             <?php 
                 if($dt_detail_pin->is_favorite == '1'){
-                    echo "<input name='is_favorite' value='0' hidden><button class='btn btn-dark mb-4 rounded-pill py-3 px-4 me-2'><i class='fa-solid fa-heart'></i> Saved to Favorite</button>";
+                    echo "<input name='is_favorite' value='0' hidden><button class='btn btn-dark mb-4 rounded-pill py-3 px-4 me-1'><i class='fa-solid fa-heart'></i> Saved to Favorite</button>";
                 } else {
-                    echo "<input name='is_favorite' value='1' hidden><button class='btn btn-light mb-4 rounded-pill py-3 px-4' style='border: 2px solid black;'><i class='fa-solid fa-heart'></i> Add To Favorite</button>";
+                    echo "<input name='is_favorite' value='1' hidden><button class='btn btn-light mb-4 rounded-pill py-3 px-4 me-1' style='border: 2px solid black;'><i class='fa-solid fa-heart'></i> Add To Favorite</button>";
                 }
             ?>
+        </form>
+        <form action="/DetailController/delete_pin/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline" id="delete-pin-form">
+            <a class='btn btn-dark mb-4 rounded-pill py-3 px-4' style='border: 2px solid black;' id="delete-pin-btn"><i class='fa-solid fa-trash'></i> Delete</a>
         </form>
     </span>
 </div>
@@ -319,6 +322,30 @@
 ?>
 
 <script type="text/javascript">
+    $( document ).ready(function() {
+        const date_holder = document.querySelectorAll('.date-target');
+
+        date_holder.forEach(e => {
+            const date = new Date(e.textContent);
+            e.textContent = getDateToContext(e.textContent, "calendar");
+        });
+
+        $(document).on('click', '#delete-pin-btn', function() {
+            Swal.fire({
+                title: "Are you sure?",
+                html: `Want to delete this pin?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    $('#delete-pin-form').submit()
+                }
+            });
+        })
+    });
+
     let map;
     let markers = [
         <?php 

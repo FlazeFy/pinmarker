@@ -64,20 +64,20 @@
                     } else {
                         echo "
                             <nav class='nav sub-tab'>
-                                <div class='nav-item active'>
-                                    <a aria-current='page' id='user-manage-section-btn'>User Manage</a>
+                                <div class='nav-item active' id='user-manage-section-btn'>
+                                    <a aria-current='page'>User Manage</a>
                                 </div>
-                                <div class='nav-item'>
-                                    <a aria-current='page' id='dct-section-btn'>Dictionary</a>
+                                <div class='nav-item' id='dct-section-btn'>
+                                    <a aria-current='page'>Dictionary</a>
                                 </div>
-                                <div class='nav-item'>
-                                    <a aria-current='page' id='gallery-section-btn'>Gallery</a>
+                                <div class='nav-item' id='gallery-section-btn'>
+                                    <a aria-current='page'>Gallery</a>
                                 </div>
-                                <div class='nav-item'>
-                                    <a aria-current='page' id='feedback-section-btn'>Feedback</a>
+                                <div class='nav-item' id='feedback-section-btn'>
+                                    <a aria-current='page'>Feedback</a>
                                 </div>
-                                <div class='nav-item'>
-                                    <a aria-current='page' id='help-section-btn'>Help Center</a>
+                                <div class='nav-item' id='help-section-btn'>
+                                    <a aria-current='page'>Help Center</a>
                                 </div>
                                 <div class='nav-item'>
                                     <a aria-current='page' data-bs-toggle='modal' data-bs-target='#signOutModal'>Sign Out</a>

@@ -10,6 +10,7 @@ class DetailController extends CI_Controller {
 		$this->load->model('DictionaryModel');
 		$this->load->model('GalleryModel');
 		$this->load->model('HistoryModel');
+		$this->load->model('MultiModel');
 
 		$this->load->helper('generator_helper');
 		$this->load->library('form_validation');
@@ -109,6 +110,21 @@ class DetailController extends CI_Controller {
 
 			redirect("/DetailController/view/$id");
 		} else {
+			redirect("/DetailController/view/$id");
+		}
+	}
+
+	public function delete_pin($id){
+		if($this->MultiModel->soft_delete('pin', $id)){
+			$pin_name = $this->PinModel->get_pin_name_by_id($id);
+
+			$history_ctx = "From $pin_name";
+			$this->HistoryModel->insert_history('Delete pin', $history_ctx);
+			$this->session->set_flashdata('message_success', 'Pin deleted');
+
+			redirect("/ListController");
+		} else {
+			$this->session->set_flashdata('message_error', 'Pin failed to deleted');
 			redirect("/DetailController/view/$id");
 		}
 	}
