@@ -77,8 +77,9 @@
                                         <span class='date-target'>$dt->deleted_at</span> 
                                     </td>
                                     <td style='max-width:100px;'>
+                                        <input class='id_holder' value='$dt->id' hidden>
                                         <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-pen-to-square'></i></button>
-                                        <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-fire-flame-curved'></i></button>
+                                        <button class='btn btn-dark w-100 rounded-pill mb-2 delete-pin'><i class='fa-solid fa-trash'></i></button>
                                         <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-paper-plane'></i></button>
                                         <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-map'></i></button>
                                     </td>
@@ -86,7 +87,11 @@
                             ";
                         }
                     echo"</tbody>
-                </table>";
+                </table>
+                <form id='form-delete-pin' method='POST' action='/ListController/soft_del_pin' hidden>
+                    <input name='id' id='pin_id_delete'>
+                </form>
+                ";
             } else {
                 foreach($dt_my_pin['data'] as $dt){
                     echo "
@@ -338,5 +343,23 @@
             const date = new Date(e.textContent);
             e.textContent = getDateToContext(e.textContent, "calendar");
         });
+
+        $(document).on('click', '.delete-pin', function() {
+            const idx = $(this).index('.delete-pin')
+            Swal.fire({
+                title: "Are you sure?",
+                html: `Want to delete this pin?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    const id = $('.id_holder').eq(idx).val()
+                    $('#pin_id_delete').val(id)
+                    $('#form-delete-pin').submit()
+                }
+            });
+        })
     });
 </script>

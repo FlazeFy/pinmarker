@@ -17,5 +17,8 @@
 		public function delete($table, $id){
 			return $this->db->delete($table,['id'=>$id]);	
 		}
+		public function soft_delete($table, $id){
+			return $this->db->update($table, ['deleted_at'=> date('Y-m-d H:i:s')], ['id' => $id]);
+		}
 	}
 ?>

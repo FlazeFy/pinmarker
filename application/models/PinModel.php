@@ -331,6 +331,17 @@
 			return $query->result();
 		}
 
+		public function get_owner_pin($id){
+			$this->db->select("pin_name, pin_category, username, telegram_user_id");
+			$this->db->from($this->table);
+			$this->db->join('user', 'user.id = pin.created_by');
+			$this->db->where("$this->table.id", $id);
+			$this->db->where("user.telegram_is_valid", 1);
+			$query = $this->db->get();
+
+			return $query->row();
+		}
+
 		// Command
 		public function insert_marker($data){
 			return $this->db->insert('pin',$data);	

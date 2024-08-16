@@ -15,6 +15,7 @@ class ListController extends CI_Controller {
 		$this->load->model('AuthModel');
 		$this->load->model('HistoryModel');
 		$this->load->model('DictionaryModel');
+		$this->load->model('MultiModel');
 		
 		$this->load->helper('generator_helper');
 		$this->load->library('form_validation');
@@ -235,6 +236,27 @@ class ListController extends CI_Controller {
 			} else {
 				$this->session->set_flashdata('message_error', 'Failed to create category. Name already used');
 			}
+		}
+
+		redirect("ListController");
+	}
+
+	public function soft_del_pin(){
+		$id = $this->input->post('id');
+		$owner = $this->PinModel->get_owner_pin($id);
+
+		if($this->MultiModel->soft_delete('pin',$id)){
+			if($owner){
+				$this->telegram->sendMessage([
+					'chat_id' => $owner->telegram_user_id,
+					'text' => "Hello <b>$owner->username</b>, your pin called $owner->pin_name <b>($owner->pin_category)</b> is deleted by admin",
+					'parse_mode' => 'HTML'
+				]);
+			}
+
+			$this->session->set_flashdata('message_success', 'Pin deleted');
+		} else {
+			$this->session->set_flashdata('message_error', 'Failed to delete pin');
 		}
 
 		redirect("ListController");
