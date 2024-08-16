@@ -229,4 +229,15 @@ class MyProfileController extends CI_Controller {
 		}
 		redirect('MyProfileController');
 	}
+
+	public function delete_feedback(){
+		$id = $this->input->post('id');
+		if($this->MultiModel->delete('feedback',$id)){
+			$this->session->set_flashdata('message_success', 'Feedback deleted');
+		} else {
+			$this->session->set_flashdata('message_error', 'Feedback not found');
+		}
+
+		redirect('MyProfileController');
+	}
 }
