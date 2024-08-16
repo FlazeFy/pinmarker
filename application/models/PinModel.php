@@ -73,21 +73,29 @@
             if($from == 'list'){
                 $extra = ", pin_call, pin_email, pin_address, IFNULL(COUNT(visit.id), 0) as total_visit, MAX(visit.created_at) as last_visit";
             }
+			if($this->role_key == 0){
+				$extra .= ", username as created_by, pin.updated_at, deleted_at";
+			}
 			$this->db->select("pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, is_favorite, pin.created_at, dictionary_color as pin_color, $extra");
 			$this->db->join('dictionary','dictionary.dictionary_name = pin.pin_category');
 
             if($from == 'list'){
                 $this->db->join('visit','visit.pin_id = pin.id','left');
             }
+			if($this->role_key == 0){
+                $this->db->join('user','pin.created_by = user.id','left');
+			}
 
 			$this->db->from($this->table);
 
-			$condition['pin.deleted_at'] = null;
 			if($this->role_key == 1){
-				$condition['pin.created_by'] = $this->session->userdata(self::SESSION_KEY);
-			} 
-			
-			$this->db->where($condition);
+				$condition['pin.deleted_at'] = null;
+				if($this->role_key == 1){
+					$condition['pin.created_by'] = $this->session->userdata(self::SESSION_KEY);
+				} 
+				
+				$this->db->where($condition);
+			}
 
 			$search_pin_name = $this->session->userdata('search_pin_name_key');
 			if($search_pin_name != null && $search_pin_name != ""){

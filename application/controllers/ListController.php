@@ -27,10 +27,16 @@ class ListController extends CI_Controller {
 	public function index()
 	{
 		if($this->AuthModel->current_user()){
-			$per_page = 10;
+			$data = [];
+			$data['is_mobile_device'] = is_mobile_device();
+
+			if($data['is_mobile_device']){
+				$per_page = 8;
+			} else {
+				$per_page = 14;
+			}
 			$offset = 0;
 
-			$data = [];
 			$data['active_page']= 'list';
 			$data['is_signed'] = true;
 
@@ -50,7 +56,6 @@ class ListController extends CI_Controller {
 				$data['dt_my_pin']= $this->PinModel->get_pin_list_by_category($user_id);
 			}
 			$data['dt_my_category'] = $this->DictionaryModel->get_my_pin_category();
-			$data['is_mobile_device'] = is_mobile_device();
 			$this->load->view('list/index', $data);
 		} else {
 			redirect('LoginController');

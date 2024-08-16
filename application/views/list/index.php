@@ -80,13 +80,13 @@
                 ?>
                 <?php $this->load->view('list/manage_category'); ?>
                 <?php
-                    if($is_mobile_device){
+                    if($is_mobile_device && $this->session->userdata('role_key') == 1){
                         echo '<a class="btn btn-dark rounded-pill btn-main-page" href="/TrashController"><i class="fa-solid fa-trash"></i> Trash</a>';
                     }
                 ?>
             </div>
             <?php
-                if(!$is_mobile_device){
+                if(!$is_mobile_device && $this->session->userdata('role_key') == 1){
                     echo '<div>
                         <a class="btn btn-dark rounded-pill btn-main-page" href="/TrashController"><i class="fa-solid fa-trash"></i> Trash</a>
                     </div>';

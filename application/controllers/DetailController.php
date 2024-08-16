@@ -18,9 +18,15 @@ class DetailController extends CI_Controller {
 	public function view($id)
 	{
 		if($this->AuthModel->current_user()){
-			$per_page = 10;
-			$offset = 0;
 			$data = [];
+			$data['is_mobile_device'] = is_mobile_device();
+
+			if($data['is_mobile_device']){
+				$per_page = 8;
+			} else {
+				$per_page = 14;
+			}
+			$offset = 0;
 
 			if($this->session->userdata('page_detail_history')){
 				$offset = $this->session->userdata('page_detail_history') * $per_page;
@@ -35,7 +41,6 @@ class DetailController extends CI_Controller {
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
 			$data['dt_all_gallery_by_pin']= $this->GalleryModel->get_all_gallery_by_pin($id);
 			$data['dt_total_visit_by_by_pin']= $this->VisitModel->get_total_visit_by_by_pin_id($id); 
-			$data['is_mobile_device'] = is_mobile_device();
 
 			$this->load->view('detail/index', $data);
 		} else {

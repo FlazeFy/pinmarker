@@ -5,59 +5,143 @@
                 echo "<div class='row'>
                     <div class='col-6'>";
             }
-            foreach($dt_my_pin['data'] as $dt){
-                echo "
-                    <div class='pin-box'>
-                        <h3>$dt->pin_name</h3>
-                        <span class='bg-dark rounded-pill px-3 py-2 text-white'>$dt->pin_category</span>
-                        ";
-                        if($dt->is_favorite == 1){
-                            echo "<span class='bg-dark rounded-pill px-3 py-2 text-white'><i class='fa-solid fa-bookmark'></i></span>";
-                        }
-                        echo "<br><br>";
-                        if($dt->pin_desc){
-                            echo "<p>$dt->pin_desc</p>";
-                        } else {
-                            echo "<p class='text-secondary fst-italic'>- No Description -</p>";
-                        }
-                        echo "<div class='row py-0 my-0'>";
-                        if($dt->pin_person){
-                            echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Person In Touch</p>
-                            <p>$dt->pin_person</p></div>";
-                        }
-                        if($dt->pin_call && !$is_mobile_device){
-                            echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Phone Number</p>
-                            <p>$dt->pin_call</p></div>";
-                        }
-                        if($dt->pin_email && !$is_mobile_device){
-                            echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Email</p>
-                            <p>$dt->pin_email</p></div>";
-                        }
-                        echo"
-                        </div>
-                        <div class='row py-0 my-0'>";
 
-                        if(!$is_mobile_device){
-                            echo"
-                            <div class='col-lg-4 col-md-6 col-sm-12'>
-                                <p class='mt-2 mb-0 fw-bold'>Created At</p>
-                                <p class='date-target'>$dt->created_at</p>
-                            </div>
-                            <div class='col-lg-4 col-md-6 col-sm-12'>
-                                <p class='mt-2 mb-0 fw-bold'>Total Visit</p>
-                                <p>$dt->total_visit</p>
-                            </div>";
+            if($this->session->userdata('role_key') == 0){
+                echo 
+                "<table class='table table-bordered my-3'>
+                    <thead class='text-center'>
+                        <tr>
+                            <th style='width: 240px;'>Pin Name</th>
+                            <th style='min-width: 240px;'>Detail</th>
+                            <th style='min-width: 240px;'>Contact</th>
+                            <th style='width: 200px;'>Props</th>
+                            <th style='width: 100px;'>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>";
+                        foreach($dt_my_pin['data'] as $dt){
+                            echo "
+                                <tr>
+                                    <td>$dt->pin_name</td>
+                                    <td>
+                                        <p class='mt-2 mb-0 fw-bold'>Category</p>
+                                        <a>$dt->pin_category</a>
+                                        <p class='mt-2 mb-0 fw-bold'>Description</p>";
+                                        if($dt->pin_desc){
+                                            echo "<a>$dt->pin_desc</a>";
+                                        } else {
+                                            echo "<a class='text-secondary fst-italic text-decoration-none'>- No Description -</a>";
+                                        }
+                                        echo"<p class='mt-2 mb-0 fw-bold'>Coordinate</p>
+                                        <a>$dt->pin_lat, $dt->pin_long</a>
+                                        <p class='mt-2 mb-0 fw-bold'>Address</p>";
+                                        if($dt->pin_address){
+                                            echo "<a>$dt->pin_address</a>";
+                                        } else {
+                                            echo "<a class='text-secondary fst-italic text-decoration-none'>- No Address -</a>";
+                                        }
+                                        echo"
+                                    </td>
+                                    <td>
+                                        <p class='mt-2 mb-0 fw-bold'>Person in Touch</p>";
+                                        if($dt->pin_person){
+                                            echo "<a>$dt->pin_person</a>";
+                                        } else {
+                                            echo "<a class='text-secondary fst-italic text-decoration-none'>- No Person in Touch -</a>";
+                                        }
+                                        echo"
+                                        <p class='mt-2 mb-0 fw-bold'>Phone Number</p>";
+                                        if($dt->pin_call){
+                                            echo "<a>$dt->pin_call</a>";
+                                        } else {
+                                            echo "<a class='text-secondary fst-italic text-decoration-none'>- No Phone Number -</a>";
+                                        }
+                                        echo"
+                                        <p class='mt-2 mb-0 fw-bold'>Email</p>";
+                                        if($dt->pin_email){
+                                            echo "<a>$dt->pin_email</a>";
+                                        } else {
+                                            echo "<a class='text-secondary fst-italic text-decoration-none'>- No Email -</a>";
+                                        }
+                                        echo"
+                                    </td>
+                                    <td>
+                                        <p class='mt-2 mb-0 fw-bold'>Created At</p>
+                                        <a>
+                                            <span class='date-target'>$dt->created_at</span> 
+                                            <span>by <button class='btn-account-attach'>@$dt->created_by</button></span>
+                                        </a>
+                                        <p class='mt-2 mb-0 fw-bold'>Updated At</p>
+                                        <span class='date-target'>$dt->updated_at</span> 
+                                        <p class='mt-2 mb-0 fw-bold'>Deleted At</p>
+                                        <span class='date-target'>$dt->deleted_at</span> 
+                                    </td>
+                                    <td style='max-width:100px;'>
+                                        <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-pen-to-square'></i></button>
+                                        <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-fire-flame-curved'></i></button>
+                                        <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-paper-plane'></i></button>
+                                        <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-map'></i></button>
+                                    </td>
+                                </tr>
+                            ";
                         }
+                    echo"</tbody>
+                </table>";
+            } else {
+                foreach($dt_my_pin['data'] as $dt){
+                    echo "
+                        <div class='pin-box'>
+                            <h3>$dt->pin_name</h3>
+                            <span class='bg-dark rounded-pill px-3 py-2 text-white'>$dt->pin_category</span>
+                            ";
+                            if($dt->is_favorite == 1){
+                                echo "<span class='bg-dark rounded-pill px-3 py-2 text-white'><i class='fa-solid fa-bookmark'></i></span>";
+                            }
+                            echo "<br><br>";
+                            if($dt->pin_desc){
+                                echo "<p>$dt->pin_desc</p>";
+                            } else {
+                                echo "<p class='text-secondary fst-italic'>- No Description -</p>";
+                            }
+                            echo "<div class='row py-0 my-0'>";
+                            if($dt->pin_person){
+                                echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Person In Touch</p>
+                                <p>$dt->pin_person</p></div>";
+                            }
+                            if($dt->pin_call && !$is_mobile_device){
+                                echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Phone Number</p>
+                                <p>$dt->pin_call</p></div>";
+                            }
+                            if($dt->pin_email && !$is_mobile_device){
+                                echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Email</p>
+                                <p>$dt->pin_email</p></div>";
+                            }
                             echo"
-                            <div class='col-lg-4 col-md-6 col-sm-12'>
-                                <p class='mt-2 mb-0 fw-bold'>Last Visit</p>
-                                <p class='date-target'>$dt->last_visit</p>
                             </div>
+                            <div class='row py-0 my-0'>";
+    
+                            if(!$is_mobile_device){
+                                echo"
+                                <div class='col-lg-4 col-md-6 col-sm-12'>
+                                    <p class='mt-2 mb-0 fw-bold'>Created At</p>
+                                    <p class='date-target'>$dt->created_at</p>
+                                </div>
+                                <div class='col-lg-4 col-md-6 col-sm-12'>
+                                    <p class='mt-2 mb-0 fw-bold'>Total Visit</p>
+                                    <p>$dt->total_visit</p>
+                                </div>";
+                            }
+                                echo"
+                                <div class='col-lg-4 col-md-6 col-sm-12'>
+                                    <p class='mt-2 mb-0 fw-bold'>Last Visit</p>
+                                    <p class='date-target'>$dt->last_visit</p>
+                                </div>
+                            </div>
+                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
+                            <a class='btn btn-dark rounded-pill px-2 py-1' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
                         </div>
-                        <a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
-                        <a class='btn btn-dark rounded-pill px-2 py-1' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
-                    </div>
-                ";
+                    ";
+                }
             }
 
             echo "<div class='d-inline-block'>
