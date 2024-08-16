@@ -30,7 +30,7 @@
                             <td style='max-width:100px;'>
                                 <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-pen-to-square'></i></button>
                                 <button class='btn btn-dark w-100 rounded-pill mb-2 destroy-btn'><i class='fa-solid fa-fire-flame-curved'></i></button>
-                                <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-brands fa-telegram'></i></button>
+                                <button class='btn btn-dark w-100 rounded-pill mb-2 chat-btn' data-bs-toggle='modal' data-bs-target='#addChatModal'><i class='fa-brands fa-telegram'></i></button>
 
                                 <form class='d-none delete-user-form' action='/MyProfileController/delete_user' method='POST'>
                                     <input name='id' value='$dt->id'>
@@ -51,6 +51,28 @@
         ?>
     </tbody>
 </table>
+
+<div class="modal fade" id="addChatModal" tabindex="-1" aria-labelledby="addGalleriesLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addGalleriesLabel">Send Chat</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Send to : @<span id="username-holder-chat"></span></h6>
+                <label>Chat</label>
+                <form method="POST" action="/MyProfileController/send_chat">
+                    <input id="username_chat" name="username" hidden/>
+                    <textarea name="chat" id="chat" rows="5" class="form-control" maxlength="1000"></textarea>
+                    <a class="msg-error-input"></a>
+                    <button class="btn btn-dark w-100 rounded-pill py-2 px-3"><i class="fa-solid fa-paper-plane"></i> Send Chat</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).on('click', '.destroy-btn', function() {  
         const idx = $(this).index('.destroy-btn')
@@ -68,5 +90,11 @@
                 $('.delete-user-form').eq(idx).submit()
             }
         });
+    })
+    $(document).on('click', '.chat-btn', function() {  
+        const idx = $(this).index('.chat-btn')
+        const context = $('.username-holder').eq(idx).text()
+        $('#username-holder-chat').text(context)
+        $('#username_chat').val(context)
     })
 </script>

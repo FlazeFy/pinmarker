@@ -122,6 +122,18 @@
             return $query->row();
 		}
 
+        public function get_user_by_username($username){
+			$this->db->select('*');
+			$this->db->from($this->table_user);
+            $condition = [
+				'username' => $username
+            ];
+			$this->db->where($condition);
+            $query = $this->db->get();
+    
+            return $query->row();
+		}
+
         public function logout()
         {
             $this->session->unset_userdata(self::SESSION_KEY);

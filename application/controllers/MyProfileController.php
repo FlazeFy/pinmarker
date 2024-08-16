@@ -230,6 +230,30 @@ class MyProfileController extends CI_Controller {
 		redirect('MyProfileController');
 	}
 
+	public function send_chat(){
+		$username = $this->input->post('username');
+		$user = $this->AuthModel->get_user_by_username($username);
+		$chat = $this->input->post('chat');
+
+		if($user){
+			if($user->telegram_user_id && $user->telegram_is_valid == 1){
+				$this->telegram->sendMessage([
+					'chat_id' => $user->telegram_user_id,
+					'text' => "[ADMIN] $chat",
+					'parse_mode' => 'HTML'
+				]);
+				$this->session->set_flashdata('message_success', "Chat sended to @$username");
+			} else if($user->telegram_user_id && $user->telegram_is_valid == 0) {
+				$this->session->set_flashdata('message_error', "Telegram account for @$username is not verified");
+			} else {
+				$this->session->set_flashdata('message_error', "Telegram account not found for @$username");
+			}
+		} else {
+			$this->session->set_flashdata('message_error', 'User not found');
+		}
+		redirect('MyProfileController');
+	}
+
 	public function delete_feedback(){
 		$id = $this->input->post('id');
 		if($this->MultiModel->delete('feedback',$id)){
