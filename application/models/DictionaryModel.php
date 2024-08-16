@@ -67,7 +67,9 @@
 					$this->db->group_end();
 				} else {
 					$this->db->where($condition1);
-					$this->db->or_where($condition2);
+					if($type == "pin_category"){
+						$this->db->or_where($condition2);
+					}
 				}
 				
 				if ($type == "pin_category" && $check) {

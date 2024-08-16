@@ -184,9 +184,11 @@
 
 			if($this->role_key == 1){
 				$condition3 = [
+					'dictionary.dictionary_type' => 'pin_category', 
 					'dictionary.created_by' => null
 				];
 				$condition4 = [
+					'dictionary.dictionary_type' => 'pin_category', 
 					'dictionary.created_by' => $this->session->userdata(self::SESSION_KEY)
 				];
 				$this->db->where($condition3);

@@ -107,7 +107,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <a class="btn btn-dark w-100 rounded-pill py-2 px-3 mb-2"><i class="fa-solid fa-download"></i> Download Template</a>
+                <a class="btn btn-dark w-100 rounded-pill py-2 px-3 mb-2" id="download-template-btn"><i class="fa-solid fa-download"></i> Download Template</a>
                 <hr>
                 <div class="mb-3">
                     <label for="formFile" class="form-label">Only Accept CSV file <b>(Max : 20 mb)</b></label>
@@ -146,6 +146,19 @@
 <script>
     const pin_lat_input = document.getElementById('pin_lat')
     const pin_long_input = document.getElementById('pin_long')
+
+    $(document).ready(function() {
+        $(document).on('click', '#download-template-btn', function() {
+            const fileURL = 'public/file/template_import_pin.csv'
+            const fileName = 'import_pin_template.csv'
+            const link = document.createElement('a')
+            link.href = fileURL
+            link.download = fileName
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+        })
+    })
 
     const generate_form = () => {
         const fileInput = $('#pin-data').get(0)
@@ -290,13 +303,18 @@
                                 <i class="fa-solid fa-map"></i> See the Map
                             </a>
                         `)
+                        Swal.fire({
+                            title: 'Success!',
+                            text: failed_row === 0 ? `Successfully imported ${success_row} pin` : `Successfully imported ${success_row} pin and ${failed_row} failed`,
+                            icon: 'success',
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Failed!',
+                            text: `No pin ready to imported`,
+                            icon: 'error',
+                        });
                     }
-
-                    Swal.fire({
-                        title: 'Success!',
-                        text: failed_row === 0 ? `Successfully imported ${success_row} pin` : `Successfully imported ${success_row} pin and ${failed_row} failed`,
-                        icon: 'success',
-                    });
                 } else {
                     Swal.hideLoading();
                     Swal.fire({

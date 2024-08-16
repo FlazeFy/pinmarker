@@ -99,7 +99,7 @@
                 <p>Vitae auctor eu augue ut lectus. Vitae purus faucibus ornare suspendisse. Turpis nunc eget lorem dolor. Est sit amet facilisis magna etiam tempor orci eu. Tortor condimentum lacinia quis vel eros donec ac odio. Eget sit amet tellus cras adipiscing. Aliquam nulla facilisi cras fermentum odio eu feugiat pretium nibh. Eget sit amet tellus cras adipiscing enim eu. Sed arcu non odio euismod lacinia. Elementum facilisis leo vel fringilla est ullamcorper eget. Elementum eu facilisis sed odio morbi quis commodo odio. Mauris a diam maecenas sed enim ut sem viverra aliquet. Arcu non odio euismod lacinia at quis.</p>
                 <p>Ullamcorper sit amet risus nullam eget. Nunc eget lorem dolor sed viverra ipsum. Quam nulla porttitor massa id neque aliquam vestibulum morbi. Amet est placerat in egestas erat imperdiet sed euismod nisi. Eu augue ut lectus arcu bibendum at. Mi tempus imperdiet nulla malesuada pellentesque elit eget gravida. Pretium fusce id velit ut tortor pretium viverra. Lobortis mattis aliquam faucibus purus in massa. Id donec ultrices tincidunt arcu non sodales neque sodales. Leo vel fringilla est ullamcorper eget nulla. Dui vivamus arcu felis bibendum ut tristique et egestas quis. Bibendum est ultricies integer quis auctor elit sed vulputate. Pharetra convallis posuere morbi leo urna molestie. Iaculis urna id volutpat lacus laoreet non curabitur gravida. Lorem donec massa sapien faucibus et molestie ac. Nam aliquam sem et tortor consequat id porta nibh venenatis. Quis blandit turpis cursus in hac. Netus et malesuada fames ac. Risus quis varius quam quisque id diam vel.</p>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" onchange="navTerms()" id="checkTerm">
+                    <input class="form-check-input" type="checkbox" id="checkTerm">
                     <label class="form-check-label" for="flexCheckDefault">I agree with this terms & condition</label>
                 </div>
             </div>
@@ -274,32 +274,42 @@
         target.value = ""
     }, false);
 
-    function navTerms(){
-        is_process = true
-        $(document).ready(function() {
-            $('#tnc_indicator').attr('class', 'active')
-            $('#user_profile_holder').css({'display':'block'})
-        });
-        $('#user_profile_holder').html(`
-            <h2>User Profile</h2><br>
-            <label>Username</label>
-            <input name="username" id="username" type="text" onchange="check_avaiability('username')" class="form-control mb-0"/>
-            <p class="msg-error-input mb-2" id="username_err_msg"></p>
-            <label>Fullname</label>
-            <input name="fullname" id="fullname" type="text" class="form-control"/>
-            <a class="msg-error-input"></a>
-            <label>Email</label>
-            <input name="email" id="email" type="email" onchange="check_avaiability('email')" class="form-control"/>
-            <a class="msg-error-input"></a>
-            <label>Password</label>
-            <input name="password" id="password" type="password" class="form-control"/>
-            <label>Re-Type Password</label>
-            <input name="password_check" id="password_check" type="password" class="form-control"/>
-            <div id="btn-regis-holder">
-                <a class="btn btn-dark rounded-pill px-3" onclick="navProfile()"><i class="fa-solid fa-arrow-right-to-bracket me-2"></i> Create Account</a>
-            </div>
-        `)
-    }
+    $(document).ready(function() {
+        $(document).on('change', '#checkTerm', function() { 
+            const is_check = $(this).is(':checked')
+
+            if(is_check){
+                is_process = true
+                $('#tnc_indicator').attr('class', 'active')
+                $('#user_profile_holder').css({'display':'block'})
+            
+                $('#user_profile_holder').html(`
+                    <h2>User Profile</h2><br>
+                    <label>Username</label>
+                    <input name="username" id="username" type="text" onchange="check_avaiability('username')" class="form-control mb-0"/>
+                    <p class="msg-error-input mb-2" id="username_err_msg"></p>
+                    <label>Fullname</label>
+                    <input name="fullname" id="fullname" type="text" class="form-control"/>
+                    <a class="msg-error-input"></a>
+                    <label>Email</label>
+                    <input name="email" id="email" type="email" onchange="check_avaiability('email')" class="form-control"/>
+                    <a class="msg-error-input"></a>
+                    <label>Password</label>
+                    <input name="password" id="password" type="password" class="form-control"/>
+                    <label>Re-Type Password</label>
+                    <input name="password_check" id="password_check" type="password" class="form-control"/>
+                    <div id="btn-regis-holder">
+                        <a class="btn btn-dark rounded-pill px-3" onclick="navProfile()"><i class="fa-solid fa-arrow-right-to-bracket me-2"></i> Create Account</a>
+                    </div>
+                `)
+            } else {
+                is_process = false
+                $('#tnc_indicator').removeClass()
+                $('#user_profile_holder').css({'display':'none'})
+                $('#user_profile_holder').empty()
+            }
+        })
+    });
 
     function check_avaiability(type){
         const ctx = $(`#${type}`).val()
