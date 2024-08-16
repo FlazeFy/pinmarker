@@ -2,7 +2,6 @@
 	defined('BASEPATH') OR exit('No direct script access alowed');
 
 	class MultiModel extends CI_Model {
-
 		public function get_all_data($table, $des_table, $key,$ext){
 			$this->db->select("*$ext");
 			$this->db->from($table);
@@ -12,6 +11,11 @@
 			}
 
 			return $data = $this->db->get()->result();
+		}
+
+		// Command
+		public function delete($table, $id){
+			return $this->db->delete($table,['id'=>$id]);	
 		}
 	}
 ?>

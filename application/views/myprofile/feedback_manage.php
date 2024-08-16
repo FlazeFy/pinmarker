@@ -1,10 +1,10 @@
 <table class="table table-bordered my-3">
-    <thead>
+    <thead class="text-center">
         <tr>
             <th>Rate</th>
             <th>Body</th>
             <th>Props</th>
-            <th>Action</th>
+            <th style='width: 100px;'>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -18,8 +18,8 @@
                             <p class='mt-2 mb-0 fw-bold'>Created At</p>
                             <span class='date-target'>$dt->created_at</span>
                         </td>
-                        <td>
-                            <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-fire-flame-curved'></i> Destroy</button>
+                        <td style='max-width:100px;'>
+                            <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-fire-flame-curved'></i></button>
                         </td>
                     </tr>
                 ";

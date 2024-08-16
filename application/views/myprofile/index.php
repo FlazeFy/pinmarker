@@ -79,18 +79,21 @@
                                 <div class='nav-item'>
                                     <a aria-current='page' id='help-section-btn'>Help Center</a>
                                 </div>
+                                <div class='nav-item'>
+                                    <a aria-current='page' data-bs-toggle='modal' data-bs-target='#signOutModal'>Sign Out</a>
+                                </div>
                             </nav>
                             <div id='user_manage_section'>";
                                 $this->load->view('myprofile/user_manage'); 
-                            echo "
+                                echo "
                             </div>
-                            <div id='dct_manage_section'>";
+                            <div id='dct_manage_section' class='d-none'>";
                                 $this->load->view('myprofile/dct_manage'); 
-                            echo "
+                                echo "
                             </div>
-                            <div id='feedback_manage_section'>";
+                            <div id='feedback_manage_section' class='d-none'>";
                                 $this->load->view('myprofile/feedback_manage'); 
-                            echo "
+                                echo "
                             </div>
                         ";
                     }
@@ -124,5 +127,25 @@
             ";
         }
     ?>
+    <script>
+        $(document).on('click', '#user-manage-section-btn,#dct-section-btn,#feedback-section-btn', function() {  
+            $('.nav-item').removeClass('active')
+            $(this).closest('.nav-item').addClass('active')
+
+            if(this.id == 'user-manage-section-btn'){
+                $('#user_manage_section').removeClass().css({'display':'block'})
+                $('#dct_manage_section').removeClass().css({'display':'none'})
+                $('#feedback_manage_section').removeClass().css({'display':'none'})
+            } else if(this.id == 'dct-section-btn'){
+                $('#user_manage_section').removeClass().css({'display':'none'})
+                $('#dct_manage_section').removeClass().css({'display':'block'})
+                $('#feedback_manage_section').removeClass().css({'display':'none'})
+            } else if(this.id == 'feedback-section-btn'){
+                $('#user_manage_section').removeClass().css({'display':'none'})
+                $('#dct_manage_section').removeClass().css({'display':'none'})
+                $('#feedback_manage_section').removeClass().css({'display':'block'})
+            }
+        })
+    </script>
 </body>
 </html>

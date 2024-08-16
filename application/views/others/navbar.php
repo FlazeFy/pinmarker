@@ -56,7 +56,7 @@
                                 <a class="nav-link '; if($active_page == 'list'){ echo 'active'; } echo'" href="/ListController">List</a>
                             </li>';
 
-                            if($this->session->userdata('user_id') == 1){
+                            if($this->session->userdata('role_key') == 1){
                                 echo '
                                 <li class="nav-item">
                                     <a class="nav-link '; if($active_page == 'history'){ echo 'active'; } echo'" href="/HistoryController">History</a>
@@ -72,7 +72,7 @@
                                         <li><a class="dropdown-item '; if($active_page == 'myprofile'){ echo 'active'; } echo'" href="/MyProfileController">My Profile</a></li>
                                         <li><a class="dropdown-item" href="#">Help Center</a></li>
                                         <li><a class="dropdown-item '; if($active_page == 'feedback'){ echo 'active'; } echo'" href="/FeedbackController">Feedback</a></li>
-                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">Sign Out</a></li>
+                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#signOutModal">Sign Out</a></li>
                                     </ul>
                                 </li>
                                 ';
@@ -106,7 +106,7 @@
 </nav>
 
 <!-- Signout Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="signOutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" >
         <div class="modal-content shadow" style="border-radius:15px; border: 3px solid black;">
             <div class="modal-header">

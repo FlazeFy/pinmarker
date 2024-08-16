@@ -14,7 +14,7 @@ class TrashController extends CI_Controller {
 	{
 		if($this->AuthModel->current_user()){
 			$data = [];
-			$data['active_page']= 'trash';
+			$data['active_page']= 'list';
 			$data['dt_deleted_pin']= $this->PinModel->get_deleted_pin();
 			$data['is_mobile_device'] = is_mobile_device();
 			$data['is_signed'] = true;

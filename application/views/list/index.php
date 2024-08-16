@@ -73,7 +73,11 @@
                         }
                     ?>
                 <a class="btn btn-dark rounded-pill btn-main-page" href="/ListController/print_pin"><i class="fa-solid fa-print"></i> Print</a>
-                <a class="btn btn-dark rounded-pill btn-main-page" data-bs-target="#manageCategory" data-bs-toggle="modal"><i class="fa-solid fa-gear"></i> Manage Category</a>
+                <?php 
+                    if($this->session->userdata('role_key') == 1){
+                        echo '<a class="btn btn-dark rounded-pill btn-main-page" data-bs-target="#manageCategory" data-bs-toggle="modal"><i class="fa-solid fa-gear"></i> Manage Category</a>';
+                    }
+                ?>
                 <?php $this->load->view('list/manage_category'); ?>
                 <?php
                     if($is_mobile_device){

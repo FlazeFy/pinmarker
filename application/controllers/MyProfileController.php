@@ -205,4 +205,28 @@ class MyProfileController extends CI_Controller {
 			redirect('MyProfileController');
 		}
 	}
+
+	public function delete_user(){
+		$id = $this->input->post('id');
+		$user = $this->AuthModel->get_user_by_id($id);
+
+		if($user){
+			if($user->telegram_user_id && $user->telegram_is_valid == 1){
+				$this->telegram->sendMessage([
+					'chat_id' => $user->telegram_user_id,
+					'text' => "Hello <b>$user->username</b>, your account is deleted by admin. Sorry you cant access PinMarker apps from now",
+					'parse_mode' => 'HTML'
+				]);
+			}
+			
+			if($this->MultiModel->delete('user',$id)){
+				$this->session->set_flashdata('message_success', 'User deleted');
+			} else {
+				$this->session->set_flashdata('message_error', 'User not found');
+			}
+		} else {
+			$this->session->set_flashdata('message_error', 'User not found');
+		}
+		redirect('MyProfileController');
+	}
 }
