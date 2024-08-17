@@ -153,6 +153,10 @@
 		public function insert_rel($data){
 			return $this->db->insert($this->table_rel,$data);	
 		}
+		public function update_list($id,$data)
+        {
+            return $this->db->update($this->table, $data, ['id' => $id]);
+        }
 		public function delete_global_list($id){
     		return $this->db->delete($this->table,[
 				'id'=>$id

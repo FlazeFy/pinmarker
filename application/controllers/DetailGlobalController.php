@@ -7,8 +7,10 @@ class DetailGlobalController extends CI_Controller {
 		$this->load->model('AuthModel');
 		$this->load->model('GlobalListModel');
 		$this->load->model('PinModel');
+		$this->load->model('HistoryModel');
 
 		$this->load->helper('generator_helper');
+		$this->load->library('form_validation');
 	}
 
 	public function view($id)
@@ -97,5 +99,43 @@ class DetailGlobalController extends CI_Controller {
 		}
 		
 		redirect("GlobalListController");
+	}
+
+	public function edit_toggle($id){
+		$is_edit = $this->session->userdata('is_global_edit_mode');
+		if($is_edit == false){
+			$this->session->set_userdata('is_global_edit_mode', true);
+		} else {
+			$this->session->set_userdata('is_global_edit_mode', false);
+		}
+
+		redirect("/DetailGlobalController/view/$id");
+	}
+
+	public function edit_list($id){
+		$rules = $this->GlobalListModel->rules(null);
+		$this->form_validation->set_rules($rules);
+
+		if($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('message_error', 'List failed to updated. Validation failed');
+			$this->session->set_flashdata('validation_error', validation_errors());
+		} else {
+			$user_id = $this->session->userdata('user_id');
+
+			$data = [
+				'list_name' => $this->input->post('list_name'), 
+				'list_desc' => $this->input->post('list_desc'), 
+				'updated_at' => date('Y-m-d H:i:s'), 
+			];
+
+			if($this->GlobalListModel->update_list($id,$data)){
+				$this->HistoryModel->insert_history('Edit list', $data['list_name']);
+
+				$this->session->set_flashdata('message_success', 'List updated');
+			} else {
+				$this->session->set_flashdata('message_error', 'List failed to updated');
+			}
+		}
+		redirect("/DetailGlobalController/view/$id");
 	}
 }

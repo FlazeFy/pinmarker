@@ -12,7 +12,11 @@
 <div class='pin-box mb-4 no-animation'>
     <span class="d-flex justify-content-between">
         <div>
-            <h3><?= $dt_detail->list_name ?></h3>
+            <?php 
+                if($this->session->userdata('is_global_edit_mode') == false){
+                    echo "<h3>$dt_detail->list_name</h3>";
+                } 
+            ?>
         </div>
         <div>
             <?php 
@@ -24,8 +28,21 @@
             <?php 
                 if($is_signed && $is_editable){
                     echo "
+                        <form action='/DetailGlobalController/edit_toggle/$dt_detail->id' method='POST' class='d-inline ms-2' id='form-remove-list'>";
+                            if($this->session->userdata('is_global_edit_mode') == false){
+                                echo "<button class='btn btn-light rounded-pill px-2 py-1 me-2' style='border: 2px solid black;'><i class='fa-solid fa-pen-to-square'></i> Open Edit Mode</button>";
+                            } else {
+                                echo "<button class='btn btn-dark rounded-pill px-2 py-1 me-2'><i class='fa-solid fa-pen-to-square'></i> Close Edit Mode</button>";
+                            }
+                        echo"</form>
+                    ";
+                }
+            ?>
+            <?php 
+                if($is_signed && $is_editable){
+                    echo "
                         <form action='/DetailGlobalController/delete_global_list/$dt_detail->id' method='POST' class='d-inline ms-2' id='form-remove-list'>
-                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2' onclick='remove_list()'><i class='fa-solid fa-trash'></i> Delete Global List</a>
+                            <button class='btn btn-dark rounded-pill px-2 py-1 me-2' onclick='remove_list()'><i class='fa-solid fa-trash'></i> Delete Global List</button>
                         </form>
                     ";
                 }
@@ -44,10 +61,22 @@
     ?>
     <br><br>
     <?php 
-        if($dt_detail->list_desc){
-            echo "<p>$dt_detail->list_desc</p>";
+        if($this->session->userdata('is_global_edit_mode') == false){
+            if($dt_detail->list_desc){
+                echo "<p>$dt_detail->list_desc</p>";
+            } else {
+                echo "<p class='text-secondary fst-italic'>- No Description -</p>";
+            }
         } else {
-            echo "<p class='text-secondary fst-italic'>- No Description -</p>";
+            echo "
+                <form action='/DetailGlobalController/edit_list/$dt_detail->id' method='POST'>
+                    <label>List Name</label>
+                    <input name='list_name' id='list_name' value='$dt_detail->list_name' class='form-control'/>
+                    <label>Description</label>
+                    <textarea name='list_desc' id='list_desc' value='$dt_detail->list_desc' class='form-control'>$dt_detail->list_desc</textarea>
+                    <button class='btn btn-dark rounded-pill' type='submit'>Save Changes</button>
+                </form>
+            ";
         }
     ?>
     <?php $this->load->view('detail_global/props'); ?>
