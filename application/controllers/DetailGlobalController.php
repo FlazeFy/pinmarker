@@ -33,6 +33,7 @@ class DetailGlobalController extends CI_Controller {
 		$data['active_page']= 'global_list';
 		$data['dt_detail']= $this->GlobalListModel->get_detail_list_by_id($id);
 		$data['dt_pin_list']= $this->GlobalListModel->get_pin_list_by_id($id);
+		$data['dt_global_tag'] = $this->GlobalListModel->get_global_tag();
 		$data['is_editable']= $this->GlobalListModel->check_pin_edit_mode($id, $user_id);
 		$data['dt_available_pin'] = $this->PinModel->get_all_my_pin_name();
 		$data['is_mobile_device'] = is_mobile_device();
@@ -132,6 +133,11 @@ class DetailGlobalController extends CI_Controller {
 				'list_desc' => $this->input->post('list_desc'), 
 				'updated_at' => date('Y-m-d H:i:s'), 
 			];
+
+			if($this->input->post('list_tag') != ""){
+				$list_tag = $this->input->post('list_tag');
+				$data['list_tag'] = $list_tag; 
+			}
 
 			if($this->GlobalListModel->update_list($id,$data)){
 				$owner = $this->GlobalListModel->get_owner_list($id);

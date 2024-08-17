@@ -85,8 +85,7 @@
                 `
             }
             $('#selected-tag-holder').append(tagEl)
-    
-            $('.pin-tag').eq(idx).remove()
+            $(this).remove()
         })
         $(document).on('click', '.pin-tag.remove', function() {            
             const idx = $(this).index('.pin-tag.remove')
@@ -98,8 +97,7 @@
             `
 
             $('#available-tag-holder').append(tagEl)
-    
-            $('.pin-tag.remove').eq(idx).remove()
+            $(this).remove()
         })
         // Pin choose
         $(document).on('click', '.pin-name:not(.remove)', function() {
