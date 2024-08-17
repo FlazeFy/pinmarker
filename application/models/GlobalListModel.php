@@ -146,6 +146,17 @@
 			}
 		}
 
+		public function get_owner_list($id){
+			$this->db->select("list_name, list_desc, username, telegram_user_id");
+			$this->db->from($this->table);
+			$this->db->join('user', "user.id = $this->table.created_by");
+			$this->db->where("$this->table.id", $id);
+			$this->db->where("user.telegram_is_valid", 1);
+			$query = $this->db->get();
+
+			return $query->row();
+		}
+
 		// Command
 		public function insert($data){
 			return $this->db->insert($this->table,$data);	

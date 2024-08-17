@@ -52,14 +52,18 @@
     <?php 
         if($dt_detail->list_tag){
             $list_tag = json_decode($dt_detail->list_tag);
-            foreach($list_tag as $dt){
-                echo "<a class='pin-box-label me-2 mb-1 text-decoration-none' href='http://127.0.0.1:8080/LoginController/view/$dt->tag_name'>#$dt->tag_name</a>";
+            foreach($list_tag as $idx => $dt){
+                echo "<a class='pin-box-label me-2 mb-1 text-decoration-none list-tag'"; 
+                if($this->session->userdata('is_global_edit_mode') == false){    
+                    echo "href='http://127.0.0.1:8080/LoginController/view/$dt->tag_name'";
+                }
+                echo">#$dt->tag_name</a>";
             }
         } else {
-            echo "<p class='text-secondary fst-italic'>- No Description -</p>";
+            echo "<p class='text-secondary fst-italic'>- No Tag -</p>";
         }
     ?>
-    <br><br>
+    <br>
     <?php 
         if($this->session->userdata('is_global_edit_mode') == false){
             if($dt_detail->list_desc){
@@ -236,8 +240,12 @@
             }
         ?>
     </div>
+
     <form action="/DetailGlobalController/remove_pin/<?= $dt_detail->id ?>" method="POST" id="form-remove-pin">
         <input hidden name="pin_rel_id" id="pin_rel_id">
+    </form>
+    <form action="/DetailGlobalController/remove_tag/<?= $dt_detail->id ?>" method="POST" id="form-remove-tag">
+        <input hidden name="tag_selected_idx" id="tag_selected_idx">
     </form>
 </div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
@@ -306,6 +314,23 @@
 
         $('#share-global-pin').on('click', function() {
             messageCopy('http://127.0.0.1:8080/DetailGlobalController/view/<?= $dt_detail->id ?>')
+        })
+        $('.list-tag').on('click', function() {
+            const idx = $(this).index('.list-tag')
+            
+            Swal.fire({
+                title: "Are you sure?",
+                html: `Want to remove this tag?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            })
+            .then((result) => {
+                if(result.isConfirmed){
+                    $('#tag_selected_idx').val(idx)
+                    $('#form-remove-tag').submit()
+                }                
+            })
         })
     })
 </script>
