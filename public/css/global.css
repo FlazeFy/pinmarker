@@ -240,6 +240,16 @@ table thead {
     color: var(--whiteColor);
     background: var(--primaryColor);
 }
+.btn-light {
+    background: var(--whiteColor);
+    border: 2px solid var(--primaryColor) !important;
+}
+
+.form-check-input {
+    width: var(--spaceXLG);
+    height: var(--spaceXLG);
+    margin-right: var(--spaceMD);
+}
 
 /* Nav Tab */
 .sub-tab .nav-item a{

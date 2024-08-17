@@ -30,7 +30,7 @@
                     echo "
                         <form action='/DetailGlobalController/edit_toggle/$dt_detail->id' method='POST' class='d-inline ms-2' id='form-remove-list'>";
                             if($this->session->userdata('is_global_edit_mode') == false){
-                                echo "<button class='btn btn-light rounded-pill px-2 py-1 me-2' style='border: 2px solid black;'><i class='fa-solid fa-pen-to-square'></i> Open Edit Mode</button>";
+                                echo "<button class='btn btn-light rounded-pill px-2 py-1 me-2'><i class='fa-solid fa-pen-to-square'></i> Open Edit Mode</button>";
                             } else {
                                 echo "<button class='btn btn-dark rounded-pill px-2 py-1 me-2'><i class='fa-solid fa-pen-to-square'></i> Close Edit Mode</button>";
                             }

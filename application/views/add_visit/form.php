@@ -96,7 +96,7 @@
                 <textarea name="visit_with" id="visit_with" rows="5" class="form-control"></textarea>
                 <a class="msg-error-input"></a>
                 <div class="d-flex justify-content-start mb-3">
-                    <a class="btn btn-dark rounded-pill"><i class="fa-solid fa-user-plus"></i> See Persons</a>
+                    <a class="btn btn-dark rounded-pill" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> See Persons</a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
@@ -118,11 +118,13 @@
         <div class="col-lg-4 col-md-6 col-sm-12">
             <a class="btn btn-white rounded-pill w-100 py-3" style="border: 2.5px solid black;"><i class="fa-solid fa-arrow-right-arrow-left"></i> Round Trip</a>
         </div>
-        <div class="col-lg-4 col-md-12 col-sm-12">
+        <div class="col-lg-4 col-md-12 col-sm-12" id='save-visit-btn-holder'>
             <button class="btn btn-dark rounded-pill w-100 py-3" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>
         </div>
     </div>
 </form>
+
+<?php $this->load->view('add_visit/my_contact'); ?>
 
 <?php 
     if($this->session->flashdata('message_error')){
@@ -145,7 +147,12 @@
     let selected_color = ''
 
     $(document).ready(function() {
+        const btn_submit_el = `<button class="btn btn-dark rounded-pill w-100 py-3" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>`
+        let count_multi_visit = 1
+
         $(document).on('click', '.add-form-btn', function() { 
+            count_multi_visit++
+
             $('#type_add').val('multi')
             let target = $('#add-form-holder .row').last().clone()
 
@@ -153,7 +160,15 @@
             target.find('#add-new-pin-btn').remove()
             target.find('#add-custom-btn').remove()
 
-            target.prepend(`<span class='diff-hr'><hr></span>`)
+            target.prepend(`
+                <span class='diff-hr'>
+                    <hr>
+                    <div class='d-flex justify-content-between'>
+                        <h4 class="mb-2">Visit Form #${count_multi_visit}</h4>  
+                        <a class='btn btn-light rounded-pill py-2 px-4 remove-multi-form-idx-btn'><i class="fa-solid fa-trash"></i> Remove Form</a>
+                    </div>
+                </span>
+            `)
             $('#add-form-holder .row').append(target)
 
             $('input, textarea, select').each(function() {
@@ -163,10 +178,17 @@
                     $(this).attr('name', name + '[]')
                 }
             });
+
+            $('#save-visit-btn-holder').html(`
+                <button class="btn btn-dark rounded-pill w-100 py-3" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save ${count_multi_visit} Visit</button>
+            `)
         })
         $(document).on('click', '#add-new-pin-btn', function() { 
             $('#type_add').val('pin_visit')
             $('#pin_name_init_holder').empty()
+            $('#add-form-holder .row').not(':first').remove()
+            $('#save-visit-btn-holder').html(btn_submit_el)
+
             $('#add_pin_form').html(`
                 <h4 class="mb-2">Pin Form</h4>
                 <div class="row">
@@ -233,6 +255,9 @@
         })
         $(document).on('click', '#add-custom-btn', function() { 
             $('#type_add').val('visit_custom')
+            $('#add-form-holder .row').not(':first').remove()
+            $('#save-visit-btn-holder').html(btn_submit_el)
+
             $('#pin_name_init_holder').html(`
                 <label>Location Name</label>
                 <input name="location_name" id="location_name" type="text" class="form-control"/>
@@ -244,6 +269,19 @@
                 </div>
             `)
             $('#save_visit_n_go').empty()
+        })
+
+        $(document).on('click', '.remove-multi-form-idx-btn', function() { 
+            const idx = $(this).index()
+            $('#add-form-holder .row').eq(idx).remove()
+
+            let count_visit = $('#add-form-holder .row').length
+            if(count_visit == 1){
+                count_visit = ''
+            }
+            $('#save-visit-btn-holder').html(`
+                <button class="btn btn-dark rounded-pill w-100 py-3" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save ${count_visit}Visit</button>
+            `)
         })
     })
 

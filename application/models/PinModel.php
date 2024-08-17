@@ -293,6 +293,21 @@
 			return $data = $this->db->get()->row();
 		}
 
+		public function get_person_in_contact(){
+			$this->db->select("pin_person, IFNULL(GROUP_CONCAT(COALESCE(pin.pin_name, null) ORDER BY pin.pin_name ASC SEPARATOR ', '), '') as pin_list");
+			$this->db->from($this->table);
+			$condition = [
+				'created_by' => $this->session->userdata(self::SESSION_KEY),
+            ];
+			$this->db->where($condition);
+			$this->db->where('LOWER(pin_person) !=', 'me'); 
+			$this->db->where('pin_person !=', ''); 
+			$this->db->group_by('pin_person');
+            $this->db->order_by('pin_person','asc');
+
+			return $data = $this->db->get()->result();
+		}
+
 		public function get_pin_availability($pin_name, $id, $type){
 			$this->db->select('pin_name');
 			$this->db->from($this->table);
