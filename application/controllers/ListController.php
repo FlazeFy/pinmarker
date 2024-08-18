@@ -269,17 +269,42 @@ class ListController extends CI_Controller {
 		if($this->MultiModel->delete('dictionary',$id)){
 			$new_dct = $this->input->post('dictionary_migrate');
 			
-			if($new_dct){
+			if($new_dct && $new_dct != ""){
 				if($this->DictionaryModel->update_mass_dictionary('pin','pin_category',$old_dct->dictionary_name,$new_dct)){
-					$this->session->set_flashdata('message_success', 'Dictionary deleted. Success to migrate');
+					$this->session->set_flashdata('message_success', 'Category deleted. Success to migrate');
 				} else {
-					$this->session->set_flashdata('message_error', 'Dictionary deleted. Failed to migrate');
+					$this->session->set_flashdata('message_error', 'Category deleted. But failed to migrate');
 				}
 			} else {
-				$this->session->set_flashdata('message_success', 'Dictionary deleted. Nothing to migrate');
+				$this->session->set_flashdata('message_success', 'Category deleted. Nothing to migrate');
 			}
 		} else {
-			$this->session->set_flashdata('message_error', 'Failed to delete dictionary');
+			$this->session->set_flashdata('message_error', 'Failed to delete category');
+		}
+
+		redirect("ListController");
+	}
+
+	public function rename_category(){
+		$id = $this->input->post('id');
+		$dct_name_old = $this->input->post('dictionary_name_old');
+		$dct_name_new = $this->input->post('dictionary_name_new');
+		$data = [
+			'dictionary_name' => $dct_name_new
+		];
+
+		if($this->DictionaryModel->update_table($data, $id)){			
+			if($dct_name_old && $dct_name_old != ""){
+				if($this->DictionaryModel->update_mass_dictionary('pin','pin_category',$dct_name_old,$dct_name_new)){
+					$this->session->set_flashdata('message_success', 'Category renamed. Success to migrate');
+				} else {
+					$this->session->set_flashdata('message_error', 'Category renamed. But failed to migrate');
+				}
+			} else {
+				$this->session->set_flashdata('message_success', 'Category renamed. Nothing to migrate');
+			}
+		} else {
+			$this->session->set_flashdata('message_error', 'Failed to rename category');
 		}
 
 		redirect("ListController");

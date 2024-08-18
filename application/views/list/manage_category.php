@@ -27,7 +27,10 @@
                                 foreach($dt_my_category as $dt){
                                     echo "
                                         <tr>
-                                            <td class='dictionary-name-holder'>$dt->dictionary_name</td>
+                                            <td>
+                                                <input hidden class='form-control old-dictionary-name-holder' type='text' value='$dt->dictionary_name'>
+                                                <input class='form-control dictionary-name-holder' type='text' value='$dt->dictionary_name'>
+                                            </td>
                                             <td>
                                                 <form action='/ListController/edit_category_color/$dt->id' method='POST'>
                                                     <select name='dictionary_color' class='form-select' id='dictionary_color' onchange='this.form.submit()'>
@@ -66,6 +69,12 @@
     <input id="dictionary_name_migrate" name='dictionary_migrate'>
 </form>
 
+<form hidden action="/ListController/rename_category" method="POST" id="rename-cat-form">
+    <input id="dictionary_id_rename" name='id'>
+    <input id="dictionary_name_old" name='dictionary_name_old'>
+    <input id="dictionary_name_new" name='dictionary_name_new'>
+</form>
+
 <script>
     let add_i = 0
     const add_form_dct_category = () => {
@@ -101,13 +110,46 @@
     }
 
     $(document).ready(function() {
+        $(document).on('blur', '.dictionary-name-holder', function() {
+            const idx = $(this).index('.dictionary-name-holder')
+            const id = $('.id-holder').eq(idx).val()
+            const old_name = $('.old-dictionary-name-holder').eq(idx).val()
+            const new_name = $(this).val().trim()
+            const total = $('.total-used').eq(idx).text()
+
+            if(old_name != new_name){
+                let desc = ''
+                if(total > 0){
+                    desc = `. There's some pin who attached to this category that can be affected too`
+                } 
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    html: `Want to update this category's name?${desc}`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, update it!"
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        $('#dictionary_id_rename').val(id)
+                        $('#dictionary_name_old').val(old_name)
+                        $('#dictionary_name_new').val(new_name)
+                        $('#rename-cat-form').submit()
+                    } else {
+                        $(this).val(old_name)
+                    }
+                });
+            }
+        })
+
         $(document).on('click', '.manage-category', function() { 
             const idx = $(this).index('.manage-category')
             const id = $('.id-holder').eq(idx).val()
             const total = $('.total-used').eq(idx).text()
             
             if(total > 0){
-                const dct_name = $('.dictionary-name-holder').eq(idx).text()
+                const dct_name = $('.dictionary-name-holder').eq(idx).val()
                 let opt_el = ''
                 const dct_ava_name = [<?php 
                     foreach($dt_dct_pin_category as $dt){
