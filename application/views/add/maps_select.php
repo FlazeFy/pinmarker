@@ -49,7 +49,7 @@
         map.addListener("click", (e) => {
             initMap()
             placeMarkerAndPanTo(e.latLng, map)
-            addContentCoor(e.latLng)
+            addContentCoor(e.latLng, 'pin_lat', 'pin_long')
         });
     }
 
@@ -70,12 +70,6 @@
             }
         });
         map.panTo(latLng)
-    }
-
-    function addContentCoor(coor){
-        coor = coor.toJSON()
-        document.getElementById('pin_lat').value = coor['lat']
-        document.getElementById('pin_long').value = coor['lng']
     }
 
     window.initMap = initMap;

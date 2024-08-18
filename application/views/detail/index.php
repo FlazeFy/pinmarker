@@ -19,11 +19,12 @@
     <!-- CSS -->
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
     
-    <!-- Javascript -->
-    <script src="http://127.0.0.1:8080/public/js/global.js"></script>
-
     <!-- Jquery -->
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <!-- Javascript -->
+    <script src="http://127.0.0.1:8080/public/js/global.js"></script>
+    <script src="http://127.0.0.1:8080/public/js/maps.js"></script>
 
     <!--Apex Chart-->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -44,13 +45,18 @@
     </style>
 </head>
 <body>
+    <?php $is_edit = $this->session->userdata('is_edit_mode'); ?>
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
 
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
         <?php $this->load->view('detail/detail'); ?>
-        <hr>
-        <?php $this->load->view('detail/props'); ?>
+
+        <?php if (!$is_edit): ?>
+            <hr>
+            <?php $this->load->view('detail/props'); ?>
+        <?php endif; ?>
     </div>
 
     <script>

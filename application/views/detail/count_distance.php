@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-8">
         <label>Pin Name</label>
-        <select class="form-select" id="pin_name_distance_count" onchange="count_distance_pin(this.value)">
+        <select class="form-select" id="pin_name_distance_count">
             <option value="">- select your pin -</option>
             <?php 
                 foreach($dt_all_my_pin_name as $dt){
@@ -20,7 +20,7 @@
 </div>
 
 <script>
-    function calculateDistance(lat1, lon1, lat2, lon2, unit = 'km') {
+    function calculateDistanceKm(lat1, lon1, lat2, lon2, unit = 'km') {
         const theta = lon1 - lon2
         let distance = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta))
         distance = Math.acos(distance)
@@ -34,7 +34,7 @@
         distance = distance.toFixed(2)
 
         Swal.fire({
-            title: distance <= 10 ? "Do you want to walk?" : distance <= 50 ? "Let's check the traffic first!" : distance <= 500 ? "It's gonna take a long ride" : "Maybe book a Flight" ,
+            title: distance <= 5 ? "Do you want to walk?" : distance <= 50 ? "Let's check the traffic first!" : distance <= 500 ? "It's gonna take a long ride" : "Maybe book a Flight" ,
             text: `It's about ${distance} km`,
             icon: "success"
         });
@@ -50,15 +50,15 @@
         return rad * (180 / Math.PI)
     }
 
-    function count_distance_pin(coor){
-        if(coor != ""){
-            const coor_split = coor.split('/')
+    $(document).ready(function() {
+        $(document).on('change', '#pin_name_distance_count', function() { 
+            const coor_split = $(this).val().split('/')
             const lat_to = coor_split[0]
             const long_to = coor_split[1]
             const lat_from = '<?= $dt_detail_pin->pin_lat ?>'
             const long_from = '<?= $dt_detail_pin->pin_long ?>'
 
-            const dis = calculateDistance(lat_to, long_to, lat_from, long_from, 'km')
+            const dis = calculateDistanceKm(lat_to, long_to, lat_from, long_from, 'km')
             document.getElementById('pin_to_pin_distance_count').value = dis+' Km'
 
             markers[1] = {
@@ -70,6 +70,6 @@
             }
             addMarker(markers)
             initMap()
-        }
-    }
+        })
+    })
 </script>

@@ -238,7 +238,7 @@
         ?>
     </form>
 
-
+        <?php if (!$is_edit): ?>
         <hr><p class='mt-2 mb-0 fw-bold'>Visit History</p>
         <ol>
         <?php 
@@ -286,9 +286,8 @@
                 echo "</div>";
             }
         ?>
-
         <hr>
-
+        
         <?php
             $stats['data'] = $dt_total_visit_by_by_pin;
             $stats['ctx'] = 'visit_using_stats';
@@ -299,6 +298,7 @@
         <p class='mt-2 mb-0 fw-bold'>Count Distance to Other Pin</p>
         <?php $this->load->view('detail/count_distance'); ?>
         <hr>
+        <?php endif;?>
 
         <div class="d-flex justify-content-between mt-2 mb-0">
             <p class='fw-bold mt-1'>Galleries</p>
@@ -309,12 +309,17 @@
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12">
         <div id="map-board"></div>
-        <hr>
-        <p class='mt-2 mb-0 fw-bold'>Distance to My Personal Pin</p>
-        <?php $this->load->view('detail/distance'); ?>
-        <hr>
-        <p class='mt-2 mb-0 fw-bold'>Tracked Activity Around</p>
-        <?php $this->load->view('detail/tracker_activity_around'); ?>
+
+        <?php if (!$is_edit): ?>
+            <hr>
+            <p class='mt-2 mb-0 fw-bold'>Distance to My Personal Pin</p>
+            <?php $this->load->view('detail/distance'); ?>
+            <hr>
+            <p class='mt-2 mb-0 fw-bold'>Tracked Activity Around</p>
+            <?php $this->load->view('detail/tracker_activity_around'); ?>
+        <?php else: ?>
+            <?php $this->load->view('detail/props'); ?>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -394,6 +399,49 @@
         if (markers.length > 1) {
             drawPolyline()
         }
+
+        map.addListener("click", (e) => {
+            <?php 
+                if($is_edit){
+                    echo "const coor = e.latLng.toJSON()
+                    markers[1] = {
+                        coords: {lat: parseFloat(coor['lat']), lng: parseFloat(coor['lng'])},
+                        icon: {
+                            url: 'https://maps.google.com/mapfiles/ms/icons/red.png',
+                            scaledSize: {width: 40, height: 40}
+                        }
+                    }
+                    addMarker(markers)
+                    initMap()
+                    addContentCoor(e.latLng, 'pin_lat', 'pin_long')";
+                } else {
+                    echo "
+                    const coor = e.latLng.toJSON()
+                    markers[1] = {
+                        coords: {lat: parseFloat(coor['lat']), lng: parseFloat(coor['lng'])},
+                        icon: {
+                            url: 'https://maps.google.com/mapfiles/ms/icons/red.png',
+                            scaledSize: {width: 40, height: 40}
+                        }
+                    }
+                    addMarker(markers)
+                    initMap()
+                    Swal.fire({
+                        title: `Are you want to travel to from this location?`,
+                        html: `Let me help you set the direction?`,
+                        icon: `question`,
+                        showCancelButton: true,
+                        confirmButtonText: `Yes, show me!`
+                    })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            window.open(`https://www.google.com/maps/dir/`+coor['lat']+`,`+coor['lng']+`/$dt_detail_pin->pin_lat,$dt_detail_pin->pin_long`, '_blank')
+                        }
+                    });";
+                }
+            ?>
+        });
+       
     }
 
     function drawPolyline() {
