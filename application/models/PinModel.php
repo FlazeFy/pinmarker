@@ -238,10 +238,11 @@
         public function count_my_pin(){
 			$this->db->select('count(1) as total');
 			$this->db->from($this->table);
-			$condition = [
-                'deleted_at' => null,
-				'created_by' => $this->session->userdata(self::SESSION_KEY)
-            ];
+
+			$condition['deleted_at'] = null; 
+			if($this->role_key == 1){
+				$condition['created_by'] = $this->session->userdata(self::SESSION_KEY); 
+			}
 			$this->db->where($condition);
 
 			return $data = $this->db->get()->row();
@@ -253,8 +254,10 @@
 			$condition = [
                 'deleted_at' => null,
                 'is_favorite' => 1,
-				'created_by' => $this->session->userdata(self::SESSION_KEY)
             ];
+			if($this->role_key == 1){
+				$condition['created_by'] = $this->session->userdata(self::SESSION_KEY); 
+			}
 			$this->db->where($condition);
 
 			return $data = $this->db->get()->row();
@@ -263,10 +266,11 @@
         public function get_most_category($limit){
 			$this->db->select('pin_category as context, COUNT(1) as total');
 			$this->db->from($this->table);
-			$condition = [
-                'deleted_at' => null,
-				'created_by' => $this->session->userdata(self::SESSION_KEY)
-            ];
+			$condition['deleted_at'] = null; 
+			if($this->role_key == 1){
+				$condition['created_by'] = $this->session->userdata(self::SESSION_KEY); 
+			}
+			$this->db->where($condition);
 			$this->db->where($condition);
             $this->db->order_by('total','desc');
             $this->db->group_by('pin_category');
@@ -282,10 +286,10 @@
         public function get_latest_pin(){
 			$this->db->select('pin_name');
 			$this->db->from($this->table);
-			$condition = [
-                'deleted_at' => null,
-				'created_by' => $this->session->userdata(self::SESSION_KEY)
-            ];
+			$condition['deleted_at'] = null; 
+			if($this->role_key == 1){
+				$condition['created_by'] = $this->session->userdata(self::SESSION_KEY); 
+			}
 			$this->db->where($condition);
             $this->db->order_by('created_at','desc');
             $this->db->limit(1);
@@ -357,6 +361,25 @@
 			$query = $this->db->get();
 
 			return $query->row();
+		}
+
+		public function template_avg_count($table, $col) {
+			$this->db->select("CAST(AVG({$col})as SIGNED) as average");
+			$this->db->from("(SELECT COUNT(1) as {$col} FROM {$table} GROUP BY created_by) as q");
+			$query = $this->db->get();
+		
+			return $query->row();
+		}
+		public function get_avg_gallery_pin() {
+			return $this->template_avg_count('gallery', 'gallery_count');
+		}
+		
+		public function get_avg_pin_user() {
+			return $this->template_avg_count('pin', 'pin_count');
+		}
+		
+		public function get_avg_visit_pin() {
+			return $this->template_avg_count('visit', 'visit_count');
 		}
 
 		// Command

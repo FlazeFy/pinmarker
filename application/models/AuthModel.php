@@ -134,6 +134,14 @@
             return $query->row();
 		}
 
+        public function get_total_user(){
+			$this->db->select('COUNT(1) as total');
+			$this->db->from($this->table_user);
+            $query = $this->db->get();
+    
+            return $query->row();
+		}
+
         public function logout()
         {
             $this->session->unset_userdata(self::SESSION_KEY);

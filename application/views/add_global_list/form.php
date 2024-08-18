@@ -7,7 +7,7 @@
 
 <br>
 <div class="row">
-    <div class="col">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
         <?php 
             if($this->session->flashdata('validation_error')){
                 echo "
@@ -54,7 +54,7 @@
             <a class="btn btn-dark rounded-pill w-100 py-3 mt-3" id="btn_submit"><i class="fa-solid fa-floppy-disk"></i> Save Global List <span id="submit-note"></span></a>
         </form>
     </div>
-    <div class="col">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
         <div id="map-board"></div>
         <div id="selected-pin-holder"></div>
     </div>

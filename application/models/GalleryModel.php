@@ -4,6 +4,12 @@
 	class GalleryModel extends CI_Model {
 		private $table = "gallery";
         const SESSION_KEY = 'user_id';
+		private $role_key;
+
+		public function __construct() {
+			parent::__construct();
+			$this->role_key = $this->session->userdata('role_key');
+		}
 
 		public function rules($ext)
         {
@@ -62,9 +68,11 @@
 			$this->db->select('pin_name as context, COUNT(1) as total');
 			$this->db->from($this->table);
 			$this->db->join('pin','pin.id = gallery.pin_id');
-			$condition = [
-				'gallery.created_by' => $this->session->userdata(self::SESSION_KEY)
-            ];
+
+			$condition['deleted_at'] = null; 
+			if($this->role_key == 1){
+				$condition['gallery.created_by'] = $this->session->userdata(self::SESSION_KEY); 
+			}
 			$this->db->where($condition);
 			$this->db->group_by('pin_name');
 			$this->db->limit($limit);

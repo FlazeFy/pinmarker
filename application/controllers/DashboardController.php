@@ -31,6 +31,13 @@ class DashboardController extends CI_Controller {
 			$data['is_mobile_device'] = is_mobile_device();
 			$data['is_signed'] = true;
 
+			if ($this->session->userdata('role_key') == 0){
+				$data['dt_total_user']= $this->AuthModel->get_total_user();
+				$data['dt_avg_gallery_pin']= $this->PinModel->get_avg_gallery_pin();
+				$data['dt_avg_pin_user']= $this->PinModel->get_avg_pin_user();
+				$data['dt_avg_visit_pin']= $this->PinModel->get_avg_visit_pin();
+			}
+
 			$this->load->view('dashboard/index', $data);
 		} else {
 			redirect('LoginController');

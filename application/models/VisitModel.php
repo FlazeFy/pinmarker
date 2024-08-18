@@ -4,6 +4,12 @@
 	class VisitModel extends CI_Model {
 		private $table = "visit";
         const SESSION_KEY = 'user_id';
+		private $role_key;
+
+		public function __construct() {
+			parent::__construct();
+			$this->role_key = $this->session->userdata('role_key');
+		}
 
 		public function rules($ext)
         {
@@ -76,10 +82,10 @@
 			$this->db->select("$ctx as context, COUNT(1) as total");
 			$this->db->from('pin');
             $this->db->join('visit','visit.pin_id = pin.id','left');
-			$condition = [
-                'deleted_at' => null,
-				'pin.created_by' => $this->session->userdata(self::SESSION_KEY)
-            ];
+			$condition['deleted_at'] = null; 
+			if($this->role_key == 1){
+				$condition['pin.created_by'] = $this->session->userdata(self::SESSION_KEY); 
+			}
 			$this->db->where($condition);
 			$this->db->or_where('visit.created_by', $user_id);
             $this->db->group_by($ctx);
@@ -118,11 +124,10 @@
 			$this->db->select('pin_name, visit_desc');
 			$this->db->from('pin');
             $this->db->join('visit','visit.pin_id = pin.id');
-			$condition = [
-                'deleted_at' => null,
-				'pin.created_by' => $this->session->userdata(self::SESSION_KEY)
-            ];
-			$this->db->where($condition);
+			$condition['deleted_at'] = null; 
+			if($this->role_key == 1){
+				$condition['pin.created_by'] = $this->session->userdata(self::SESSION_KEY); 
+			}
             $this->db->order_by('visit.created_at','desc');
             $this->db->limit(1);
 

@@ -72,11 +72,24 @@
                     <div class="d-flex justify-content-start mb-3">
                         <?php 
                             if(count($dt_all_my_pin_name) > 0){
-                                echo "<a class='btn btn-dark rounded-pill' id='add-custom-btn'><i class='fa-solid fa-map'></i> Custom Location</a>";
+                                echo "<a class='btn btn-dark rounded-pill' id='add-custom-btn'><i class='fa-solid fa-map'></i>"; 
+                                if(!$is_mobile_device){
+                                    echo " Custom Location";
+                                } else {
+                                    echo " Custom";
+                                }
+                                echo"</a>";
                             }
                         ?>
                         <a class="btn btn-dark rounded-pill ms-2" id='add-new-pin-btn'><i class="fa-solid fa-map-location-dot"></i> New Pin</a>
-                        <a class="btn btn-dark rounded-pill ms-2 add-form-btn"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
+                        <a class="btn btn-dark rounded-pill ms-2 add-form-btn"><i class="fa-solid fa-plus"></i>
+                        <?php
+                            if(!$is_mobile_device){
+                                echo " Add Multiple Visit";
+                            } else {
+                                echo " Visit";
+                            }
+                        ?></a>
                     </div>
                 </div>
                 <label>Description</label>
@@ -101,12 +114,12 @@
                     <a class="btn btn-dark rounded-pill see-person-btn" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> See Persons</a>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
                 <label>Visit At Date</label>
                 <input name="visit_date" id="visit_date" type="date" class="form-control" required/>
                 <a class="msg-error-input"></a>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
                 <label>Visit At Hour</label>
                 <input name="visit_hour" id="visit_hour" type="time" class="form-control" required/>
                 <a class="msg-error-input"></a>

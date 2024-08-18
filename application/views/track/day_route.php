@@ -1,6 +1,3 @@
-<form action="TrackController/reset_filter_date" method="POST">
-    <button class="btn btn-dark mb-4 rounded-pill py-3 px-4 me-2"><i class="fa-solid fa-rotate"></i> Reset</button>
-</form>
 <span style="width: 160px;" class="me-2">
     <label>Show Route For</label>
     <form action="TrackController/filter_date" method="POST">
