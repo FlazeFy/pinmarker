@@ -13,6 +13,7 @@ class AddVisitController extends CI_Controller {
 		$this->load->model('AuthModel');
 
 		$this->load->helper('generator_helper');
+		$this->load->helper('validator_helper');
 		$this->load->library('form_validation');
 		
 		$this->httpClient = new Client([
@@ -142,10 +143,25 @@ class AddVisitController extends CI_Controller {
 						$this->HistoryModel->insert_history('Add Visit', $visit_desc);
 					}
 
-					$this->session->set_flashdata('message_success', 'Visit successfully added');
-				}
+					$dir = $this->input->post('coordinate_dir');
+					if($dir != "" && $dir != null){
+						if(check_uuid($dir)){
+							$pin = $this->PinModel->get_pin_by_id($dir);
+							$dir = "$pin->pin_lat,$pin->pin_long";
 
-				redirect('HistoryController');
+							redirect("https://www.google.com/maps/dir/My+Location/$dir");
+						} else {
+							$this->session->set_flashdata('message_success', 'Visit successfully added. But failed to make maps direction');
+							redirect('HistoryController');
+						}
+					} else {
+						$this->session->set_flashdata('message_success', 'Visit successfully added');
+						redirect('HistoryController');
+					}
+				} else {
+					$this->session->set_flashdata('message_error', 'Failed to add visit');
+					redirect('AddVisitController');
+				}
 			}
 		} else {
 			$success_insert = 0;
@@ -195,17 +211,25 @@ class AddVisitController extends CI_Controller {
 				$this->session->set_flashdata('validation_error', implode('<br>', $validation_errors));
 				redirect('AddVisitController');
 			} else {
+				$list_coor = "";
+				$dir = $this->input->post('coordinate_dir');
+
 				foreach ($data_to_insert as $idx => $data) {
 					if($this->VisitModel->insert_visit($data)){
 						$success_insert++;
 						$this->HistoryModel->insert_history('Add Visit', $pin_names[$idx]);
+
+						if($dir == "multi"){
+							$pin = $this->PinModel->get_pin_by_id($data['pin_id']);
+							$list_coor .= "$pin->pin_lat,$pin->pin_long/";
+						}
 					} else {
 						$failed_insert++;
 					}
 				}
 
 				if($success_insert > 0 && $failed_insert == 0){
-					if($type == "multiple"){
+					if($this->input->post('type_add') == 'multi'){
 						$this->session->set_flashdata('message_success', 'Successfully add all visit');
 					} else {
 						$this->session->set_flashdata('message_success', 'Successfully add visit');
@@ -216,7 +240,11 @@ class AddVisitController extends CI_Controller {
 					$this->session->set_flashdata('message_error', 'Failed to add visit');
 				}
 
-				redirect('HistoryController');
+				if($list_coor != ""){
+					redirect("https://www.google.com/maps/dir/My+Location/$list_coor");
+				} else {
+					redirect('HistoryController');
+				}
 			}
 		}
 	}

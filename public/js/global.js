@@ -1,10 +1,10 @@
-function getUUID() {
+const getUUID = () => {
     return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     );
 }
 
-function countDatetimeStrInterval(startTime, endTime) {
+const countDatetimeStrInterval = (startTime, endTime) => {
     const formattedStartTime = startTime.replace(" ", "T") + "Z"
     const formattedEndTime = endTime.replace(" ", "T") + "Z"
     const diffInMs = new Date(formattedEndTime) - new Date(formattedStartTime)
@@ -12,7 +12,7 @@ function countDatetimeStrInterval(startTime, endTime) {
     return Math.round(diffInMs) // in second
 }
 
-function calculateDistance(coord1, coord2) {
+const calculateDistance = (coord1, coord2) => {
     const earthRadius = 6371000 //fixed
     const [lat1, lon1] = coord1.split(',')
     const [lat2, lon2] = coord2.split(',')
@@ -32,7 +32,7 @@ function calculateDistance(coord1, coord2) {
     return res // in m
 }
 
-function distanceUnit(val){
+const distanceUnit = (val) => {
     let unit = 'm'
     let res
     if(val > 1000){
@@ -43,7 +43,7 @@ function distanceUnit(val){
     return `${val.toFixed(2)} ${unit}`
 }
 
-function timeUnit(val){
+const timeUnit = (val) => {
     if (val < 1000) {
         return `${val} ms`
     } else {
@@ -52,11 +52,11 @@ function timeUnit(val){
     }
 }
 
-function toRadians(degrees) {
+const toRadians = (degrees) => {
     return degrees * (Math.PI / 180)
 }
 
-function validateInput(type, id, max, min){
+const validateInput = (type, id, max, min) => {
     if(type == "text"){
         const check = $(`#${id}`).val()
         const check_len = check.trim().length
@@ -69,7 +69,7 @@ function validateInput(type, id, max, min){
     }
 }
 
-function getDateToContext(datetime, type){
+const getDateToContext = (datetime, type) => {
     if(datetime){
         const result = new Date(datetime);
 
@@ -111,13 +111,13 @@ function getDateToContext(datetime, type){
 }
 
 
-function getUTCHourOffset() {
+const getUTCHourOffset = () => {
     const offsetMi = new Date().getTimezoneOffset();
     const offsetHr = -offsetMi / 60;
     return offsetHr;
 }
 
-function messageCopy(val){
+const messageCopy = (val) => {
     navigator.clipboard.writeText(val)
     .then(function() {
         Swal.fire({
@@ -133,4 +133,30 @@ function messageCopy(val){
             icon: 'error' 
         });
     });
+}
+
+const stripHtmlTag = (val) => {
+    return val.replace(/<\/?[^>]+>/gi, '')
+}
+
+const ucEachWord = (val) => {
+    const arr = val.split(" ");
+
+    for (var i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);
+    }
+    
+    const res = arr.join(" ");
+
+    return res;
+}
+
+const ucFirst = (val) => {
+    if (typeof val !== 'string' || val.length === 0) {
+        var res = val;
+    } else {
+        var res = val.charAt(0).toUpperCase() + val.slice(1);
+    }
+
+    return res;
 }

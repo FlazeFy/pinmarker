@@ -32,7 +32,7 @@
     }
 </style>
 
-<form action="/AddVisitController/add_visit" method="POST">
+<form action="/AddVisitController/add_visit" method="POST" id='add-visit-form'>
     <?php 
         if($this->session->flashdata('validation_error')){
             echo "
@@ -44,6 +44,8 @@
         }
     ?>
     <input hidden id="type_add" name="type_add" value="visit">
+    <input hidden id="with_dir" name="coordinate_dir">
+
     <div id="add_pin_form"></div>
     <div id="add-form-holder">
         <div class="row">
@@ -61,7 +63,7 @@
                         } else {
                             echo "
                                 <label>Location Name</label>
-                                <input name='location_name' id='location_name' type='text' class='form-control'/>
+                                <input name='location_name' id='location_name' type='text' class='form-control' required/>
                                 <a class='msg-error-input'></a>
                             ";
                         }
@@ -93,33 +95,33 @@
                 <a class="msg-error-input"></a>
 
                 <label>Visit With</label>
-                <textarea name="visit_with" id="visit_with" rows="5" class="form-control"></textarea>
+                <textarea name="visit_with" id="visit_with" rows="5" class="form-control visit-with"></textarea>
                 <a class="msg-error-input"></a>
                 <div class="d-flex justify-content-start mb-3">
-                    <a class="btn btn-dark rounded-pill" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> See Persons</a>
+                    <a class="btn btn-dark rounded-pill see-person-btn" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> See Persons</a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <label>Visit At Date</label>
-                <input name="visit_date" id="visit_date" type="date" class="form-control"/>
+                <input name="visit_date" id="visit_date" type="date" class="form-control" required/>
                 <a class="msg-error-input"></a>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <label>Visit At Hour</label>
-                <input name="visit_hour" id="visit_hour" type="time" class="form-control"/>
+                <input name="visit_hour" id="visit_hour" type="time" class="form-control" required/>
                 <a class="msg-error-input"></a>
             </div>
         </div>
     </div>
     <div class="row mt-4">
         <div class="col-lg-4 col-md-6 col-sm-12" id="save_visit_n_go">
-            <a class="btn btn-white rounded-pill w-100 py-3" style="border: 2.5px solid black;"><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
+            <a class="btn btn-white rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
         </div>
         <div class="col-lg-4 col-md-6 col-sm-12">
-            <a class="btn btn-white rounded-pill w-100 py-3" style="border: 2.5px solid black;"><i class="fa-solid fa-arrow-right-arrow-left"></i> Round Trip</a>
+            <a class="btn btn-white rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;"><i class="fa-solid fa-arrow-right-arrow-left"></i> Round Trip</a>
         </div>
         <div class="col-lg-4 col-md-12 col-sm-12" id='save-visit-btn-holder'>
-            <button class="btn btn-dark rounded-pill w-100 py-3" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>
+            <button class="btn btn-dark rounded-pill w-100 py-3 mb-2" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>
         </div>
     </div>
 </form>
@@ -147,7 +149,7 @@
     let selected_color = ''
 
     $(document).ready(function() {
-        const btn_submit_el = `<button class="btn btn-dark rounded-pill w-100 py-3" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>`
+        const btn_submit_el = `<button class="btn btn-dark rounded-pill w-100 py-3" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>`
         let count_multi_visit = 1
 
         $(document).on('click', '.add-form-btn', function() { 
@@ -174,13 +176,13 @@
             $('input, textarea, select').each(function() {
                 let name = $(this).attr('name')
 
-                if (name && name !== 'type_add' && !name.endsWith('[]')) {
+                if (name && name !== 'type_add' && name !== 'coordinate_dir' && !name.endsWith('[]')) {
                     $(this).attr('name', name + '[]')
                 }
             });
 
             $('#save-visit-btn-holder').html(`
-                <button class="btn btn-dark rounded-pill w-100 py-3" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save ${count_multi_visit} Visit</button>
+                <button class="btn btn-dark rounded-pill w-100 py-3" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save ${count_multi_visit} Visit</button>
             `)
         })
         $(document).on('click', '#add-new-pin-btn', function() { 
@@ -204,7 +206,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <label>Pin Category</label>
-                        <select name="pin_category" class="form-select" id="pin_category" onchange="select_color_marker(this.value)">
+                        <select name="pin_category" class="form-select" id="pin_category">
                             <?php 
                                 foreach($dt_dct_pin_category as $dt){
                                     echo "<option value='$dt->dictionary_name-$dt->dictionary_color'>$dt->dictionary_name</option>";
@@ -272,7 +274,7 @@
         })
 
         $(document).on('click', '.remove-multi-form-idx-btn', function() { 
-            const idx = $(this).index()
+            const idx = $(this).index('.remove-multi-form-idx-btn')
             $('#add-form-holder .row').eq(idx).remove()
 
             let count_visit = $('#add-form-holder .row').length
@@ -282,6 +284,18 @@
             $('#save-visit-btn-holder').html(`
                 <button class="btn btn-dark rounded-pill w-100 py-3" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save ${count_visit}Visit</button>
             `)
+        })
+
+        $(document).on('click', '#submit-visit-wdir-btn', function() {
+            if($('#type_add').val() == 'visit'){
+                $('#with_dir').val($('#pin_id').val().split('/')[1])
+            } else if($('#type_add').val() == 'pin_visit'){
+                $('#with_dir').val(`${$('#pin_lat').val()},${$('#pin_long').val()}`)
+            } else if($('#type_add').val() == 'multi'){
+                $('#with_dir').val('multi')
+            }
+
+            $('#submit-visit-btn').click()
         })
     })
 
@@ -343,7 +357,7 @@
             </div>
         `)
         $('#save_visit_n_go').html(`
-            <a class="btn btn-white rounded-pill w-100 py-3" style="border: 2.5px solid black;"><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
+            <a class="btn btn-white rounded-pill w-100 py-3" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
         `)
     } 
 

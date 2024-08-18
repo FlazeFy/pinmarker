@@ -22,6 +22,9 @@
     <!-- CSS -->
     <link rel="stylesheet" href="<?= base_url('public/css/global.css') ?>">
 
+    <!-- Javascript -->
+    <script src="http://127.0.0.1:8080/public/js/global.js"></script>
+
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
