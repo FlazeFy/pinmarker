@@ -150,10 +150,26 @@
 			}
 		}
 
+		public function get_dct_by_id($id){
+			$this->db->select('*');
+			$this->db->from($this->table);
+			$condition = [
+				'id' => $id
+            ];
+			$this->db->where($condition);
+
+			return $data = $this->db->get()->row();
+		}
+
 		// Command
 		public function update_table($data, $id){
 			$this->db->where('id', $id);
 			return $this->db->update($this->table,$data);	
+		}
+
+		public function update_mass_dictionary($table, $col, $old, $new){
+			$this->db->where($col, $old);
+			return $this->db->update($table,[ $col => $new]);	
 		}
 
 		public function insert_table($data){

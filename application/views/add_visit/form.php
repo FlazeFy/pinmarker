@@ -179,12 +179,12 @@
                 <span class='diff-hr'>
                     <hr>
                     <div class='d-flex justify-content-between'>
-                        <h4 class="mb-2">Visit Form #${count_multi_visit}</h4>  
+                        <h4 class="mb-2">Visit Form</h4>  
                         <a class='btn btn-light rounded-pill py-2 px-4 remove-multi-form-idx-btn'><i class="fa-solid fa-trash"></i> Remove Form</a>
                     </div>
                 </span>
             `)
-            $('#add-form-holder .row').append(target)
+            $('#add-form-holder').append(target)
 
             $('input, textarea, select').each(function() {
                 let name = $(this).attr('name')
@@ -288,7 +288,8 @@
 
         $(document).on('click', '.remove-multi-form-idx-btn', function() { 
             const idx = $(this).index('.remove-multi-form-idx-btn')
-            $('#add-form-holder .row').eq(idx).remove()
+
+            $('#add-form-holder .row').eq(idx+1).remove()
 
             let count_visit = $('#add-form-holder .row').length
             if(count_visit == 1){

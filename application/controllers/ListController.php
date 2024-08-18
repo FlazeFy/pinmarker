@@ -40,7 +40,7 @@ class ListController extends CI_Controller {
 
 			$data['active_page']= 'list';
 			$data['is_signed'] = true;
-
+			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
 			if($this->session->userdata('is_catalog_view') == false || $this->session->userdata('open_pin_list_category')){
 				$category = null;
 				if($this->session->userdata('open_pin_list_category')){
@@ -257,6 +257,29 @@ class ListController extends CI_Controller {
 			$this->session->set_flashdata('message_success', 'Pin deleted');
 		} else {
 			$this->session->set_flashdata('message_error', 'Failed to delete pin');
+		}
+
+		redirect("ListController");
+	}
+
+	public function delete_category(){
+		$id = $this->input->post('id');
+		$old_dct = $this->DictionaryModel->get_dct_by_id($id);
+
+		if($this->MultiModel->delete('dictionary',$id)){
+			$new_dct = $this->input->post('dictionary_migrate');
+			
+			if($new_dct){
+				if($this->DictionaryModel->update_mass_dictionary('pin','pin_category',$old_dct->dictionary_name,$new_dct)){
+					$this->session->set_flashdata('message_success', 'Dictionary deleted. Success to migrate');
+				} else {
+					$this->session->set_flashdata('message_error', 'Dictionary deleted. Failed to migrate');
+				}
+			} else {
+				$this->session->set_flashdata('message_success', 'Dictionary deleted. Nothing to migrate');
+			}
+		} else {
+			$this->session->set_flashdata('message_error', 'Failed to delete dictionary');
 		}
 
 		redirect("ListController");

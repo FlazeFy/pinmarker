@@ -112,7 +112,7 @@
                     <select name='pin_category' class='form-select' id='pin_category'>";
                         foreach($dt_dct_pin_category as $dt){
                             echo "<option value='$dt->dictionary_name-$dt->dictionary_color'";
-                            if($dt->id == $dt_detail_pin->id){
+                            if($dt->dictionary_name == $dt_detail_pin->pin_category){
                                 echo " selected>$dt->dictionary_name</option>";
                             } else {
                                 echo ">$dt->dictionary_name</option>";
