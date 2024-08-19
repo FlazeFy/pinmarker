@@ -3,7 +3,11 @@
 
 	class MultiModel extends CI_Model {
 		public function get_all_data($table, $des_table, $key,$ext){
-			$this->db->select("*$ext");
+			if($des_table){
+				$this->db->select("$table.*, $des_table.id as ".$des_table."_id$ext");
+			} else {
+				$this->db->select("*$ext");
+			}
 			$this->db->from($table);
 
 			if($des_table){

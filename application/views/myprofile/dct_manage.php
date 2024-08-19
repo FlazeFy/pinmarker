@@ -3,7 +3,7 @@
         <tr>
             <th>Type</th>
             <th>Name</th>
-            <th>Color</th>
+            <th style="width:200px;">Color</th>
             <th>Props</th>
             <th style='width: 100px;'>Action</th>
         </tr>
@@ -15,7 +15,24 @@
                     <tr>
                         <td>$dt->dictionary_type</td>
                         <td>$dt->dictionary_name</td>
-                        <td>$dt->dictionary_color</td>
+                        <td class='text-center'>";
+                            if($dt->dictionary_type == 'pin_category'){
+                                echo "
+                                    <form action='/MyProfileController/edit_category_color/$dt->id' method='POST'>
+                                        <select name='dictionary_color' class='form-select' id='dictionary_color' onchange='this.form.submit()'>
+                                            <option value='red' "; if($dt->dictionary_color == "red"){ echo "selected"; } echo">Red</option>
+                                            <option value='blue' "; if($dt->dictionary_color == "blue"){ echo "selected"; } echo">Blue</option>
+                                            <option value='yellow' "; if($dt->dictionary_color == "yellow"){ echo "selected"; } echo">Yellow</option>
+                                            <option value='orange' "; if($dt->dictionary_color == "orange"){ echo "selected"; } echo">Orange</option>
+                                            <option value='purple' "; if($dt->dictionary_color == "purple"){ echo "selected"; } echo">Purple</option>
+                                            <option value='green' "; if($dt->dictionary_color == "green"){ echo "selected"; } echo">Green</option>
+                                        </select>
+                                    </form>
+                                ";
+                            } else {
+                                echo "<a class='text-secondary fst-italic text-decoration-none'>- Color is not available for this type -</a>";
+                            }
+                        echo "</td>
                         <td>
                             <p class='mt-2 mb-0 fw-bold'>Created By</p>";
                             if($dt->created_by){

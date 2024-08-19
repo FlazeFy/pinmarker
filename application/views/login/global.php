@@ -1,15 +1,17 @@
-<div class="<?php if(!$dt_active_search){ echo"text-center"; } ?> position-relative pt-4 w-100" style="margin-top:50vh;" id="global-section">
+<div class="<?php if(!$dt_active_search){ echo"text-center"; } ?> position-relative pt-4 w-100" style="<?php if(!$is_mobile_device){ echo "margin-top:50vh;"; } else { echo "margin-top:13vh;"; } ?>" id="global-section">
     <div class="position-absolute text-start" style="top:-60px;">
         <h1 class="mb-0">PINMARKER</h1>
-        <h4 class="text-secondary"><img class='img img-fluid mb-1' style='width:var(--spaceJumbo);' src='http://127.0.0.1:8080/public/images/logo.png'> Marks Your World</h4>
+        <h4 class="text-secondary">
+            <img class='img img-fluid mb-1' style='width:var(--spaceJumbo);' src='http://127.0.0.1:8080/public/images/logo.png'> Marks Your World
+        </h4>
     </div>
-    <div style="border: var(--spaceMini) solid black; border-radius: 15px; <?php if(!$dt_active_search){ echo"height: 300px;"; } ?> z-index:1000; position: relative;" class="bg-white p-4">
+    <div style="border: var(--spaceMini) solid black; border-radius: 15px; <?php if(!$dt_active_search && !$is_mobile_device){ echo"height: 300px;"; } ?> z-index:1000; position: relative;" class="bg-white <?php if(!$is_mobile_device){ echo "p-4"; } else { echo "py-3 px-2"; } ?>">
         <h3>Search Global Pin</h3>
         <div class="position-relative mx-auto" style="max-width:600px;">
-            <input class="form-control py-3 px-4" placeholder="Search by list name or list tag..." style="font-weight: 700; font-size: var(--textJumbo);" id="search_input" value="<?= $dt_active_search ?>" style="max-width: 480px;">
+            <input class="form-control <?php if(!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" placeholder="Search by list name or list tag..." style="font-weight: <?php if(!$is_mobile_device){ echo "700; font-size: var(--textJumbo)"; } else { echo "500; font-size: var(--textXLG)"; } ?>" id="search_input" value="<?= $dt_active_search ?>" style="max-width: 480px;">
             <?php 
                 if($dt_active_search){
-                    echo "<a class='position-absolute btn btn-dark px-3 py-2' href='/' style='right: 12px; top: 12px;'><i class='fa-solid fa-xmark'></i></a>";
+                    echo "<a class='position-absolute btn btn-dark "; if(!$is_mobile_device){ echo "px-3 py-2"; } else { echo "px-2 py-1"; } echo"' href='/' style='"; if(!$is_mobile_device){ echo "right: 12px; top: 12px"; } else { echo "right: 7px; top: 6px"; } echo"'><i class='fa-solid fa-xmark'></i></a>";
                 }
             ?>
         </div>
@@ -19,7 +21,7 @@
                     echo "<div class='row mt-4 grid'>"; 
                     foreach($dt_global as $idx => $dt){
                         echo "
-                            <div class='col-lg-4 col-md-6 col-sm-12 grid-item'>
+                            <div class='col-lg-4 col-md-6 col-sm-12 col-12 grid-item'>
                                 <div class='pin-box mb-4'>
                                     <div class='pin-box-label "; if(!$is_mobile_device){ echo "position-absolute"; } else { echo "float-end mb-1"; } echo "'"; if(!$is_mobile_device){ echo "style='right:-15px; top:-15px;'"; } echo ">$dt->total Marker</div>
                                     <h3 id='list-name-holder-$idx'>$dt->list_name</h3>";
@@ -65,11 +67,19 @@
             }
         ?>
         <div class="text-center">
-            <h4 class="text-secondary mt-4">Or, search by maps</h4>
-            <a class="btn btn-dark rounded-pill px-4 py-3 fw-bold">Open Global Maps</a>
+            <?php if (!$is_mobile_device): ?>
+                <h4 class="text-secondary mt-4">Or, search by maps</h4>
+            <?php else: ?>
+                <h5 class="text-secondary mt-3">Or, search by maps</h5>
+            <?php endif; ?>
+            <a class="btn btn-dark rounded-pill px-4 <?php if(!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> fw-bold">Open Global Maps</a>
         </div>
     </div>
-    <img class='img img-fluid position-absolute' style="max-width:480px; top:-42vh; z-index:98; left:25vw;" src='http://127.0.0.1:8080/public/images/pinmarker.png'>
+    <?php if (!$is_mobile_device): ?>
+        <img class='img img-fluid position-absolute' style="max-width:480px; top:-42vh; z-index:98; left:25vw;" src='http://127.0.0.1:8080/public/images/pinmarker.png'>
+    <?php else:?>
+        <br><hr>
+    <?php endif; ?>
 </div>
 
 <script>

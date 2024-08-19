@@ -11,6 +11,7 @@ class MyProfileController extends CI_Controller {
 		$this->load->model('AuthModel');
 		$this->load->model('VisitModel');
 		$this->load->model('GalleryModel');
+		$this->load->model('DictionaryModel');
 		$this->load->model('ValidateRequestModel');
 		$this->load->model('MultiModel');
 
@@ -204,6 +205,27 @@ class MyProfileController extends CI_Controller {
 
 			redirect('MyProfileController');
 		}
+	}
+
+	public function edit_category_color($id){
+		$owner = $this->DictionaryModel->get_owner_list($id);
+		$data = [
+			'dictionary_color' => $this->input->post('dictionary_color')
+		];
+		if($this->DictionaryModel->update_table($data, $id)){
+			if($owner){
+				$this->telegram->sendMessage([
+					'chat_id' => $owner->telegram_user_id,
+					'text' => "Hello <b>$owner->username</b>, your category called <b>$owner->dictionary_name</b> color has been updated from $owner->dictionary_color to ".$data['dictionary_color'],
+					'parse_mode' => 'HTML'
+				]);
+			}
+			$this->session->set_flashdata('message_success', 'Category pin color updated');
+		} else {
+			$this->session->set_flashdata('message_error', 'Failed to update pin color');
+		}
+
+		redirect("MyProfileController");
 	}
 
 	public function delete_user(){
