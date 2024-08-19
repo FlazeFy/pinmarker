@@ -134,6 +134,18 @@
             return $query->row();
 		}
 
+        public function get_all_user_contact(){
+			$this->db->select('username, telegram_user_id');
+			$this->db->from($this->table_user);
+            $condition = [
+				'telegram_is_valid' => 1
+            ];
+			$this->db->where($condition);
+            $query = $this->db->get();
+    
+            return $query->result();
+		}
+
         public function get_total_user(){
 			$this->db->select('COUNT(1) as total');
 			$this->db->from($this->table_user);

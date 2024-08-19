@@ -43,7 +43,7 @@ class MyProfileController extends CI_Controller {
 
 			if($role_key == 0){
 				$data['dt_all_user'] = $this->MultiModel->get_all_data('user',null,null,null);
-				$data['dt_all_dct'] = $this->MultiModel->get_all_data('dictionary','user','created_by',',username as created_by');
+				$data['dt_all_dct'] = $this->DictionaryModel->get_all_dct();
 				$data['dt_all_feedback'] = $this->MultiModel->get_all_data('feedback',null,null,null);
 			} else {
 				$data['dt_all_user'] = null;
@@ -250,6 +250,67 @@ class MyProfileController extends CI_Controller {
 			$this->session->set_flashdata('message_error', 'User not found');
 		}
 		redirect('MyProfileController');
+	}
+
+	public function rename_category(){
+		$id = $this->input->post('id');
+		$dct_type = $this->input->post('dictionary_type');
+		$dct_name_old = $this->input->post('dictionary_name_old');
+		$dct_name_new = $this->input->post('dictionary_name_new');
+		
+		if($dct_type == 'pin_category'){
+			$owner = $this->DictionaryModel->get_owner_list($id);
+		} else {
+			$owner = null;
+		}
+
+		$data = [
+			'dictionary_name' => $dct_name_new
+		];
+
+		if($this->DictionaryModel->update_table($data, $id)){
+			$tele_msg = "Hello <b>$owner->username</b>, your category called <b>$dct_name_old</b> has been renamed to <b>".$data['dictionary_name']."</b>";	
+			$all_msg = "dictionary <b>$dct_name_old</b> has been renamed to <b>".$data['dictionary_name']."</b>";			
+
+			if($dct_name_old && $dct_name_old != ""){
+				$table_name = explode('_',$dct_type)[0];
+				if($this->DictionaryModel->update_mass_dictionary($table_name,$dct_type,$dct_name_old,$dct_name_new)){
+					if($owner && $dct_type == 'pin_category'){
+						$this->telegram->sendMessage([
+							'chat_id' => $owner->telegram_user_id,
+							'text' => $tele_msg." and it affected some attached pin",
+							'parse_mode' => 'HTML'
+						]);
+					} else if($dct_type == 'visit_by'){
+						$users = $this->AuthModel->get_all_user_contact();
+
+						foreach($users as $dt){
+							$this->telegram->sendMessage([
+								'chat_id' => $dt->telegram_user_id,
+								'text' => "Hello <b>$dt->username</b>, $all_msg",
+								'parse_mode' => 'HTML'
+							]);
+						}						
+					}
+					$this->session->set_flashdata('message_success', 'Dictionary renamed. Success to migrate');
+				} else {
+					$this->session->set_flashdata('message_error', 'Dictionary renamed. But failed to migrate');
+				}
+			} else {
+				if($owner && $dct_type == 'pin_category'){
+					$this->telegram->sendMessage([
+						'chat_id' => $owner->telegram_user_id,
+						'text' => $tele_msg,
+						'parse_mode' => 'HTML'
+					]);
+				}
+				$this->session->set_flashdata('message_success', 'Dictionary renamed. Nothing to migrate');
+			}
+		} else {
+			$this->session->set_flashdata('message_error', 'Failed to rename dictionary');
+		}
+
+		redirect("MyProfileController");
 	}
 
 	public function send_chat(){

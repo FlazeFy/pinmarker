@@ -108,6 +108,18 @@
 			return $dct;
 		}
 
+		public function get_all_dct(){
+			$this->db->select("$this->table.id, dictionary_type, dictionary_name, dictionary_color, IFNULL(count(pin.id), 0) as total_pin, IFNULL(count(visit.id), 0) as total_visit, username as created_by");
+			$this->db->from($this->table);
+			$this->db->join('pin',"pin.pin_category = $this->table.dictionary_name",'left');
+			$this->db->join('visit',"visit.visit_by = $this->table.dictionary_name",'left');
+			$this->db->join('user',"user.id = $this->table.created_by",'left');
+			$this->db->order_by('dictionary_name','asc');
+			$this->db->group_by("$this->table.id");
+
+			return $data = $this->db->get()->result();
+		}
+
 		public function get_my_pin_category(){
 			$this->db->select("$this->table.id, dictionary_name, dictionary_color, IFNULL(count(pin.id), 0) as total_pin");
 			$this->db->from($this->table);
