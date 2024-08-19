@@ -55,7 +55,7 @@
                         </td>
                         <td style='max-width:100px;'>
                             <input hidden class='id-holder' value='$dt->id'>
-                            <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-fire-flame-curved'></i></button>
+                            <button class='btn btn-dark w-100 rounded-pill mb-2 dictionary-delete-btn'><i class='fa-solid fa-fire-flame-curved'></i></button>
                         </td>
                     </tr>
                 ";
@@ -69,6 +69,11 @@
     <input id="dictionary_type_rename" name='dictionary_type'>
     <input id="dictionary_name_old" name='dictionary_name_old'>
     <input id="dictionary_name_new" name='dictionary_name_new'>
+</form>
+
+<form hidden action="/MyProfileController/delete_category" method="POST" id="delete-cat-form">
+    <input id="dictionary_id" name='id'>
+    <input id="dictionary_name_migrate" name='dictionary_migrate'>
 </form>
 
 <script>
@@ -103,6 +108,69 @@
                         $('#rename-cat-form').submit()
                     } else {
                         $(this).val(old_name)
+                    }
+                });
+            }
+        })
+
+        $(document).on('click', '.dictionary-delete-btn', function() {
+            const idx = $(this).index('.dictionary-delete-btn')
+            const id = $('.id-holder').eq(idx).val()
+            const dct_name = $('.old-dictionary-name-holder').eq(idx).val()
+            const dct_type = $('.dictionary-type-holder').eq(idx).text()
+            const total = $('.total-used').eq(idx).text()
+            let desc = ''
+
+            if(total > 0){
+                let opt_el = ''
+                const dct_ava_name = [<?php 
+                    foreach($dt_all_dct as $dt){
+                        echo "{
+                            dct_name: '$dt->dictionary_name',
+                            dct_type: '$dt->dictionary_type',
+                            is_public: "; if($dt->created_by){ echo "false"; } else { echo "true"; } echo"
+                        },";
+                    }
+                ?>]
+
+                $('#dictionary_migrate').empty()
+                dct_ava_name.forEach(dt => {
+                    if(dt.dct_name != dct_name && dct_type == dt.dct_type && dt.is_public){
+                        opt_el += `<option value='${dt.dct_name}'>${dt.dct_name}</option>`
+                    }
+                });
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    html: `This dictionary is being used in <b>${total}</b> ${dct_type == 'pin_category' ? 'pin' : dct_type == 'visit_by' ? 'visit':''}. 
+                        If you want to keep process this delete, make sure you choose another dictionary to replace the deleted dictionary?
+                        <br><br>
+                        <p>Replace <b>${dct_name}</b> to : </p>
+                        <select id='dictionary_migrate' class='form-select mt-3'>${opt_el}</select>
+                        `,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Continue Delete"
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        $('#dictionary_id').val(id)
+                        $('#dictionary_name_migrate').val($('#dictionary_migrate').val())
+                        $('#delete-cat-form').submit()
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: "Are you sure?",
+                    html: `Want to delete this dictionary?`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, delete it!"
+                })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        $('#dictionary_id').val(id)
+                        $('#delete-cat-form').submit()
                     }
                 });
             }

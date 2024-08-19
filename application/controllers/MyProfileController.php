@@ -313,6 +313,64 @@ class MyProfileController extends CI_Controller {
 		redirect("MyProfileController");
 	}
 
+	public function delete_category(){
+		$id = $this->input->post('id');
+		$dct_name = $this->input->post('dictionary_migrate');
+		$old_dct = $this->DictionaryModel->get_dct_by_id($id);
+
+		if($old_dct->dictionary_type == 'pin_category'){
+			$owner = $this->DictionaryModel->get_owner_list($id);
+		} else {
+			$owner = null;
+		}
+
+		if($this->MultiModel->delete('dictionary',$id)){
+			if($owner){
+				$tele_msg = "Hello <b>$owner->username</b>, your category called <b>$old_dct->dictionary_name</b> has been deleted";	
+			}
+			$all_msg = "dictionary <b>$old_dct->dictionary_name</b> has been deleted";			
+
+			if($dct_name != ""){
+				$table_name = explode('_',$old_dct->dictionary_type)[0];
+				if($this->DictionaryModel->update_mass_dictionary($table_name,$old_dct->dictionary_type,$old_dct->dictionary_name,$dct_name)){
+					if($owner && $old_dct->dictionary_type == 'pin_category'){
+						$this->telegram->sendMessage([
+							'chat_id' => $owner->telegram_user_id,
+							'text' => $tele_msg." and it affected some attached pin",
+							'parse_mode' => 'HTML'
+						]);
+					} else if($old_dct->dictionary_type == 'visit_by'){
+						$users = $this->AuthModel->get_all_user_contact();
+
+						foreach($users as $dt){
+							$this->telegram->sendMessage([
+								'chat_id' => $dt->telegram_user_id,
+								'text' => "Hello <b>$dt->username</b>, $all_msg",
+								'parse_mode' => 'HTML'
+							]);
+						}						
+					}
+					$this->session->set_flashdata('message_success', 'Dictionary deleted. Success to migrate');
+				} else {
+					$this->session->set_flashdata('message_error', 'Dictionary deleted. But failed to migrate');
+				}
+			} else {
+				if($owner && $old_dct->dictionary_type == 'pin_category'){
+					$this->telegram->sendMessage([
+						'chat_id' => $owner->telegram_user_id,
+						'text' => $tele_msg,
+						'parse_mode' => 'HTML'
+					]);
+				}
+				$this->session->set_flashdata('message_success', 'Dictionary deleted. Nothing to migrate');
+			}
+		} else {
+			$this->session->set_flashdata('message_error', 'Failed to deleted dictionary');
+		}
+
+		redirect("MyProfileController");
+	}
+
 	public function send_chat(){
 		$username = $this->input->post('username');
 		$user = $this->AuthModel->get_user_by_username($username);
