@@ -122,7 +122,7 @@ class MyProfileController extends CI_Controller {
 		if($this->ValidateRequestModel->insert_request($data)){
 			$this->telegram->sendMessage([
 				'chat_id' => $user->telegram_user_id,
-				'text' => "Hello,\n\nWe received a request to validate PinMarker apps's account with username <b>$user->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, PinMarker",
+				'text' => "Hello,\n\nWe received a request to validate PinMarker apps's account with username <b>@$user->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, PinMarker",
 				'parse_mode' => 'HTML'
 			]);
 			$this->session->set_flashdata('message_success', 'Validation Token has sended');

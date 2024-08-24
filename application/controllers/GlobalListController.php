@@ -19,7 +19,7 @@ class GlobalListController extends CI_Controller {
 
 			$data['is_signed'] = true;
 			$data['active_page']= 'global_list';
-			$data['dt_global_list']= $this->GlobalListModel->get_global_list();
+			$data['dt_global_list']= $this->GlobalListModel->get_global_list("");
 			$data['is_mobile_device'] = is_mobile_device();
 
 			$this->load->view('global/index', $data);

@@ -6,7 +6,7 @@
             <th style="width:100px;">Total Used</th>
             <th style="width:200px;">Color</th>
             <th>Props</th>
-            <th style='width: 100px;'>Action</th>
+            <th style='width: 100px;'>Delete</th>
         </tr>
     </thead>
     <tbody>

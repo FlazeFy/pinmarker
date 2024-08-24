@@ -7,10 +7,25 @@
         <h1 style="font-size: 60px; font-weight:bold;"><?= $dt_count_my_fav_pin->total; ?></h1>
         <h4>Total Favorite Pin</h4>
     </div>
-    <div class="col-lg-4 col-6 p-2">
-        <h2 style="font-weight:bold;"><?= $dt_get_last_visit->pin_name ?? '-'; ?></h2>
-        <h4>Last Visit</h4>
-    </div>
+    <?php if ($this->session->userdata('role_key') == 1): ?>
+        <div class="col-lg-4 col-6 p-2">
+            <h2 style="font-weight:bold;"><?php
+                if($dt_get_last_visit->pin_name){
+                    echo $dt_get_last_visit->pin_name;
+                } else if($dt_get_last_visit->visit_desc){
+                    echo $dt_get_last_visit->visit_desc;
+                } else {
+                    echo "-";
+                } 
+            ?></h2>
+            <h4>Last Visit</h4>
+        </div>
+    <?php else: ?>
+        <div class="col-lg-4 col-6 p-2">
+            <h1 style="font-size: 60px; font-weight:bold;"><?= $dt_count_my_visit->total ?? '-'; ?></h1>
+            <h4>Most Visit</h4>
+        </div>
+    <?php endif; ?>
 
     <div class="col-lg-4 col-6 p-2">
         <h2 style="font-weight:bold;">

@@ -122,13 +122,34 @@
 
         public function get_last_visit(){
 			$this->db->select('pin_name, visit_desc');
-			$this->db->from('pin');
-            $this->db->join('visit','visit.pin_id = pin.id');
+			$this->db->from('visit');
+            $this->db->join('pin','visit.pin_id = pin.id','left');
+			$condition = [
+				'pin.created_by' => $this->session->userdata(self::SESSION_KEY),
+                'deleted_at' => null,
+				'visit.created_by' => $this->session->userdata(self::SESSION_KEY)
+            ];
+			$condition_2 = [
+				'visit.created_by' => $this->session->userdata(self::SESSION_KEY)
+            ];
+			$this->db->group_start();
+			$this->db->where($condition);
+			$this->db->or_where($condition_2);
+			$this->db->group_end();
+            $this->db->order_by('visit.created_at','desc');
+            $this->db->limit(1);
+
+			return $data = $this->db->get()->row();
+		}
+
+		public function count_my_visit(){
+			$this->db->select('COUNT(1) as total');
+			$this->db->from('visit');
+            $this->db->join('pin','visit.pin_id = pin.id');
 			$condition['deleted_at'] = null; 
 			if($this->role_key == 1){
 				$condition['pin.created_by'] = $this->session->userdata(self::SESSION_KEY); 
 			}
-            $this->db->order_by('visit.created_at','desc');
             $this->db->limit(1);
 
 			return $data = $this->db->get()->row();

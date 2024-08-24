@@ -34,17 +34,27 @@
 			];
         }
 
-		public function get_global_list(){
-			$this->db->select("$this->table.id, IFNULL(GROUP_CONCAT(COALESCE(pin.pin_name, null) ORDER BY pin.pin_name ASC SEPARATOR ', '), '') as pin_list, 
-				IFNULL(COUNT(pin.pin_name), 0) as total, list_name, list_desc, list_tag, $this->table.created_at, user.username as created_by");
+		public function get_global_list($search) {
+			$this->db->select("$this->table.id, 
+				IFNULL(GROUP_CONCAT(COALESCE(pin.pin_name, null) ORDER BY pin.pin_name ASC SEPARATOR ', '), '') as pin_list, 
+				IFNULL(COUNT(pin.pin_name), 0) as total, 
+				list_name, list_desc, list_tag, $this->table.created_at, 
+				user.username as created_by");
 			$this->db->from($this->table);
-			$this->db->join('global_list_pin_relation',"global_list_pin_relation.list_id = $this->table.id");
-			$this->db->join('pin',"pin.id = global_list_pin_relation.pin_id");
-			$this->db->join('user',"user.id = $this->table.created_by");
-			$this->db->order_by("$this->table.created_at",'desc');
+			$this->db->join('global_list_pin_relation', "global_list_pin_relation.list_id = $this->table.id");
+			$this->db->join('pin', "pin.id = global_list_pin_relation.pin_id");
+			$this->db->join('user', "user.id = $this->table.created_by");
+			if (!empty($search)) {
+				$search = strtolower($search);
+				$this->db->like('LOWER(list_name)', $search);
+				$this->db->or_like('LOWER(pin.pin_name)', $search);
+				$this->db->or_like('LOWER(user.username)', $search);
+				$this->db->or_like('LOWER(list_tag)', $search);
+			}
+			$this->db->order_by("$this->table.created_at", 'desc');
 			$this->db->group_by("$this->table.id");
-
-			return $data = $this->db->get()->result();
+		
+			return $this->db->get()->result();
 		}
 
 		public function get_detail_list_by_id($id){
