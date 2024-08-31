@@ -51,10 +51,10 @@
         <div>
             <?php 
                 if($is_signed && !$is_mobile_device){
-                    echo "<a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/GlobalListController'><i class='fa-solid fa-bookmark'></i> Save All to My Pin</a>";
+                    echo "<a class='btn btn-dark rounded-pill px-3 py-2 me-2' href='/GlobalListController'><i class='fa-solid fa-bookmark'></i> Save All to My Pin</a>";
                 }
                 if (!$is_mobile_device){
-                    echo "<a class='btn btn-dark rounded-pill px-2 py-1' id='share-global-pin'><i class='fa-solid fa-paper-plane'></i> Share</a>";
+                    echo "<a class='btn btn-dark rounded-pill px-3 py-2' id='share-global-pin'><i class='fa-solid fa-paper-plane'></i> Share</a>";
                 }
             ?>
             <?php 
@@ -62,9 +62,9 @@
                     echo "
                         <form action='/DetailGlobalController/edit_toggle/$dt_detail->id' method='POST' class='d-inline ms-2' id='form-remove-list'>";
                             if($this->session->userdata('is_global_edit_mode') == false){
-                                echo "<button class='btn btn-light rounded-pill px-2 py-1 me-2'><i class='fa-solid fa-pen-to-square'></i> Open Edit Mode</button>";
+                                echo "<button class='btn btn-light rounded-pill px-3 py-2 me-2'><i class='fa-solid fa-pen-to-square'></i> Open Edit Mode</button>";
                             } else {
-                                echo "<button class='btn btn-dark rounded-pill px-2 py-1 me-2'><i class='fa-solid fa-pen-to-square'></i> Close Edit Mode</button>";
+                                echo "<button class='btn btn-dark rounded-pill px-3 py-2 me-2'><i class='fa-solid fa-pen-to-square'></i> Close Edit Mode</button>";
                             }
                         echo"</form>
                     ";
@@ -74,7 +74,7 @@
                 if($is_signed && $is_editable && !$is_mobile_device){
                     echo "
                         <form action='/DetailGlobalController/delete_global_list/$dt_detail->id' method='POST' class='d-inline ms-2' id='form-remove-list'>
-                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2' onclick='remove_list()'><i class='fa-solid fa-trash'></i> Delete Global List</a>
+                            <a class='btn btn-dark rounded-pill px-3 py-2 me-2' onclick='remove_list()'><i class='fa-solid fa-trash'></i> Delete Global List</a>
                         </form>
                     ";
                 }
@@ -165,7 +165,7 @@
                     <?php endif; ?>
                 </button>
             </form>
-            <a class='btn btn-dark rounded-pill px-3 py-2'><i class='fa-solid fa-map'></i> <?php if(!$is_mobile_device){ echo "Whole Map"; } ?></a>
+            <?php $this->load->view('detail_global/whole_map'); ?>
         </div>
     </span>
     <div class="row mt-3 <?php if($view == 'catalog'){ echo 'grid';} ?>">
@@ -310,7 +310,6 @@
         <input hidden name="tag_selected_idx" id="tag_selected_idx">
     </form>
 </div>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
 
 <script>
     function initMap(markerData, mapId) {
