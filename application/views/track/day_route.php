@@ -15,7 +15,7 @@
     }
     function getRouteDay() {
         $.ajax({
-            url: `http://127.0.0.1:2000/api/v1/track/journey_day/<?= $this->session->userdata('filter_date_track')?>/<?= $this->session->userdata('user_id'); ?>`,
+            url: `http://127.0.0.1:8000/api/v1/track/journey_day/<?= $this->session->userdata('filter_date_track')?>/<?= $this->session->userdata('user_id'); ?>`,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

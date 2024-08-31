@@ -219,7 +219,7 @@
     function validateToken(token, username){
         Swal.showLoading()
         $.ajax({
-            url: `http://127.0.0.1:2000/api/v1/req/validate/${token}/${username}`,
+            url: `http://127.0.0.1:8000/api/v1/req/validate/${token}/${username}`,
             dataType: 'json',
             contentType: 'application/json',
             type: "POST",
@@ -314,7 +314,7 @@
     function check_avaiability(type){
         const ctx = $(`#${type}`).val()
         $.ajax({
-            url: `http://127.0.0.1:2000/api/v1/user/check/${type}/${ctx}`,
+            url: `http://127.0.0.1:8000/api/v1/user/check/${type}/${ctx}`,
             dataType: 'json',
             contentType: 'application/json',
             type: "POST",
@@ -368,7 +368,7 @@
             if($('#password').val().trim() == $('#password_check').val().trim()){
                 Swal.showLoading()
                 $.ajax({
-                    url: `http://127.0.0.1:2000/api/v1/req/register/${email}/${username}`,
+                    url: `http://127.0.0.1:8000/api/v1/req/register/${email}/${username}`,
                     dataType: 'json',
                     contentType: 'application/json',
                     type: "POST",

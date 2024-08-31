@@ -23,7 +23,7 @@
     <?php else: ?>
         <div class="col-lg-4 col-6 p-2">
             <h1 style="font-size: 60px; font-weight:bold;"><?= $dt_count_my_visit->total ?? '-'; ?></h1>
-            <h4>Most Visit</h4>
+            <h4>Total Visit</h4>
         </div>
     <?php endif; ?>
 

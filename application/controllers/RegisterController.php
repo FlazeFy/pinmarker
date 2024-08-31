@@ -21,6 +21,7 @@ class RegisterController extends CI_Controller {
 	public function index()
 	{
 		$data = [];
+		$data['is_mobile_device'] = is_mobile_device();
 
 		$this->load->view('register/index', $data);
 	}

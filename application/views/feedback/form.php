@@ -13,14 +13,23 @@
             "; 
         }
     ?>
-    <label>Rate</label><br>
-    <input type="range" id="feedback_rate" name="feedback_rate" class="w-100" min="0" max="10">
+    <div class="d-flex justify-content-between">
+        <label>Rate</label>
+        <div class="fw-bold"><i class="fa-solid fa-star"></i> <span id="rate-val-holder">5</span></div>
+    </div>
+    <input type="range" id="feedback_rate" name="feedback_rate" class="w-100" min="0" value="5" max="10">
     <a class="msg-error-input"></a><br>
     <label>Message</label>
     <textarea name="feedback_body" id="feedback_body" rows="4" class="form-control"></textarea>
     <a class="msg-error-input"></a>
     <button class="btn btn-dark rounded-pill w-100 mt-3" type="submit">Send Feedback</button>
 </form>
+
+<script>
+    $('#feedback_rate').on('input',function(){
+        $('#rate-val-holder').text(this.value)
+    })
+</script>
 
 <?php 
     if($this->session->flashdata('message_error')){

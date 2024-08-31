@@ -19,3 +19,6 @@
         <p class="text-secondary mb-0">Get some data or get closest location using chat. Available on <b>Telegram</b> and <b>Discord</b></p>
     </div>        
 </div>
+<?php if ($is_mobile_device): ?>
+    <br>
+<?php endif; ?>

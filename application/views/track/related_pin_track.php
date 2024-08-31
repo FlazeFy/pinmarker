@@ -46,7 +46,7 @@
     function getLastTrack() {
         $( document ).ready(function() {
             $.ajax({
-                url: `http://127.0.0.1:2000/api/v1/track/last/<?= $this->session->userdata('user_id'); ?>`,
+                url: `http://127.0.0.1:8000/api/v1/track/last/<?= $this->session->userdata('user_id'); ?>`,
                 datatype: "json",
                 type: "get",
                 beforeSend: function (xhr) {

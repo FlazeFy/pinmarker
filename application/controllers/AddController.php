@@ -204,6 +204,11 @@ class AddController extends CI_Controller {
 			$this->session->set_flashdata('message_error', 'Failed to add marker');
 		}
 
-		redirect('ListController');
+		if($this->input->post("is_with_dir") == "true" && $type == "single"){
+			$dir = $this->input->post('pin_lat').",".$this->input->post('pin_long');
+			redirect("https://www.google.com/maps/dir/My+Location/$dir");
+		} else {
+			redirect('ListController');
+		}
 	}
 }

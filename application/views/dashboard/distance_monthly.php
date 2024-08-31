@@ -7,7 +7,7 @@
     getMonthlyDistance()
     function getMonthlyDistance() {
         $.ajax({
-            url: `http://127.0.0.1:2000/api/v1/track/year/<?= date('Y') ?>/<?= $this->session->userdata('user_id'); ?>`,
+            url: `http://127.0.0.1:8000/api/v1/track/year/<?= date('Y') ?>/<?= $this->session->userdata('user_id'); ?>`,
             dataType: 'json',
             contentType: 'application/json',
             type: "get",

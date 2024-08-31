@@ -38,7 +38,7 @@
 <?php $is_edit = $this->session->userdata('is_edit_mode'); ?>
 
 <div class="d-flex justify-content-between mt-4">
-    <a class="btn btn-dark mb-4 rounded-pill py-3 px-4 me-2" href="/MapsController"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    <a class="btn btn-dark mb-4 rounded-pill <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4 me-2" href="/MapsController"><i class="fa-solid fa-arrow-left"></i> Back</a>
     <span>
         <form action="/DetailController/edit_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
             <?php 

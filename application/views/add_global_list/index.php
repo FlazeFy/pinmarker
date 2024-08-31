@@ -41,7 +41,7 @@
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
         <h2 class="text-center" style="font-weight:600;">Add New List</h2>
-        <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" href="/GlobalListController"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <a class="btn btn-dark mb-4 rounded-pill <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" href="/GlobalListController"><i class="fa-solid fa-arrow-left"></i> Back</a>
         <?php $this->load->view('add_global_list/form'); ?>
         <hr>
     </div>

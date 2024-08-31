@@ -82,7 +82,7 @@
 
     function getHistoryTrack() {
         $.ajax({
-            url: `http://127.0.0.1:2000/api/v1/track/journey/period/<?= $this->session->userdata('user_id'); ?>`,
+            url: `http://127.0.0.1:8000/api/v1/track/journey/period/<?= $this->session->userdata('user_id'); ?>`,
             dataType: 'json',
             contentType: 'application/json',
             data: JSON.stringify(requestData), // Stringify the request data

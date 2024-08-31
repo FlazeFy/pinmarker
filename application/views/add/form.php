@@ -1,5 +1,6 @@
 <div id="add_pin">
     <form action="/AddController/add_marker/single" method="POST">
+        <input hidden id="is_with_dir" name="is_with_dir" value="false">
         <?php 
             if($this->session->flashdata('validation_error')){
                 echo "
@@ -78,10 +79,10 @@
         </div>
         <div class="row mt-4">
             <div class="col-lg-6 col-md-6 col-sm-12">
-                <a class="btn btn-white rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;"><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</a>
+                <a class="btn btn-white rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</a>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
-                <button class="btn btn-dark rounded-pill w-100 py-3" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Marker</button>
+                <button class="btn btn-dark rounded-pill w-100 py-3" id="submit-btn" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Marker</button>
             </div>
         </div>
     </form>
@@ -162,6 +163,10 @@
             document.body.appendChild(link)
             link.click()
             document.body.removeChild(link)
+        })
+        $(document).on('click', '#submit-visit-wdir-btn', function() {
+            $('#is_with_dir').val('true')
+            $('#submit-btn').click()
         })
     })
 

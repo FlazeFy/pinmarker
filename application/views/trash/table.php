@@ -1,4 +1,4 @@
-<a class="btn btn-dark mb-4 rounded-pill py-3 px-4 me-2" href="/ListController"><i class="fa-solid fa-arrow-left"></i> Back</a>
+<a class="btn btn-dark mb-4 rounded-pill <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4 me-2" href="/ListController"><i class="fa-solid fa-arrow-left"></i> Back</a>
 <table class="table table-bordered" id="tb_related_pin_track">
     <thead style="font-size: var(--textMD);" class="text-center">
         <tr>

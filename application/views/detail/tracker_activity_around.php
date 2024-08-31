@@ -3,7 +3,7 @@
     getActivityAround()
     function getActivityAround() {
         $.ajax({
-            url: `http://127.0.0.1:2000/api/v1/track/activity_around/<?= $dt_detail_pin->pin_lat ?>,<?= $dt_detail_pin->pin_long ?>/<?= $this->session->userdata('user_id'); ?>`,
+            url: `http://127.0.0.1:8000/api/v1/track/activity_around/<?= $dt_detail_pin->pin_lat ?>,<?= $dt_detail_pin->pin_long ?>/<?= $this->session->userdata('user_id'); ?>`,
             dataType: 'json',
             contentType: 'application/json',
             type: "get",

@@ -8,8 +8,38 @@
 <?php 
     $view = $this->session->userdata('view_mode_global_list_pin');
 ?>
-<a class="btn btn-dark mb-4 rounded-pill py-3 px-4 me-2" href="/GlobalListController"><i class="fa-solid fa-arrow-left"></i> Back</a>
-<div class='pin-box mb-4 no-animation'>
+
+<div class="d-flex justify-content-between mb-4">
+    <a class="btn btn-dark rounded-pill <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4 me-2" href="/GlobalListController"><i class="fa-solid fa-arrow-left"></i> <?php if (!$is_mobile_device){ echo "Back"; } ?></a>
+    <?php 
+        if ($is_mobile_device){
+            echo "
+                <div>
+                    <a class='btn btn-dark rounded-pill px-4 py-2' id='share-global-pin'><i class='fa-solid fa-paper-plane'></i> "; if(!$is_signed){ echo "Share"; } echo"</a>";
+                    if($is_signed){
+                        echo "
+                            <a class='btn btn-dark rounded-pill px-4 py-2 ms-1' href='/GlobalListController'><i class='fa-solid fa-bookmark'></i></a>
+                            <form action='/DetailGlobalController/edit_toggle/$dt_detail->id' method='POST' class='d-inline' id='form-remove-list'>";
+                                if($this->session->userdata('is_global_edit_mode') == false){
+                                    echo "<button class='btn btn-light rounded-pill px-4 py-2'><i class='fa-solid fa-pen-to-square'></i></button>";
+                                } else {
+                                    echo "<button class='btn btn-dark rounded-pill px-4 py-2'><i class='fa-solid fa-pen-to-square'></i></button>";
+                                }
+                            echo"
+                            </form>
+                            <form action='/DetailGlobalController/delete_global_list/$dt_detail->id' method='POST' class='d-inline' id='form-remove-list'>
+                                <a class='btn btn-dark rounded-pill px-4 py-2' onclick='remove_list()'><i class='fa-solid fa-trash'></i></a>
+                            </form>
+                        ";    
+                    }
+                echo "
+                </div>
+            ";
+        }
+    ?>
+</div>
+
+<div class='<?php if (!$is_mobile_device){ echo "pin-box"; } ?> mb-4 no-animation'>
     <span class="d-flex justify-content-between">
         <div>
             <?php 
@@ -20,13 +50,15 @@
         </div>
         <div>
             <?php 
-                if($is_signed){
+                if($is_signed && !$is_mobile_device){
                     echo "<a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/GlobalListController'><i class='fa-solid fa-bookmark'></i> Save All to My Pin</a>";
                 }
+                if (!$is_mobile_device){
+                    echo "<a class='btn btn-dark rounded-pill px-2 py-1' id='share-global-pin'><i class='fa-solid fa-paper-plane'></i> Share</a>";
+                }
             ?>
-            <a class='btn btn-dark rounded-pill px-2 py-1' id='share-global-pin'><i class='fa-solid fa-paper-plane'></i> Share</a>
             <?php 
-                if($is_signed && $is_editable){
+                if($is_signed && $is_editable && !$is_mobile_device){
                     echo "
                         <form action='/DetailGlobalController/edit_toggle/$dt_detail->id' method='POST' class='d-inline ms-2' id='form-remove-list'>";
                             if($this->session->userdata('is_global_edit_mode') == false){
@@ -39,10 +71,10 @@
                 }
             ?>
             <?php 
-                if($is_signed && $is_editable){
+                if($is_signed && $is_editable && !$is_mobile_device){
                     echo "
                         <form action='/DetailGlobalController/delete_global_list/$dt_detail->id' method='POST' class='d-inline ms-2' id='form-remove-list'>
-                            <button class='btn btn-dark rounded-pill px-2 py-1 me-2' onclick='remove_list()'><i class='fa-solid fa-trash'></i> Delete Global List</button>
+                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2' onclick='remove_list()'><i class='fa-solid fa-trash'></i> Delete Global List</a>
                         </form>
                     ";
                 }
@@ -115,24 +147,28 @@
 
     <span class="d-flex justify-content-between">
         <div>
-            <h5>List Marker</h5>
+            <h5 class="<?php if($is_mobile_device){ echo "mt-2"; } ?>">List Marker</h5>
         </div>
         <div>
             <?php 
                 if($is_editable){
                     echo "
-                        <a class='btn btn-dark rounded-pill px-2 py-1' data-bs-target='#addMarker' id='btn-add-marker' data-bs-toggle='modal'><i class='fa-solid fa-plus'></i> Add Marker</a>
+                        <a class='btn btn-dark rounded-pill px-3 py-2' data-bs-target='#addMarker' id='btn-add-marker' data-bs-toggle='modal'><i class='fa-solid fa-plus'></i> "; if(!$is_mobile_device){ echo "Add Marker"; } echo"</a>
                     ";
                     $this->load->view('detail_global/add_pin');
                 }
             ?>
             <form action="/DetailGlobalController/view_global_list_pin/<?= $dt_detail->id ?>" method="POST" class="d-inline">
-                <button class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-table'></i> See <?php if($view == 'table'){ echo'Catalog'; } else { echo 'Table'; } ?> View</button>
+                <button class='btn btn-dark rounded-pill px-3 py-2'><i class='fa-solid fa-table'></i> 
+                    <?php if (!$is_mobile_device): ?>
+                        See <?php if($view == 'table'){ echo'Catalog'; } else { echo 'Table'; } ?> View
+                    <?php endif; ?>
+                </button>
             </form>
-            <a class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-map'></i> Whole Map</a>
+            <a class='btn btn-dark rounded-pill px-3 py-2'><i class='fa-solid fa-map'></i> <?php if(!$is_mobile_device){ echo "Whole Map"; } ?></a>
         </div>
     </span>
-    <div class="row mt-3 mx-2 <?php if($view == 'catalog'){ echo 'grid';} ?>">
+    <div class="row mt-3 <?php if($view == 'catalog'){ echo 'grid';} ?>">
         <?php 
             if($view == 'catalog'){
                 foreach($dt_pin_list as $dt){
@@ -178,14 +214,13 @@
                                     ";
                                 }
                                 if($is_signed){
-                                    echo "<a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>";
+                                    echo "<a class='btn btn-dark rounded-pill px-3 py-2 me-1'><i class='fa-solid fa-bookmark'></i> "; if(!$is_mobile_device){ echo "Save to My Pin"; } echo"</a>";
                                 }
-                                    echo"
-                                <a class='btn btn-dark rounded-pill px-2 py-1 me-2'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>";
                                 if($is_editable){
-                                    echo "<a class='btn btn-dark rounded-pill px-2 py-1 me-2' onclick='remove_pin("; echo '"'; echo $dt->id; echo '"'; echo")'><i class='fa-solid fa-trash'></i> Remove</a>";
+                                    echo "<a class='btn btn-dark rounded-pill px-3 py-2 me-1' onclick='remove_pin("; echo '"'; echo $dt->id; echo '"'; echo")'><i class='fa-solid fa-trash'></i> "; if(!$is_mobile_device){ echo "Remove"; } echo"</a>";
                                 }
                                 echo"
+                                <a class='btn btn-dark rounded-pill px-3 py-2 me-1' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
                             </div>
                         </div>
                     ";
@@ -252,7 +287,7 @@
                                                     echo "<a class='btn btn-dark rounded-pill px-2 py-1 me-2 w-100 mb-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>";
                                                 }
                                                 echo "
-                                                <a class='btn btn-dark rounded-pill px-2 py-1 w-100 mb-2'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>";
+                                                <a class='btn btn-dark rounded-pill px-2 py-1 w-100 mb-2'  href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>";
                                                 if($is_editable){
                                                     echo "<a class='btn btn-dark rounded-pill px-2 py-1 w-100' onclick='remove_pin("; echo '"'; echo $dt->id; echo '"'; echo")'><i class='fa-solid fa-trash'></i> Remove</a>";
                                                 }
