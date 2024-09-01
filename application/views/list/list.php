@@ -194,7 +194,7 @@
                     <div class='col-lg-4 col-md-6 col-sm-12 col-12 grid-item'>
                         <div class='pin-box mb-4'>
                             <div class='pin-box-label "; if(!$is_mobile_device){ echo "position-absolute"; } else { echo "float-end mb-1"; } echo "'"; if(!$is_mobile_device){ echo "style='right:-15px; top:-15px;'"; } echo ">$dt->total Marker</div>
-                            <h3>$dt->dictionary_name</h3>
+                            <h3 class='dictionary_name_holder'>$dt->dictionary_name</h3>
                             <p class='list-pin-desc'>"; 
                                 if($dt->pin_list){
                                     echo $dt->pin_list;
@@ -205,7 +205,7 @@
                             <form method='POST' action='/ListController/view_catalog_detail/$dt->dictionary_name' class='d-inline'>
                                 <button class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/'><i class='fa-solid fa-circle-info'></i> See Detail</button>
                             </form>
-                            <a class='btn btn-dark rounded-pill px-2 py-1'><i class='fa-solid fa-globe'></i> Publish to Global</a>
+                            <a class='btn btn-dark rounded-pill px-2 py-1 publish-to-global'><i class='fa-solid fa-globe'></i> Publish to Global</a>
                         </div>
                     </div>
                 ";
@@ -221,6 +221,8 @@
         }
     }
 ?>
+
+<?php $this->load->view('list/publish_to_global'); ?>
 
 <?php 
     if($this->session->flashdata('message_error')){

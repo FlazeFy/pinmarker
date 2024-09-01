@@ -34,6 +34,15 @@
 			];
         }
 
+		public function get_global_list_name($user_id){
+			$this->db->select("id,list_name");
+			$this->db->from($this->table);
+			$this->db->where('created_by',$user_id);
+			$this->db->order_by("created_at","ASC");
+
+			return $this->db->get()->result();
+		}
+
 		public function get_global_list($search) {
 			$this->db->select("$this->table.id, 
 				IFNULL(GROUP_CONCAT(COALESCE(pin.pin_name, null) ORDER BY pin.pin_name ASC SEPARATOR ', '), '') as pin_list, 

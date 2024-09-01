@@ -15,6 +15,7 @@ class ListController extends CI_Controller {
 		$this->load->model('AuthModel');
 		$this->load->model('HistoryModel');
 		$this->load->model('DictionaryModel');
+		$this->load->model('GlobalListModel');
 		$this->load->model('MultiModel');
 		
 		$this->load->helper('generator_helper');
@@ -57,6 +58,8 @@ class ListController extends CI_Controller {
 				$data['dt_my_pin']= $this->PinModel->get_pin_list_by_category($user_id);
 			}
 			$data['dt_my_category'] = $this->DictionaryModel->get_my_pin_category();
+			$data['dt_my_list'] = $this->GlobalListModel->get_global_list_name($user_id);
+
 			$this->load->view('list/index', $data);
 		} else {
 			redirect('LoginController');
@@ -308,6 +311,38 @@ class ListController extends CI_Controller {
 		}
 
 		redirect("ListController");
+	}
+
+	public function publish_to_global(){
+		$list_id = $this->input->post('list_id');
+		$category_name = $this->input->post('category_name');
+		$success = 0;
+		$failed = 0;
+
+		$pin_attached = $this->PinModel->get_pin_by_category($category_name, null);
+		foreach($pin_attached as $dt){
+			if($this->GlobalListModel->insert_rel([
+				'id' => get_UUID(),
+				'pin_id' => $dt->id,
+				'list_id' => $list_id,
+				'created_at' => date("Y-m-d H:i:s"), 
+				'created_by' => $this->session->userdata('user_id')
+			])){
+				$success++;
+			} else {
+				$failed++;
+			}
+		}
+
+		if($success > 0 && $failed == 0){
+			$this->session->set_flashdata('message_success', "Success to publish all pin from category $category_name");
+		} else if($success > 0 && $failed > 0){
+			$this->session->set_flashdata('message_success', "Success to publish $success pin and failed to publish $failed pin");
+		} else {
+			$this->session->set_flashdata('message_error', 'Failed to publish all pin');
+		}
+
+		redirect("/DetailGlobalController/view/$list_id");
 	}
 
 	public function view_catalog_detail($category){
