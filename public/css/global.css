@@ -272,3 +272,8 @@ table thead {
 .sub-tab .nav-item.active, .sub-tab .nav-item:hover{
     background: var(--primaryColor);
 }
+
+.form-select {
+    background: transparent;
+    color: var(--whiteColor);
+}

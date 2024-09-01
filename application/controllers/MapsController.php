@@ -35,6 +35,17 @@ class MapsController extends CI_Controller {
 		redirect('/MapsController');
 	}
 
+	public function filter_pin_category(){
+		$cat = $this->input->post('pin_category');
+		if($cat == "all"){
+			$this->session->unset_userdata('filter_pin_by_cat');
+		} else {
+			$this->session->set_userdata('filter_pin_by_cat',$cat);
+		}
+		
+		redirect('/MapsController');
+	}
+
 	public function reset_search_pin_name(){
 		$this->session->unset_userdata('search_pin_name_key');
 			

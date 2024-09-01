@@ -113,6 +113,17 @@
 				$this->db->where('pin_category',$category);
 			}
 
+			if($from == 'maps'){
+				$category_filter = $this->session->userdata('filter_pin_by_cat');
+				if($category_filter){
+					if($category_filter != "favorite"){
+						$this->db->where('pin_category',$category_filter);
+					} else {
+						$this->db->where('is_favorite',1);
+					}
+				} 
+			}
+
 			if($limit > 0 && $start >= 0){
 				$db_count = clone $this->db;
 				$total_rows = $db_count->get()->num_rows();

@@ -38,14 +38,15 @@
 </style>
 
 <form autocomplete="off" action="/MapsController/search_pin_name" method="POST" id="search_form">
-    <div class="autocomplete">
-        <input id="pin_name" type="text" class="form-control" name="pin_name" placeholder="Search by pin name" 
+    <div class="autocomplete form-floating mt-1">
+        <input id="pin_name" type="text" class="form-control" name="pin_name" value="<?= $this->session->userdata('search_pin_name_key') ?? "";?>" 
             value="<?php 
                 $search_pin_name = $this->session->userdata('search_pin_name_key');
                 if($search_pin_name != null && $search_pin_name != ""){
                     echo $search_pin_name;
                 } 
             ?>" required>
+        <label for="floatingSelect" class="text-white fw-normal">Filter By Name</label>
     </div>
     <button class="btn btn-light m-0" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
 </form>

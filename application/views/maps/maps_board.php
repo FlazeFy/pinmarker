@@ -18,6 +18,7 @@
 
 <div class="maps-toolbar">
     <div class="d-flex justify-content-end">
+        <?php $this->load->view('maps/filter_category'); ?>
         <?php $this->load->view('maps/search'); ?>
     </div>
     <div class="position-relative">
