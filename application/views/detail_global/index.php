@@ -34,15 +34,10 @@
 
     <!-- Isotope -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            $('.grid').isotope({
-                itemSelector: '.grid-item',
-                layoutMode: 'masonry', 
-            });
-        })
-    </script>
+    <!-- Javascript -->
+    <script src="http://127.0.0.1:8080/public/js/isotope.js"></script>
 </head>
 <body>
     <div class="content">

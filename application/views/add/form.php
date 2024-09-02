@@ -173,7 +173,7 @@
     const generate_form = () => {
         const fileInput = $('#pin-data').get(0)
         const file = fileInput.files[0]
-        Swal.showLoading()
+        loading() 
 
         if (!file) {
             Swal.hideLoading()

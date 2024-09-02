@@ -27,18 +27,6 @@
 
     <script src="http://127.0.0.1:8080/public/js/global.js"></script>
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
-
-    <style>
-        .gallery-btn {
-            border: 2px solid black; border-radius: 15px;
-            padding: var(--spaceMD);
-            text-align: left;
-            background: var(--whiteColor);
-        }
-        .gallery-btn:hover {
-            transform: scale(1.05);
-        }
-    </style>
 </head>
 <body>
     <div class="content">

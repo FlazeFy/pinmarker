@@ -31,6 +31,7 @@ class ListController extends CI_Controller {
 		if($this->AuthModel->current_user()){
 			$data = [];
 			$data['is_mobile_device'] = is_mobile_device();
+			$user_id = $this->session->userdata('user_id');
 
 			if($data['is_mobile_device']){
 				$per_page = 8;
@@ -54,7 +55,6 @@ class ListController extends CI_Controller {
 
 				$data['dt_my_pin']= $this->PinModel->get_all_my_pin('list', $category, $per_page,$offset);
 			} else {
-				$user_id = $this->session->userdata('user_id');
 				$data['dt_my_pin']= $this->PinModel->get_pin_list_by_category($user_id);
 			}
 			$data['dt_my_category'] = $this->DictionaryModel->get_my_pin_category();

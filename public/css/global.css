@@ -141,6 +141,13 @@ input, select, textarea {
     -webkit-transition: all 0.35s;
     -o-transition: all 0.35s;
     transition: all 0.35s;
+    border: 2px solid black; border-radius: 15px;
+    padding: var(--spaceMD);
+    text-align: left;
+    background: var(--whiteColor);
+}
+.gallery-btn:hover {
+    transform: scale(1.05);
 }
 
 .modal-content {

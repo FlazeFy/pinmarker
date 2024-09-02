@@ -79,14 +79,17 @@
 		}
 
 		public function get_pin_list_by_id($id){
-			$this->db->select("global_list_pin_relation.id, pin_name, pin_desc, pin_lat, pin_long, pin_call, pin_category, global_list_pin_relation.created_at, pin_address, user.username as created_by");
+			$this->db->select("global_list_pin_relation.id, pin_name, pin_desc, pin_lat, pin_long, pin_call, pin_category, global_list_pin_relation.created_at, pin_address, user.username as created_by,
+				IFNULL(GROUP_CONCAT(COALESCE(gallery_url, null) SEPARATOR ', '), '') as gallery_url,IFNULL(GROUP_CONCAT(COALESCE(gallery_caption, null) SEPARATOR ', '), '') as gallery_caption,IFNULL(GROUP_CONCAT(COALESCE(gallery_type, null) SEPARATOR ', '), '') as gallery_type");
 			$this->db->from("global_list_pin_relation");
 			$this->db->join('pin',"global_list_pin_relation.pin_id = pin.id");
 			$this->db->join('user',"user.id = global_list_pin_relation.created_by");
+			$this->db->join('gallery',"pin.id = gallery.pin_id",'left');
 			$condition = [
 				"global_list_pin_relation.list_id" => $id,
             ];
 			$this->db->where($condition);
+			$this->db->group_by("global_list_pin_relation.id");
 			$this->db->order_by("global_list_pin_relation.created_at",'desc');
 
 			return $data = $this->db->get()->result();

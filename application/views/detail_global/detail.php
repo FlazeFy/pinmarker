@@ -39,7 +39,7 @@
     ?>
 </div>
 
-<div class='<?php if (!$is_mobile_device){ echo "pin-box"; } ?> mb-4 no-animation'>
+<div class='mb-4 no-animation'>
     <span class="d-flex justify-content-between">
         <div>
             <?php 
@@ -174,7 +174,7 @@
                 foreach($dt_pin_list as $dt){
                     echo "
                         <div class='col-lg-6 col-md-12 col-sm-12 col-12 grid-item'>
-                            <div class='pin-box'>
+                            <div class='pin-box solid'>
                                 <div id='map-board-$dt->id' class='map-board'></div>
                                 <script>
                                     document.addEventListener('DOMContentLoaded', function() {
@@ -204,15 +204,17 @@
                                             <p>$dt->pin_address</p>
                                         ";
                                     }
-                                if(!$is_mobile_device){
-                                    echo"
-                                        <p class='mt-2 mb-0 fw-bold'>Added At</p>
-                                        <p>
-                                            <span class='date-target'>$dt->created_at</span> 
-                                            <span>by <button class='btn-account-attach'>@$dt_detail->created_by</button></span>
-                                        </p>
-                                    ";
-                                }
+                                echo"
+                                    <p class='mt-2 mb-0 fw-bold'>Added At</p>
+                                    <p>
+                                        <span class='date-target'>$dt->created_at</span> 
+                                        <span>by <button class='btn-account-attach'>@$dt_detail->created_by</button></span>
+                                    </p>
+                                ";
+
+                                $data['dt'] = $dt;
+                                $this->load->view('detail_global/gallery',$data);
+
                                 if($is_signed){
                                     echo "<a class='btn btn-dark rounded-pill px-3 py-2 me-1'><i class='fa-solid fa-bookmark'></i> "; if(!$is_mobile_device){ echo "Save to My Pin"; } echo"</a>";
                                 }
@@ -257,6 +259,10 @@
                                                         <p>$dt->pin_address</p>
                                                     ";
                                                 }
+
+                                                $data['dt'] = $dt;
+                                                $this->load->view('detail_global/gallery',$data);
+                                                
                                                 echo"
                                             </td>
                                             <td>

@@ -160,3 +160,14 @@ const ucFirst = (val) => {
 
     return res;
 }
+
+const loading = () => {
+    Swal.fire({
+        title: 'Loading...',
+        html: 'Please wait while we load your content',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    });   
+}

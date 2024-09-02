@@ -217,7 +217,7 @@
     }
 
     function validateToken(token, username){
-        Swal.showLoading()
+        loading() 
         $.ajax({
             url: `http://127.0.0.1:8000/api/v1/req/validate/${token}/${username}`,
             dataType: 'json',
@@ -366,7 +366,7 @@
             const email = $('#email').val()
 
             if($('#password').val().trim() == $('#password_check').val().trim()){
-                Swal.showLoading()
+                loading() 
                 $.ajax({
                     url: `http://127.0.0.1:8000/api/v1/req/register/${email}/${username}`,
                     dataType: 'json',

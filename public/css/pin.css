@@ -10,7 +10,7 @@
     transition: all 0.4s;
     position: relative;
 }
-.pin-box:hover {
+.pin-box:not(.solid):hover {
     transform: scale(1.05);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
