@@ -13,9 +13,7 @@
         ?>
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12">
-                <label>Pin Name</label>
-                <input name="pin_name" id="pin_name" type="text" class="form-control" required/>
-                <a class="msg-error-input"></a>
+                <input name="pin_name" id="pin_name" type="text" class="form-control form-validated" maxlength="75" required/>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <label>Pin Category</label>
@@ -36,39 +34,26 @@
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <div class="row">
                     <div class="col-6">
-                        <label>Latitude</label>
-                        <input name="pin_lat" id="pin_lat" type="text" class="form-control" onchange="select_map()" required/>
+                        <input name="pin_lat" id="pin_lat" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" required/>
                         <a class="msg-error-input"></a>
                     </div>
                     <div class="col-6">
-                        <label>Longitude</label>
-                        <input name="pin_long" id="pin_long" type="text" class="form-control" onchange="select_map()" required/>
+                        <input name="pin_long" id="pin_long" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" required/>
                         <a class="msg-error-input"></a>
                     </div>
                 </div>
 
-                <label>Description</label>
-                <textarea name="pin_desc" id="pin_desc" rows="5" class="form-control"></textarea>
-                <a class="msg-error-input"></a>
-
-                <label>Address</label>
-                <textarea name="pin_address" id="pin_address" rows="5" class="form-control"></textarea>
-                <a class="msg-error-input"></a>
+                <textarea name="pin_desc" id="pin_desc" maxlength="500" rows="5" class="form-control form-validated"></textarea>
+                <textarea name="pin_address" id="pin_address" maxlength="500" rows="5" class="form-control form-validated"></textarea>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
-                <label>Person In Contact</label>
-                <input name="pin_person" id="pin_person" type="text" class="form-control"/>
-                <a class="msg-error-input"></a>
+                <input name="pin_person" id="pin_person" maxlength="75" type="text" class="form-control form-validated"/>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
-                <label>Phone Number</label>
-                <input name="pin_call" id="pin_call" type="phone" class="form-control"/>
-                <a class="msg-error-input"></a>
+                <input name="pin_call" id="pin_call" maxlength="16" type="phone" class="form-control form-validated"/>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <label>Email</label>
-                <input name="pin_email" id="pin_email" type="email" class="form-control"/>
-                <a class="msg-error-input"></a>
+                <input name="pin_email" id="pin_email" maxlength="255" type="email" class="form-control form-validated"/>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="form-check">

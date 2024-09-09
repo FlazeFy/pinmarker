@@ -19,13 +19,10 @@
             }
         ?>
         <form action="/AddGlobalListController/add_list" method="POST" id="form-add-global-list">
-            <label>List Name</label>
-            <input name="list_name" id="list_name" type="text" class="form-control" required/>
+            <input name="list_name" id="list_name" type="text" class="form-control form-validated" maxlength="75" required/>
             <a class="msg-error-input"></a>
-            <label>List Code</label>
-            <input name="list_code" id="list_code" type="text" class="form-control" maxlength="6"/>
+            <input name="list_code" id="list_code" type="text" class="form-control form-validated" maxlength="6"/>
             <a class="msg-error-input" id='list_code_msg'></a><br>
-            <label>Description</label>
             <textarea name="list_desc" id="list_desc" rows="5" class="form-control"></textarea>
             <a class="msg-error-input"></a>
             <label>Tags</label>
@@ -209,7 +206,7 @@
                     html: `Want to share this pin <b>${pins}</b> with others?`,
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonText: "Yes, delete it!"
+                    confirmButtonText: "Yes, share it!"
                 })
                 .then((result) => {
                     if (result.isConfirmed) {

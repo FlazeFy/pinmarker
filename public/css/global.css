@@ -102,7 +102,9 @@ input, select, textarea {
     border-radius: var(--roundedMD) !important;
     margin-top: var(--spaceXXSM);
     margin-bottom: var(--spaceSM);
-    border: 1.5px solid black !important;
+}
+.form-control, .form-select, .form-check-input{
+    border: 1.5px solid black;
 }
 .form-check-label {
     font-weight: 500;

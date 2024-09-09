@@ -62,8 +62,7 @@
                             echo "</select>";
                         } else {
                             echo "
-                                <label>Location Name</label>
-                                <input name='location_name' id='location_name' type='text' class='form-control' required/>
+                                <input name='location_name' id='location_name' type='text' class='form-control form-validated' maxlength='255' required/>
                                 <a class='msg-error-input'></a>
                             ";
                         }
@@ -92,8 +91,7 @@
                         ?></a>
                     </div>
                 </div>
-                <label>Description</label>
-                <textarea name="visit_desc" id="visit_desc" rows="5" class="form-control"></textarea>
+                <textarea name="visit_desc" id="visit_desc" rows="5" class="form-control form-validated" maxlength='255'></textarea>
                 <a class="msg-error-input"></a>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
@@ -107,21 +105,18 @@
                 </select>
                 <a class="msg-error-input"></a>
 
-                <label>Visit With</label>
-                <textarea name="visit_with" id="visit_with" rows="5" class="form-control visit-with"></textarea>
+                <textarea name="visit_with" id="visit_with" rows="5" class="form-control form-validated visit-with" maxlength='500'></textarea>
                 <a class="msg-error-input"></a>
                 <div class="d-flex justify-content-start mb-3">
                     <a class="btn btn-dark rounded-pill see-person-btn" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> See Persons</a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                <label>Visit At Date</label>
-                <input name="visit_date" id="visit_date" type="date" class="form-control" required/>
+                <input name="visit_date" id="visit_date" type="date" class="form-control form-validated" required/>
                 <a class="msg-error-input"></a>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                <label>Visit At Hour</label>
-                <input name="visit_hour" id="visit_hour" type="time" class="form-control" required/>
+                <input name="visit_hour" id="visit_hour" type="time" class="form-control form-validated" required/>
                 <a class="msg-error-input"></a>
             </div>
         </div>
@@ -197,6 +192,7 @@
             $('#save-visit-btn-holder').html(`
                 <button class="btn btn-dark rounded-pill w-100 py-3" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save ${count_multi_visit} Visit</button>
             `)
+            formValidation()
         })
         $(document).on('click', '#add-new-pin-btn', function() { 
             $('#type_add').val('pin_visit')
@@ -208,8 +204,7 @@
                 <h4 class="mb-2">Pin Form</h4>
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12">
-                        <label>Pin Name</label>
-                        <input name="pin_name" id="pin_name" type="text" class="form-control" required/>
+                        <input name="pin_name" id="pin_name" type="text" class="form-control form-validated" maxlength='75' required/>
                         <a class="msg-error-input"></a>
                         <div class="d-flex justify-content-start mb-3">
                             <a class="btn btn-dark rounded-pill"><i class="fa-solid fa-map"></i> Custom Location</a>
@@ -236,30 +231,24 @@
                         <a class="msg-error-input"></a>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
-                        <label>Latitude</label>
-                        <input name="pin_lat" id="pin_lat" type="text" class="form-control" onchange="select_map()" required/>
+                        <input name="pin_lat" id="pin_lat" type="text" class="form-control form-validated" maxlength='144' onchange="select_map()" required/>
                         <a class="msg-error-input"></a>
 
-                        <label>Longitude</label>
-                        <input name="pin_long" id="pin_long" type="text" class="form-control" onchange="select_map()" required/>
+                        <input name="pin_long" id="pin_long" type="text" class="form-control form-validated" maxlength='144' onchange="select_map()" required/>
                         <a class="msg-error-input"></a>
 
-                        <label>Description</label>
-                        <textarea name="pin_desc" id="pin_desc" rows="5" class="form-control"></textarea>
+                        <textarea name="pin_desc" id="pin_desc" rows="5" class="form-control form-validated" maxlength='500'></textarea>
                         <a class="msg-error-input"></a>
 
-                        <label>Address</label>
-                        <textarea name="pin_address" id="pin_address" rows="5" class="form-control"></textarea>
+                        <textarea name="pin_address" id="pin_address" rows="5" class="form-control form-validated" maxlength='500'></textarea>
                         <a class="msg-error-input"></a>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
-                        <label>Person In Contact</label>
-                        <input name="pin_person" id="pin_person" type="text" class="form-control"/>
+                        <input name="pin_person" id="pin_person" type="text" class="form-control form-validated" maxlength='75'/>
                         <a class="msg-error-input"></a>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
-                        <label>Phone Number</label>
-                        <input name="pin_phone" id="pin_phone" type="text" class="form-control"/>
+                        <input name="pin_phone" id="pin_phone" type="text" class="form-control form-validated" maxlength='16'/>
                         <a class="msg-error-input"></a>
                     </div>
                 </div>
@@ -267,6 +256,7 @@
                 <h4 class="mb-2">Visit Form</h4>
             `)
             initMap() 
+            formValidation()
         })
         $(document).on('click', '#add-custom-btn', function() { 
             $('#type_add').val('visit_custom')
@@ -274,8 +264,7 @@
             $('#save-visit-btn-holder').html(btn_submit_el)
 
             $('#pin_name_init_holder').html(`
-                <label>Location Name</label>
-                <input name="location_name" id="location_name" type="text" class="form-control"/>
+                <input name="location_name" id="location_name" type="text" class="form-control form-validated" maxlength='255'/>
                 <a class="msg-error-input"></a>
                 <div class="d-flex justify-content-start mb-3">
                     <a class="btn btn-dark rounded-pill" onclick="resetForm()"><i class="fa-solid fa-location-dot"></i> Saved Pin</a>
