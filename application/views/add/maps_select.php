@@ -50,6 +50,7 @@
             initMap()
             placeMarkerAndPanTo(e.latLng, map)
             addContentCoor(e.latLng, 'pin_lat', 'pin_long')
+            check_nearest_pin()
         });
     }
 

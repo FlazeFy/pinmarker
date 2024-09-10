@@ -34,11 +34,11 @@
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <div class="row">
                     <div class="col-6">
-                        <input name="pin_lat" id="pin_lat" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" required/>
+                        <input name="pin_lat" id="pin_lat" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" onblur="check_nearest_pin()" required/>
                         <a class="msg-error-input"></a>
                     </div>
                     <div class="col-6">
-                        <input name="pin_long" id="pin_long" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" required/>
+                        <input name="pin_long" id="pin_long" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" onblur="check_nearest_pin()" required/>
                         <a class="msg-error-input"></a>
                     </div>
                 </div>
@@ -321,6 +321,65 @@
             };
         }
     };
+
+    const check_nearest_pin = () => {
+        if($('#pin_lat').val() && $('#pin_long').val() && $('#pin_lat').val().trim() != "" && $('#pin_long').val().trim() != ""){
+            Swal.showLoading()
+            $.ajax({
+                url: `http://127.0.0.1:8000/api/v1/pin/nearest/${$('#pin_lat').val()}/${$('#pin_long').val()}`,
+                dataType: 'json',
+                contentType: 'application/json',
+                type: "POST",
+                data: JSON.stringify({
+                    id: "<?= $this->session->userdata('user_id'); ?>",
+                    max_distance: 1000
+                }),
+                beforeSend: function (xhr) {
+                    // You can add any pre-request logic here
+                }
+            })
+            .done(function (response) {         
+                let data = response.data
+                
+                Swal.hideLoading()
+                if (response.is_found_near == false) {
+                    Swal.fire({ 
+                        title: 'Success!', 
+                        text: 'No other pin detected near this coordinate. You are free to create.', 
+                        icon: 'success' 
+                    });
+                } else {
+                    let listNear = '';
+
+                    data.forEach(el => {
+                        listNear += `<li>${el.pin_name} at <b>${el.distance.toFixed(2)} m</b></li>`
+                    });
+
+                    Swal.fire({ 
+                        title: 'Warning!', 
+                        html: `There's a pin located near this coordinate.<br><br>
+                            <h5>Here's the list:</h5><div class='text-start'>${listNear}</div>`, 
+                        icon: 'warning' 
+                    });
+                }
+            })
+            .fail(function (xhr, ajaxOptions, thrownError) {
+                Swal.hideLoading()
+                Swal.fire({ 
+                    title: 'Failed!', 
+                    text: 'Something went wrong.', 
+                    icon: 'error' 
+                });
+            });
+
+        } else {
+            Swal.fire({ 
+                title: 'Failed!', 
+                text: `Something wrong happen`, 
+                icon: 'error' 
+            });
+        }
+    }
 
     const delete_imported_pin = (idx) => {
         $(`#pin_section_${idx}`).remove()
