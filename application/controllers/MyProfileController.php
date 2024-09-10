@@ -62,7 +62,7 @@ class MyProfileController extends CI_Controller {
 		$this->form_validation->set_rules($rules);
 
 		if($this->form_validation->run() == FALSE){
-			$this->session->set_flashdata('message_error', 'Profile failed to updated. Validation failed');
+			$this->session->set_flashdata('message_error', generate_message(false,'update','profile','validation failed'));
 			$this->session->set_flashdata('validation_error', validation_errors());
 		} else {
 			$user_id = $this->session->userdata('user_id');
@@ -75,9 +75,9 @@ class MyProfileController extends CI_Controller {
 			];
 
 			if($this->AuthModel->update_user($user_id,$data)){
-				$this->session->set_flashdata('message_success', 'Profile updated');
+				$this->session->set_flashdata('message_success', generate_message(true,'update','profile',null));
 			} else {
-				$this->session->set_flashdata('message_error', 'Profile failed to updated');
+				$this->session->set_flashdata('message_error', generate_message(false,'update','profile',null));
 			}
 		}
 		redirect('MyProfileController');
@@ -97,9 +97,9 @@ class MyProfileController extends CI_Controller {
 				'user_img_url' => $img_url
 			]);
 
-			$this->session->set_flashdata('message_success', 'Profile image updated');
+			$this->session->set_flashdata('message_success', generate_message(true,'update','profile image',null));
 		} else {
-			$this->session->set_flashdata('message_error', 'Profile image failed to updated');
+			$this->session->set_flashdata('message_error', generate_message(false,'update','profile image',null));
 		}
 
 		redirect('MyProfileController');
@@ -125,9 +125,9 @@ class MyProfileController extends CI_Controller {
 				'text' => "Hello,\n\nWe received a request to validate PinMarker apps's account with username <b>@$user->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, PinMarker",
 				'parse_mode' => 'HTML'
 			]);
-			$this->session->set_flashdata('message_success', 'Validation Token has sended');
+			$this->session->set_flashdata('message_success', generate_message(true,'send','validation token',null));
 		} else {
-			$this->session->set_flashdata('message_error', 'Validation Token failed to send');
+			$this->session->set_flashdata('message_error', generate_message(false,'send','validation token',null));
 		}
 		redirect('MyProfileController');
 	}
@@ -161,14 +161,14 @@ class MyProfileController extends CI_Controller {
 					'text' => "Hello,\n\nWe received a request to validate PinMarker apps's account with username <b>$user->username</b> to sync with this Telegram account. If you initiated this request, please confirm that this account belongs to you by clicking the button YES.\n\nAlso we provided the Token :\n$token\n\nIf you did not request this, please press button NO.\n\nThank you, PinMarker",
 					'parse_mode' => 'HTML'
 				]);
-				$this->session->set_flashdata('message_success', 'Validation Token has sended');
+				$this->session->set_flashdata('message_success', generate_message(true,'send','validation token',null));
 			} else {
-				$this->session->set_flashdata('message_error', 'Validation Token failed to send');
+				$this->session->set_flashdata('message_error', generate_message(false,'send','validation token',null));
 			}
 
 			redirect('MyProfileController');
 		} else {
-			$this->session->set_flashdata('message_error', 'Validation Token failed to send');
+			$this->session->set_flashdata('message_error', generate_message(false,'send','validation token',null));
 
 			redirect('MyProfileController');
 		}
@@ -194,14 +194,14 @@ class MyProfileController extends CI_Controller {
 					'text' => "Hello <b>$user->username</b>, Welcome to PinMarker!",
 					'parse_mode' => 'HTML'
 				]);
-				$this->session->set_flashdata('message_success', 'Token validated!');
+				$this->session->set_flashdata('message_success', generate_message(true,'validate','token',null));
 
 				redirect('MyProfileController');
 			} else {
 				redirect('MyProfileController');
 			}
 		} else {
-			$this->session->set_flashdata('message_error', 'Wrong token!');
+			$this->session->set_flashdata('message_error', generate_message(false,'validate','token','wrong token'));
 
 			redirect('MyProfileController');
 		}
@@ -220,9 +220,9 @@ class MyProfileController extends CI_Controller {
 					'parse_mode' => 'HTML'
 				]);
 			}
-			$this->session->set_flashdata('message_success', 'Category pin color updated');
+			$this->session->set_flashdata('message_success', generate_message(true,'update','pin category color',null));
 		} else {
-			$this->session->set_flashdata('message_error', 'Failed to update pin color');
+			$this->session->set_flashdata('message_error',  generate_message(false,'update','pin category color',null));
 		}
 
 		redirect("MyProfileController");
@@ -242,12 +242,12 @@ class MyProfileController extends CI_Controller {
 			}
 			
 			if($this->MultiModel->delete('user',$id)){
-				$this->session->set_flashdata('message_success', 'User deleted');
+				$this->session->set_flashdata('message_success', generate_message(true,'permanently delete','user',null));
 			} else {
-				$this->session->set_flashdata('message_error', 'User not found');
+				$this->session->set_flashdata('message_error', generate_message(false,'permanently delete','user','user not found'));
 			}
 		} else {
-			$this->session->set_flashdata('message_error', 'User not found');
+			$this->session->set_flashdata('message_error', generate_message(false,'permanently delete','user','user not found'));
 		}
 		redirect('MyProfileController');
 	}
@@ -292,9 +292,9 @@ class MyProfileController extends CI_Controller {
 							]);
 						}						
 					}
-					$this->session->set_flashdata('message_success', 'Dictionary renamed. Success to migrate');
+					$this->session->set_flashdata('message_success', generate_message(true,'rename','dictionary','success to migrate'));
 				} else {
-					$this->session->set_flashdata('message_error', 'Dictionary renamed. But failed to migrate');
+					$this->session->set_flashdata('message_error', generate_message(false,'rename','dictionary','failed to migrate'));
 				}
 			} else {
 				if($owner && $dct_type == 'pin_category'){
@@ -304,10 +304,10 @@ class MyProfileController extends CI_Controller {
 						'parse_mode' => 'HTML'
 					]);
 				}
-				$this->session->set_flashdata('message_success', 'Dictionary renamed. Nothing to migrate');
+				$this->session->set_flashdata('message_success', generate_message(true,'rename','dictionary','nothing to migrate'));
 			}
 		} else {
-			$this->session->set_flashdata('message_error', 'Failed to rename dictionary');
+			$this->session->set_flashdata('message_error', generate_message(false,'rename','dictionary',null));
 		}
 
 		redirect("MyProfileController");
@@ -350,9 +350,9 @@ class MyProfileController extends CI_Controller {
 							]);
 						}						
 					}
-					$this->session->set_flashdata('message_success', 'Dictionary deleted. Success to migrate');
+					$this->session->set_flashdata('message_success', generate_message(true,'permanently delete','dictionary','success to migrate'));
 				} else {
-					$this->session->set_flashdata('message_error', 'Dictionary deleted. But failed to migrate');
+					$this->session->set_flashdata('message_error', generate_message(false,'permanently delete','dictionary','failed to migrate'));
 				}
 			} else {
 				if($owner && $old_dct->dictionary_type == 'pin_category'){
@@ -362,10 +362,10 @@ class MyProfileController extends CI_Controller {
 						'parse_mode' => 'HTML'
 					]);
 				}
-				$this->session->set_flashdata('message_success', 'Dictionary deleted. Nothing to migrate');
+				$this->session->set_flashdata('message_success', generate_message(true,'permanently delete','dictionary','nothing to migrate'));
 			}
 		} else {
-			$this->session->set_flashdata('message_error', 'Failed to deleted dictionary');
+			$this->session->set_flashdata('message_error', generate_message(false,'permanently delete','dictionary',null));
 		}
 
 		redirect("MyProfileController");
@@ -383,14 +383,14 @@ class MyProfileController extends CI_Controller {
 					'text' => "[ADMIN] $chat",
 					'parse_mode' => 'HTML'
 				]);
-				$this->session->set_flashdata('message_success', "Chat sended to @$username");
+				$this->session->set_flashdata('message_success', generate_message(true,'send','chat',"to @$username"));
 			} else if($user->telegram_user_id && $user->telegram_is_valid == 0) {
-				$this->session->set_flashdata('message_error', "Telegram account for @$username is not verified");
+				$this->session->set_flashdata('message_error', generate_message(false,'send','chat',"to @$username. Telegram account is not verified"));
 			} else {
-				$this->session->set_flashdata('message_error', "Telegram account not found for @$username");
+				$this->session->set_flashdata('message_error', generate_message(false,'send','chat',"to @$username. Telegram account not found"));
 			}
 		} else {
-			$this->session->set_flashdata('message_error', 'User not found');
+			$this->session->set_flashdata('message_error', generate_message(false,'send','chat',"to @$username. User not found"));
 		}
 		redirect('MyProfileController');
 	}
@@ -398,9 +398,9 @@ class MyProfileController extends CI_Controller {
 	public function delete_feedback(){
 		$id = $this->input->post('id');
 		if($this->MultiModel->delete('feedback',$id)){
-			$this->session->set_flashdata('message_success', 'Feedback deleted');
+			$this->session->set_flashdata('message_success', generate_message(true,'permanently deleted','feedback',null));
 		} else {
-			$this->session->set_flashdata('message_error', 'Feedback not found');
+			$this->session->set_flashdata('message_error', generate_message(false,'permanently deleted','feedback','feedback not found'));
 		}
 
 		redirect('MyProfileController');

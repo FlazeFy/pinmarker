@@ -42,7 +42,7 @@ class AddGlobalListController extends CI_Controller {
 		$this->form_validation->set_rules($rules);
 
 		if($this->form_validation->run() == FALSE){
-			$this->session->set_flashdata('message_error', 'Global List failed to add. Validation failed');
+			$this->session->set_flashdata('message_error', generate_message(false,'add','global list','validation failed'));
 			$this->session->set_flashdata('validation_error', validation_errors());
 			redirect('AddGlobalListController');
 		} else {
@@ -96,10 +96,10 @@ class AddGlobalListController extends CI_Controller {
 					$extra_msg = ". With $count_success success and $count_failed failed pin attached";
 				}
 
-				$this->session->set_flashdata('message_success', "Global List successfully added$extra_msg");
+				$this->session->set_flashdata('message_success', generate_message(true,'add','global list',$extra_msg));
 				redirect('GlobalListController');
 			} else {
-				$this->session->set_flashdata('message_error', 'Global List failed to created');
+				$this->session->set_flashdata('message_error', generate_message(false,'add','global list',null));
 				redirect('AddGlobalListController');
 			}
 		}

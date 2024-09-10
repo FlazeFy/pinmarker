@@ -46,7 +46,7 @@ class AddController extends CI_Controller {
 			$this->form_validation->set_rules($rules);
 
 			if($this->form_validation->run() == FALSE){
-				$this->session->set_flashdata('message_error', 'Pin failed to created. Validation failed');
+				$this->session->set_flashdata('message_error', generate_message(false,'add','pin','validation failed'));
 				$this->session->set_flashdata('validation_error', validation_errors());
 				redirect('AddController');
 			} else {
@@ -155,7 +155,7 @@ class AddController extends CI_Controller {
 			}
 
 			if (!empty($validation_errors)) {
-				$this->session->set_flashdata('message_error', 'Pins failed to be created. Validation failed');
+				$this->session->set_flashdata('message_error', generate_message(false,'add','pin','validation failed'));
 				$this->session->set_flashdata('validation_error', implode('<br>', $validation_errors));
 				redirect('AddController');
 			} else {
@@ -194,14 +194,14 @@ class AddController extends CI_Controller {
 
 		if($success_insert > 0 && $failed_insert == 0){
 			if($type == "multiple"){
-				$this->session->set_flashdata('message_success', 'Successfully add all marker');
+				$this->session->set_flashdata('message_success', generate_message(true,'add','all pin',null));
 			} else {
-				$this->session->set_flashdata('message_success', 'Successfully add marker');
+				$this->session->set_flashdata('message_success', generate_message(true,'add','pin',null));
 			}
 		} else if($success_insert > 0 && $failed_insert > 0){
-			$this->session->set_flashdata('message_success', "Successfully add $success_insert marker, and $failed_insert failed to add");
+			$this->session->set_flashdata('message_success', generate_message(true,'add',"$success_insert marker, and $failed_insert failed to add",null));
 		} else {
-			$this->session->set_flashdata('message_error', 'Failed to add marker');
+			$this->session->set_flashdata('message_error', generate_message(false,'add','pin',null));
 		}
 
 		if($this->input->post("is_with_dir") == "true" && $type == "single"){

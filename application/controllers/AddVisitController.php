@@ -46,7 +46,7 @@ class AddVisitController extends CI_Controller {
 			$this->form_validation->set_rules($rules);
 
 			if($this->form_validation->run() == FALSE){
-				$this->session->set_flashdata('message_error', 'Visit failed to add. Validation failed');
+				$this->session->set_flashdata('message_error', generate_message(false,'add','visit','validation failed'));
 				$this->session->set_flashdata('validation_error', validation_errors());
 				redirect('AddVisitController');
 			} else {
@@ -55,7 +55,7 @@ class AddVisitController extends CI_Controller {
 					$this->form_validation->set_rules($rules);
 
 					if($this->form_validation->run() == FALSE){
-						$this->session->set_flashdata('message_error', 'Pin failed to created. Validation failed');
+						$this->session->set_flashdata('message_error', generate_message(false,'add','pin','validation failed'));
 						$this->session->set_flashdata('validation_error', validation_errors());
 						redirect('AddVisitController');
 					} else {
@@ -151,15 +151,15 @@ class AddVisitController extends CI_Controller {
 
 							redirect("https://www.google.com/maps/dir/My+Location/$dir");
 						} else {
-							$this->session->set_flashdata('message_success', 'Visit successfully added. But failed to make maps direction');
+							$this->session->set_flashdata('message_success', generate_message(true,'add','visit','failed to make maps direction'));
 							redirect('HistoryController');
 						}
 					} else {
-						$this->session->set_flashdata('message_success', 'Visit successfully added');
+						$this->session->set_flashdata('message_success', generate_message(true,'add','visit',null));
 						redirect('HistoryController');
 					}
 				} else {
-					$this->session->set_flashdata('message_error', 'Failed to add visit');
+					$this->session->set_flashdata('message_error', generate_message(false,'add','visit',null));
 					redirect('AddVisitController');
 				}
 			}
@@ -207,7 +207,7 @@ class AddVisitController extends CI_Controller {
 			}
 
 			if (!empty($validation_errors)) {
-				$this->session->set_flashdata('message_error', 'Visits failed to be created. Validation failed');
+				$this->session->set_flashdata('message_error', generate_message(false,'add','visit','validation failed'));
 				$this->session->set_flashdata('validation_error', implode('<br>', $validation_errors));
 				redirect('AddVisitController');
 			} else {
@@ -230,14 +230,14 @@ class AddVisitController extends CI_Controller {
 
 				if($success_insert > 0 && $failed_insert == 0){
 					if($this->input->post('type_add') == 'multi'){
-						$this->session->set_flashdata('message_success', 'Successfully add all visit');
+						$this->session->set_flashdata('message_success', generate_message(true,'add','all visit',null));
 					} else {
-						$this->session->set_flashdata('message_success', 'Successfully add visit');
+						$this->session->set_flashdata('message_success', generate_message(true,'add','visit',null));
 					}
 				} else if($success_insert > 0 && $failed_insert > 0){
-					$this->session->set_flashdata('message_success', "Successfully add $success_insert visit, and $failed_insert failed to add");
+					$this->session->set_flashdata('message_success', generate_message(true,'add',"$success_insert visit, and $failed_insert failed to add",null));
 				} else {
-					$this->session->set_flashdata('message_error', 'Failed to add visit');
+					$this->session->set_flashdata('message_error', generate_message(false,'add','visit',null));
 				}
 
 				if($list_coor != ""){

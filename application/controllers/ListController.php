@@ -183,9 +183,9 @@ class ListController extends CI_Controller {
 
 			// $this->HistoryModel->insert_history('Generate Document', 'Marker List');
 			
-			$this->session->set_flashdata('message_success', 'Document generated!');
+			$this->session->set_flashdata('message_success', generate_message(true,'generate','document',null));
 		} else {
-			$this->session->set_flashdata('message_error', 'No data to generated!');
+			$this->session->set_flashdata('message_error', generate_message(false,'generate','document','no data to generated'));
 		}
 		redirect('ListController');
 	}
@@ -206,9 +206,9 @@ class ListController extends CI_Controller {
 			'dictionary_color' => $this->input->post('dictionary_color')
 		];
 		if($this->DictionaryModel->update_table($data, $id)){
-			$this->session->set_flashdata('message_success', 'Category pin color updated');
+			$this->session->set_flashdata('message_success', generate_message(true,'update','pin category color',null));
 		} else {
-			$this->session->set_flashdata('message_error', 'Failed to update pin color');
+			$this->session->set_flashdata('message_error', generate_message(false,'update','pin category color',null));
 		}
 
 		redirect("ListController");
@@ -219,7 +219,7 @@ class ListController extends CI_Controller {
 		$this->form_validation->set_rules($rules);
 
 		if($this->form_validation->run() == FALSE){
-			$this->session->set_flashdata('message_error', 'Failed to create category. Validation failed');
+			$this->session->set_flashdata('message_error', generate_message(false,'add','pin category','validation failed'));
 			$this->session->set_flashdata('validation_error', validation_errors());
 		} else {
 			if($this->DictionaryModel->get_available_dct($this->input->post('dictionary_name'), 'pin_category')){
@@ -232,12 +232,12 @@ class ListController extends CI_Controller {
 				];
 	
 				if($this->DictionaryModel->insert_table($data)){
-					$this->session->set_flashdata('message_success', 'Category created');
+					$this->session->set_flashdata('message_success', generate_message(true,'add','pin category',null));
 				} else {
-					$this->session->set_flashdata('message_error', 'Failed to create category');
+					$this->session->set_flashdata('message_error', generate_message(false,'add','pin category',null));
 				}
 			} else {
-				$this->session->set_flashdata('message_error', 'Failed to create category. Name already used');
+				$this->session->set_flashdata('message_error', generate_message(false,'add','pin category','name already exist'));
 			}
 		}
 
@@ -257,9 +257,9 @@ class ListController extends CI_Controller {
 				]);
 			}
 
-			$this->session->set_flashdata('message_success', 'Pin deleted');
+			$this->session->set_flashdata('message_success', generate_message(true,'delete','pin',null));
 		} else {
-			$this->session->set_flashdata('message_error', 'Failed to delete pin');
+			$this->session->set_flashdata('message_error', generate_message(false,'delete','pin',null));
 		}
 
 		redirect("ListController");
@@ -274,15 +274,15 @@ class ListController extends CI_Controller {
 			
 			if($new_dct && $new_dct != ""){
 				if($this->DictionaryModel->update_mass_dictionary('pin','pin_category',$old_dct->dictionary_name,$new_dct)){
-					$this->session->set_flashdata('message_success', 'Category deleted. Success to migrate');
+					$this->session->set_flashdata('message_success', generate_message(true,'delete','pin category','success to migrate'));
 				} else {
-					$this->session->set_flashdata('message_error', 'Category deleted. But failed to migrate');
+					$this->session->set_flashdata('message_error', generate_message(true,'delete','pin category','failed to migrate'));
 				}
 			} else {
-				$this->session->set_flashdata('message_success', 'Category deleted. Nothing to migrate');
+				$this->session->set_flashdata('message_success', generate_message(true,'delete','pin category','nothing to migrate'));
 			}
 		} else {
-			$this->session->set_flashdata('message_error', 'Failed to delete category');
+			$this->session->set_flashdata('message_error', generate_message(false,'delete','pin category',null));
 		}
 
 		redirect("ListController");
@@ -299,15 +299,15 @@ class ListController extends CI_Controller {
 		if($this->DictionaryModel->update_table($data, $id)){			
 			if($dct_name_old && $dct_name_old != ""){
 				if($this->DictionaryModel->update_mass_dictionary('pin','pin_category',$dct_name_old,$dct_name_new)){
-					$this->session->set_flashdata('message_success', 'Category renamed. Success to migrate');
+					$this->session->set_flashdata('message_success', generate_message(true,'rename','pin category','success to migrate'));
 				} else {
-					$this->session->set_flashdata('message_error', 'Category renamed. But failed to migrate');
+					$this->session->set_flashdata('message_error', generate_message(true,'rename','pin category','failed to migrate'));
 				}
 			} else {
-				$this->session->set_flashdata('message_success', 'Category renamed. Nothing to migrate');
+				$this->session->set_flashdata('message_success', generate_message(true,'rename','pin category','nothing to migrate'));
 			}
 		} else {
-			$this->session->set_flashdata('message_error', 'Failed to rename category');
+			$this->session->set_flashdata('message_error', generate_message(false,'rename','pin category',null));
 		}
 
 		redirect("ListController");
@@ -335,11 +335,11 @@ class ListController extends CI_Controller {
 		}
 
 		if($success > 0 && $failed == 0){
-			$this->session->set_flashdata('message_success', "Success to publish all pin from category $category_name");
+			$this->session->set_flashdata('message_success', generate_message(true,'publish','all pin',"from category $category_name"));
 		} else if($success > 0 && $failed > 0){
-			$this->session->set_flashdata('message_success', "Success to publish $success pin and failed to publish $failed pin");
+			$this->session->set_flashdata('message_success', generate_message(true,'publish',"$success pin and failed to publish $failed pin","from category $category_name"));
 		} else {
-			$this->session->set_flashdata('message_error', 'Failed to publish all pin');
+			$this->session->set_flashdata('message_error', generate_message(false,'publish','all pin',null));
 		}
 
 		redirect("/DetailGlobalController/view/$list_id");

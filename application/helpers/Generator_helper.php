@@ -47,3 +47,27 @@ if (!function_exists('is_mobile_device')){
         return false;
     }
 }
+
+if (!function_exists('generate_message')){
+    function generate_message($is_success,$type,$context,$notes){
+        $msg = "";
+        if($is_success){
+            $msg .= "Success to ";
+        } else {
+            $msg .= "Failed to ";
+        }
+        $msg .= strtolower($type)." ";
+        if($context){
+            $msg .= ucfirst($context);
+        } 
+        if($notes){
+            $msg .= ". ";
+            if($is_success){
+                $msg .= "But ".$notes;
+            } else {
+                $msg .= ucfirst($notes);
+            }
+        }
+        return $msg;
+    }
+}

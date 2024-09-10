@@ -33,7 +33,7 @@ class FeedbackController extends CI_Controller {
 		$this->form_validation->set_rules($rules);
 
 		if($this->form_validation->run() == FALSE){
-			$this->session->set_flashdata('message_error', 'Feedback failed to sended. Validation failed');
+			$this->session->set_flashdata('message_error', generate_message(false,'send','feedback','validation failed'));
 			$this->session->set_flashdata('validation_error', validation_errors());
 		} else {
 			$data = [
@@ -46,9 +46,9 @@ class FeedbackController extends CI_Controller {
 			$res = $this->FeedbackModel->insert_feedback($data);
 
 			if($res){
-				$this->session->set_flashdata('message_insert_success', 'Feedback Sended. Thank you!');
+				$this->session->set_flashdata('message_insert_success', generate_message(true,'send','feedback','Thank you!'));
 			} else {
-				$this->session->set_flashdata('message_insert_error', 'Feedback failed to send');
+				$this->session->set_flashdata('message_insert_error', generate_message(false,'send','feedback',null));
 			}
 		}
 		redirect('FeedbackController');

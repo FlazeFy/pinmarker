@@ -46,7 +46,7 @@ class LoginController extends CI_Controller {
 		$this->form_validation->set_rules($rules);
 
 		if($this->form_validation->run() == FALSE){
-			$this->session->set_flashdata('message_error', 'Failed to login. Validation failed');
+			$this->session->set_flashdata('message_error', generate_message(false,'login','to your account','validation failed'));
 			$this->session->set_flashdata('validation_error', validation_errors());
 			redirect('/LoginController');
 		} else {
@@ -56,7 +56,7 @@ class LoginController extends CI_Controller {
 			if($this->AuthModel->login($username, $password)){
 				redirect('/DashboardController');
 			} else {
-				$this->session->set_flashdata('message_error', 'Failed to login. username or password incorrect');
+				$this->session->set_flashdata('message_error', generate_message(false,'login','to your account','wrong username or password'));
 				redirect('/LoginController#login-section');
 			}
 		}

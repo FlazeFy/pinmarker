@@ -54,9 +54,9 @@ class DetailGlobalController extends CI_Controller {
 	public function remove_pin($list_id){
 		$pin_id = $this->input->post('pin_rel_id');
 		if($this->GlobalListModel->delete_global_list_rel(['id'=>$pin_id])){
-			$this->session->set_flashdata('message_success', "Successfully remove pin");
+			$this->session->set_flashdata('message_success', generate_message(true,'remove','pin',null));
 		} else {
-			$this->session->set_flashdata('message_error', 'Failed to remove pin');
+			$this->session->set_flashdata('message_error', generate_message(false,'remove','pin',null));
 		}
 
 		redirect("DetailGlobalController/view/$list_id");
@@ -84,11 +84,11 @@ class DetailGlobalController extends CI_Controller {
 				}
 			}
 
-			$extra_msg = ". With $count_success success and $count_failed failed pin attached";
+			$extra_msg = "with $count_success success and $count_failed failed pin attached";
 
-			$this->session->set_flashdata('message_success', "Successfully added$extra_msg");
+			$this->session->set_flashdata('message_success', generate_message(true,'add','pin',$extra_msg));
 		} else {
-			$this->session->set_flashdata('message_error', "Failed to add pin");
+			$this->session->set_flashdata('message_error', generate_message(false,'add','pin',null));
 		}
 
 		
@@ -98,12 +98,12 @@ class DetailGlobalController extends CI_Controller {
 	public function delete_global_list($list_id){
 		if($this->GlobalListModel->delete_global_list($list_id)){
 			if($this->GlobalListModel->delete_global_list_rel(['list_id'=>$list_id])){
-				$this->session->set_flashdata('message_success', "Successfully added$extra_msg");
+				$this->session->set_flashdata('message_success', generate_message(true,'permanently delete','list',null));
 			} else {
-				$this->session->set_flashdata('message_error', "Failed to remove pin");
+				$this->session->set_flashdata('message_error', generate_message(false,'remove','pin',null));
 			}
 		} else {
-			$this->session->set_flashdata('message_error', "Failed to remove global list");
+			$this->session->set_flashdata('message_error', generate_message(false,'permanently delete','list',null));
 		}
 		
 		redirect("GlobalListController");
@@ -125,7 +125,7 @@ class DetailGlobalController extends CI_Controller {
 		$this->form_validation->set_rules($rules);
 
 		if($this->form_validation->run() == FALSE){
-			$this->session->set_flashdata('message_error', 'List failed to updated. Validation failed');
+			$this->session->set_flashdata('message_error', generate_message(false,'update','list','validation failed'));
 			$this->session->set_flashdata('validation_error', validation_errors());
 		} else {
 			$data = [
@@ -151,9 +151,9 @@ class DetailGlobalController extends CI_Controller {
 				}
 				$this->HistoryModel->insert_history('Edit list', $data['list_name']);
 
-				$this->session->set_flashdata('message_success', 'List updated');
+				$this->session->set_flashdata('message_success', generate_message(true,'update','list',null));
 			} else {
-				$this->session->set_flashdata('message_error', 'List failed to updated');
+				$this->session->set_flashdata('message_error', generate_message(false,'update','list',null));
 			}
 		}
 		redirect("/DetailGlobalController/view/$id");
@@ -191,12 +191,12 @@ class DetailGlobalController extends CI_Controller {
 						]);
 					}
 
-					$this->session->set_flashdata('message_success', 'List updated');
+					$this->session->set_flashdata('message_success', generate_message(true,'update','list',null));
 				} else {
-					$this->session->set_flashdata('message_error', 'List failed to updated');
+					$this->session->set_flashdata('message_error', generate_message(false,'update','list',null));
 				}
 			} else {
-				$this->session->set_flashdata('message_error', 'List failed to updated. Tag dont exist'.is_array($tags));
+				$this->session->set_flashdata('message_error', generate_message(false,'update','list','tag dont exist'));
 			}
 			redirect("/DetailGlobalController/view/$id");
 		} else {

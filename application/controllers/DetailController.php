@@ -120,11 +120,11 @@ class DetailController extends CI_Controller {
 
 			$history_ctx = "From $pin_name";
 			$this->HistoryModel->insert_history('Delete pin', $history_ctx);
-			$this->session->set_flashdata('message_success', 'Pin deleted');
+			$this->session->set_flashdata('message_success', generate_message(true,'permanently delete','pin',null));
 
 			redirect("/ListController");
 		} else {
-			$this->session->set_flashdata('message_error', 'Pin failed to deleted');
+			$this->session->set_flashdata('message_error', generate_message(false,'permanently delete','pin',null));
 			redirect("/DetailController/view/$id");
 		}
 	}
@@ -134,7 +134,7 @@ class DetailController extends CI_Controller {
 		$this->form_validation->set_rules($rules);
 
 		if($this->form_validation->run() == FALSE){
-			$this->session->set_flashdata('message_error', 'Pin failed to updated. Validation failed');
+			$this->session->set_flashdata('message_error', generate_message(false,'update','pin','validation failed'));
 			$this->session->set_flashdata('validation_error', validation_errors());
 		} else {
 			$split_pin_cat = explode("-", $this->input->post('pin_category'));
@@ -156,12 +156,12 @@ class DetailController extends CI_Controller {
 				];
 
 				if($this->PinModel->update_marker($data, $id)){	
-					$this->session->set_flashdata('message_success', 'Pin updated');
+					$this->session->set_flashdata('message_success', generate_message(true,'update','pin',null));
 				} else {
-					$this->session->set_flashdata('message_error', 'Pin failed to updated');
+					$this->session->set_flashdata('message_error', generate_message(false,'update','pin',null));
 				}
 			} else {
-				$this->session->set_flashdata('message_error', 'Pin failed to updated. Name already exist');
+				$this->session->set_flashdata('message_error', generate_message(false,'update','pin','name already exist'));
 			}
 		}
 		redirect("/DetailController/view/$id");

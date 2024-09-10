@@ -36,9 +36,9 @@ class TrashController extends CI_Controller {
 			$history_ctx = "From $pin_name";
 			$this->HistoryModel->insert_history('Recover pin', $history_ctx);
 			
-			$this->session->set_flashdata('message_success', 'Pin successfully recover');
+			$this->session->set_flashdata('message_success', generate_message(true,'recover','pin',null));
 		} else {
-			$this->session->set_flashdata('message_error', 'Pin failed to recover');
+			$this->session->set_flashdata('message_error', generate_message(false,'recover','pin',null));
 		}
 
 		redirect('TrashController');
