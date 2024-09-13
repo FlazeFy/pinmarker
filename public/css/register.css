@@ -1,0 +1,79 @@
+.wrapper-progressBar {
+    position: fixed;
+    background: white;
+    width: 100%;
+    left: 0;
+    top: 0;
+    margin: 0;
+}
+.progressBar li {
+    list-style-type: none;
+    float: left;
+    width: 33%;
+    position: relative;
+    text-align: center;
+}
+.progressBar li:before {
+    content: " ";
+    line-height: 30px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    display: block;
+    text-align: center;
+    margin: 0 auto 10px;
+    background-color: white;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+.progressBar li:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background-color: #ddd;
+    top: 15px;
+    left: -50%;
+    z-index: -1;
+}
+.progressBar li:first-child:after {
+    content: none;
+}
+.progressBar li.active {
+    color: black;
+}
+.progressBar li.active:before {
+    border-color: black;
+    background-color: black;
+}
+.progressBar .active:after {
+    background-color: black;
+}
+
+.pin-code{ 
+    padding: 0; 
+    margin: 0 auto; 
+    display: flex;
+    justify-content:center;
+
+} 
+.pin-code input { 
+    border: none; 
+    text-align: center; 
+    width: 48px;
+    height:48px;
+    font-size: 36px; 
+    background-color: #F3F3F3;
+    margin-right:5px;
+} 
+.pin-code input:focus { 
+    border: 1px solid #573D8B;
+    outline:none;
+} 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

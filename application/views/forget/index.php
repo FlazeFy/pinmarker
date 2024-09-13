@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PinMarker | Register</title>
+    <title>PinMarker | Forget Password</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,7 +28,7 @@
 </head>
 <body>
     <div class="content">
-        <?php $this->load->view('register/form'); ?>
+        <?php $this->load->view('forget/form'); ?>
     </div>
     <?php $this->load->view('others/footer'); ?>
 </body>
