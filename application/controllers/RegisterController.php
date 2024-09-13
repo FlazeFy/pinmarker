@@ -27,25 +27,36 @@ class RegisterController extends CI_Controller {
 	}
 
 	public function register(){
-		$data = [
-			'id' => get_UUID(),
-			'fullname' => $this->input->post('fullname'), 
-			'username' => $this->input->post('username'), 
-			'email' => $this->input->post('email'), 
-			'telegram_user_id' => null, 
-			'telegram_is_valid' => 0, 
-			'password' => password_hash($this->input->post('password'), PASSWORD_BCRYPT), 
-			'img_url' => null, 
-			'created_at' => date('Y-m-d H:i:s'), 
-			'updated_at' => null, 
-			'last_login' => date('Y-m-d H:i:s')
-		];
+		$rules = $this->AuthModel->rules_user();
+		$this->form_validation->set_rules($rules);
 
-		$res = $this->AuthModel->insert_user($data);
+		if($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('message_error', generate_message(false,'register','user','validation failed'));
+			$this->session->set_flashdata('validation_error', validation_errors());
+		} else {
+			$data = [
+				'id' => get_UUID(),
+				'fullname' => $this->input->post('fullname'), 
+				'username' => $this->input->post('username'), 
+				'email' => $this->input->post('email'), 
+				'telegram_user_id' => null, 
+				'telegram_is_valid' => 0, 
+				'password' => password_hash($this->input->post('password'), PASSWORD_BCRYPT), 
+				'img_url' => null, 
+				'created_at' => date('Y-m-d H:i:s'), 
+				'updated_at' => null, 
+				'last_login' => date('Y-m-d H:i:s')
+			];
 
-		if($res){
-			$this->AuthModel->login($data['username'], $this->input->post('password'));
-			redirect('/DashboardController');
+			$res = $this->AuthModel->insert_user($data);
+
+			if($res){
+				$this->AuthModel->login($data['username'], $this->input->post('password'));
+				$this->session->set_flashdata('message_success', generate_message(true,'regist','to PinMarker','Welcome <b>@'.$this->input->post('username').'</b>. If you want to connect this account with Telegram you can go to <a href="/MyProfileController" class="fw-bold">Profile<a> Menu.<br><br>Thank You, - PinMarker'));
+				redirect('/DashboardController');
+			} else {
+				redirect('/');
+			}
 		}
 	}
 }

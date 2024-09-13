@@ -170,15 +170,15 @@
         }
     }, false);
 
-    function formatTime(seconds){
-        var minutes = Math.floor(seconds / 60);
-        var remainingSeconds = seconds % 60;
-        return minutes + ':' + remainingSeconds.toString().padStart(2, '0');
+    const formatTime = (seconds) => {
+        var minutes = Math.floor(seconds / 60)
+        var remainingSeconds = seconds % 60
+        return minutes + ':' + remainingSeconds.toString().padStart(2, '0')
     }
 
-    function controlPin(type) {
-        var pins = pin_holder.querySelectorAll('input');
-        var result = "";
+    const controlPin = (type) => {
+        var pins = pin_holder.querySelectorAll('input')
+        var result = ""
 
         pins.forEach(function(e) {
             if(type == "time_out"){
@@ -199,7 +199,7 @@
         return result;
     }
 
-    function validatePin(){
+    const validatePin = () => {
         var pins = pin_holder.querySelectorAll('input')
         var is_empty = false
 
@@ -216,19 +216,19 @@
         }
     }
 
-    function validateToken(token, username){
+    const validateToken = (token, username) => {
         loading() 
         $.ajax({
             url: `http://127.0.0.1:8000/api/v1/req/validate/${token}/${username}`,
             dataType: 'json',
             contentType: 'application/json',
             type: "POST",
-            beforeSend: function (xhr) {
-                // ...
-            }
         })
-        .done(function (response) {            
+        .done(function (response, textStatus, xhr) {         
             const data = response
+            const status_code = xhr.status
+            is_process = false
+
             Swal.hideLoading()
             Swal.fire({
                 title: data.is_validated ? "Success!" : "Failed!",
@@ -236,7 +236,9 @@
                 icon: data.is_validated ? "success" : "error" 
             });
 
-            $('#register-form').submit()
+            if(status_code == 200 && data.is_validated){
+                $('#register-form').submit()
+            }
         })
         .error(function (xhr, ajaxOptions, thrownError) {
             Swal.fire({
@@ -247,7 +249,7 @@
         })
     }
     
-    function startTimer(duration) {
+    const startTimer = (duration) => {
         var remain = duration
 
         function updateTimer() {
@@ -311,16 +313,13 @@
         })
     });
 
-    function check_avaiability(type){
+    const check_avaiability = (type) => {
         const ctx = $(`#${type}`).val()
         $.ajax({
             url: `http://127.0.0.1:8000/api/v1/user/check/${type}/${ctx}`,
             dataType: 'json',
             contentType: 'application/json',
             type: "POST",
-            beforeSend: function (xhr) {
-                // ...
-            }
         })
         .done(function (response) {            
             const data = response
@@ -360,52 +359,65 @@
         })
     }
 
-    function navProfile(){
+    const navProfile = () => {
         if(validateInput("text", "username", 36, 4) && validateInput("text", "email", 255, 10) && validateInput("text", "password", 36, 6) && validateInput("text", "password_check", 36, 6)){
             const username = $('#username').val()
             const email = $('#email').val()
 
             if($('#password').val().trim() == $('#password_check').val().trim()){
-                loading() 
-                $.ajax({
-                    url: `http://127.0.0.1:8000/api/v1/req/register/${email}/${username}`,
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    type: "POST",
-                    beforeSend: function (xhr) {
-                        // ...
+                if (email.includes("@gmail")){
+                    if (/\d/.test($('#password').val().trim())) {
+                        loading() 
+                        $.ajax({
+                            url: `http://127.0.0.1:8000/api/v1/req/register/${email}/${username}`,
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            type: "POST",
+                        })
+                        .done(function (response) {            
+                            Swal.hideLoading()
+
+                            const data = response
+                            $(document).ready(function() {
+                                $('#checkTerm').attr('disabled', true)
+                                $('#username, #fullname, #email, #password, #password_check').attr('readonly', true)
+                                $('#profile_indicator').attr('class', 'active')
+                                $('#validate_holder').css({'display':'block'})
+                            });
+                            $('#validate_holder').css({'display':'block'})
+                            $('#btn-regis-holder').html(`
+                                <a class="text-success">Sended!</a>
+                            `)
+                            
+                            Swal.fire({
+                                title: "Success!",
+                                text: data.message,
+                                icon: "success"
+                            });
+
+                            startTimer(900)
+                        })
+                        .error(function (xhr, ajaxOptions, thrownError) {
+                            Swal.fire({
+                                title: "Oops!",
+                                text: "Something error! Please call admin",
+                                icon: "error"
+                            });
+                        })
+                    } else {
+                        Swal.fire({
+                            title: "Oops!",
+                            text: "Your password must contain at least one number",
+                            icon: "error"
+                        });
                     }
-                })
-                .done(function (response) {            
-                    Swal.hideLoading()
-
-                    const data = response
-                    $(document).ready(function() {
-                        $('#checkTerm').attr('disabled', true)
-                        $('#username, #fullname, #email, #password, #password_check').attr('readonly', true)
-                        $('#profile_indicator').attr('class', 'active')
-                        $('#validate_holder').css({'display':'block'})
-                    });
-                    $('#validate_holder').css({'display':'block'})
-                    $('#btn-regis-holder').html(`
-                        <a class="text-success">Sended!</a>
-                    `)
-                    
-                    Swal.fire({
-                        title: "Success!",
-                        text: data.message,
-                        icon: "success"
-                    });
-
-                    startTimer(900)
-                })
-                .error(function (xhr, ajaxOptions, thrownError) {
+                } else {
                     Swal.fire({
                         title: "Oops!",
-                        text: "Something error! Please call admin",
+                        text: "Your email must from google mail",
                         icon: "error"
                     });
-                })
+                }
             } else {
                 Swal.fire({
                     title: "Oops!",

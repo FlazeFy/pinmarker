@@ -117,6 +117,9 @@
         margin-bottom: 6px;
         border: 5px solid black;
     }
+    table th {
+        vertical-align: none !important;
+    }
 </style>
 <div class="modal fade" id="importMarkerMap" tabindex="-1" aria-labelledby="addGalleriesLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">

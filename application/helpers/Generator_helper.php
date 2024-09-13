@@ -36,7 +36,7 @@ if (!function_exists('is_mobile_device')){
     function is_mobile_device() {
         $user = $_SERVER['HTTP_USER_AGENT'];
     
-        $type = ['mobile', 'android', 'iphone', 'ipod', 'blackberry', 'windows phone'];
+        $type = ['mobile', 'android', 'iphone', 'ipod', 'tablet', 'blackberry', 'windows phone', 'ipad'];
         
         foreach ($type as $key) {
             if (stripos($user, $key) !== false) {

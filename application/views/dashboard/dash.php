@@ -10,9 +10,9 @@
     <?php if ($this->session->userdata('role_key') == 1): ?>
         <div class="col-lg-4 col-6 p-2">
             <h2 style="font-weight:bold;"><?php
-                if($dt_get_last_visit->pin_name){
+                if($dt_get_last_visit && $dt_get_last_visit->pin_name){
                     echo $dt_get_last_visit->pin_name;
-                } else if($dt_get_last_visit->visit_desc){
+                } else if($dt_get_last_visit && $dt_get_last_visit->visit_desc){
                     echo $dt_get_last_visit->visit_desc;
                 } else {
                     echo "-";

@@ -24,6 +24,9 @@
 
     <!--Apex Chart-->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <!-- Swal -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div class="content">
@@ -39,6 +42,19 @@
         <?php $this->load->view('dashboard/statistic', $dt_get_stats_total_pin_by_category); ?>
         <hr>
     </div>
+    <?php 
+        if($this->session->flashdata('message_success')){
+            echo "
+                <script>
+                    Swal.fire({
+                        title: 'Success!',
+                        html: '".$this->session->flashdata('message_success')."',
+                        icon: 'success'
+                    });
+                </script>
+            ";
+        }
+    ?>
     <?php $this->load->view('others/footer'); ?>
 </body>
 </html>

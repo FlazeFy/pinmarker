@@ -95,7 +95,7 @@
             } else {
                 foreach($dt_my_pin['data'] as $dt){
                     echo "
-                        <div class='pin-box'>
+                        <div class='pin-box "; if($is_mobile_device){ echo "solid"; } echo"'>
                             <h3>$dt->pin_name</h3>
                             <span class='bg-dark rounded-pill px-3 py-2 text-white'>$dt->pin_category</span>
                             ";
