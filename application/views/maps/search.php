@@ -38,6 +38,7 @@
 </style>
 
 <form autocomplete="off" action="/MapsController/search_pin_name" method="POST" id="search_form">
+    <input hidden name="page" value="Maps">
     <div class="autocomplete form-floating mt-1">
         <input id="pin_name" type="text" class="form-control" name="pin_name" value="<?= $this->session->userdata('search_pin_name_key') ?? "";?>" 
             value="<?php 
@@ -51,6 +52,7 @@
     <button class="btn btn-light m-0" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
 </form>
 <form autocomplete="off" action="/MapsController/reset_search_pin_name" method="POST">
+    <input hidden name="page" value="Maps">
     <button class="btn btn-light m-0" type="submit" title="Reset search"><i class="fa-solid fa-rotate-left"></i></button>
 </form>
 

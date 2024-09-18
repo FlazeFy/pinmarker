@@ -32,7 +32,7 @@ class MapsController extends CI_Controller {
 	public function search_pin_name(){
 		$this->session->set_userdata('search_pin_name_key',$this->input->post('pin_name'));
 		
-		redirect('/MapsController');
+		redirect("/".$this->input->post('page')."Controller");
 	}
 
 	public function filter_pin_category(){
@@ -49,6 +49,6 @@ class MapsController extends CI_Controller {
 	public function reset_search_pin_name(){
 		$this->session->unset_userdata('search_pin_name_key');
 			
-		redirect('/MapsController');
+		redirect("/".$this->input->post('page')."Controller");
 	}
 }
