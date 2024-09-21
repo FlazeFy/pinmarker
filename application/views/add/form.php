@@ -64,10 +64,10 @@
         </div>
         <div class="row mt-4">
             <div class="col-lg-6 col-md-6 col-sm-12">
-                <a class="btn btn-white rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</a>
+                <a class="btn btn-light rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</a>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
-                <button class="btn btn-dark rounded-pill w-100 py-3" id="submit-btn" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Marker</button>
+                <button class="btn btn-success rounded-pill w-100 py-3" id="submit-btn" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Marker</button>
             </div>
         </div>
     </form>
@@ -86,7 +86,7 @@
             </thead>
             <tbody style="font-size: var(--textSM);"></tbody>
         </table>
-        <button class="btn btn-dark rounded-pill w-100 py-2 px-3"><i class="fa-solid fa-floppy-disk"></i> Save All Marker</button>
+        <button class="btn btn-success rounded-pill w-100 py-2 px-3"><i class="fa-solid fa-floppy-disk"></i> Save All Marker</button>
     </form>
 </div>
 
@@ -104,7 +104,7 @@
                     <label for="formFile" class="form-label">Only Accept CSV file <b>(Max : 20 mb)</b></label>
                     <input class="form-control" type="file" id="pin-data"  accept=".csv">
                 </div>
-                <a class="btn btn-dark w-100 rounded-pill py-2 px-3" onclick="generate_form()"><i class="fa-solid fa-plus"></i> Generate Form</a>
+                <a class="btn btn-success w-100 rounded-pill py-2 px-3" onclick="generate_form()"><i class="fa-solid fa-plus"></i> Generate Form</a>
             </div>
         </div>
     </div>

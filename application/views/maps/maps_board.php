@@ -50,7 +50,7 @@
                             <span class='bg-dark rounded-pill px-2 py-1 text-white'>$dt->pin_category</span>
                             ";
                             if($dt->is_favorite == 1){
-                                echo "<span class='bg-dark rounded-pill px-2 py-1 text-white'><i class='fa-solid fa-bookmark'></i></span>";
+                                echo "<span class='btn bg-success rounded-pill px-2 py-1 text-white' style='font-size:var(--textXSM);'><i class='fa-solid fa-bookmark'></i></span>";
                             }
                             echo "<br><br>";
                             if($dt->pin_desc){
@@ -66,7 +66,7 @@
                             <p class='mt-2 mb-0 fw-bold'>Created At</p>
                             <p class='date-target'>$dt->created_at</p>
                             <a class='btn btn-dark rounded-pill px-2 py-1 me-2' style='font-size:12px;' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
-                            <a class='btn btn-dark rounded-pill px-2 py-1' style='font-size:12px;' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                            <a class='btn btn-light rounded-pill px-2 py-1' style='font-size:12px;' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
                         </div>`
                     },";
                 }

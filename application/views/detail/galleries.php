@@ -30,7 +30,7 @@
                                     <p>Are you sure want to delete this gallery?</p>
                                     <form id='form-delete-gallery-$dt->id' method='POST' action='/DetailController/delete_gallery/"; echo $dt_detail_pin->id; echo"'>
                                         <input hidden value='$dt->id' name='id'>
-                                        <a class='btn btn-dark rounded-pill' onclick='deleteFile("; echo '"'.$dt->id.'"'; echo","; echo '"'.$dt->gallery_url.'"'; echo")'>Yes, Delete</a>
+                                        <a class='btn btn-danger rounded-pill' onclick='deleteFile("; echo '"'.$dt->id.'"'; echo","; echo '"'.$dt->gallery_url.'"'; echo")'>Yes, Delete</a>
                                     </form>
                                 </div>
                             </div>

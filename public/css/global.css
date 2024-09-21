@@ -30,9 +30,9 @@
     --spaceMini : 4px;
 
     /* Color Pallete */
-    --successBG : #00A35D;
-    --dangerBG : #F02273;
-    --warningBG : #e8ae00;
+    --successBG : #198754;
+    --dangerBG : #dc3545;
+    --warningBG : #ffc107;
 
     --primaryColor : #000000;
     --whiteColor : #FFFFFF;
@@ -61,6 +61,9 @@ label {
     color: var(--whiteColor);
     background: var(--primaryColor);
 }
+/* .btn {
+    border: 2px solid var(--primaryColor);
+} */
 
 .dropdown-menu {
     padding: var(--spaceSM);
@@ -75,7 +78,7 @@ label {
 .dropdown-item.active {
     background: var(--primaryColor);
 }
-.dropdown-item.active, .dropdown-item:hover {
+.dropdown-item {
     border-radius: var(--roundedSM) !important;
 }
 

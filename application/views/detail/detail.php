@@ -38,7 +38,7 @@
 <?php $is_edit = $this->session->userdata('is_edit_mode'); ?>
 
 <div class="d-flex justify-content-between mt-4">
-    <a class="btn btn-dark mb-4 rounded-pill <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4 me-2" href="/MapsController"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    <a class="btn btn-danger mb-4 rounded-pill <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4 me-2" href="/MapsController"><i class="fa-solid fa-arrow-left"></i> Back</a>
     <span>
         <form action="/DetailController/edit_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
             <?php 
@@ -49,9 +49,9 @@
                     }
                     echo "</button>";
                 } else {
-                    echo "<button class='btn btn-dark mb-4 rounded-pill py-3 px-4 me-1'><i class='fa-solid fa-pen-to-square'></i>";
+                    echo "<button class='btn btn-danger mb-4 rounded-pill py-3 px-4 me-1'><i class='fa-solid fa-pen-to-square'></i>";
                     if(!$is_mobile_device){
-                        echo " Switch to View Mode";
+                        echo " Back to View Mode";
                     }
                     echo "</button>";
                 }
@@ -75,7 +75,7 @@
             ?>
         </form>
         <form action="/DetailController/delete_pin/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline" id="delete-pin-form">
-            <a class='btn btn-dark mb-4 rounded-pill py-3 px-4' id="delete-pin-btn"><i class='fa-solid fa-trash'></i>
+            <a class='btn btn-danger mb-4 rounded-pill py-3 px-4' id="delete-pin-btn"><i class='fa-solid fa-trash'></i>
             <?php
                 if(!$is_mobile_device){
                     echo " Delete";
@@ -233,7 +233,7 @@
 
         <?php 
             if($is_edit){
-                echo "<button class='btn btn-dark rounded-pill w-100 py-3 my-4' type='Submit'><i class='fa-solid fa-floppy-disk'></i> Save Marker</button>";
+                echo "<button class='btn btn-success rounded-pill w-100 py-3 my-4' type='Submit'><i class='fa-solid fa-floppy-disk'></i> Save Marker</button>";
             } 
         ?>
     </form>

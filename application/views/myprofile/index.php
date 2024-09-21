@@ -67,8 +67,8 @@
                                 <div class='nav-item' id='help-section-btn'>
                                     <a aria-current='page'>Help Center</a>
                                 </div>
-                                <div class='nav-item'>
-                                    <a aria-current='page' data-bs-toggle='modal' data-bs-target='#signOutModal'>Sign Out</a>
+                                <div class=''>
+                                    <a aria-current='page' class='btn text-white btn-danger py-2' style='border-radius:var(--roundedLG);' data-bs-toggle='modal' data-bs-target='#signOutModal'>Sign Out</a>
                                 </div>
                             </nav>
                             <div id='user_manage_section'>";

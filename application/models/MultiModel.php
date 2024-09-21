@@ -18,6 +18,9 @@
 		}
 
 		// Command
+		public function insert($table, $data){
+			return $this->db->insert($table,$data);	
+		}
 		public function delete($table, $id){
 			return $this->db->delete($table,['id'=>$id]);	
 		}

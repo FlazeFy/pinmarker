@@ -37,8 +37,8 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-dark rounded-pill py-3 px-4" data-bs-dismiss="modal"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
-                <button type="button" class="btn btn-dark rounded-pill py-3 px-4" data-bs-dismiss="modal"><i class="fa-solid fa-file"></i> Save as CSV</button>
+                <button type="button" class="btn btn-danger rounded-pill py-3 px-4" data-bs-dismiss="modal"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
+                <button type="button" class="btn btn-success rounded-pill py-3 px-4" data-bs-dismiss="modal"><i class="fa-solid fa-file"></i> Save as CSV</button>
                 <button type="button" class="btn btn-dark rounded-pill py-3 px-4" data-bs-dismiss="modal"><i class="fa-solid fa-arrow-left"></i> Previous Day</button>
                 <button type="button" class="btn btn-dark rounded-pill py-3 px-4" data-bs-dismiss="modal"><i class="fa-solid fa-play"></i> This Day</button>
                 <button type="button" class="btn btn-dark rounded-pill py-3 px-4" data-bs-dismiss="modal">Next Day <i class="fa-solid fa-arrow-right"></i></button>

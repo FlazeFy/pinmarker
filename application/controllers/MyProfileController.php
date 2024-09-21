@@ -395,6 +395,30 @@ class MyProfileController extends CI_Controller {
 		redirect('MyProfileController');
 	}
 
+	public function add_category(){
+		$rules = $this->DictionaryModel->rules();
+		$this->form_validation->set_rules($rules);
+
+		if($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('message_error', generate_message(false,'add','dictionary','validation failed'));
+			$this->session->set_flashdata('validation_error', validation_errors());
+		} else {
+			$data = [
+				'id' => get_UUID(), 
+				'dictionary_type' => $this->input->post('dictionary_type'),
+				'dictionary_name' => $this->input->post('dictionary_name'),
+				'dictionary_color' => $this->input->post('dictionary_color') ?? null,
+			];
+
+			if($this->MultiModel->insert('dictionary', $data)){
+				$this->session->set_flashdata('message_success', generate_message(true,'add','dictionary',null));
+			} else {
+				$this->session->set_flashdata('message_error', generate_message(false,'add','dictionary',null));
+			}
+		}
+		redirect("MyProfileController");
+	}
+
 	public function delete_feedback(){
 		$id = $this->input->post('id');
 		if($this->MultiModel->delete('feedback',$id)){

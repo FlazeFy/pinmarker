@@ -33,7 +33,7 @@
         ?>
 
         <br>
-        <button type="submit" class="btn btn-dark rounded-pill mt-3 py-3 w-100" id="sign-in"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+        <button type="submit" class="btn btn-success rounded-pill mt-3 py-3 w-100" id="sign-in"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
         <a class="btn btn-white rounded-pill w-100 py-3 mt-3" href="/RegisterController" style="border: 2.5px solid black;"><?php if(!$is_mobile_device){ echo "Does'nt have an account? "; } ?><b>Register Now</b></a>
     </form>
 </div>

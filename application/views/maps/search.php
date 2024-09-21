@@ -53,7 +53,7 @@
 </form>
 <form autocomplete="off" action="/MapsController/reset_search_pin_name" method="POST">
     <input hidden name="page" value="Maps">
-    <button class="btn btn-light m-0" type="submit" title="Reset search"><i class="fa-solid fa-rotate-left"></i></button>
+    <button class="btn btn-danger m-0" type="submit" title="Reset search"><i class="fa-solid fa-rotate-left"></i></button>
 </form>
 
 <script>

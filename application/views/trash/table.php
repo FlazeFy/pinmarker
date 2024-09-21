@@ -1,4 +1,4 @@
-<a class="btn btn-dark mb-4 rounded-pill <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4 me-2" href="/ListController"><i class="fa-solid fa-arrow-left"></i> Back</a>
+<a class="btn btn-danger mb-4 rounded-pill <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4 me-2" href="/ListController"><i class="fa-solid fa-arrow-left"></i> Back</a>
 <table class="table table-bordered" id="tb_related_pin_track">
     <thead style="font-size: var(--textMD);" class="text-center">
         <tr>
@@ -27,10 +27,10 @@
                             </td>
                             <td>
                                 <form action='/TrashController/recover/$dt->id' method='POST'>
-                                    <button class='btn btn-dark w-100 rounded-pill' type='submit'><i class='fa-solid fa-rotate-left'></i> Recover</button>
+                                    <button class='btn btn-success w-100 rounded-pill' type='submit'><i class='fa-solid fa-rotate-left'></i> Recover</button>
                                 </form>
                             </td>
-                            <td><button class='btn btn-dark w-100 rounded-pill'><i class='fa-solid fa-fire-flame-curved'></i> Destroy</button></td>
+                            <td><button class='btn btn-danger w-100 rounded-pill'><i class='fa-solid fa-fire-flame-curved'></i> Destroy</button></td>
                         </tr>
                     ";
                 }

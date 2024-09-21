@@ -18,7 +18,7 @@
     <label>Email</label>
     <input name="email" id="email" type="email" value="<?= $dt_my_profile->email ?>" class="form-control"/>
     <a class="msg-error-input"></a>
-    <button class="btn btn-dark rounded-pill w-100 mt-3" type="submit">Save Changes</button>
+    <button class="btn btn-success rounded-pill w-100 mt-3" type="submit">Save Changes</button>
 </form><hr>
 <div class="d-flex justify-content-between">
     <label>Telegram ID</label>
@@ -62,7 +62,7 @@
             $("#submit_telegram_user_id_edit").empty().append(`
                 <form action='/MyProfileController/edit_telegram_id' method='POST'>
                     <input hidden value='${tele_id_new}' name='telegram_user_id' id='telegram_user_id'>
-                    <button class='btn btn-link' type='submit' style='font-size: var(--textXMD);'><i class='fa-solid fa-floppy-disk'></i> Save Changes</button>
+                    <button class='btn btn-success' type='submit' style='font-size: var(--textXMD);'><i class='fa-solid fa-floppy-disk'></i> Save Changes</button>
                 </form>
             `)
         } else {

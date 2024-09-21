@@ -48,7 +48,7 @@
                 ?>
             </div>
             <input id="list_pin" class='d-none'  name="list_pin">
-            <a class="btn btn-dark rounded-pill w-100 py-3 mt-3" id="btn_submit"><i class="fa-solid fa-floppy-disk"></i> Save Global List <span id="submit-note"></span></a>
+            <a class="btn btn-success rounded-pill w-100 py-3 mt-3" id="btn_submit"><i class="fa-solid fa-floppy-disk"></i> Save Global List <span id="submit-note"></span></a>
         </form>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-12">

@@ -28,7 +28,7 @@
                                 <span class='date-target'>$dt->last_login</span>
                             </td>
                             <td style='max-width:100px;'>
-                                <button class='btn btn-dark w-100 rounded-pill mb-2 destroy-btn'><i class='fa-solid fa-fire-flame-curved'></i></button>";
+                                <button class='btn btn-danger w-100 rounded-pill mb-2 destroy-btn'><i class='fa-solid fa-fire-flame-curved'></i></button>";
                                 if($dt->telegram_user_id && $dt->telegram_is_valid){
                                     echo "<button class='btn btn-dark w-100 rounded-pill mb-2 chat-btn' data-bs-toggle='modal' data-bs-target='#addChatModal'><i class='fa-brands fa-telegram'></i></button>";
                                 }

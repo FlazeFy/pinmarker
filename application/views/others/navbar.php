@@ -72,7 +72,7 @@
                                         <li><a class="dropdown-item '; if($active_page == 'myprofile'){ echo 'active'; } echo'" href="/MyProfileController">My Profile</a></li>
                                         <li><a class="dropdown-item" href="#">Help Center</a></li>
                                         <li><a class="dropdown-item '; if($active_page == 'feedback'){ echo 'active'; } echo'" href="/FeedbackController">Feedback</a></li>
-                                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#signOutModal">Sign Out</a></li>
+                                        <li><a class="dropdown-item text-white" style="background:var(--dangerBG) !important;" data-bs-toggle="modal" data-bs-target="#signOutModal">Sign Out</a></li>
                                     </ul>
                                 </li>
                                 ';
@@ -118,7 +118,7 @@
             </div>
             <div class="modal-footer">
                 <form action="/LoginController/logout" method="POST">
-                    <button type="submit" class="btn btn-dark rounded-pill px-3 py-2"><i class="fa-regular fa-circle-xmark"></i> Yes, Sign Out</button>
+                    <button type="submit" class="btn btn-danger rounded-pill px-3 py-2"><i class="fa-regular fa-circle-xmark"></i> Yes, Sign Out</button>
                 </form>
             </div>
         </div>

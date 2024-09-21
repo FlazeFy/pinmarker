@@ -15,6 +15,6 @@
     </form>
     <form action="/MapsController/reset_search_pin_name" method="POST">
         <input hidden name="page" value="List">
-        <button class="btn btn-light m-0 position-absolute" style="top: 15px; right: 115px;" type="submit" title="Reset search"><i class="fa-solid fa-rotate-left"></i></button>
+        <button class="btn btn-danger m-0 position-absolute" style="top: 15px; right: 115px;" type="submit" title="Reset search"><i class="fa-solid fa-rotate-left"></i></button>
     </form>
 </div>

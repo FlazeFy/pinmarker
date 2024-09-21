@@ -48,7 +48,7 @@
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
         <h2 class="text-center" style="font-weight:600;">Global List</h2><br>
-        <a class="btn btn-dark btn-main-page rounded-pill" href="/AddGlobalListController"><i class="fa-solid fa-plus"></i> Add New Global List</a>
+        <a class="btn btn-success btn-main-page rounded-pill" href="/AddGlobalListController"><i class="fa-solid fa-plus"></i> Add Global List</a>
         <?php $this->load->view('global/global_list'); ?>
     </div>
 

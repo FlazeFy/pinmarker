@@ -54,7 +54,7 @@
                             echo"
                             <p class='mt-2 mb-0 fw-bold'>Created At</p>
                             <p class='date-target'>$dt->created_at</p>
-                            <a class='btn btn-dark rounded-pill px-2 py-1' style='font-size:12px;' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                            <a class='btn btn-light rounded-pill px-2 py-1' style='font-size:12px;' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
                         </div>`
                     },";
                 }

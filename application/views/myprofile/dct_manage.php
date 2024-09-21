@@ -1,3 +1,4 @@
+<?php $this->load->view('myprofile/add_category'); ?>
 <table class="table table-bordered my-3">
     <thead class="text-center">
         <tr>
@@ -55,7 +56,7 @@
                         </td>
                         <td style='max-width:100px;'>
                             <input hidden class='id-holder' value='$dt->id'>
-                            <button class='btn btn-dark w-100 rounded-pill mb-2 dictionary-delete-btn'><i class='fa-solid fa-fire-flame-curved'></i></button>
+                            <button class='btn btn-danger w-100 rounded-pill mb-2 dictionary-delete-btn'><i class='fa-solid fa-fire-flame-curved'></i></button>
                         </td>
                     </tr>
                 ";

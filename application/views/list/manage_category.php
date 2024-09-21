@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addGalleriesLabel">Manage Category</h5>
+                <h5 class="modal-title" id="addGalleriesLabel">Set Category</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clear_form_add_category()"></button>
             </div>
             <div class="modal-body">
@@ -11,7 +11,7 @@
                         echo "<div class='d-block mx-auto my-2 text-center'>
                             <img class='img img-fluid' src='http://127.0.0.1:8080/public/images/category.png' style='max-width:240px;'>
                             <p>You have not created your personal category yet. Try create and using it to custom your pin grouping and also easily post it on global</p>
-                            <a class='btn btn-dark rounded-pill py-3 px-4'><i class='fa-solid fa-plus'></i> Create Now!</a>
+                            <a class='btn btn-success rounded-pill py-3 px-4'><i class='fa-solid fa-plus'></i> Create Now!</a>
                         </div>";
                     } else {
                         echo" <table class='table table-bordered' id='tb_my_category'>
@@ -46,14 +46,14 @@
                                             <td class='total-used'>$dt->total_pin</td>
                                             <td>
                                                 <input hidden class='id-holder' value='$dt->id'>
-                                                <a class='btn btn-dark w-100 manage-category'><i class='fa-solid fa-trash'></i></a>
+                                                <a class='btn btn-danger w-100 manage-category'><i class='fa-solid fa-trash'></i></a>
                                             </td>    
                                         </tr>
                                     ";
                                 }
                             echo"
                                 <tr id='add_form_dct_holder'>
-                                    <td colspan='4'><a class='btn btn-dark w-100' onclick='add_form_dct_category()'>Add New Category</a></td>
+                                    <td colspan='4'><a class='btn btn-dark w-100' onclick='add_form_dct_category()'>Add Category</a></td>
                                 </tr>
                             </tbody>
                         </table>";
@@ -94,7 +94,7 @@
                                     <option value='purple'>Purple</option>
                                     <option value='green'>Green</option>
                                 </select>
-                                <button class='btn btn-dark' style='width:180px;' type='submit'><i class='fa-solid fa-floppy-disk'></i> Save</button>
+                                <button class='btn btn-success' style='width:180px;' type='submit'><i class='fa-solid fa-floppy-disk'></i> Save</button>
                             </div>
                         </form>
                     </td>

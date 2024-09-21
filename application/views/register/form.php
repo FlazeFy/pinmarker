@@ -236,8 +236,7 @@
         $.ajax({
             url: `http://127.0.0.1:8000/api/v1/user/check/${type}/${ctx}`,
             dataType: 'json',
-            contentType: 'application/json',
-            type: "POST",
+            type: "GET",
         })
         .done(function (response) {            
             const data = response

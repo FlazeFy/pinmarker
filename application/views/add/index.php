@@ -40,8 +40,8 @@
 <body>
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
-        <h2 class="text-center" style="font-weight:600;">Add New Marker</h2>
-        <a class="btn btn-dark mb-4 rounded-pill <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" href="/MapsController"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <h2 class="text-center" style="font-weight:600;">Add Marker</h2>
+        <a class="btn btn-danger mb-4 rounded-pill <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" href="/MapsController"><i class="fa-solid fa-arrow-left"></i> Back</a>
         <a class="btn btn-dark mb-4 rounded-pill <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" data-bs-toggle="modal" data-bs-target="#importMarker"><i class="fa-solid fa-upload"></i> Import Marker</a>
         <span id="imported_map_btn_holder"></span>
         <?php $this->load->view('add/form'); ?>
