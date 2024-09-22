@@ -24,8 +24,8 @@
                         <span id="toogle-submit-holder"></span>
                     </div>
                 </form>
-                <a class="msg-error-input" id="progress-upload"></a>
-                <a class="msg-error-input" id="failed-upload"></a>
+                <a class="msg-error-input" id="progress-upload-msg"></a>
+                <a class="msg-error-input" id="failed-upload-msg"></a>
             </div>
         </div>
     </div>
@@ -56,10 +56,10 @@
                 document.getElementById('gallery_type').disabled = true
 
                 var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
-                document.getElementById('progress-upload').innerHTML = `<span class="box-loading"><div role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="${progress}" style="--value: ${progress}"></div></span>`
+                document.getElementById('progress-upload-msg').innerHTML = `<span class="box-loading"><div role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="${progress}" style="--value: ${progress}"></div></span>`
             }, 
             function (error) {
-                document.getElementById('failed-upload').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is ${error.message}</h6></span>`
+                document.getElementById('failed-upload-msg').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is ${error.message}</h6></span>`
             }, 
             function () {
                 uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
@@ -88,7 +88,7 @@
                 });
             });
         } else {
-            document.getElementById('failed-upload').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Maximum size is ${maxSize} mb </h6></span>`
+            document.getElementById('failed-upload-msg').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Maximum size is ${maxSize} mb </h6></span>`
         }
     }
 </script>

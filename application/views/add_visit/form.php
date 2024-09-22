@@ -61,13 +61,10 @@
                                 }
                             echo "</select>";
                         } else {
-                            echo "
-                                <input name='location_name' id='location_name' type='text' class='form-control form-validated' maxlength='255' required/>
-                                <a class='msg-error-input'></a>
-                            ";
+                            echo "<input name='location_name' id='location_name' type='text' class='form-control form-validated' maxlength='255' required/>";
                         }
                     ?>
-                    <a class="msg-error-input"></a>
+                    
                     <div class="d-flex justify-content-start mb-3">
                         <?php 
                             if(count($dt_all_my_pin_name) > 0){
@@ -92,7 +89,7 @@
                     </div>
                 </div>
                 <textarea name="visit_desc" id="visit_desc" rows="5" class="form-control form-validated" maxlength='255'></textarea>
-                <a class="msg-error-input"></a>
+                
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <label>Visit By</label>
@@ -103,21 +100,21 @@
                         }
                     ?>
                 </select>
-                <a class="msg-error-input"></a>
+                
 
                 <textarea name="visit_with" id="visit_with" rows="5" class="form-control form-validated visit-with" maxlength='500'></textarea>
-                <a class="msg-error-input"></a>
+                
                 <div class="d-flex justify-content-start mb-3">
                     <a class="btn btn-success rounded-pill see-person-btn" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> See Persons</a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-6">
                 <input name="visit_date" id="visit_date" type="date" class="form-control form-validated" required/>
-                <a class="msg-error-input"></a>
+                
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-6">
                 <input name="visit_hour" id="visit_hour" type="time" class="form-control form-validated" required/>
-                <a class="msg-error-input"></a>
+                
             </div>
         </div>
     </div>
@@ -126,7 +123,7 @@
             <a class="btn btn-light rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
         </div>
         <div class="col-lg-4 col-md-6 col-sm-12">
-            <a class="btn btn-light rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;"><i class="fa-solid fa-arrow-right-arrow-left"></i> Round Trip</a>
+            <a class="btn btn-light rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;" id='round-trip-btn'><i class="fa-solid fa-arrow-right-arrow-left"></i> Round Trip</a>
         </div>
         <div class="col-lg-4 col-md-12 col-sm-12" id='save-visit-btn-holder'>
             <button class="btn btn-success rounded-pill w-100 py-3 mb-2" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>
@@ -205,11 +202,11 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <input name="pin_name" id="pin_name" type="text" class="form-control form-validated" maxlength='75' required/>
-                        <a class="msg-error-input"></a>
+                        
                         <div class="d-flex justify-content-start mb-3">
-                            <a class="btn btn-dark rounded-pill"><i class="fa-solid fa-map"></i> Custom Location</a>
-                            <a class="btn btn-dark rounded-pill ms-2" onclick="resetForm()"><i class="fa-solid fa-house"></i> Visit Only</a>
-                            <a class="btn btn-success rounded-pill ms-2"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
+                            <a class="btn btn-dark rounded-pill" id="custom-loc-btn"><i class="fa-solid fa-map"></i> Custom Location</a>
+                            <a class="btn btn-dark rounded-pill ms-2" id="visit-only-btn" onclick="resetForm()"><i class="fa-solid fa-house"></i> Visit Only</a>
+                            <a class="btn btn-success rounded-pill ms-2" id="add-multiple-visit-btn"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -221,35 +218,35 @@
                                 }
                             ?>
                         </select>
-                        <a class="msg-error-input"></a>
+                        
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <label>Maps</label>
                         <div class="position-relative">
                             <div id="map-board"></div>
                         </div>
-                        <a class="msg-error-input"></a>
+                        
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <input name="pin_lat" id="pin_lat" type="text" class="form-control form-validated" maxlength='144' onchange="select_map()" required/>
-                        <a class="msg-error-input"></a>
+                        
 
                         <input name="pin_long" id="pin_long" type="text" class="form-control form-validated" maxlength='144' onchange="select_map()" required/>
-                        <a class="msg-error-input"></a>
+                        
 
                         <textarea name="pin_desc" id="pin_desc" rows="5" class="form-control form-validated" maxlength='500'></textarea>
-                        <a class="msg-error-input"></a>
+                        
 
                         <textarea name="pin_address" id="pin_address" rows="5" class="form-control form-validated" maxlength='500'></textarea>
-                        <a class="msg-error-input"></a>
+                        
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <input name="pin_person" id="pin_person" type="text" class="form-control form-validated" maxlength='75'/>
-                        <a class="msg-error-input"></a>
+                        
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <input name="pin_phone" id="pin_phone" type="text" class="form-control form-validated" maxlength='16'/>
-                        <a class="msg-error-input"></a>
+                        
                     </div>
                 </div>
                 <hr>
@@ -265,11 +262,11 @@
 
             $('#pin_name_init_holder').html(`
                 <input name="location_name" id="location_name" type="text" class="form-control form-validated" maxlength='255'/>
-                <a class="msg-error-input"></a>
+                
                 <div class="d-flex justify-content-start mb-3">
-                    <a class="btn btn-dark rounded-pill" onclick="resetForm()"><i class="fa-solid fa-location-dot"></i> Saved Pin</a>
-                    <a class="btn btn-dark rounded-pill ms-2" onclick="addCreatePinForm()"><i class="fa-solid fa-map-location-dot"></i> New Pin</a>
-                    <a class="btn btn-success rounded-pill ms-2"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
+                    <a class="btn btn-dark rounded-pill" id="saved-pin-btn" onclick="resetForm()"><i class="fa-solid fa-location-dot"></i> Saved Pin</a>
+                    <a class="btn btn-dark rounded-pill ms-2" id="new-pin-btn" onclick="addCreatePinForm()"><i class="fa-solid fa-map-location-dot"></i> New Pin</a>
+                    <a class="btn btn-success rounded-pill ms-2" id="add-multiple-visit-btn"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
                 </div>
             `)
             $('#save_visit_n_go').empty()
@@ -352,7 +349,7 @@
                     }
                 ?>
             </select>
-            <a class="msg-error-input"></a>
+            
             <div class="d-flex justify-content-start mb-3">
                 <a class="btn btn-dark rounded-pill" id='add-custom-btn'><i class="fa-solid fa-map"></i> Custom Location</a>
                 <a class="btn btn-success rounded-pill ms-2" id='add-new-pin-btn'><i class="fa-solid fa-map-location-dot"></i> New Pin</a>

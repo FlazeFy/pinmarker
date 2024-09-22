@@ -24,22 +24,18 @@
                         }
                     ?>
                 </select>
-                <a class="msg-error-input"></a>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <label>Maps</label>
                 <?php $this->load->view('add/maps_select'); ?>
-                <a class="msg-error-input"></a>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <div class="row">
                     <div class="col-6">
                         <input name="pin_lat" id="pin_lat" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" onblur="check_nearest_pin()" required/>
-                        <a class="msg-error-input"></a>
                     </div>
                     <div class="col-6">
                         <input name="pin_long" id="pin_long" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" onblur="check_nearest_pin()" required/>
-                        <a class="msg-error-input"></a>
                     </div>
                 </div>
 
@@ -104,7 +100,7 @@
                     <label for="formFile" class="form-label">Only Accept CSV file <b>(Max : 20 mb)</b></label>
                     <input class="form-control" type="file" id="pin-data"  accept=".csv">
                 </div>
-                <a class="btn btn-success w-100 rounded-pill py-2 px-3" onclick="generate_form()"><i class="fa-solid fa-plus"></i> Generate Form</a>
+                <a class="btn btn-success w-100 rounded-pill py-2 px-3" id="generate-form-btn" onclick="generate_form()"><i class="fa-solid fa-plus"></i> Generate Form</a>
             </div>
         </div>
     </div>
@@ -247,7 +243,7 @@
                                                         }
                                                     ?>
                                                 </select>
-                                                <a class="btn btn-dark py-1 px-2 float-start" style='font-size:var(--textSM);' onclick="copy_all_cat(${row})"><i class="fa-solid fa-copy"></i> Using this category for all pin after this</a>
+                                                <a class="btn btn-dark py-1 px-2 float-start using-cat-btn" style='font-size:var(--textSM);' onclick="copy_all_cat(${row})"><i class="fa-solid fa-copy"></i> Using this category for all pin after this</a>
                                             </td>
                                             <td>
                                                 <label>Latitude</label>
@@ -262,7 +258,7 @@
                                                 <textarea class="form-control" name="pin_desc" value=""></textarea>
                                             </td>
                                             <td>
-                                                <a class='btn btn-dark d-block mx-auto' onclick="delete_imported_pin(${row})"><i class="fa-solid fa-trash"></i></a>
+                                                <a class='btn btn-dark d-block mx-auto delete-imported-pin-btn' onclick="delete_imported_pin(${row})"><i class="fa-solid fa-trash"></i></a>
                                             </td>
                                         </tr>
                                     `)
@@ -297,7 +293,7 @@
                         // $('#tb_imported_pin').DataTable()
 
                         $('#imported_map_btn_holder').empty().append(`
-                            <a class="btn btn-dark mb-4 rounded-pill py-3 px-4" data-bs-toggle="modal" data-bs-target="#importMarkerMap">
+                            <a class="btn btn-dark mb-4 rounded-pill py-3 px-4 see-map-btn" data-bs-toggle="modal" data-bs-target="#importMarkerMap">
                                 <i class="fa-solid fa-map"></i> See the Map
                             </a>
                         `)

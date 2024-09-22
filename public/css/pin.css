@@ -14,7 +14,7 @@
     transform: scale(1.05);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
-.pin-box-label, .pin-tag, .pin-name {
+.pin-box-label, .pin-tag-btn, .pin-name-btn {
     background: var(--primaryColor);
     color: var(--whiteColor) !important;
     padding: var(--spaceXXSM) var(--spaceSM);
@@ -23,7 +23,7 @@
     display: inline-block;
     border-radius: var(--roundedMD);
 }
-.pin-tag, .pin-name {
+.pin-tag-btn, .pin-name-btn {
     cursor: pointer;
 }
 .list-pin-desc {

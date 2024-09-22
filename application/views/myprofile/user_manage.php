@@ -65,7 +65,7 @@
                 <form method="POST" action="/MyProfileController/send_chat">
                     <input id="username_chat" name="username" hidden/>
                     <textarea name="chat" id="chat" rows="5" class="form-control" maxlength="1000"></textarea>
-                    <a class="msg-error-input"></a>
+                    
                     <button class="btn btn-dark w-100 rounded-pill py-2 px-3"><i class="fa-solid fa-paper-plane"></i> Send Chat</button>
                 </form>
             </div>

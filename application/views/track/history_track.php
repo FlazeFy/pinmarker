@@ -117,7 +117,7 @@
                         <td>${timeUnit(time)}</td>
                         <td>${speed.toFixed(2)} Km/h</td>
                         <td>${dt.battery_indicator}%</td>
-                        <td><a class='btn btn-dark rounded-pill'>Track on Maps</a></td>
+                        <td><a class='btn btn-dark rounded-pill set-direction-btn'>Track on Maps</a></td>
                     </tr>
                 `)
 

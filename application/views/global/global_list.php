@@ -14,7 +14,7 @@
                     if($dt->list_tag){
                         $list_tag = json_decode($dt->list_tag);
                         foreach($list_tag as $tag){
-                            echo "<a class='pin-box-label me-2 mb-1 text-decoration-none' href='http://127.0.0.1:8080/LoginController/view/$tag->tag_name'>#$tag->tag_name</a>";
+                            echo "<a class='pin-box-label me-2 mb-1 text-decoration-none search-global-by-tag-btn' href='http://127.0.0.1:8080/LoginController/view/$tag->tag_name'>#$tag->tag_name</a>";
                         }
                     } else {
                         echo "<p class='text-secondary fst-italic'>- No Tag -</p>";
@@ -30,8 +30,8 @@
                     echo"</p>
                     <p class='mt-2 mb-0 fw-bold'>Created At</p>
                     <p><span class='date-target'>$dt->created_at</span> by <button class='btn-account-attach'>@$dt->created_by</button></p>
-                    <a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailGlobalController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
-                    <a class='btn btn-dark rounded-pill px-2 py-1 share-global-pin'><i class='fa-solid fa-paper-plane'></i> Share</a>
+                    <a class='btn btn-dark rounded-pill px-2 py-1 me-2 see-detail-btn' href='/DetailGlobalController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
+                    <a class='btn btn-dark rounded-pill px-2 py-1 share-global-pin-btn'><i class='fa-solid fa-paper-plane'></i> Share</a>
                 </div>
             </div>
         ";
@@ -47,8 +47,8 @@
             e.textContent = getDateToContext(e.textContent, "calendar")
         })
 
-        $('.share-global-pin').on('click', function() {
-            const idx = $(this).index('.share-global-pin')
+        $('.share-global-pin-btn').on('click', function() {
+            const idx = $(this).index('.share-global-pin-btn')
             const list_name = $(`#list-name-holder-${idx}`).text().trim().replace(' ','%20')
             messageCopy(`http://127.0.0.1:8080/LoginController/view/${list_name}`)
         })

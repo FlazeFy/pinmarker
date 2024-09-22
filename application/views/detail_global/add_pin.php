@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col">
                         <div id="map-board"></div>
-                        <a class="btn btn-dark w-100 rounded-pill py-2 px-3 mt-2" id="btn_submit"><i class="fa-solid fa-floppy-disk"></i> Submit this Pin</a>
+                        <a class="btn btn-dark w-100 rounded-pill py-2 px-3 mt-2" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Submit this Pin</a>
                     </div>
                     <div class="col">
                         <label>Selected Pin</label>
@@ -39,7 +39,7 @@
 
                                     if(!$found){
                                         echo "
-                                            <a class='pin-name me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> $dt->pin_name</a>
+                                            <a class='pin-name-btn me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> $dt->pin_name</a>
                                             <input hidden class='pin-id-coor' value='$dt->id,$dt->pin_lat,$dt->pin_long'>    
                                         ";
                                     }
@@ -100,8 +100,8 @@
     }
     $(document).ready(function() {
         // Pin choose
-        $(document).on('click', '.pin-name:not(.remove)', function() {
-            const idx = $(this).index('.pin-name')
+        $(document).on('click', '.pin-name-btn:not(.remove)', function() {
+            const idx = $(this).index('.pin-name-btn')
             let pinEl = ''
             const pin_name = $(this).text().trim()
             const coor_split = $('.pin-id-coor').eq(idx).val().split(',')
@@ -115,12 +115,12 @@
 
             if($('#selected-pin-holder').children().length > 0){
                 tagEl = `
-                    <a class='pin-name remove me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> ${pin_name}<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
+                    <a class='pin-name-btn remove me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> ${pin_name}<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
                 `
             } else {
                 tagEl = `
                     <label>Attached Pin</label><br>
-                    <a class='pin-name remove me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> ${pin_name}<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
+                    <a class='pin-name-btn remove me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> ${pin_name}<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
                 `
             }
             $('#selected-pin-holder').append(tagEl)
@@ -141,11 +141,11 @@
             addMarker(markers)
             initMapAdd()
     
-            $('.pin-name').eq(idx).remove()
+            $('.pin-name-btn').eq(idx).remove()
         })
-        $(document).on('click', '.pin-name.remove, .remove-via-marker', function() {            
-            const idx = $(this).closest('.pin-name.remove').index('.pin-name.remove')
-            const tag_name = $('.pin-name.remove').eq(idx).text()
+        $(document).on('click', '.pin-name-btn.remove, .remove-via-marker', function() {            
+            const idx = $(this).closest('.pin-name-btn.remove').index('.pin-name-btn.remove')
+            const tag_name = $('.pin-name-btn.remove').eq(idx).text()
 
             const id = $(this).find('input.remove-from-id').val()
             selected_pin.forEach((el,idxEl) => {
@@ -156,17 +156,17 @@
             });
 
             const tagEl = `
-                <a class='pin-name me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> ${tag_name}</a>
+                <a class='pin-name-btn me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> ${tag_name}</a>
             `
             $('#available-pin-holder').append(tagEl)
             
-            $('.pin-name.remove').eq(idx).remove()
+            $('.pin-name-btn.remove').eq(idx).remove()
             markers.splice(idx, 1)
             initMapAdd()
         })
 
         // Submit form
-        $(document).on('click', '#btn_submit', function() {  
+        $(document).on('click', '#submit-btn', function() {  
             let listTag = null
                 
             if($('#selected-tag-holder').children().length > 0){

@@ -35,8 +35,8 @@
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
         <h2 class="text-center" style="font-weight:600;">My Visit</h2><br>
-        <a class="btn btn-success btn-main-page rounded-pill" href="/AddVisitController"><i class="fa-solid fa-plus"></i> Add Visit</a>
-        <a class="btn btn-dark btn-main-page rounded-pill" href="/HistoryController/print_visit"><i class="fa-solid fa-print"></i> Print</a>
+        <a class="btn btn-success btn-main-page rounded-pill" href="/AddVisitController" id="add-visit-btn"><i class="fa-solid fa-plus"></i> Add Visit</a>
+        <a class="btn btn-dark btn-main-page rounded-pill" href="/HistoryController/print_visit" id="print-btn"><i class="fa-solid fa-print"></i> Print</a>
         <?php $this->load->view('history/calendar'); ?>
         <hr>
         <h2 class="text-center" style="font-weight:600;">My Activity</h2><br>

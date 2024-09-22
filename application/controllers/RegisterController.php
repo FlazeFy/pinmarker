@@ -52,7 +52,7 @@ class RegisterController extends CI_Controller {
 
 			if($res){
 				$this->AuthModel->login($data['username'], $this->input->post('password'));
-				$this->session->set_flashdata('message_success', generate_message(true,'regist','to PinMarker','Welcome <b>@'.$this->input->post('username').'</b>. If you want to connect this account with Telegram you can go to <a href="/MyProfileController" class="fw-bold">Profile<a> Menu.<br><br>Thank You, - PinMarker'));
+				$this->session->set_flashdata('message_success', generate_message(true,'regist','to PinMarker','Welcome <b>@'.$this->input->post('username').'</b>. If you want to connect this account with Telegram you can go to <a href="/MyProfileController" id="my-profile-welcome-btn" class="fw-bold">Profile<a> Menu.<br><br>Thank You, - PinMarker'));
 				redirect('/DashboardController');
 			} else {
 				redirect('/');

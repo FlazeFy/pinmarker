@@ -19,8 +19,8 @@
                 <p class="msg-error-input mb-2" id="username_err_msg"></p>
                 <label>Email</label>
                 <input name="email" id="email" type="email" class="form-control"/>
-                <a class="msg-error-input"></a>
-                <a class="btn btn-dark rounded-pill px-3" onclick="searchUser()"><i class="fa-solid fa-magnifying-glass me-2"></i> Check Account</a>
+                
+                <a class="btn btn-dark rounded-pill px-3" id="check-account-btn" onclick="searchUser()"><i class="fa-solid fa-magnifying-glass me-2"></i> Check Account</a>
             </div>
             <div style="height:90vh; padding-top:calc(var(--spaceJumbo)*3); display:none;" id="validate_holder">
                 <div class="text-center">
@@ -37,7 +37,7 @@
                     </div>
                     <div id="token_validate_msg" class="msg-error-input mb-2" style="font-size:13px;"></div>
                     <div class="d-inline-block mx-auto">
-                        <a class="btn btn-link rounded-pill px-3 mt-3">Don't receive the token. Send again!</a>
+                        <a class="btn btn-link rounded-pill px-3 mt-3" id="send-again-token-btn">Don't receive the token. Send again!</a>
                     </div>
                 </div>
             </div>
@@ -169,7 +169,7 @@
                         <input name="password" id="password" type="password" class="form-control"/>
                         <label>Re-Type Password</label>
                         <input name="password_check" id="password_check" type="password" class="form-control"/>
-                        <a class="btn btn-dark rounded-pill px-3" onclick="submitForgetPass()"><i class="fa-solid fa-floppy-disk me-2"></i> Submit New Password</a>
+                        <a class="btn btn-dark rounded-pill px-3" onclick="submitForgetPass()" id="submit-btn"><i class="fa-solid fa-floppy-disk me-2"></i> Submit New Password</a>
                     </form>
                 `)
             }

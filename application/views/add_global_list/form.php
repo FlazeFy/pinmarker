@@ -20,11 +20,11 @@
         ?>
         <form action="/AddGlobalListController/add_list" method="POST" id="form-add-global-list">
             <input name="list_name" id="list_name" type="text" class="form-control form-validated" maxlength="75" required/>
-            <a class="msg-error-input"></a>
+            
             <input name="list_code" id="list_code" type="text" class="form-control form-validated" maxlength="6"/>
             <a class="msg-error-input" id='list_code_msg'></a><br>
             <textarea name="list_desc" id="list_desc" rows="5" class="form-control"></textarea>
-            <a class="msg-error-input"></a>
+            
             <label>Tags</label>
             <div class='mt-2' id='available-tag-holder'>
                 <?php 
@@ -48,7 +48,7 @@
                 ?>
             </div>
             <input id="list_pin" class='d-none'  name="list_pin">
-            <a class="btn btn-success rounded-pill w-100 py-3 mt-3" id="btn_submit"><i class="fa-solid fa-floppy-disk"></i> Save Global List <span id="submit-note"></span></a>
+            <a class="btn btn-success rounded-pill w-100 py-3 mt-3" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Save Global List <span id="submit-note"></span></a>
         </form>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -176,7 +176,7 @@
         })
 
         // Submit form
-        $(document).on('click', '#btn_submit', function() {  
+        $(document).on('click', '#submit-btn', function() {  
             let listTag = null
                 
             if($('#selected-tag-holder').children().length > 0){

@@ -11,7 +11,7 @@
                         echo "<div class='d-block mx-auto my-2 text-center'>
                             <img class='img img-fluid' src='http://127.0.0.1:8080/public/images/category.png' style='max-width:240px;'>
                             <p>You have not created your personal category yet. Try create and using it to custom your pin grouping and also easily post it on global</p>
-                            <a class='btn btn-success rounded-pill py-3 px-4'><i class='fa-solid fa-plus'></i> Create Now!</a>
+                            <a class='btn btn-success rounded-pill py-3 px-4' id='add-now-category-btn'><i class='fa-solid fa-plus'></i> Create Now!</a>
                         </div>";
                     } else {
                         echo" <table class='table table-bordered' id='tb_my_category'>
@@ -46,14 +46,14 @@
                                             <td class='total-used'>$dt->total_pin</td>
                                             <td>
                                                 <input hidden class='id-holder' value='$dt->id'>
-                                                <a class='btn btn-danger w-100 manage-category'><i class='fa-solid fa-trash'></i></a>
+                                                <a class='btn btn-danger w-100 manage-category-btn'><i class='fa-solid fa-trash'></i></a>
                                             </td>    
                                         </tr>
                                     ";
                                 }
                             echo"
                                 <tr id='add_form_dct_holder'>
-                                    <td colspan='4'><a class='btn btn-dark w-100' onclick='add_form_dct_category()'>Add Category</a></td>
+                                    <td colspan='4'><a class='btn btn-dark w-100' id='add-category-btn' onclick='add_form_dct_category()'>Add Category</a></td>
                                 </tr>
                             </tbody>
                         </table>";
@@ -143,8 +143,8 @@
             }
         })
 
-        $(document).on('click', '.manage-category', function() { 
-            const idx = $(this).index('.manage-category')
+        $(document).on('click', '.manage-category-btn', function() { 
+            const idx = $(this).index('.manage-category-btn')
             const id = $('.id-holder').eq(idx).val()
             const total = $('.total-used').eq(idx).text()
             

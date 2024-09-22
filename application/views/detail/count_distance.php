@@ -11,7 +11,7 @@
                 }
             ?>
         </select>
-        <a class="msg-error-input"></a>
+        
     </div>
     <div class="col-4">
         <label>Distance</label>

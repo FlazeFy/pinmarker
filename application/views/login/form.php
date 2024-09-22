@@ -33,8 +33,19 @@
         ?>
 
         <br>
-        <button type="submit" class="btn btn-success rounded-pill mt-3 py-3 w-100" id="sign-in"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
-        <a class="btn btn-white rounded-pill w-100 py-3 mt-3" href="/RegisterController" style="border: 2.5px solid black;"><?php if(!$is_mobile_device){ echo "Does'nt have an account? "; } ?><b>Register Now</b></a>
+        <button type="submit" class="btn btn-success rounded-pill mt-3 py-3 w-100" id="sign-in-btn"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
+        <a class="btn btn-white rounded-pill w-100 py-3 mt-3" href="/RegisterController" id='register-btn' style="border: 2.5px solid black;"><?php if(!$is_mobile_device){ echo "Does'nt have an account? "; } ?><b>Register Now</b></a>
+        <?php if (!$is_mobile_device): ?>
+            <div class="my-2 text-center d-flex">
+                <h6 class="my-2 me-2">Or, forget your password</h6>
+                <a class="btn btn-dark rounded-pill py-2 px-4 me-2" href="/ForgetController" id='forget-pass-btn'><i class="fa-solid fa-lock-open"></i> Change Password?</a>
+            </div>
+        <?php else: ?>
+            <div class="my-2 text-center">
+                <h6 class="my-2 me-2">Or, forget your password</h6>
+                <a class="btn btn-dark rounded-pill py-2 px-4 me-2 w-100" href="/ForgetController" id='forget-pass-btn'><i class="fa-solid fa-lock-open"></i> Change Password?</a>
+            </div>
+        <?php endif; ?>
     </form>
 </div>
 

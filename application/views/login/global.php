@@ -11,7 +11,7 @@
             <input class="form-control <?php if(!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" placeholder="Search by list name or list tag..." style="font-weight: <?php if(!$is_mobile_device){ echo "700; font-size: var(--textJumbo)"; } else { echo "500; font-size: var(--textXLG)"; } ?>" id="search_input" value="<?= $dt_active_search ?>" style="max-width: 480px;">
             <?php 
                 if($dt_active_search){
-                    echo "<a class='position-absolute btn btn-dark "; if(!$is_mobile_device){ echo "px-3 py-2"; } else { echo "px-2 py-1"; } echo"' href='/' style='"; if(!$is_mobile_device){ echo "right: 12px; top: 12px"; } else { echo "right: 7px; top: 6px"; } echo"'><i class='fa-solid fa-xmark'></i></a>";
+                    echo "<a id='cancel-search-btn' class='position-absolute btn btn-dark "; if(!$is_mobile_device){ echo "px-3 py-2"; } else { echo "px-2 py-1"; } echo"' href='/' style='"; if(!$is_mobile_device){ echo "right: 12px; top: 12px"; } else { echo "right: 7px; top: 6px"; } echo"'><i class='fa-solid fa-xmark'></i></a>";
                 }
             ?>
         </div>
@@ -33,7 +33,7 @@
                                     if($dt->list_tag){
                                         $list_tag = json_decode($dt->list_tag);
                                         foreach($list_tag as $tag){
-                                            echo "<a class='pin-box-label me-2 mb-1 text-decoration-none' href='http://127.0.0.1:8080/LoginController/view/$tag->tag_name'>#$tag->tag_name</a>";
+                                            echo "<a class='pin-box-label me-2 mb-1 text-decoration-none search-global-by-tag-btn' href='http://127.0.0.1:8080/LoginController/view/$tag->tag_name'>#$tag->tag_name</a>";
                                         }
                                     } else {
                                         echo "<p class='text-secondary fst-italic'>- No Tag -</p>";
@@ -49,8 +49,8 @@
                                     echo"</p>
                                     <p class='mt-2 mb-0 fw-bold'>Created At</p>
                                     <p><span class='date-target'>$dt->created_at</span> by <button class='btn-account-attach'>@$dt->created_by</button></p>
-                                    <a class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailGlobalController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
-                                    <a class='btn btn-dark rounded-pill px-2 py-1 share-global-pin'><i class='fa-solid fa-paper-plane'></i> Share</a>
+                                    <a class='btn btn-dark rounded-pill px-2 py-1 me-2 see-detail-btn' href='/DetailGlobalController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
+                                    <a class='btn btn-dark rounded-pill px-2 py-1 share-global-pin-btn'><i class='fa-solid fa-paper-plane'></i> Share</a>
                                     </div>
                             </div>
                         ";
@@ -72,7 +72,7 @@
             <?php else: ?>
                 <h5 class="text-secondary mt-3">Or, search by maps</h5>
             <?php endif; ?>
-            <a class="btn btn-dark rounded-pill px-4 <?php if(!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> fw-bold">Open Global Maps</a>
+            <a class="btn btn-dark rounded-pill px-4 <?php if(!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> fw-bold" id='global-maps-btn'>Open Global Maps</a>
         </div>
     </div>
     <?php if (!$is_mobile_device): ?>
@@ -97,8 +97,8 @@
             }
         })
 
-        $('.share-global-pin').on('click', function() {
-            const idx = $(this).index('.share-global-pin')
+        $('.share-global-pin-btn').on('click', function() {
+            const idx = $(this).index('.share-global-pin-btn')
             const list_name = $(`#list-name-holder-${idx}`).text().trim().replace(' ','%20')
             messageCopy(`http://127.0.0.1:8080/LoginController/view/${list_name}`)
         })

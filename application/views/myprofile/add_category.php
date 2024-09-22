@@ -18,7 +18,7 @@
                     </select>
                     <input name="dictionary_name" id="dictionary_name" type="text" class="form-control form-validated" maxlength="36" required/>
                     <div id="form-dictionary-color"></div>
-                    <button class='btn btn-success' style='width:180px;' type='submit'><i class='fa-solid fa-floppy-disk'></i> Save</button>
+                    <button class='btn btn-success rounded-pill w-100' style='width:180px;' type='submit'><i class='fa-solid fa-floppy-disk'></i> Save</button>
                 </form>
             </div>
         </div>

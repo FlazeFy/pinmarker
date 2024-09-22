@@ -53,7 +53,7 @@
         </h2><br>
         <div class="d-flex justify-content-between">
             <div class="d-flex justify-content-start w-100">
-                <a class="btn btn-success rounded-pill btn-main-page me-2" style="min-width:200px;" href="/AddController"><i class="fa-solid fa-plus"></i> Add Marker</a>
+                <a class="btn btn-success rounded-pill btn-main-page me-2" style="min-width:200px;" href="/AddController" id='add-marker-btn'><i class="fa-solid fa-plus"></i> Add Marker</a>
                     <?php 
                         if($this->session->userdata('is_catalog_view') == false && !$this->session->userdata('open_pin_list_category')){
                             echo "
@@ -72,25 +72,23 @@
                             </form>";
                         }
                     ?>
-                <a class="btn btn-dark rounded-pill btn-main-page me-2" style="min-width:110px;" href="/ListController/print_pin"><i class="fa-solid fa-print"></i> Print</a>
+                <a class="btn btn-dark rounded-pill btn-main-page me-2" style="min-width:110px;" href="/ListController/print_pin" id='print-btn'><i class="fa-solid fa-print"></i> Print</a>
                 <?php 
                     if($this->session->userdata('role_key') == 1){
-                        echo '<a class="btn btn-dark rounded-pill btn-main-page me-2" style="min-width:200px;" data-bs-target="#manageCategory" data-bs-toggle="modal"><i class="fa-solid fa-gear"></i> Set Category</a>';
+                        echo '<a class="btn btn-dark rounded-pill btn-main-page me-2" style="min-width:200px;" data-bs-target="#manageCategory" id="set-category-modal-btn" data-bs-toggle="modal"><i class="fa-solid fa-gear"></i> Set Category</a>';
                     }
                 ?>
                 <?php $this->load->view('list/manage_category'); ?>
                 <?php $this->load->view('list/search'); ?>
                 <?php
                     if($is_mobile_device && $this->session->userdata('role_key') == 1){
-                        echo '<a class="btn btn-danger rounded-pill btn-main-page" href="/TrashController"><i class="fa-solid fa-trash"></i> Trash</a>';
+                        echo '<a class="btn btn-danger rounded-pill btn-main-page" href="/TrashController" id="trash-btn"><i class="fa-solid fa-trash"></i> Trash</a>';
                     }
                 ?>
             </div>
             <?php
                 if(!$is_mobile_device && $this->session->userdata('role_key') == 1){
-                    echo '<div>
-                        <a class="btn btn-danger rounded-pill btn-main-page" style="min-width:110px;" href="/TrashController"><i class="fa-solid fa-trash"></i> Trash</a>
-                    </div>';
+                    echo '<a class="btn btn-danger rounded-pill btn-main-page" style="min-width:110px;" href="/TrashController" id="trash-btn"><i class="fa-solid fa-trash"></i> Trash</a>';
                 }
             ?>
         </div>

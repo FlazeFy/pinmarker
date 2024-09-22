@@ -19,7 +19,7 @@
         bottom: 10px; 
         left: 60px;
     }
-    .btn-change-image:hover, .change-image:hover, .btn-reset-image:hover, .btn-icon-reset-image:hover{
+    .btn-change-image:hover, .change-image:hover, .reset-image-btn:hover, .btn-icon-reset-image:hover{
         transform: scale(1.075);
     }
     .btn-change-image{
@@ -38,7 +38,7 @@
         -o-transition: all 0.5s;
         transition: all 0.5s;
     }
-    .btn-reset-image{
+    .reset-image-btn{
         height:50px; 
         width:50px; 
         background: var(--secondaryColor);
@@ -78,13 +78,12 @@
     <?php 
         $img_url = $this->session->userdata('user_img_url');
         if($img_url){
-            echo "<a class='btn btn-reset-image' id='btn-reset-image' title='Reset to default image' onclick='clearImage()'><i class='fa-solid fa-trash-can fa-lg'></i></a>";
+            echo "<a class='btn reset-image-btn' id='reset-image-btn' title='Reset to default image' onclick='clearImage()'><i class='fa-solid fa-trash-can fa-lg'></i></a>";
         }
     ?>
     <span class="status-holder">
         <span class="attach-upload-status success" id="header-progress"></span>
-        <a class="attach-upload-status failed" id="header-failed"></a>
-        <a class="attach-upload-status warning" id="header-warning"></a>
+        <a class="attach-upload-status failed" id="image-profile-failed-msg"></a>
     </span>
 
     <form method="POST" id="form-image-edit" action="/MyProfileController/edit_image">
@@ -108,7 +107,7 @@
                 document.getElementById('header-progress').innerHTML = `<span class="box-loading"><div role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="${progress}" style="--value: ${progress}"></div></span>`
             }, 
             function (error) {
-                document.getElementById('header-failed').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is ${error.message}</h6></span>`
+                document.getElementById('image-profile-failed-msg').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is ${error.message}</h6></span>`
             }, 
             function () {
                 uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
@@ -118,7 +117,7 @@
                 });
             });
         } else {
-            document.getElementById('header-failed').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Maximum size is ${maxSize} mb </h6></span>`
+            document.getElementById('image-profile-failed-msg').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Maximum size is ${maxSize} mb </h6></span>`
         }
     }
 
@@ -129,7 +128,7 @@
         desertRef.delete().then(() => {
             document.getElementById("header-progress").innerHTML = `<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Success.png"><h6>Profile image has been set to default</h6></span>`
         }).catch((error) => {
-            document.getElementById("header-failed").innerHTML = `<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Failed.png"><h6>${error}</h6></span>`
+            document.getElementById("image-profile-failed-msg").innerHTML = `<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Failed.png"><h6>${error}</h6></span>`
         });
 
         document.getElementById("profile_image_url").value = null
