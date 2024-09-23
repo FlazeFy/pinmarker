@@ -30,7 +30,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-    <div class="row">
+    <div class="row w-100" style="height:100%; position:fixed;">
         <div class="col-lg-9 col-md-7 col-sm-12 col-12">
             <?php $this->load->view('global_maps/maps'); ?>
         </div>

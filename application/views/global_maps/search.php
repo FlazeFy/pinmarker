@@ -1,4 +1,4 @@
-<input class="form-control w-100 <?php if(!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" placeholder="Search by list name or list tag..." style="font-weight: <?php if(!$is_mobile_device){ echo "700; font-size: var(--textJumbo)"; } else { echo "500; font-size: var(--textXLG)"; } ?>" id="search_input" value="<?= $dt_active_search ?>">
+<input class="form-control w-100 mt-3 <?php if(!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" placeholder="Search by list name or list tag..." style="font-weight: <?php if(!$is_mobile_device){ echo "700; font-size: var(--textJumbo)"; } else { echo "500; font-size: var(--textXLG)"; } ?>" id="search_input" value="<?= $dt_active_search ?>">
 
 <script>
     $(document).ready(function() {
