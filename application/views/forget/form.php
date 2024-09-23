@@ -11,7 +11,7 @@
             <div style="height:90vh; padding-top:calc(var(--spaceJumbo)*3);" id="fu_form">
                 <div class="d-flex justify-content-between">
                     <h2>Forget Password</h2>  
-                    <a class="btn btn-dark pt-2 px-4 rounded-pill" href="/LoginController">Back to Login</a>
+                    <a class="btn btn-danger pt-2 px-4 rounded-pill" href="/LoginController"><i class="fa-regular fa-circle-xmark"></i> Back to Login</a>
                 </div><br>
                 <p>Give us your username and email to change the password. Before the process begin, we must validate that you're the owner. The token validation will send to your email or telegram</p>
                 <label>Username</label>
@@ -20,7 +20,7 @@
                 <label>Email</label>
                 <input name="email" id="email" type="email" class="form-control"/>
                 
-                <a class="btn btn-dark rounded-pill px-3" id="check-account-btn" onclick="searchUser()"><i class="fa-solid fa-magnifying-glass me-2"></i> Check Account</a>
+                <a class="btn btn-success rounded-pill px-3" id="check-account-btn" onclick="searchUser()"><i class="fa-solid fa-magnifying-glass me-2"></i> Check Account</a>
             </div>
             <div style="height:90vh; padding-top:calc(var(--spaceJumbo)*3); display:none;" id="validate_holder">
                 <div class="text-center">

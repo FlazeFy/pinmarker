@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PinMarker | Global List</title>
+    <title>PinMarker | Global Maps</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,27 +28,17 @@
 
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <!-- Isotope -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('.grid').isotope({
-                itemSelector: '.grid-item',
-                layoutMode: 'masonry', 
-            });
-        })
-    </script>
 </head>
 <body>
-    <div class="content">
-        <?php $this->load->view('others/navbar'); ?>
-        <h2 class="text-center" style="font-weight:600;">Global List</h2><br>
-        <a class="btn btn-success btn-main-page rounded-pill" href="/AddGlobalListController" id='add-global-list-btn'><i class="fa-solid fa-plus"></i> Add Global List</a>
-        <?php $this->load->view('global/global_list'); ?>
+    <div class="row">
+        <div class="col-lg-9 col-md-7 col-sm-12 col-12">
+            <?php $this->load->view('global_maps/maps'); ?>
+        </div>
+        <div class="col-lg-3 col-md-5 col-sm-12 col-12">
+            <?php $this->load->view('global_maps/search'); ?>
+            <?php $this->load->view('global_maps/list'); ?>
+        </div>
     </div>
-
     <?php 
         if($this->session->flashdata('message_error')){
             echo "
@@ -74,5 +64,4 @@
         }
     ?>
 </body>
-<?php $this->load->view('others/footer'); ?>
 </html>
