@@ -5,7 +5,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addGalleriesLabel">Add Galleries</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-add-gallery-modal-btn'></button>
             </div>
             <div class="modal-body">
                 <form class="d-inline" method="POST" action="/DetailController/add_gallery/<?= $dt_detail_pin->id ?>">

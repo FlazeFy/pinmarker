@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addGalleriesLabel">Set Category</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clear_form_add_category()"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-manage-cat-modal-btn' onclick="clear_form_add_category()"></button>
             </div>
             <div class="modal-body">
                 <?php
@@ -94,7 +94,7 @@
                                     <option value='purple'>Purple</option>
                                     <option value='green'>Green</option>
                                 </select>
-                                <button class='btn btn-success' style='width:180px;' type='submit'><i class='fa-solid fa-floppy-disk'></i> Save</button>
+                                <button class='btn btn-success' style='width:180px;' id='btn-submit' type='submit'><i class='fa-solid fa-floppy-disk'></i> Save</button>
                             </div>
                         </form>
                     </td>

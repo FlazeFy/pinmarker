@@ -82,7 +82,7 @@
             </thead>
             <tbody style="font-size: var(--textSM);"></tbody>
         </table>
-        <button class="btn btn-success rounded-pill w-100 py-2 px-3"><i class="fa-solid fa-floppy-disk"></i> Save All Marker</button>
+        <button class="btn btn-success rounded-pill w-100 py-2 px-3" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Save All Marker</button>
     </form>
 </div>
 
@@ -91,7 +91,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addGalleriesLabel">Import Marker</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-import-marker-modal-btn'></button>
             </div>
             <div class="modal-body">
                 <a class="btn btn-dark w-100 rounded-pill py-2 px-3 mb-2" id="download-template-btn"><i class="fa-solid fa-download"></i> Download Template</a>
@@ -122,7 +122,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addGalleriesLabel">Imported Marker Map</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-import-map-modal-btn'></button>
             </div>
             <div class="modal-body">
                 <div class="position-relative">

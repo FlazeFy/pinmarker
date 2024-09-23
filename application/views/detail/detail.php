@@ -43,13 +43,13 @@
         <form action="/DetailController/edit_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
             <?php 
                 if($this->session->userdata('is_edit_mode') == false){
-                    echo "<button class='btn btn-light mb-4 rounded-pill py-3 px-4 me-1'><i class='fa-solid fa-pen-to-square'></i>";
+                    echo "<button class='btn btn-light mb-4 rounded-pill py-3 px-4 me-1' id='toggle-edit-btn'><i class='fa-solid fa-pen-to-square'></i>";
                     if(!$is_mobile_device){
                         echo " Switch to Edit Mode";
                     }
                     echo "</button>";
                 } else {
-                    echo "<button class='btn btn-danger mb-4 rounded-pill py-3 px-4 me-1'><i class='fa-solid fa-pen-to-square'></i>";
+                    echo "<button class='btn btn-danger mb-4 rounded-pill py-3 px-4 me-1' id='toggle-edit-btn'><i class='fa-solid fa-pen-to-square'></i>";
                     if(!$is_mobile_device){
                         echo " Back to View Mode";
                     }
@@ -60,13 +60,13 @@
         <form action="/DetailController/favorite_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
             <?php 
                 if($dt_detail_pin->is_favorite == '1'){
-                    echo "<input name='is_favorite' value='0' hidden><button class='btn btn-dark mb-4 rounded-pill py-3 px-4 me-1'><i class='fa-solid fa-heart'></i>";
+                    echo "<input name='is_favorite' value='0' hidden><button class='btn btn-dark mb-4 rounded-pill py-3 px-4 me-1' id='toggle-favorite-btn'><i class='fa-solid fa-heart'></i>";
                     if(!$is_mobile_device){
                         echo " Saved to Favorite";
                     }
                     echo "</button>";
                 } else {
-                    echo "<input name='is_favorite' value='1' hidden><button class='btn btn-light mb-4 rounded-pill py-3 px-4 me-1'><i class='fa-solid fa-heart'></i>";
+                    echo "<input name='is_favorite' value='1' hidden><button class='btn btn-light mb-4 rounded-pill py-3 px-4 me-1' id='toggle-favorite-btn'><i class='fa-solid fa-heart'></i>";
                     if(!$is_mobile_device){
                         echo " Add to Favorite";
                     }
@@ -224,7 +224,7 @@
 
         <?php 
             if($is_edit){
-                echo "<button class='btn btn-success rounded-pill w-100 py-3 my-4' type='Submit'><i class='fa-solid fa-floppy-disk'></i> Save Marker</button>";
+                echo "<button class='btn btn-success rounded-pill w-100 py-3 my-4' type='Submit' id='submit-btn'><i class='fa-solid fa-floppy-disk'></i> Save Marker</button>";
             } 
         ?>
     </form>

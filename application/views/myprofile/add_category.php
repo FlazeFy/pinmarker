@@ -7,7 +7,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addGalleriesLabel">Add Category</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" id='close-add-category-modal-btn' aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form method='POST' action='/MyProfileController/add_category'>
@@ -18,7 +18,7 @@
                     </select>
                     <input name="dictionary_name" id="dictionary_name" type="text" class="form-control form-validated" maxlength="36" required/>
                     <div id="form-dictionary-color"></div>
-                    <button class='btn btn-success rounded-pill w-100' style='width:180px;' type='submit'><i class='fa-solid fa-floppy-disk'></i> Save</button>
+                    <button class='btn btn-success rounded-pill w-100' style='width:180px;' type='submit' id='submit-category-btn'><i class='fa-solid fa-floppy-disk'></i> Save</button>
                 </form>
             </div>
         </div>

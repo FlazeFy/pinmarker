@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Track History</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-track-history-modal-btn'></button>
             </div>
             <div class="modal-body">
                 <h6>History From</h6>
@@ -37,11 +37,11 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger rounded-pill py-3 px-4" data-bs-dismiss="modal"><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
-                <button type="button" class="btn btn-success rounded-pill py-3 px-4" data-bs-dismiss="modal"><i class="fa-solid fa-file"></i> Save as CSV</button>
-                <button type="button" class="btn btn-dark rounded-pill py-3 px-4" data-bs-dismiss="modal"><i class="fa-solid fa-arrow-left"></i> Previous Day</button>
-                <button type="button" class="btn btn-dark rounded-pill py-3 px-4" data-bs-dismiss="modal"><i class="fa-solid fa-play"></i> This Day</button>
-                <button type="button" class="btn btn-dark rounded-pill py-3 px-4" data-bs-dismiss="modal">Next Day <i class="fa-solid fa-arrow-right"></i></button>
+                <button type="button" class="btn btn-danger rounded-pill py-3 px-4" id='refresh-track-btn'><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
+                <button type="button" class="btn btn-success rounded-pill py-3 px-4" id='save-track-btn'><i class="fa-solid fa-file"></i> Save as CSV</button>
+                <button type="button" class="btn btn-dark rounded-pill py-3 px-4" id='prev-day-btn'><i class="fa-solid fa-arrow-left"></i> Previous Day</button>
+                <button type="button" class="btn btn-dark rounded-pill py-3 px-4" id='this-day-btn'><i class="fa-solid fa-play"></i> This Day</button>
+                <button type="button" class="btn btn-dark rounded-pill py-3 px-4" id='next-day-btn'>Next Day <i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>
     </div>

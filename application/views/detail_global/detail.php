@@ -21,9 +21,9 @@
                             <a class='btn btn-success rounded-pill px-4 py-2 ms-1' id='save-all-to-my-pin-btn'><i class='fa-solid fa-bookmark'></i></a>
                             <form action='/DetailGlobalController/edit_toggle/$dt_detail->id' method='POST' class='d-inline' id='remove-list-form'>";
                                 if($this->session->userdata('is_global_edit_mode') == false){
-                                    echo "<button class='btn btn-light rounded-pill px-4 py-2'><i class='fa-solid fa-pen-to-square'></i></button>";
+                                    echo "<button class='btn btn-light rounded-pill px-4 py-2' id='toggle-edit-btn'><i class='fa-solid fa-pen-to-square'></i></button>";
                                 } else {
-                                    echo "<button class='btn btn-dark rounded-pill px-4 py-2'><i class='fa-solid fa-pen-to-square'></i></button>";
+                                    echo "<button class='btn btn-dark rounded-pill px-4 py-2' id='toggle-edit-btn'><i class='fa-solid fa-pen-to-square'></i></button>";
                                 }
                             echo"
                             </form>
@@ -62,9 +62,9 @@
                     echo "
                         <form action='/DetailGlobalController/edit_toggle/$dt_detail->id' method='POST' class='d-inline ms-2'>";
                             if($this->session->userdata('is_global_edit_mode') == false){
-                                echo "<button class='btn btn-light rounded-pill px-3 py-2 me-2' id='open-edit-mode-btn'><i class='fa-solid fa-pen-to-square'></i> Open Edit Mode</button>";
+                                echo "<button class='btn btn-light rounded-pill px-3 py-2 me-2' id='toggle-edit-btn'><i class='fa-solid fa-pen-to-square'></i> Open Edit Mode</button>";
                             } else {
-                                echo "<button class='btn btn-danger rounded-pill px-3 py-2 me-2' id='close-edit-mode-btn'><i class='fa-solid fa-pen-to-square'></i> Close Edit Mode</button>";
+                                echo "<button class='btn btn-danger rounded-pill px-3 py-2 me-2' id='toggle-edit-btn'><i class='fa-solid fa-pen-to-square'></i> Close Edit Mode</button>";
                             }
                         echo"</form>
                     ";
@@ -159,7 +159,7 @@
                 }
             ?>
             <form action="/DetailGlobalController/view_global_list_pin/<?= $dt_detail->id ?>" method="POST" class="d-inline">
-                <button class='btn btn-dark rounded-pill px-3 py-2'><i class='fa-solid fa-table'></i> 
+                <button class='btn btn-dark rounded-pill px-3 py-2' id='toggle-view-btn'><i class='fa-solid fa-table'></i> 
                     <?php if (!$is_mobile_device): ?>
                         See <?php if($view == 'table'){ echo'Catalog'; } else { echo 'Table'; } ?> View
                     <?php endif; ?>

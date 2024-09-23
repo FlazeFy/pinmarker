@@ -27,10 +27,10 @@
                             </td>
                             <td>
                                 <form action='/TrashController/recover/$dt->id' method='POST'>
-                                    <button class='btn btn-success w-100 rounded-pill' type='submit'><i class='fa-solid fa-rotate-left'></i> Recover</button>
+                                    <button class='btn btn-success w-100 rounded-pill recover-pin-btn' type='submit'><i class='fa-solid fa-rotate-left'></i> Recover</button>
                                 </form>
                             </td>
-                            <td><button class='btn btn-danger w-100 rounded-pill'><i class='fa-solid fa-fire-flame-curved'></i> Destroy</button></td>
+                            <td><button class='btn btn-danger w-100 rounded-pill delete-pin-btn'><i class='fa-solid fa-fire-flame-curved'></i> Destroy</button></td>
                         </tr>
                     ";
                 }

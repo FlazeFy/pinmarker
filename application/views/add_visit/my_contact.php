@@ -2,8 +2,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addGalleriesLabel">Import Marker</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">My Person in Touch</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-my-person-modal-btn'></button>
             </div>
             <div class="modal-body">
                 <?php 

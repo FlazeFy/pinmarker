@@ -18,13 +18,13 @@
                         <p class='m-0'>$dt->gallery_caption</p>
                         <p class='m-0' style='font-size:var(--textSM);'>Posted at "; echo date('Y-m-d H:i',strtotime($dt->created_at)); echo"</p>
                         </button>
-                        <button class='btn btn-danger position-absolute rounded-circle' style='left:0; top:-10px;' data-bs-toggle='modal' data-bs-target='#modal_delete_gallery_$dt->id'><i class='fa-solid fa-trash'></i></button>
+                        <button class='btn btn-danger position-absolute rounded-circle delete-gallery-btn' style='left:0; top:-10px;' data-bs-toggle='modal' data-bs-target='#modal_delete_gallery_$dt->id'><i class='fa-solid fa-trash'></i></button>
                         <div class='modal fade' id='modal_delete_gallery_$dt->id' tabindex='-1' aria-labelledby='addGalleriesLabel' aria-hidden='true'>
                         <div class='modal-dialog'>
                             <div class='modal-content'>
                                 <div class='modal-header'>
                                     <h5 class='modal-title' id='addGalleriesLabel'>Delete Gallery</h5>
-                                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                    <button type='button' class='btn-close' data-bs-dismiss='modal' id='close-delete-gallery-modal-btn' aria-label='Close'></button>
                                 </div>
                                 <div class='modal-body text-center'>
                                     <p>Are you sure want to delete this gallery?</p>
@@ -42,7 +42,7 @@
                             <div class='modal-content'>
                             <div class='modal-header'>
                                 <h5 class='modal-title' id='exampleModalLabel'>$dt->gallery_caption</h5>
-                                <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                <button type='button' class='btn-close' data-bs-dismiss='modal' id='close-gallery-caption-modal-btn' aria-label='Close'></button>
                             </div>
                             <div class='modal-body'>";
                                 if($dt->gallery_type == "image"){

@@ -28,7 +28,7 @@
                                 <span class='date-target'>$dt->last_login</span>
                             </td>
                             <td style='max-width:100px;'>
-                                <button class='btn btn-danger w-100 rounded-pill mb-2 destroy-btn'><i class='fa-solid fa-fire-flame-curved'></i></button>";
+                                <button class='btn btn-danger w-100 rounded-pill mb-2 destroy-btn delete-user-btn'><i class='fa-solid fa-fire-flame-curved'></i></button>";
                                 if($dt->telegram_user_id && $dt->telegram_is_valid){
                                     echo "<button class='btn btn-dark w-100 rounded-pill mb-2 chat-btn' data-bs-toggle='modal' data-bs-target='#addChatModal'><i class='fa-brands fa-telegram'></i></button>";
                                 }
@@ -57,7 +57,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addGalleriesLabel">Send Chat</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" id='close-chat-modal-btn' aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <h6>Send to : @<span id="username-holder-chat"></span></h6>
@@ -66,7 +66,7 @@
                     <input id="username_chat" name="username" hidden/>
                     <textarea name="chat" id="chat" rows="5" class="form-control" maxlength="1000"></textarea>
                     
-                    <button class="btn btn-dark w-100 rounded-pill py-2 px-3"><i class="fa-solid fa-paper-plane"></i> Send Chat</button>
+                    <button class="btn btn-dark w-100 rounded-pill py-2 px-3" id='submit-chat-btn'><i class="fa-solid fa-paper-plane"></i> Send Chat</button>
                 </form>
             </div>
         </div>

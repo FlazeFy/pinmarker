@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Related Pin x Track</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-related-pin-modal-btn'></button>
             </div>
             <div class="modal-body">
                 <h6>From : <span id="coor_now"></span></h6>

@@ -282,7 +282,7 @@
                 count_visit = ''
             }
             $('#save-visit-btn-holder').html(`
-                <button class="btn btn-success rounded-pill w-100 py-3" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save ${count_visit}Visit</button>
+                <button class="btn btn-success rounded-pill w-100 py-3" type="Submit" id='submit-btn'><i class="fa-solid fa-floppy-disk"></i> Save ${count_visit}Visit</button>
             `)
         })
 

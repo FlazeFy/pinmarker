@@ -8,7 +8,7 @@
             foreach($dt_my_gallery as $dt){
                 if($pin_name_before == "" || $pin_name_before != $dt->pin_name){
                     echo "
-                    <button class='btn btn-collapse' title='Click to open / close pin gallery' data-bs-toggle='collapse' data-bs-target='#collapse-$dt->pin_id'>
+                    <button class='btn btn-collapse collapse-gallery-btn' title='Click to open / close pin gallery' data-bs-toggle='collapse' data-bs-target='#collapse-$dt->pin_id'>
                         <h6 class='mb-0'>- Found in $dt->pin_name <span class='bg-dark text-white px-2 py-1 rounded-pill'>$dt->pin_category</span></h6>
                     </button>
                     <div class='collapse "; if($i == 0){ echo "show"; } echo"' id='collapse-$dt->pin_id' data-bs-parent='#accordionGallery'>
@@ -18,7 +18,7 @@
                 }
                 echo "
                     <div class='col-lg-4 col-md-6 col-sm-12 mb-3'>
-                        <button class='gallery-btn' data-bs-toggle='modal' data-bs-target='#gallery_modal_$dt->id'>";
+                        <button class='gallery-btn open-gallery-btn' data-bs-toggle='modal' data-bs-target='#gallery_modal_$dt->id'>";
 
                         if($dt->gallery_type == "image"){
                             echo "<img class='rounded img img-fluid d-block mx-auto' src='$dt->gallery_url' alt='$dt->gallery_url'>";
@@ -40,7 +40,7 @@
                             <div class='modal-content'>
                                 <div class='modal-header'>
                                     <h5 class='modal-title' id='exampleModalLabel'>$dt->gallery_caption</h5>
-                                    <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                    <button type='button' class='btn-close close-gallery-btn' data-bs-dismiss='modal' aria-label='Close'></button>
                                 </div>
                                 <div class='modal-body'>";
                                     if($dt->gallery_type == "image"){

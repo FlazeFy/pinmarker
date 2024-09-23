@@ -14,7 +14,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addGalleriesLabel">All Location of <b><?= $dt_detail->list_name ?></b></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-whole-map-modal-btn'></button>
             </div>
             <div class="modal-body">
                 <div id="whole-map-board"></div>

@@ -58,17 +58,17 @@
                         if($this->session->userdata('is_catalog_view') == false && !$this->session->userdata('open_pin_list_category')){
                             echo "
                             <form class='d-inline' method='POST' action='/ListController/view_toogle'>
-                                <button class='btn btn-dark rounded-pill btn-main-page me-2' style='min-width:160px;'><i class='fa-solid fa-folder-open'></i> Catalog</button>
+                                <button class='btn btn-dark rounded-pill btn-main-page me-2' style='min-width:160px;' id='toggle-view-btn'><i class='fa-solid fa-folder-open'></i> Catalog</button>
                             </form>";
                         } else if(!$this->session->userdata('open_pin_list_category')) {
                             echo "
                             <form class='d-inline' method='POST' action='/ListController/view_toogle'>
-                                <button class='btn btn-dark rounded-pill btn-main-page me-2' style='min-width:160px;'><i class='fa-solid fa-list'></i> List</button>
+                                <button class='btn btn-dark rounded-pill btn-main-page me-2' style='min-width:160px;' id='toggle-view-btn'><i class='fa-solid fa-list'></i> List</button>
                             </form>";
                         } else {
                             echo "
                             <form class='d-inline' method='POST' action='/ListController/view_catalog_detail/back'>
-                                <button class='btn btn-danger rounded-pill btn-main-page'><i class='fa-solid fa-arrow-left'></i> Back</button>
+                                <button class='btn btn-danger rounded-pill btn-main-page' id='toggle-view-btn'><i class='fa-solid fa-arrow-left'></i> Back</button>
                             </form>";
                         }
                     ?>

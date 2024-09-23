@@ -78,10 +78,10 @@
                                     </td>
                                     <td style='max-width:100px;'>
                                         <input class='id_holder' value='$dt->id' hidden>
-                                        <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-pen-to-square'></i></button>
+                                        <button class='btn btn-dark w-100 rounded-pill mb-2 edit-pin-btn'><i class='fa-solid fa-pen-to-square'></i></button>
                                         <button class='btn btn-danger w-100 rounded-pill mb-2 delete-pin'><i class='fa-solid fa-trash'></i></button>
-                                        <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-paper-plane'></i></button>
-                                        <button class='btn btn-dark w-100 rounded-pill mb-2'><i class='fa-solid fa-map'></i></button>
+                                        <button class='btn btn-dark w-100 rounded-pill mb-2 share-pin-btn'><i class='fa-solid fa-paper-plane'></i></button>
+                                        <button class='btn btn-dark w-100 rounded-pill mb-2 see-map-btn'><i class='fa-solid fa-map'></i></button>
                                     </td>
                                 </tr>
                             ";
@@ -203,7 +203,7 @@
                                 }
                             echo"</p>
                             <form method='POST' action='/ListController/view_catalog_detail/$dt->dictionary_name' class='d-inline'>
-                                <button class='btn btn-dark rounded-pill px-2 py-1 me-2' href='/DetailController/'><i class='fa-solid fa-circle-info'></i> See Detail</button>
+                                <button class='btn btn-dark rounded-pill px-2 py-1 me-2 see-detail-btn' href='/DetailController/'><i class='fa-solid fa-circle-info'></i> See Detail</button>
                             </form>
                             <a class='btn btn-dark rounded-pill px-2 py-1 publish-to-global'><i class='fa-solid fa-globe'></i> Publish to Global</a>
                         </div>

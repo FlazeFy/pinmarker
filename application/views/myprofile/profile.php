@@ -18,7 +18,7 @@
     <label>Email</label>
     <input name="email" id="email" type="email" value="<?= $dt_my_profile->email ?>" class="form-control"/>
     
-    <button class="btn btn-success rounded-pill w-100 mt-3" type="submit">Save Changes</button>
+    <button class="btn btn-success rounded-pill w-100 mt-3" type="submit" id='submit-profile-btn'>Save Changes</button>
 </form><hr>
 <div class="d-flex justify-content-between">
     <label>Telegram ID</label>
@@ -32,7 +32,7 @@
             if($dt_my_profile->telegram_is_valid == 0 && !$dt_active_telegram_user_id_request){
                 echo "<i class='fa-solid fa-triangle-exclamation'></i> Your telegram ID is not validated yet! 
                 <form action='/MyProfileController/send_validation_token' method='POST'>
-                    <button class='btn btn-link' type='submit' style='font-size: var(--textXMD);'><i class='fa-solid fa-arrow-right'></i> Send Validation Token</button>
+                    <button class='btn btn-link' type='submit' style='font-size: var(--textXMD);' id='send-validation-token-btn'><i class='fa-solid fa-arrow-right'></i> Send Validation Token</button>
                 </form>";
             } else if($dt_active_telegram_user_id_request){
                 echo "
@@ -40,7 +40,7 @@
                     <i class='fa-solid fa-triangle-exclamation'></i> We have send you Token validation to related user ID. Please fill this token below! 
                     <form action='/MyProfileController/validate_token_telegram' method='POST'>
                         <input class='form-control bg-transparent' id='token' name='token' type='text'>
-                        <button class='btn btn-link' type='submit' style='font-size: var(--textXMD);'><i class='fa-solid fa-arrow-right'></i> Validate Token</button>
+                        <button class='btn btn-link' type='submit' style='font-size: var(--textXMD);' id='verify-token-btn'><i class='fa-solid fa-arrow-right'></i> Validate Token</button>
                     </form>
                 </div>";
             }
@@ -62,7 +62,7 @@
             $("#submit_telegram_user_id_edit").empty().append(`
                 <form action='/MyProfileController/edit_telegram_id' method='POST'>
                     <input hidden value='${tele_id_new}' name='telegram_user_id' id='telegram_user_id'>
-                    <button class='btn btn-success' type='submit' style='font-size: var(--textXMD);'><i class='fa-solid fa-floppy-disk'></i> Save Changes</button>
+                    <button class='btn btn-success' type='submit' style='font-size: var(--textXMD);' id='submit-telegram-btn'><i class='fa-solid fa-floppy-disk'></i> Save Changes</button>
                 </form>
             `)
         } else {

@@ -35,7 +35,7 @@
                 echo "PinMarker";
             }
         ?></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" id='expand-navbar-btn' aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -111,14 +111,14 @@
         <div class="modal-content shadow" style="border-radius:15px; border: 3px solid black;">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Sign Out</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-sign-out-modal-btn'></button>
             </div>
             <div class="modal-body">
                 <p>Are you sure want to leave this app?</p>
             </div>
             <div class="modal-footer">
                 <form action="/LoginController/logout" method="POST">
-                    <button type="submit" class="btn btn-danger rounded-pill px-3 py-2"><i class="fa-regular fa-circle-xmark"></i> Yes, Sign Out</button>
+                    <button type="submit" class="btn btn-danger rounded-pill px-3 py-2" id='submit-sign-out-btn'><i class="fa-regular fa-circle-xmark"></i> Yes, Sign Out</button>
                 </form>
             </div>
         </div>
