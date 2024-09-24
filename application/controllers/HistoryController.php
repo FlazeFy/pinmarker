@@ -63,7 +63,7 @@ class HistoryController extends CI_Controller {
 			$time = time();
 			$datetime = date("Y-m-d H:i:s");
 			$options = new Options();
-			$options->set('defaultFont', 'Courier');
+			$options->set('defaultFont', 'Helvetica');
 			$dompdf = new Dompdf($options);
 			$body = "";
 
@@ -98,35 +98,10 @@ class HistoryController extends CI_Controller {
 
 			$html = "
 			<html>
-				<head>
-					<title>$user->username's Marker</title>
-					<style>
-						th, td{
-							border: 1px solid black;
-						}
-						thead {
-							font-size:15px;
-						}
-						tbody {
-							font-size:12px;
-						}
-						tbody td {
-							padding: 3px;
-						}
-						table {
-							border-collapse: collapse;
-							width:100%;
-						}
-						h6 {
-							font-size:12.5px;
-							margin:0;
-						}
-					</style>
-				</head>
+				".generate_document_template("html_header",null)."
 				<body>
-					<h1>PinMarker</h1>
-					<hr>
-					<h2>Visit List</h2>
+					".generate_document_template("document_header",null)."
+					<h4>Visit List</h4>
 					<table>
 						<thead>
 							<tr>
@@ -139,16 +114,12 @@ class HistoryController extends CI_Controller {
 						</thead>
 						<tbody>".$body."</tbody>
 					</table>
-					<hr>
-					<div style='font-size: 12px; font-style:italic;'>
-						<p style='float:left;'>PinMarker parts of FlazenApps</p>
-						<p style='float:right;'>Generated at $datetime by $user->username</p>
-					</div>
+					".generate_document_template("document_footer",$user->username)."
 				</body>
 			</html>";
 
 			$dompdf->loadHtml($html);
-			$dompdf->setPaper('A4', 'landscape');
+			$dompdf->setPaper('A4', 'portrait');
 			$dompdf->render();
 
 			$pdfFilePath = "my_visit_$user->username-$time.pdf";

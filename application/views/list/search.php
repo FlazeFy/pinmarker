@@ -11,7 +11,7 @@
                 ?>" required>
             <label for="floatingSelect" class="fw-normal">Filter By Name</label>
         </div>
-        <button class="btn btn-light m-0 position-absolute" style="top: 15px; right: 10px;" id='search-btn' type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+        <button class="btn btn-success m-0 position-absolute" style="top: 15px; right: 10px;" id='search-btn' type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
     </form>
     <form action="/MapsController/reset_search_pin_name" method="POST">
         <input hidden name="page" value="List">

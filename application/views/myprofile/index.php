@@ -18,6 +18,7 @@
 
     <!-- Jquery -->
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
 
     <!--Apex Chart-->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -68,7 +69,7 @@
                                     <a aria-current='page' id='help-section-btn'>Help Center</a>
                                 </div>
                                 <div class=''>
-                                    <a aria-current='page' class='btn text-white btn-danger py-2' id='sign-out-btn' style='border-radius:var(--roundedLG);' data-bs-toggle='modal' data-bs-target='#signOutModal'>Sign Out</a>
+                                    <a aria-current='page' class='btn text-white btn-danger py-2' id='sign-out-btn' style='border-radius:var(--roundedLG);' data-bs-toggle='modal' data-bs-target='#signOutModal'><i class='fa-regular fa-circle-xmark'></i> Sign Out</a>
                                 </div>
                             </nav>
                             <div id='user_manage_section'>";

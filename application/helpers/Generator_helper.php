@@ -71,3 +71,64 @@ if (!function_exists('generate_message')){
         return $msg;
     }
 }
+
+if (!function_exists('generate_document_template')){
+    function generate_document_template($type,$username){
+        if($type == "html_header"){
+            $msg = "
+                <head>
+                    <title>Pinmarker</title>
+                    <style>
+                        th, td{
+                            border: 1px solid black;
+                        }
+                        thead {
+                            font-size:13px;
+                        }
+                        tbody {
+                            font-size:11px;
+                        }
+                        tbody td {
+                            padding: 3px;
+                        }
+                        table {
+                            border-collapse: collapse;
+                            width:100%;
+                        }
+                        h5 {
+                            font-size:15px;
+                            margin-bottom:6px !important;
+                        }
+                        h6 {
+                            font-size:12px;
+                            margin:0 !important;
+                        }
+                        p {
+                            font-size:11.5px;
+                            margin:0 !important;
+                        }
+                    </style>
+                </head>
+            ";
+        } else if($type == "document_header"){
+            $msg = "
+                <div style='text-align:center;'>
+                    <h1 style='margin:0;'>PinMarker</h1>
+                    <h3 style='font-style:italic; margin:0; color:grey;'>- Marks Your World -</h3>
+                    <br><hr>
+                <div>
+            ";
+        } else if($type == "document_footer"){
+            $datetime = date("Y-m-d H:i");
+            $msg = "
+                <br><hr><br>
+                <div style='font-size: 12px; font-style:italic;'>
+                    <p style='float:left;'>PinMarker parts of FlazenApps</p>
+                    <p style='float:right;'>Generated at $datetime by $username</p>
+                </div>
+            ";
+        }
+        
+        return $msg;
+    }
+}

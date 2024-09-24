@@ -78,3 +78,37 @@
         }
     ?>
 </div>
+
+<script>
+    $(document).ready(function() {
+        loading() 
+        
+        var $holder = $('.accordion')
+        $holder.imagesLoaded(function() {
+            checkVideos()
+        });
+
+        function checkVideos() {
+            let videos = $holder.find('video')
+            let loadedVideos = 0
+            let totalVideos = videos.length
+
+            if (totalVideos == 0) {
+                initIsotope()
+            } else {
+                videos.each(function() {
+                    this.onloadeddata = function() {
+                        loadedVideos++
+                        if (loadedVideos == totalVideos) {
+                            initIsotope()
+                        }
+                    }
+                })
+            }
+        }
+
+        function initIsotope() {
+            Swal.close()
+        }
+    });
+</script>

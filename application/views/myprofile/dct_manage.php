@@ -151,7 +151,7 @@
                         `,
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonText: "Continue Delete"
+                    confirmButtonText: "Continue delete"
                 })
                 .then((result) => {
                     if (result.isConfirmed) {

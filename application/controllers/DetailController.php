@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use Dompdf\Dompdf;
+use Telegram\Bot\Api;
+use Telegram\Bot\FileUpload\InputFile;
+use Dompdf\Options;
+
 class DetailController extends CI_Controller {
 	function __construct(){
 		parent::__construct();
@@ -11,9 +16,13 @@ class DetailController extends CI_Controller {
 		$this->load->model('GalleryModel');
 		$this->load->model('HistoryModel');
 		$this->load->model('MultiModel');
+		$this->load->model('TokenModel');
 
 		$this->load->helper('generator_helper');
 		$this->load->library('form_validation');
+
+		$telegram_token = $this->TokenModel->get_token('TELEGRAM_TOKEN');
+		$this->telegram = new Api($telegram_token);
 	}
 
 	public function view($id)
@@ -170,6 +179,141 @@ class DetailController extends CI_Controller {
 	public function navigate($id,$page){
 		$this->session->set_userdata('page_detail_history', $page);
 
+		redirect("DetailController/view/$id");
+	}
+
+	public function print_detail($id)
+	{		
+		$user_id = $this->session->userdata('user_id');
+		$dt_pin = $this->PinModel->get_pin_by_id($id);
+
+		if($dt_pin){
+			require 'vendor/autoload.php';
+
+			$dt_visit_history = $this->VisitModel->get_visit_history_by_pin_id($id, null, null);
+			$user = $this->AuthModel->get_user_by_id($user_id);
+			$time = time();
+			$datetime = date("Y-m-d H:i:s");
+			$options = new Options();
+			$options->set('defaultFont', 'Helvetica');
+			$dompdf = new Dompdf($options);
+			$body = "";
+
+			if(count($dt_visit_history) > 0){
+				foreach($dt_visit_history as $dt){
+					$body .= "
+					<tr>
+						<td>".($dt->visit_desc ?? '-')."</td>
+						<td>
+							<h6>Visit With : </h6>
+							".($dt->visit_with ?? '-')."
+							<h6>Visit By : </h6>
+							".($dt->visit_by ?? '-')."
+						</td>
+						<td>".date("Y-m-d H:i", strtotime($dt->created_at))."</td>
+					</tr>
+					";
+				}
+			} else {
+				$body = "
+				<tr>
+					<td colspan='3' style='font-style:italic; text-align:center;'>- No visit to show -</td>
+				</tr>
+				";
+			}
+
+			$pin_desc = "-";
+			$pin_call = "-";
+			$pin_email = "-";
+			$pin_address = "-";
+			$pin_person = "-";
+			$updated_at = "-";
+
+			if($dt_pin->pin_desc){
+				$pin_desc = $dt_pin->pin_desc;
+			} 
+			if($dt_pin->pin_call){
+				$pin_call = $dt_pin->pin_call;
+			} 
+			if($dt_pin->pin_email){
+				$pin_email = $dt_pin->pin_email;
+			} 
+			if($dt_pin->pin_person){
+				$pin_person = $dt_pin->pin_person;
+			} 
+			if($dt_pin->pin_address){
+				$pin_address = $dt_pin->pin_address;
+			} 
+			if($dt_pin->updated_at){
+				$updated_at = $dt_pin->updated_at;
+			} 
+
+			$html = "
+			<html>
+				".generate_document_template("html_header",null)."
+				<body>
+					".generate_document_template("document_header",null)."
+					<h4 style='text-align:left;'>Pin Detail</h4>
+					<div style='text-align:left;'>
+						<p style='font-weight:normal;'>Pin Name :  $dt_pin->pin_name</p>
+						<p style='font-weight:normal;'>Description : $pin_desc</p>
+						<p style='font-weight:normal;'>Category : $dt_pin->pin_category</p>
+						<p style='font-weight:normal;'>Coordinate : $dt_pin->pin_lat,$dt_pin->pin_long</p>
+						<p style='font-weight:normal;'>Address : $pin_address</p>
+						<h5>Contact</h5>
+						<p style='font-weight:normal;'>Person : $pin_person</p>
+						<p style='font-weight:normal;'>Email : $pin_email</p>
+						<p style='font-weight:normal;'>Call : $pin_call</p>
+						<h5>Props</h5>
+						<p style='font-weight:normal;'>Created At : $dt_pin->created_at</p>
+						<p style='font-weight:normal;'>Updated At : $updated_at</p>
+						<br>
+						<h6>Google Maps : <a style='font-weight:normal; color:blue	;'>https://www.google.com/maps/place/$dt_pin->pin_lat,$dt_pin->pin_long</a></h6>
+					</div>
+					<h4 style='text-align:left;'>Visit List</h4>
+					<table>
+						<thead>
+							<tr>
+								<th>Description</th>
+								<th>Info</th>
+								<th>Created At</th>
+							</tr>
+						</thead>
+						<tbody>
+							".$body."
+							<tr style='font-weight:bold;'>
+								<td colspan='2'>Total Visit</td>
+								<td>".count($dt_visit_history)."</td>
+							</tr>
+						</tbody>
+					</table>
+					".generate_document_template("document_footer",$user->username)."
+				</body>
+			</html>";
+
+			$dompdf->loadHtml($html);
+			$dompdf->setPaper('A4', 'portrait');
+			$dompdf->render();
+
+			$pdfFilePath = "detail-$dt_pin->pin_name-$user->username-$time.pdf";
+			$dompdf->stream($pdfFilePath, array("Attachment" => 0));
+
+			file_put_contents($pdfFilePath, $dompdf->output());
+			$inputFile = InputFile::create('./'.$pdfFilePath, $pdfFilePath);
+		
+			$this->telegram->sendDocument([
+				'chat_id' => $user->telegram_user_id,
+				'document' => $inputFile,
+				'caption' => "Hello <b>{$user->username}</b>, Here the Detail Pin you have generated",
+				'parse_mode' => 'HTML'
+			]);
+		
+			unlink($pdfFilePath);
+
+			$this->session->set_flashdata('message_success', generate_message(true,'generate','document',null));
+		} else {
+			$this->session->set_flashdata('message_error', generate_message(false,'generate','document','no data to generated'));
+		}
 		redirect("DetailController/view/$id");
 	}
 }

@@ -110,14 +110,18 @@
             ];
 			$this->db->where($condition);
 
-			$db_count = clone $this->db;
-            $total_rows = $db_count->get()->num_rows();
-            $total_pages = ceil($total_rows / $limit);
+			if($limit != null){
+				$db_count = clone $this->db;
+				$total_rows = $db_count->get()->num_rows();
+				$total_pages = ceil($total_rows / $limit);
 
-            $this->db->limit($limit, $start);
-            $data['data'] = $this->db->get()->result();
-            $data['total_page'] = $total_pages;
-            return $data;
+				$this->db->limit($limit, $start);
+				$data['data'] = $this->db->get()->result();
+				$data['total_page'] = $total_pages;
+			} else {
+				$data = $this->db->get()->result();
+			}
+			return $data;
 		}
 
         public function get_last_visit(){

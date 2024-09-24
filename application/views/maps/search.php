@@ -49,7 +49,7 @@
             ?>" required>
         <label for="floatingSelect" class="text-white fw-normal">Filter By Name</label>
     </div>
-    <button class="btn btn-light m-0" type="submit" id='search-btn'><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+    <button class="btn btn-success m-0" type="submit" id='search-btn'><i class="fa-solid fa-magnifying-glass"></i> Search</button>
 </form>
 <form autocomplete="off" action="/MapsController/reset_search_pin_name" method="POST">
     <input hidden name="page" value="Maps">

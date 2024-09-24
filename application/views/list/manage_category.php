@@ -53,7 +53,7 @@
                                 }
                             echo"
                                 <tr id='add_form_dct_holder'>
-                                    <td colspan='4'><a class='btn btn-dark w-100' id='add-category-btn' onclick='add_form_dct_category()'>Add Category</a></td>
+                                    <td colspan='4'><a class='btn btn-success w-100' id='add-category-btn' onclick='add_form_dct_category()'><i class='fa-regular fa-plus'></i> Add Category</a></td>
                                 </tr>
                             </tbody>
                         </table>";
@@ -174,7 +174,7 @@
                         `,
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonText: "Continue Delete"
+                    confirmButtonText: "Continue delete"
                 })
                 .then((result) => {
                     if (result.isConfirmed) {

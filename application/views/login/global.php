@@ -72,7 +72,7 @@
             <?php else: ?>
                 <h5 class="text-secondary mt-3">Or, search by maps</h5>
             <?php endif; ?>
-            <a class="btn btn-dark rounded-pill px-4 <?php if(!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> fw-bold" id='global-maps-btn' href="<?php if($dt_active_search){ echo"/GlobalMapsController/view/$dt_active_search"; } else { echo"/GlobalMapsController"; }?>">Open Global Maps</a>
+            <a class="btn btn-dark rounded-pill px-4 <?php if(!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> fw-bold" id='global-maps-btn' href="<?php if($dt_active_search){ echo"/GlobalMapsController/view/$dt_active_search"; } else { echo"/GlobalMapsController"; }?>"><i class="fa-solid fa-earth-americas"></i> Open Global Maps</a>
         </div>
     </div>
     <?php if (!$is_mobile_device): ?>
