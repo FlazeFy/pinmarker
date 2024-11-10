@@ -52,6 +52,25 @@
 			return $data = $this->db->get()->result();
 		}
 
+		public function get_visit_by_id($id){
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+
+			$this->db->select('pin_name, pin_desc, pin_lat, pin_long, pin_category, pin.id as pin_id, visit_desc, visit_by, visit_with, pin.created_at, pin.updated_at');
+			$this->db->from($this->table);
+			$this->db->join('pin','visit.pin_id = pin.id', 'left');
+			$condition = [
+                'pin.deleted_at' => null,
+				'visit.id' => $id,
+				'pin.created_by' => $user_id,
+				'visit.created_by' => $user_id
+            ];
+			$this->db->where($condition);
+            $this->db->order_by('visit.created_at','desc');
+			$this->db->limit(1);
+
+			return $data = $this->db->get()->row();
+		}
+
 		public function get_total_all(){
 			$this->db->select('COUNT(1) as total');
 			$this->db->from($this->table);
@@ -81,7 +100,7 @@
 
 			$this->db->select("$ctx as context, COUNT(1) as total");
 			$this->db->from('pin');
-            $this->db->join('visit','visit.pin_id = pin.id','left');
+            $this->db->join('visit','visit.pin_id = pin.id', $ctx == 'pin_category' || $ctx == 'visit_by' ?'inner':'left');
 			$condition['deleted_at'] = null; 
 			if($this->role_key == 1){
 				$condition['pin.created_by'] = $this->session->userdata(self::SESSION_KEY); 

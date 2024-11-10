@@ -289,7 +289,7 @@
                 ?>
             ],
             eventClick:  function(info, jsEvent, view) {
-                window.location.href = "http://127.0.0.1:8000/visit/detail/" +info.event.extendedProps.id;
+                window.location.href = "/DetailVisitController/view/" +info.event.extendedProps.id;
             },
         });
         calendar.render();

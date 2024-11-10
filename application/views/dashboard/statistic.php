@@ -8,8 +8,8 @@
     </div>
     <div class="col-lg-4 col-md-6 col-sm-12 p-2 mx-auto">
         <?php
-            $stats['data'] = $dt_get_stats_total_visit_by_category;
-            $stats['ctx'] = 'total_visit_by_category';
+            $stats['data'] = $dt_get_stats_total_visit_pin_category;
+            $stats['ctx'] = 'total_visit_pin_category';
             $this->load->view('others/pie_chart', $stats);
         ?>
     </div>
@@ -17,6 +17,13 @@
         <?php
             $stats['data'] = $dt_get_stats_total_gallery;
             $stats['ctx'] = 'total_gallery_by_pin';
+            $this->load->view('others/pie_chart', $stats);
+        ?>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 p-2 mx-auto">
+        <?php
+            $stats['data'] = $dt_get_stats_total_visit_by;
+            $stats['ctx'] = 'total_visit_by';
             $this->load->view('others/pie_chart', $stats);
         ?>
     </div>

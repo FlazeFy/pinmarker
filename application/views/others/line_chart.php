@@ -31,6 +31,9 @@
                 tools: {
                     download: false 
                 }
+            },
+            zoom: {
+                enabled: false 
             }
         },
         dataLabels: {
