@@ -386,7 +386,7 @@
 		}
 		
 		public function get_avg_pin_user() {
-			return $this->template_avg_count('pin', 'pin_count');
+			return $this->template_avg_count($this->table, 'pin_count');
 		}
 		
 		public function get_avg_visit_pin() {
@@ -395,12 +395,12 @@
 
 		// Command
 		public function insert_marker($data){
-			return $this->db->insert('pin',$data);	
+			return $this->db->insert($this->table,$data);	
 		}
 
 		public function update_marker($data, $id){
 			$this->db->where('id', $id);
-			return $this->db->update('pin',$data);	
+			return $this->db->update($this->table,$data);	
 		}
 	}
 ?>

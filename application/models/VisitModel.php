@@ -54,21 +54,36 @@
 
 		public function get_visit_by_id($id){
 			$user_id = $this->session->userdata(self::SESSION_KEY);
+			$select_query = 'pin_name, pin_desc, pin_lat, pin_long, pin_category, pin.id as pin_id, visit_desc, visit_by, visit_with, visit.created_at, visit.updated_at';
 
-			$this->db->select('pin_name, pin_desc, pin_lat, pin_long, pin_category, pin.id as pin_id, visit_desc, visit_by, visit_with, pin.created_at, pin.updated_at');
+			$this->db->select($select_query);
 			$this->db->from($this->table);
 			$this->db->join('pin','visit.pin_id = pin.id', 'left');
-			$condition = [
+			$condition_normal = [
                 'pin.deleted_at' => null,
 				'visit.id' => $id,
 				'pin.created_by' => $user_id,
 				'visit.created_by' => $user_id
             ];
-			$this->db->where($condition);
-            $this->db->order_by('visit.created_at','desc');
+			$this->db->where($condition_normal);
 			$this->db->limit(1);
-
-			return $data = $this->db->get()->row();
+			$data = $this->db->get()->row();
+			if($data){
+				return $data;
+			} else {
+				$this->db->select($select_query);
+				$this->db->from($this->table);
+				$this->db->join('pin','visit.pin_id = pin.id', 'left');
+				$condition_custom = [
+					'visit.id' => $id,
+					'visit.created_by' => $user_id
+				];
+				$this->db->where($condition_custom);
+				$this->db->order_by('visit.created_at','desc');
+				$this->db->limit(1);
+				$data = $this->db->get()->row();
+				return $data;
+			}
 		}
 
 		public function get_total_all(){
@@ -317,7 +332,11 @@
 
 		// Command
 		public function insert_visit($data){
-			return $this->db->insert('visit',$data);	
+			return $this->db->insert($this->table,$data);	
+		}
+		public function update_visit($data,$id){
+			$this->db->where('id', $id);
+			return $this->db->update($this->table,$data);	
 		}
 	}
 ?>

@@ -100,21 +100,16 @@
                         }
                     ?>
                 </select>
-                
-
                 <textarea name="visit_with" id="visit_with" rows="5" class="form-control form-validated visit-with" maxlength='500'></textarea>
-                
                 <div class="d-flex justify-content-start mb-3">
                     <a class="btn btn-success rounded-pill see-person-btn" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> See Persons</a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-6">
                 <input name="visit_date" id="visit_date" type="date" class="form-control form-validated" required/>
-                
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-6">
                 <input name="visit_hour" id="visit_hour" type="time" class="form-control form-validated" required/>
-                
             </div>
         </div>
     </div>

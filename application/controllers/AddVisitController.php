@@ -115,7 +115,6 @@ class AddVisitController extends CI_Controller {
 				}
 
 				// Add visit
-
 				if($this->input->post('type_add') != 'visit_custom'){
 					$visit_desc = $this->input->post('visit_desc');
 				}
