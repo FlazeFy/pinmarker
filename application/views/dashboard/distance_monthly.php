@@ -44,6 +44,12 @@
                 chart: {
                     height: 350,
                     type: 'area',
+                    toolbar: {
+                        show: false,        
+                        tools: {
+                            download: false 
+                        }
+                    }
                 },
                 dataLabels: {
                     enabled: true,

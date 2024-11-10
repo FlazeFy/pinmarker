@@ -176,6 +176,53 @@
 			return $data = $this->db->get()->result();
 		}
 
+		public function get_most_visit_with($limit) {
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+			$person_query = "LOWER(visit_with)";
+
+			$this->db->select("$person_query AS context");
+			$this->db->from($this->table);
+			$condition = [
+				'created_by' => $user_id,
+				'visit_with IS NOT NULL'
+			];
+			$this->db->where($condition);
+			$data = $this->db->get()->result();
+			
+			$name_counts = [];			
+			foreach ($data as $row) {
+				if (!empty($row->context)) {
+					// Separate using ", " and ", and "
+					$names = preg_split('/, and |, /', $row->context);
+					
+					foreach ($names as $name) {
+						$name = trim(strtolower($name)); 
+						if (!empty($name)) {
+							if (isset($name_counts[$name])) {
+								$name_counts[$name]++;
+							} else {
+								$name_counts[$name] = 1;
+							}
+						}
+					}
+				}
+			}
+			arsort($name_counts);
+
+			$result = [];
+			$i = 0;
+			foreach ($name_counts as $context => $total) {
+				$result[] = (object)['context' => $context, 'total' => $total];
+				
+				if (++$i >= $limit) {
+					break;
+				}
+			}
+		
+			return $result;
+		}
+		
+
 		public function get_visit_activity_by_date($date){
 			$user_id = $this->session->userdata(self::SESSION_KEY);
 			$date_query = "DATE_FORMAT(visit.created_at, '%Y-%m-%d') =";
