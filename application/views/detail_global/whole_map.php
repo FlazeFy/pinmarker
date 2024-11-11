@@ -7,7 +7,7 @@
 </style>
 
 
-<a class='btn btn-dark rounded-pill px-3 py-2' id='whole-map-modal-btn' data-bs-toggle="modal" data-bs-target="#wholeMapModal"><i class='fa-solid fa-map'></i> <?php if(!$is_mobile_device){ echo "Whole Map"; } ?></a>
+<a class='btn btn-dark px-3 py-2' id='whole-map-modal-btn' data-bs-toggle="modal" data-bs-target="#wholeMapModal"><i class='fa-solid fa-map'></i> <?php if(!$is_mobile_device){ echo "Whole Map"; } ?></a>
 
 <div class="modal fade" id="wholeMapModal" tabindex="-1" aria-labelledby="addGalleriesLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -44,7 +44,7 @@
                         content: 
                         `<div>
                             <h6>$dt->pin_name</h6>
-                            <span class='bg-dark rounded-pill px-2 py-1 text-white'>$dt->pin_category</span>
+                            <span class='bg-dark px-2 py-1 text-white rounded-pill'>$dt->pin_category</span>
                             <br><br>";
                             if($dt->pin_desc){
                                 echo "<p>$dt->pin_desc</p>";
@@ -54,7 +54,7 @@
                             echo"
                             <p class='mt-2 mb-0 fw-bold'>Created At</p>
                             <p class='date-target'>$dt->created_at</p>
-                            <a class='btn btn-light rounded-pill px-2 py-1' style='font-size:12px;' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long' id='set-direction-whole-map-btn'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                            <a class='btn btn-light px-2 py-1' style='font-size:12px;' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long' id='set-direction-whole-map-btn'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
                         </div>`
                     },";
                 }

@@ -13,7 +13,7 @@
 <footer class="bg-dark text-white text-center py-3 px-2" style="border-radius: var(--roundedXLG) var(--roundedXLG) 0 0;">
     <h4 class="mb-2">PinMarker</h4>
     <p>PinMarker is an apps that store data about marked location on your maps. You can save location and separate it based on category or list. You can collaborate and share your saved location with all people. We also provide stats so you can monitoring your saved location.</p>
-    <a class="btn btn-light my-2 rounded-pill"><i class="fa-solid fa-mobile-screen-button"></i> Get your Mobile Apps Here</a>
+    <a class="btn btn-light my-2"><i class="fa-solid fa-mobile-screen-button"></i> Get your Mobile Apps Here</a>
     <h6 class="mb-0 text-secondary">Part Of FlazenApps</h6>
 </footer>
 <?php endif; ?>

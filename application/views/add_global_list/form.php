@@ -1,10 +1,3 @@
-<style>
-    #map-board {
-        height:50vh;
-        border-radius: 15px;
-    }
-</style>
-
 <br>
 <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -48,7 +41,7 @@
                 ?>
             </div>
             <input id="list_pin" class='d-none'  name="list_pin">
-            <a class="btn btn-success rounded-pill w-100 py-3 mt-3" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Save Global List <span id="submit-note"></span></a>
+            <a class="btn btn-success w-100 py-3 mt-3" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Save Global List <span id="submit-note"></span></a>
         </form>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -131,7 +124,7 @@
                 content: 
                 `<div class='mt-4'>
                     <h6>${pin_name}</h6>
-                    <a class='btn btn-dark remove-via-marker rounded-pill px-2 py-1' style='font-size:12px;'><i class='fa-regular fa-circle-xmark'></i> Remove<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
+                    <a class='btn btn-dark remove-via-marker px-2 py-1' style='font-size:12px;'><i class='fa-regular fa-circle-xmark'></i> Remove<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
                 </div>`
             })
 

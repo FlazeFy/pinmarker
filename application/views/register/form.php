@@ -11,7 +11,7 @@
             <div style="height:90vh; padding-top:calc(var(--spaceJumbo)*3);">
                 <div class="d-flex justify-content-between">
                     <h2>Terms & Condition</h2>  
-                    <a class="btn btn-danger pt-2 px-4 rounded-pill" href="/LoginController" id='back-page-btn'><i class="fa-regular fa-circle-xmark"></i> Back to Login</a>
+                    <a class="btn btn-danger pt-2 px-4" href="/LoginController" id='back-page-btn'><i class="fa-regular fa-circle-xmark"></i> Back to Login</a>
                 </div><br>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu non diam phasellus vestibulum lorem sed risus ultricies. Ipsum a arcu cursus vitae congue mauris rhoncus. Pharetra sit amet aliquam id diam maecenas ultricies. Fringilla urna porttitor rhoncus dolor. Velit euismod in pellentesque massa placerat duis ultricies lacus. Ut enim blandit volutpat maecenas volutpat blandit aliquam. Morbi tincidunt augue interdum velit euismod in pellentesque. Commodo viverra maecenas accumsan lacus vel facilisis volutpat. Quam lacus suspendisse faucibus interdum. Diam ut venenatis tellus in metus vulputate eu. Vitae et leo duis ut diam quam nulla.</p>
                 <p>Vitae auctor eu augue ut lectus. Vitae purus faucibus ornare suspendisse. Turpis nunc eget lorem dolor. Est sit amet facilisis magna etiam tempor orci eu. Tortor condimentum lacinia quis vel eros donec ac odio. Eget sit amet tellus cras adipiscing. Aliquam nulla facilisi cras fermentum odio eu feugiat pretium nibh. Eget sit amet tellus cras adipiscing enim eu. Sed arcu non odio euismod lacinia. Elementum facilisis leo vel fringilla est ullamcorper eget. Elementum eu facilisis sed odio morbi quis commodo odio. Mauris a diam maecenas sed enim ut sem viverra aliquet. Arcu non odio euismod lacinia at quis.</p>
@@ -37,7 +37,7 @@
                     </div>
                     <div id="token_validate_msg" class="msg-error-input mb-2" style="font-size:13px;"></div>
                     <div class="d-inline-block mx-auto">
-                        <a class="btn btn-link rounded-pill px-3 mt-3" id='send-again-token-btn'>Don't receive the token. Send again!</a>
+                        <a class="btn btn-link px-3 mt-3" id='send-again-token-btn'>Don't receive the token. Send again!</a>
                     </div>
                 </div>
             </div>
@@ -219,7 +219,7 @@
                     <label>Re-Type Password</label>
                     <input name="password_check" id="password_check" type="password" class="form-control"/>
                     <div id="btn-regis-holder">
-                        <a class="btn btn-success rounded-pill px-3" onclick="navProfile()" id='submit-register-btn'><i class="fa-solid fa-arrow-right-to-bracket me-2"></i> Create Account</a>
+                        <a class="btn btn-success px-3" onclick="navProfile()" id='submit-register-btn'><i class="fa-solid fa-arrow-right-to-bracket me-2"></i> Create Account</a>
                     </div>
                 `)
             } else {

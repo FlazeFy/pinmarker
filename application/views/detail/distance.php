@@ -41,12 +41,12 @@
                                 <p class='mb-0 date-target'>$dt->created_at</p>
                             </div>
                             <div class='col-lg-8 col-md-7 col-sm-6 col-6'>
-                                <a class='btn btn-dark rounded-pill see-detail-pin-btn"; if(!$is_mobile_device){ echo "-pill px-2 py-1"; } else { echo " px-3 py-2"; } echo" px-2 py-1 me-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i>"; 
+                                <a class='btn btn-dark see-detail-pin-btn"; if(!$is_mobile_device){ echo "-pill px-2 py-1"; } else { echo " px-3 py-2"; } echo" px-2 py-1 me-2' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i>"; 
                                 if(!$is_mobile_device){
                                     echo " See Detail"; 
                                 }
                                 echo"</a>
-                                <a class='btn btn-light rounded-pill see-direction-pin-btn"; if(!$is_mobile_device){ echo "-pill px-2 py-1"; } else { echo " px-3 py-2"; } echo"' href='https://www.google.com/maps/dir/$dt_detail_pin->pin_lat,$dt_detail_pin->pin_long/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i>"; 
+                                <a class='btn btn-light see-direction-pin-btn"; if(!$is_mobile_device){ echo "-pill px-2 py-1"; } else { echo " px-3 py-2"; } echo"' href='https://www.google.com/maps/dir/$dt_detail_pin->pin_lat,$dt_detail_pin->pin_long/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i>"; 
                                 if(!$is_mobile_device){
                                     echo " Set Direction"; 
                                 }

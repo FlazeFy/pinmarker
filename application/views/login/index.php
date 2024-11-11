@@ -55,7 +55,7 @@
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 col-12 position-relative">
                 <?php if (!$is_mobile_device): ?>
-                    <a class="position-absolute btn btn-dark rounded-pill px-4 py-2" href="#login-section" id='login-section-btn' style="left:40%; top:10px;"><i class="fa-solid fa-arrow-down"></i> Go to Login</a>
+                    <a class="position-absolute btn btn-dark px-4 py-2" href="#login-section" id='login-section-btn' style="left:40%; top:10px;"><i class="fa-solid fa-arrow-down"></i> Go to Login</a>
                     <div class="mx-auto" style="border: var(--spaceMini) solid black; width:30px; height:85vh; margin-top:-20px;"></div>
                 <?php else: ?>
                     <hr>

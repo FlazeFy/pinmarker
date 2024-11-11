@@ -54,46 +54,55 @@
         </h2><br>
         <div class="d-flex justify-content-between">
             <div class="d-flex justify-content-start w-100">
-                <a class="btn btn-success rounded-pill btn-main-page me-2" style="min-width:200px;" href="/AddController" id='add-marker-btn'><i class="fa-solid fa-plus"></i> Add Marker</a>
+                <a class="btn btn-success btn-menu-main" href="/AddController" id='add-marker-btn'><i class="fa-solid fa-plus"></i><?php if(!$is_mobile_device){ echo " Add Marker";} ?></a>
                     <?php 
                         if($this->session->userdata('is_catalog_view') == false && !$this->session->userdata('open_pin_list_category')){
                             echo "
                             <form class='d-inline' method='POST' action='/ListController/view_toogle'>
-                                <button class='btn btn-dark rounded-pill btn-main-page me-2' style='min-width:160px;' id='toggle-view-btn'><i class='fa-solid fa-folder-open'></i> Catalog</button>
+                                <button class='btn btn-dark btn-menu-main p-0' style='bottom:calc(4*var(--spaceXLG));' id='toggle-view-btn'><i class='fa-solid fa-folder-open'></i>"; if(!$is_mobile_device){ echo " Catalog";} echo"</button>
                             </form>";
                         } else if(!$this->session->userdata('open_pin_list_category')) {
                             echo "
                             <form class='d-inline' method='POST' action='/ListController/view_toogle'>
-                                <button class='btn btn-dark rounded-pill btn-main-page me-2' style='min-width:160px;' id='toggle-view-btn'><i class='fa-solid fa-list'></i> List</button>
+                                <button class='btn btn-dark btn-menu-main p-0' style='bottom:calc(4*var(--spaceXLG));' id='toggle-view-btn'><i class='fa-solid fa-list'></i>"; if(!$is_mobile_device){ echo " List";} echo"</button>
                             </form>";
                         } else {
                             echo "
                             <form class='d-inline' method='POST' action='/ListController/view_catalog_detail/back'>
-                                <button class='btn btn-danger rounded-pill btn-main-page' id='toggle-view-btn'><i class='fa-solid fa-arrow-left'></i> Back</button>
+                                <button class='btn btn-danger btn-menu-main p-0' style='bottom:calc(4*var(--spaceXLG));' id='toggle-view-btn'><i class='fa-solid fa-arrow-left'></i>"; if(!$is_mobile_device){ echo " Back";} echo"</button>
                             </form>";
                         }
                     ?>
-                <a class="btn btn-dark rounded-pill btn-main-page me-2" style="min-width:110px;" href="/ListController/print_pin" id='print-btn'><i class="fa-solid fa-print"></i> Print</a>
+                <a class="btn btn-dark btn-menu-main" href="/ListController/print_pin" style='bottom:calc(7*var(--spaceXLG));' id='print-btn'><i class="fa-solid fa-print"></i><?php if(!$is_mobile_device){ echo " Print";} ?></a>
                 <?php 
                     if($this->session->userdata('role_key') == 1){
-                        echo '<a class="btn btn-dark rounded-pill btn-main-page me-2" style="min-width:200px;" data-bs-target="#manageCategory" id="set-category-modal-btn" data-bs-toggle="modal"><i class="fa-solid fa-gear"></i> Set Category</a>';
+                        echo '<a class="btn btn-dark btn-menu-main" style="bottom:calc(10*var(--spaceXLG));" data-bs-target="#manageCategory" id="set-category-modal-btn" data-bs-toggle="modal"><i class="fa-solid fa-gear"></i>'; if(!$is_mobile_device){ echo " Set Category";} echo'</a>';
                     }
-                ?>
-                <?php $this->load->view('list/manage_category'); ?>
-                <?php $this->load->view('list/search'); ?>
-                <?php
+                    $this->load->view('list/manage_category');
+                    if($is_mobile_device){
+                        $this->load->view('list/search');
+                    }
                     if($is_mobile_device && $this->session->userdata('role_key') == 1){
-                        echo '<a class="btn btn-danger rounded-pill btn-main-page" href="/TrashController" id="trash-btn"><i class="fa-solid fa-trash"></i> Trash</a>';
+                        echo '<a class="btn btn-danger btn-menu-main" style="bottom:calc(13*var(--spaceXLG));" href="/TrashController" id="trash-btn"><i class="fa-solid fa-trash"></i>'; if(!$is_mobile_device){ echo " Trash";} echo'</a>';
                     }
                 ?>
             </div>
             <?php
                 if(!$is_mobile_device && $this->session->userdata('role_key') == 1){
-                    echo '<a class="btn btn-danger rounded-pill btn-main-page" style="min-width:110px;" href="/TrashController" id="trash-btn"><i class="fa-solid fa-trash"></i> Trash</a>';
+                    echo '<a class="btn btn-danger btn-menu-main" style="bottom:calc(13*var(--spaceXLG));" href="/TrashController" id="trash-btn"><i class="fa-solid fa-trash"></i>'; if(!$is_mobile_device){ echo " Trash";} echo'</a>';
+                }
+                if(!$is_mobile_device){
+                    echo '<br><br><br>';
                 }
             ?>
         </div>
-        <?php $this->load->view('list/list'); ?>
+        <?php 
+            if(!$is_mobile_device){
+                $this->load->view('list/search');
+                echo '<br>';
+            }
+            $this->load->view('list/list'); 
+        ?>
         <hr>
     </div>
     <?php $this->load->view('others/footer'); ?>

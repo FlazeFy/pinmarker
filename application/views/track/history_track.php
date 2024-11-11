@@ -37,11 +37,11 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger rounded-pill py-3 px-4" id='refresh-track-btn'><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
-                <button type="button" class="btn btn-success rounded-pill py-3 px-4" id='save-track-btn'><i class="fa-solid fa-file"></i> Save as CSV</button>
-                <button type="button" class="btn btn-dark rounded-pill py-3 px-4" id='prev-day-btn'><i class="fa-solid fa-arrow-left"></i> Previous Day</button>
-                <button type="button" class="btn btn-dark rounded-pill py-3 px-4" id='this-day-btn'><i class="fa-solid fa-play"></i> This Day</button>
-                <button type="button" class="btn btn-dark rounded-pill py-3 px-4" id='next-day-btn'>Next Day <i class="fa-solid fa-arrow-right"></i></button>
+                <button type="button" class="btn btn-danger py-3 px-4" id='refresh-track-btn'><i class="fa-solid fa-arrows-rotate"></i> Refresh</button>
+                <button type="button" class="btn btn-success py-3 px-4" id='save-track-btn'><i class="fa-solid fa-file"></i> Save as CSV</button>
+                <button type="button" class="btn btn-dark py-3 px-4" id='prev-day-btn'><i class="fa-solid fa-arrow-left"></i> Previous Day</button>
+                <button type="button" class="btn btn-dark py-3 px-4" id='this-day-btn'><i class="fa-solid fa-play"></i> This Day</button>
+                <button type="button" class="btn btn-dark py-3 px-4" id='next-day-btn'>Next Day <i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>
     </div>
@@ -117,7 +117,7 @@
                         <td>${timeUnit(time)}</td>
                         <td>${speed.toFixed(2)} Km/h</td>
                         <td>${dt.battery_indicator}%</td>
-                        <td><a class='btn btn-dark rounded-pill set-direction-btn'>Track on Maps</a></td>
+                        <td><a class='btn btn-dark set-direction-btn'>Track on Maps</a></td>
                     </tr>
                 `)
 

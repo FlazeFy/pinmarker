@@ -11,10 +11,10 @@
                 ?>" required>
             <label for="floatingSelect" class="fw-normal">Filter By Name</label>
         </div>
-        <button class="btn btn-success m-0 position-absolute" style="top: 15px; right: 10px;" id='search-btn' type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+        <button class="btn btn-success m-0 position-absolute" style="<?php if(!$is_mobile_device){ echo "top: 10px;";} else { echo "top: 15px;"; } ?> right: 10px;" id='search-btn' type="submit"><i class="fa-solid fa-magnifying-glass"></i><?php if(!$is_mobile_device){ echo " Search";} ?></button>
     </form>
     <form action="/MapsController/reset_search_pin_name" method="POST">
         <input hidden name="page" value="List">
-        <button class="btn btn-danger m-0 position-absolute" id='reset-search-btn' style="top: 15px; right: 115px;" type="submit" title="Reset search"><i class="fa-solid fa-rotate-left"></i></button>
+        <button class="btn btn-danger m-0 position-absolute" id='reset-search-btn' style="<?php if(!$is_mobile_device){ echo "top: 10px;";} else { echo "top: 15px;"; } ?> right: <?php if(!$is_mobile_device){ echo "115px;";} else { echo "60px"; } ?>" type="submit" title="Reset search"><i class="fa-solid fa-rotate-left"></i></button>
     </form>
 </div>

@@ -1,5 +1,5 @@
 <div class="d-block mx-auto <?php if (!$is_mobile_device){ echo "p-4"; } else { echo "p-2"; } ?> position-relative bg-white" style="max-width: 480px; border: var(--spaceMini) solid black; border-radius: 15px; margin-top:20vh;">
-    <a class="btn btn-dark rounded-pill py-2 px-4" id='mobile-open-btn'><i class="fa-solid fa-mobile-screen"></i> Get Mobile Apps</a>
+    <a class="btn btn-dark py-2 px-4" id='mobile-open-btn'><i class="fa-solid fa-mobile-screen"></i> Get Mobile Apps</a>
     <hr>
     <a>We also available on</a><br>
     <div class="mt-3">

@@ -50,6 +50,11 @@ label {
     padding: 0 var(--spaceLG) var(--spaceLG) var(--spaceLG);
 }
 
+.bordered {
+    border: 1.75px solid var(--primaryColor);
+    border-radius: var(--roundedMD);
+}
+
 .btn-main-page {
     padding: var(--spaceLG);
     margin-bottom: var(--spaceLG);
@@ -61,9 +66,9 @@ label {
     color: var(--whiteColor);
     background: var(--primaryColor);
 }
-/* .btn {
-    border: 2px solid var(--primaryColor);
-} */
+.btn {
+    border-radius: var(--roundedJumbo);
+}
 
 .dropdown-menu {
     padding: var(--spaceSM);
@@ -290,4 +295,32 @@ table thead {
 
 .form-select {
     background: transparent;
+}
+
+/* Desktop style */
+.btn-menu-main {
+    height:60px; 
+    border-radius: var(--roundedJumbo);
+    z-index: 996;
+    min-width: 200px;
+    padding-top: var(--spaceXMD);
+    margin-right: var(--spaceMD);
+    padding-inline: var(--spaceXLG);
+}
+
+/* Mobile & Tablet style */
+@media screen and (max-width: 1023px) {
+    .btn-menu-main {
+        width:60px; 
+        height:60px; 
+        min-width: auto;
+        right:var(--spaceXLG); 
+        bottom:var(--spaceXLG);
+        margin-right: 0;
+        position: fixed;
+        border-radius: 100%;
+        z-index: 996;
+        padding-inline: inherit;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
 }

@@ -78,10 +78,10 @@
                                     </td>
                                     <td style='max-width:100px;'>
                                         <input class='id_holder' value='$dt->id' hidden>
-                                        <button class='btn btn-dark w-100 rounded-pill mb-2 edit-pin-btn'><i class='fa-solid fa-pen-to-square'></i></button>
-                                        <button class='btn btn-danger w-100 rounded-pill mb-2 delete-pin'><i class='fa-solid fa-trash'></i></button>
-                                        <button class='btn btn-dark w-100 rounded-pill mb-2 share-pin-btn'><i class='fa-solid fa-paper-plane'></i></button>
-                                        <button class='btn btn-dark w-100 rounded-pill mb-2 see-map-btn'><i class='fa-solid fa-map'></i></button>
+                                        <button class='btn btn-dark w-100 mb-2 edit-pin-btn'><i class='fa-solid fa-pen-to-square'></i></button>
+                                        <button class='btn btn-danger w-100 mb-2 delete-pin'><i class='fa-solid fa-trash'></i></button>
+                                        <button class='btn btn-dark w-100 mb-2 share-pin-btn'><i class='fa-solid fa-paper-plane'></i></button>
+                                        <button class='btn btn-dark w-100 mb-2 see-map-btn'><i class='fa-solid fa-map'></i></button>
                                     </td>
                                 </tr>
                             ";
@@ -100,7 +100,7 @@
                             <span class='bg-dark rounded-pill px-3 py-2 text-white'>$dt->pin_category</span>
                             ";
                             if($dt->is_favorite == 1){
-                                echo "<span class='btn bg-success rounded-pill px-3 py-2 text-white' style='font-size:var(--textXSM);'><i class='fa-solid fa-bookmark'></i></span>";
+                                echo "<span class='btn bg-success px-3 py-2 text-white' style='font-size:var(--textXSM);'><i class='fa-solid fa-bookmark'></i></span>";
                             }
                             echo "<br><br>";
                             if($dt->pin_desc){
@@ -142,8 +142,8 @@
                                     <p class='date-target'>$dt->last_visit</p>
                                 </div>
                             </div>
-                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2 see-detail-btn' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
-                            <a class='btn btn-light rounded-pill px-2 py-1 set-direction-btn' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                            <a class='btn btn-dark px-2 py-1 me-2 see-detail-btn' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
+                            <a class='btn btn-light px-2 py-1 set-direction-btn' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
                         </div>
                     ";
                 }
@@ -203,9 +203,9 @@
                                 }
                             echo"</p>
                             <form method='POST' action='/ListController/view_catalog_detail/$dt->dictionary_name' class='d-inline'>
-                                <button class='btn btn-dark rounded-pill px-2 py-1 me-2 see-detail-btn' href='/DetailController/'><i class='fa-solid fa-circle-info'></i> See Detail</button>
+                                <button class='btn btn-dark px-2 py-1 me-2 see-detail-btn' href='/DetailController/'><i class='fa-solid fa-circle-info'></i> See Detail</button>
                             </form>
-                            <a class='btn btn-dark rounded-pill px-2 py-1 publish-to-global'><i class='fa-solid fa-globe'></i> Publish to Global</a>
+                            <a class='btn btn-dark px-2 py-1 publish-to-global'><i class='fa-solid fa-globe'></i> Publish to Global</a>
                         </div>
                     </div>
                 ";
@@ -271,7 +271,7 @@
                             <span class='bg-dark rounded-pill px-2 py-1 text-white'>$dt->pin_category</span>
                             ";
                             if($dt->is_favorite == 1){
-                                echo "<span class='btn bg-success rounded-pill px-2 py-1 text-white'><i class='fa-solid fa-bookmark'></i></span>";
+                                echo "<span class='btn bg-success px-2 py-1 text-white'><i class='fa-solid fa-bookmark'></i></span>";
                             }
                             echo "<br><br>";
                             if($dt->pin_desc){
@@ -286,8 +286,8 @@
                             echo"
                             <p class='mt-2 mb-0 fw-bold'>Created At</p>
                             <p class='date-target'>$dt->created_at</p>
-                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2 see-detail-btn' style='font-size:12px;' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
-                            <a class='btn btn-light rounded-pill px-2 py-1 set-direction-btn' style='font-size:12px;' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                            <a class='btn btn-dark px-2 py-1 me-2 see-detail-btn' style='font-size:12px;' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
+                            <a class='btn btn-light px-2 py-1 set-direction-btn' style='font-size:12px;' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
                         </div>`
                     },";
                 }

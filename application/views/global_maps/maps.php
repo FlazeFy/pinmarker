@@ -15,7 +15,7 @@
 
 <div class="maps-toolbar">
     <div class="d-flex justify-content-between">
-        <a class="btn btn-danger rounded-pill py-2 px-4 m-2" href="<?php if($dt_active_search){ echo"/LoginController/view/$dt_active_search"; } else { echo"/"; }?>" id="back-page-btn" style="height:50px;"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <a class="btn btn-danger py-2 px-4 m-2" href="<?php if($dt_active_search){ echo"/LoginController/view/$dt_active_search"; } else { echo"/"; }?>" id="back-page-btn" style="height:50px;"><i class="fa-solid fa-arrow-left"></i> Back</a>
         <h3 class="text-white mt-3 ms-3">Global Maps</h3>
         <div class="d-flex justify-content-end">
             <?php $this->load->view('maps/filter_category'); ?>
@@ -52,9 +52,9 @@
                     <p class='mb-0'>${dt.list_name}</p>
                     <p class='mt-1 mb-0 fw-bold'>Created At</p>
                     <p class='date-target'>${dt.created_at}</p>
-                    <a class='btn btn-light rounded-pill px-2 py-1 set-direction-btn' style='font-size:12px;' href='https://www.google.com/maps/dir/My+Location/${dt.pin_lat},${dt.pin_long}'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
-                    <a class='btn btn-light rounded-pill px-2 py-1 search-person-btn me-1' style='font-size:12px;' href='/GlobalMapsController/view/${dt.created_by}'><i class="fa-solid fa-user"></i> Search Owner</a>
-                    <a class='btn btn-light rounded-pill px-2 py-1 save-to-my-pin-btn' style='font-size:12px;'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>
+                    <a class='btn btn-light px-2 py-1 set-direction-btn' style='font-size:12px;' href='https://www.google.com/maps/dir/My+Location/${dt.pin_lat},${dt.pin_long}'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                    <a class='btn btn-light px-2 py-1 search-person-btn me-1' style='font-size:12px;' href='/GlobalMapsController/view/${dt.created_by}'><i class="fa-solid fa-user"></i> Search Owner</a>
+                    <a class='btn btn-light px-2 py-1 save-to-my-pin-btn' style='font-size:12px;'><i class='fa-solid fa-bookmark'></i> Save to My Pin</a>
                 </div>`,
                 icon: null
             })

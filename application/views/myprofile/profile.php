@@ -18,7 +18,7 @@
     <label>Email</label>
     <input name="email" id="email" type="email" value="<?= $dt_my_profile->email ?>" class="form-control"/>
     
-    <button class="btn btn-success rounded-pill w-100 mt-3" type="submit" id='submit-profile-btn'>Save Changes</button>
+    <button class="btn btn-success w-100 mt-3" type="submit" id='submit-profile-btn'><i class='fa-solid fa-floppy-disk'></i> Save Changes</button>
 </form><hr>
 <div class="d-flex justify-content-between">
     <label>Telegram ID</label>

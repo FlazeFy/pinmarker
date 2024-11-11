@@ -1,37 +1,6 @@
 <style>
     #map-board, #maps-count-distance {
         height:40vh;
-        border-radius: 20px;
-        margin-bottom: 6px;
-        border: 5px solid black;
-    }
-
-    /* Maps Dialog */
-    .gm-ui-hover-effect {
-        background: black !important;
-        border-radius: 100%;
-        position: absolute !important;
-        right: 6px !important;
-        top: 6px !important;
-    }
-    .gm-ui-hover-effect span {
-        color: white !important;
-    }
-    .gm-control-active {
-        background: black !important;
-        border: 1.75px solid white !important;
-        border-radius: 10px !important;
-        margin-bottom: 10px !important;
-    }
-    .gmnoprint div{
-        background: transparent !important;
-        box-shadow: none !important;
-        position: absolute;
-        top: -30px;
-        right: -15px;
-    }
-    .gm-control-active span {
-        background: white !important;
     }
 </style>
 
@@ -117,7 +86,7 @@
             <textarea name="visit_with" id="visit_with" rows="5" class="form-control form-validated visit-with" maxlength='500'><?= $dt_detail_visit->visit_with ?></textarea>
             
             <div class="d-flex justify-content-start mb-3">
-                <a class="btn btn-success rounded-pill see-person-btn" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> See Persons</a>
+                <a class="btn btn-success see-person-btn" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> See Persons</a>
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-12 col-sm-12 col-12">
@@ -132,11 +101,11 @@
     <div class="row mt-4">
         <div class="col-lg-6 col-md-6 col-sm-12">
             <?php if ($dt_detail_visit->pin_id): ?>
-                <a class="btn btn-light rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
+                <a class="btn btn-light w-100 py-3 mb-2" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Changes & Set Direction</a>
             <?php endif; ?>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
-            <button class="btn btn-success rounded-pill w-100 py-3 mb-2" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>
+            <button class="btn btn-success w-100 py-3 mb-2" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
         </div>
     </div>
 </form>

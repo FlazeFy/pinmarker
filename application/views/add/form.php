@@ -60,10 +60,10 @@
         </div>
         <div class="row mt-4">
             <div class="col-lg-6 col-md-6 col-sm-12">
-                <a class="btn btn-light rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</a>
+                <a class="btn btn-light w-100 py-3 mb-2" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</a>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
-                <button class="btn btn-success rounded-pill w-100 py-3" id="submit-btn" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Marker</button>
+                <button class="btn btn-success w-100 py-3" id="submit-btn" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Marker</button>
             </div>
         </div>
     </form>
@@ -82,7 +82,7 @@
             </thead>
             <tbody style="font-size: var(--textSM);"></tbody>
         </table>
-        <button class="btn btn-success rounded-pill w-100 py-2 px-3" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Save All Marker</button>
+        <button class="btn btn-success w-100 py-2 px-3" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Save All Marker</button>
     </form>
 </div>
 
@@ -94,13 +94,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-import-marker-modal-btn'></button>
             </div>
             <div class="modal-body">
-                <a class="btn btn-dark w-100 rounded-pill py-2 px-3 mb-2" id="download-template-btn"><i class="fa-solid fa-download"></i> Download Template</a>
+                <a class="btn btn-dark w-100 py-2 px-3 mb-2" id="download-template-btn"><i class="fa-solid fa-download"></i> Download Template</a>
                 <hr>
                 <div class="mb-3">
                     <label for="formFile" class="form-label">Only Accept CSV file <b>(Max : 20 mb)</b></label>
                     <input class="form-control" type="file" id="pin-data"  accept=".csv">
                 </div>
-                <a class="btn btn-success w-100 rounded-pill py-2 px-3" id="generate-form-btn" onclick="generate_form()"><i class="fa-solid fa-plus"></i> Generate Form</a>
+                <a class="btn btn-success w-100 py-2 px-3" id="generate-form-btn" onclick="generate_form()"><i class="fa-solid fa-plus"></i> Generate Form</a>
             </div>
         </div>
     </div>
@@ -330,7 +330,7 @@
                         // $('#tb_imported_pin').DataTable()
 
                         $('#imported_map_btn_holder').empty().append(`
-                            <a class="btn btn-dark mb-4 rounded-pill py-3 px-4 see-map-btn" data-bs-toggle="modal" data-bs-target="#importMarkerMap">
+                            <a class="btn btn-dark mb-4 py-3 px-4 see-map-btn" data-bs-toggle="modal" data-bs-target="#importMarkerMap">
                                 <i class="fa-solid fa-map"></i> See the Map
                             </a>
                         `)

@@ -22,7 +22,7 @@
     <label>Message</label>
     <textarea name="feedback_body" id="feedback_body" rows="4" class="form-control"></textarea>
     
-    <button class="btn btn-dark rounded-pill w-100 mt-3" type="submit" id='submit-btn'><i class="fa-solid fa-paper-plane"></i> Send Feedback</button>
+    <button class="btn btn-success w-100 mt-3" type="submit" id='submit-btn'><i class="fa-solid fa-paper-plane"></i> Send Feedback</button>
 </form>
 
 <script>

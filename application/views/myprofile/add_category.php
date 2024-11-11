@@ -1,5 +1,5 @@
 <div class="d-inline-block mt-2">
-    <button class="btn btn-success rounded-pill w-100 py-2 px-3" data-bs-target="#addDictionary" data-bs-toggle="modal"><i class="fa-solid fa-plus"></i> Add Dictionary</button>
+    <button class="btn btn-success w-100 py-2 px-3" data-bs-target="#addDictionary" data-bs-toggle="modal"><i class="fa-solid fa-plus"></i> Add Dictionary</button>
 </div>
 
 <div class="modal fade" id="addDictionary" tabindex="-1" aria-labelledby="addGalleriesLabel" aria-hidden="true">
@@ -18,7 +18,7 @@
                     </select>
                     <input name="dictionary_name" id="dictionary_name" type="text" class="form-control form-validated" maxlength="36" required/>
                     <div id="form-dictionary-color"></div>
-                    <button class='btn btn-success rounded-pill w-100' style='width:180px;' type='submit' id='submit-category-btn'><i class='fa-solid fa-floppy-disk'></i> Save</button>
+                    <button class='btn btn-success w-100' style='width:180px;' type='submit' id='submit-category-btn'><i class='fa-solid fa-floppy-disk'></i> Save</button>
                 </form>
             </div>
         </div>

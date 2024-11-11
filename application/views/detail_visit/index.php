@@ -22,6 +22,7 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="<?= base_url('public/css/global.css') ?>">
+    <link href="<?= base_url('public/css/maps.css') ?>" rel="stylesheet"/>
 
     <!-- Javascript -->
     <script src="http://127.0.0.1:8080/public/js/global.js"></script>
@@ -33,7 +34,7 @@
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
         <h2 class="text-center" style="font-weight:600;">Detail Visit</h2>
-        <a class="btn btn-danger mb-4 rounded-pill <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" href="/HistoryController" id="back-page-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <a class="btn btn-danger mb-4 <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" href="/HistoryController" id="back-page-btn"><i class="fa-solid fa-arrow-left"></i><?php if (!$is_mobile_device){ echo " Back"; } ?></a>
         <?php $this->load->view('detail_visit/form'); ?>
         <hr>
     </div>

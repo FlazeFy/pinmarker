@@ -22,7 +22,7 @@
                     }
                 ?>
                 <input id="visit-add-contact-target" hidden/>
-                <a class="btn btn-dark w-100 rounded-pill py-2 px-3" id='add-selected-person-btn'><i class="fa-solid fa-copy"></i> Add Selected Person</a>
+                <a class="btn btn-dark w-100 py-2 px-3" id='add-selected-person-btn'><i class="fa-solid fa-copy"></i> Add Selected Person</a>
             </div>
         </div>
     </div>

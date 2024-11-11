@@ -20,6 +20,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="<?= base_url('public/css/global.css') ?>">
     <link href="http://127.0.0.1:8080/public/css/pin.css" rel="stylesheet"/>
+    <link href="http://127.0.0.1:8080/public/css/maps.css" rel="stylesheet"/>
 
     <!-- Jquery -->
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -42,7 +43,7 @@
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
         <h2 class="text-center" style="font-weight:600;">Add List</h2>
-        <a class="btn btn-danger mb-4 rounded-pill <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" href="/GlobalListController" id="back-page-btn"><i class="fa-solid fa-arrow-left"></i> Back</a>
+        <a class="btn btn-danger mb-4 <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" href="/GlobalListController" id="back-page-btn"><i class="fa-solid fa-arrow-left"></i><?php if (!$is_mobile_device){ echo " Back"; } ?></a>
         <?php $this->load->view('add_global_list/form'); ?>
         <hr>
     </div>

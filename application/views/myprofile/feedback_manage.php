@@ -20,7 +20,7 @@
                                 <span class='date-target'>$dt->created_at</span>
                             </td>
                             <td style='max-width:100px;'>
-                                <button class='btn btn-danger w-100 rounded-pill mb-2 destroy-feedback-btn'><i class='fa-solid fa-fire-flame-curved'></i></button>
+                                <button class='btn btn-danger w-100 mb-2 destroy-feedback-btn'><i class='fa-solid fa-fire-flame-curved'></i></button>
 
                                 <form class='d-none delete-feedback-form' action='/MyProfileController/delete_feedback' method='POST'>
                                     <input name='id' value='$dt->id'>

@@ -1,14 +1,14 @@
 <div class="d-block mx-auto <?php if (!$is_mobile_device){ echo "p-4"; } else { echo "p-2"; } ?> position-relative bg-white" style="max-width: 480px; border: var(--spaceMini) solid black; border-radius: 15px; margin-top:-20px;">
     <?php if (!$is_mobile_device): ?>
-        <a class="btn btn-dark rounded-pill py-2 px-4 me-2" id='faq-btn'><i class="fa-solid fa-circle-question"></i> FAQ</a>
-        <a class="btn btn-dark rounded-pill py-2 px-4" id='about-us-btn'><i class="fa-solid fa-user"></i> About Us</a>
+        <a class="btn btn-dark py-2 px-4 me-2" id='faq-btn'><i class="fa-solid fa-circle-question"></i> FAQ</a>
+        <a class="btn btn-dark py-2 px-4" id='about-us-btn'><i class="fa-solid fa-user"></i> About Us</a>
     <?php else: ?>
         <div class="row">
             <div class="col">
-                <a class="btn btn-dark rounded-pill py-2 px-4 w-100" id='faq-btn'><i class="fa-solid fa-circle-question"></i> FAQ</a>
+                <a class="btn btn-dark py-2 px-4 w-100" id='faq-btn'><i class="fa-solid fa-circle-question"></i> FAQ</a>
             </div>
             <div class="col">
-                <a class="btn btn-dark rounded-pill py-2 px-4 w-100" id='about-us-btn'><i class="fa-solid fa-user"></i> About Us</a>
+                <a class="btn btn-dark py-2 px-4 w-100" id='about-us-btn'><i class="fa-solid fa-user"></i> About Us</a>
             </div>
         </div>
     <?php endif; ?>

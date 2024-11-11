@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col">
                         <div id="map-board"></div>
-                        <a class="btn btn-dark w-100 rounded-pill py-2 px-3 mt-2" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Submit this Pin</a>
+                        <a class="btn btn-dark w-100 py-2 px-3 mt-2" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Submit this Pin</a>
                     </div>
                     <div class="col">
                         <label>Selected Pin</label>
@@ -134,7 +134,7 @@
                 content: 
                 `<div class='mt-4'>
                     <h6>${pin_name}</h6>
-                    <a class='btn btn-dark remove-via-marker rounded-pill px-2 py-1' style='font-size:12px;'><i class='fa-regular fa-circle-xmark'></i> Remove<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
+                    <a class='btn btn-dark remove-via-marker px-2 py-1' style='font-size:12px;'><i class='fa-regular fa-circle-xmark'></i> Remove<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
                 </div>`
             })
 

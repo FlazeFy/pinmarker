@@ -1,37 +1,3 @@
-<style>
-    #map-board {
-        height:50vh;
-        border-radius: 20px;
-        margin-bottom: 6px;
-        border: 5px solid black;
-    }
-
-    /* Maps Dialog */
-    .gm-ui-hover-effect {
-        background: black !important;
-        border-radius: 100%;
-        position: absolute !important;
-        right: 6px !important;
-        top: 6px !important;
-    }
-    .gm-ui-hover-effect span {
-        color: white !important;
-    }
-    .gm-control-active {
-        background: black !important;
-        border: 1.75px solid white !important;
-        border-radius: 10px !important;
-        margin-bottom: 10px !important;
-    }
-    .gmnoprint div{
-        background: transparent !important;
-        box-shadow: none !important;
-    }
-    .gm-control-active span {
-        background: white !important;
-    }
-</style>
-
 <form action="/AddVisitController/add_visit" method="POST" id='add-visit-form'>
     <?php 
         if($this->session->flashdata('validation_error')){
@@ -68,7 +34,7 @@
                     <div class="d-flex justify-content-start mb-3">
                         <?php 
                             if(count($dt_all_my_pin_name) > 0){
-                                echo "<a class='btn btn-dark rounded-pill' id='add-custom-btn'><i class='fa-solid fa-map'></i>"; 
+                                echo "<a class='btn btn-dark ' id='add-custom-btn'><i class='fa-solid fa-map'></i>"; 
                                 if(!$is_mobile_device){
                                     echo " Custom Location";
                                 } else {
@@ -77,8 +43,8 @@
                                 echo"</a>";
                             }
                         ?>
-                        <a class="btn btn-dark rounded-pill ms-2" id='add-new-pin-btn'><i class="fa-solid fa-map-location-dot"></i> New Pin</a>
-                        <a class="btn btn-success rounded-pill ms-2 add-form-btn"><i class="fa-solid fa-plus"></i>
+                        <a class="btn btn-dark ms-2" id='add-new-pin-btn'><i class="fa-solid fa-map-location-dot"></i> New Pin</a>
+                        <a class="btn btn-success ms-2 add-form-btn"><i class="fa-solid fa-plus"></i>
                         <?php
                             if(!$is_mobile_device){
                                 echo " Add Multiple Visit";
@@ -102,7 +68,7 @@
                 </select>
                 <textarea name="visit_with" id="visit_with" rows="5" class="form-control form-validated visit-with" maxlength='500'></textarea>
                 <div class="d-flex justify-content-start mb-3">
-                    <a class="btn btn-success rounded-pill see-person-btn" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> See Persons</a>
+                    <a class="btn btn-success see-person-btn" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> See Persons</a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-6">
@@ -115,13 +81,13 @@
     </div>
     <div class="row mt-4">
         <div class="col-lg-4 col-md-6 col-sm-12" id="save_visit_n_go">
-            <a class="btn btn-light rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
+            <a class="btn btn-light w-100 py-3 mb-2" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
         </div>
         <div class="col-lg-4 col-md-6 col-sm-12">
-            <a class="btn btn-light rounded-pill w-100 py-3 mb-2" style="border: 2.5px solid black;" id='round-trip-btn'><i class="fa-solid fa-arrow-right-arrow-left"></i> Round Trip</a>
+            <a class="btn btn-light w-100 py-3 mb-2" style="border: 2.5px solid black;" id='round-trip-btn'><i class="fa-solid fa-arrow-right-arrow-left"></i> Round Trip</a>
         </div>
         <div class="col-lg-4 col-md-12 col-sm-12" id='save-visit-btn-holder'>
-            <button class="btn btn-success rounded-pill w-100 py-3 mb-2" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>
+            <button class="btn btn-success w-100 py-3 mb-2" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>
         </div>
     </div>
 </form>
@@ -149,7 +115,7 @@
     let selected_color = ''
 
     $(document).ready(function() {
-        const btn_submit_el = `<button class="btn btn-success rounded-pill w-100 py-3" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>`
+        const btn_submit_el = `<button class="btn btn-success w-100 py-3" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>`
         let count_multi_visit = 1
 
         $(document).on('click', '.add-form-btn', function() { 
@@ -167,7 +133,7 @@
                     <hr>
                     <div class='d-flex justify-content-between'>
                         <h4 class="mb-2">Visit Form</h4>  
-                        <a class='btn btn-light rounded-pill py-2 px-4 remove-multi-form-idx-btn'><i class="fa-solid fa-trash"></i> Remove Form</a>
+                        <a class='btn btn-light py-2 px-4 remove-multi-form-idx-btn'><i class="fa-solid fa-trash"></i> Remove Form</a>
                     </div>
                 </span>
             `)
@@ -182,7 +148,7 @@
             });
 
             $('#save-visit-btn-holder').html(`
-                <button class="btn btn-success rounded-pill w-100 py-3" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save ${count_multi_visit} Visit</button>
+                <button class="btn btn-success w-100 py-3" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save ${count_multi_visit} Visit</button>
             `)
             formValidation()
         })
@@ -199,9 +165,9 @@
                         <input name="pin_name" id="pin_name" type="text" class="form-control form-validated" maxlength='75' required/>
                         
                         <div class="d-flex justify-content-start mb-3">
-                            <a class="btn btn-dark rounded-pill" id="custom-loc-btn"><i class="fa-solid fa-map"></i> Custom Location</a>
-                            <a class="btn btn-dark rounded-pill ms-2" id="visit-only-btn" onclick="resetForm()"><i class="fa-solid fa-house"></i> Visit Only</a>
-                            <a class="btn btn-success rounded-pill ms-2" id="add-multiple-visit-btn"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
+                            <a class="btn btn-dark " id="custom-loc-btn"><i class="fa-solid fa-map"></i> Custom Location</a>
+                            <a class="btn btn-dark ms-2" id="visit-only-btn" onclick="resetForm()"><i class="fa-solid fa-house"></i> Visit Only</a>
+                            <a class="btn btn-success ms-2" id="add-multiple-visit-btn"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
@@ -259,9 +225,9 @@
                 <input name="location_name" id="location_name" type="text" class="form-control form-validated" maxlength='255'/>
                 
                 <div class="d-flex justify-content-start mb-3">
-                    <a class="btn btn-dark rounded-pill" id="saved-pin-btn" onclick="resetForm()"><i class="fa-solid fa-location-dot"></i> Saved Pin</a>
-                    <a class="btn btn-dark rounded-pill ms-2" id="new-pin-btn" onclick="addCreatePinForm()"><i class="fa-solid fa-map-location-dot"></i> New Pin</a>
-                    <a class="btn btn-success rounded-pill ms-2" id="add-multiple-visit-btn"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
+                    <a class="btn btn-dark " id="saved-pin-btn" onclick="resetForm()"><i class="fa-solid fa-location-dot"></i> Saved Pin</a>
+                    <a class="btn btn-dark ms-2" id="new-pin-btn" onclick="addCreatePinForm()"><i class="fa-solid fa-map-location-dot"></i> New Pin</a>
+                    <a class="btn btn-success ms-2" id="add-multiple-visit-btn"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
                 </div>
             `)
             $('#save_visit_n_go').empty()
@@ -277,7 +243,7 @@
                 count_visit = ''
             }
             $('#save-visit-btn-holder').html(`
-                <button class="btn btn-success rounded-pill w-100 py-3" type="Submit" id='submit-btn'><i class="fa-solid fa-floppy-disk"></i> Save ${count_visit}Visit</button>
+                <button class="btn btn-success w-100 py-3" type="Submit" id='submit-btn'><i class="fa-solid fa-floppy-disk"></i> Save ${count_visit}Visit</button>
             `)
         })
 
@@ -346,13 +312,13 @@
             </select>
             
             <div class="d-flex justify-content-start mb-3">
-                <a class="btn btn-dark rounded-pill" id='add-custom-btn'><i class="fa-solid fa-map"></i> Custom Location</a>
-                <a class="btn btn-success rounded-pill ms-2" id='add-new-pin-btn'><i class="fa-solid fa-map-location-dot"></i> New Pin</a>
-                <a class="btn btn-success rounded-pill ms-2 add-form-btn"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
+                <a class="btn btn-dark " id='add-custom-btn'><i class="fa-solid fa-map"></i> Custom Location</a>
+                <a class="btn btn-success ms-2" id='add-new-pin-btn'><i class="fa-solid fa-map-location-dot"></i> New Pin</a>
+                <a class="btn btn-success ms-2 add-form-btn"><i class="fa-solid fa-plus"></i> Add Multiple Visit</a>
             </div>
         `)
         $('#save_visit_n_go').html(`
-            <a class="btn btn-success rounded-pill w-100 py-3" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
+            <a class="btn btn-success w-100 py-3" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
         `)
     } 
 

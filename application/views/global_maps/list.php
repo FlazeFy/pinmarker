@@ -31,8 +31,8 @@
                             echo"</p>
                             <p class='mt-2 mb-0 fw-bold'>Created At</p>
                             <p><span class='date-target'>$dt->created_at</span> by <button class='btn-account-attach'>@$dt->created_by</button></p>
-                            <a class='btn btn-dark rounded-pill px-2 py-1 me-2 see-detail-btn' href='/DetailGlobalController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
-                            <a class='btn btn-dark rounded-pill px-2 py-1 share-global-pin-btn'><i class='fa-solid fa-paper-plane'></i> Share</a>
+                            <a class='btn btn-dark px-2 py-1 me-2 see-detail-btn' href='/DetailGlobalController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
+                            <a class='btn btn-dark px-2 py-1 share-global-pin-btn'><i class='fa-solid fa-paper-plane'></i> Share</a>
                         </div>
                     ";
                 }

@@ -1,4 +1,4 @@
-<a class="btn btn-dark rounded-pill py-2 px-3" data-bs-toggle="modal" data-bs-target="#addGalleriesModal"><i class="fa-solid fa-plus m-0"></i> Add Galleries</a>
+<a class="btn btn-dark py-2 px-3" data-bs-toggle="modal" data-bs-target="#addGalleriesModal"><i class="fa-solid fa-plus m-0"></i> Add Galleries</a>
 
 <div class="modal fade" id="addGalleriesModal" tabindex="-1" aria-labelledby="addGalleriesLabel" aria-hidden="true">
     <div class="modal-dialog">
