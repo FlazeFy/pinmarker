@@ -137,7 +137,44 @@
     const pin_lat_input = document.getElementById('pin_lat')
     const pin_long_input = document.getElementById('pin_long')
 
+    const read_pin_data_url = () => {
+        const data_from_url = read_url_params('add pin')
+        if(data_from_url){
+            $('#pin_name').val(data_from_url.pin_name)
+            $('#pin_desc').val(data_from_url.pin_desc)
+            $('#pin_lat').val(data_from_url.pin_lat)
+            $('#pin_long').val(data_from_url.pin_long)
+            $('#pin_address').val(data_from_url.pin_address)
+            $('#pin_call').val(data_from_url.pin_call)
+            const pin_category = data_from_url.pin_category
+            const matchingOption = $('#pin_category option').filter(function () {
+                return $(this).val().includes(pin_category)
+            });
+            if (matchingOption.length) {                
+                $('#pin_category').val(matchingOption.val()).change()
+            } else {
+                Swal.fire({
+                    title: 'Failed!',
+                    text: `Failed to fill the category. You dont have category for ${pin_category}. Try create one!`,
+                    icon: 'error'
+                });
+            }
+            if(data_from_url.pin_lat != "" && data_from_url.pin_long != ""){
+                const coor = { lat: parseFloat(data_from_url.pin_lat), lng: parseFloat(data_from_url.pin_long) }
+                initMap()
+                placeMarkerAndPanTo(coor, map)
+            }
+            Swal.fire({
+                title: 'Success!',
+                text: 'Successfully passing the data to the form',
+                icon: 'success'
+            });
+        } 
+    }
+
     $(document).ready(function() {
+        read_pin_data_url()
+
         $(document).on('click', '#download-template-btn', function() {
             const fileURL = 'public/file/template_import_pin.csv'
             const fileName = 'import_pin_template.csv'

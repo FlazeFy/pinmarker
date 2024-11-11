@@ -118,18 +118,25 @@
                         if($this->session->userdata('is_global_edit_mode')){
                             echo "<label class='mb-1'>Manage Tag</label><br>
                             <div id='selected-tag-holder'>";
-                                $list_tag = json_decode($dt_detail->list_tag);
-                                foreach($list_tag as $idx => $dt){
-                                    echo "<a class='pin-box-label me-2 mb-1 text-decoration-none list-tag-btn'>#$dt->tag_name</a>";
+                                $list_tag = null;
+                                if($dt_detail->list_tag){
+                                    $list_tag = json_decode($dt_detail->list_tag);
+                                    foreach($list_tag as $idx => $dt){
+                                        echo "<a class='pin-box-label me-2 mb-1 text-decoration-none list-tag-btn'>#$dt->tag_name</a>";
+                                    }
+                                } else {
+                                    echo "<p class='text-secondary fst-italic'>- No Tag Selected -</p>";
                                 }
                                 echo "
                             </div>
                             <br><label class='mt-2'>Add Tag</label><br>
                             <div class='mt-2' id='available-tag-holder'>";
-                                $list_tag_names = array_column($list_tag, 'tag_name');
-
+                                $list_tag_names = null;
+                                if($list_tag){
+                                    $list_tag_names = array_column($list_tag, 'tag_name');
+                                }
                                 foreach ($dt_global_tag as $dt) {
-                                    if (!in_array($dt->tag_name, $list_tag_names)) {
+                                    if (!$list_tag || !in_array($dt->tag_name, $list_tag_names)) {
                                         echo "<a class='pin-tag-btn me-2 mb-1 text-decoration-none'>#$dt->tag_name</a>";
                                     }
                                 }
@@ -174,6 +181,8 @@
                 foreach($dt_pin_list as $dt){
                     echo "
                         <div class='col-lg-6 col-md-12 col-sm-12 col-12 grid-item'>
+                            <input hidden class='pin-lat' value='$dt->pin_lat'>
+                            <input hidden class='pin-long' value='$dt->pin_long'>
                             <div class='pin-box solid'>
                                 <div id='map-board-$dt->id' class='map-board'></div>
                                 <script>
@@ -183,25 +192,25 @@
                                         }, 'map-board-$dt->id')
                                     })
                                 </script>
-                                <h3 class='mb-0'>$dt->pin_name</h3>
-                                <span class='pin-box-label me-2 mb-3'>$dt->pin_category</span>
+                                <h3 class='mb-0 pin-name'>$dt->pin_name</h3>
+                                <span class='pin-box-label me-2 mb-3 pin-category'>$dt->pin_category</span>
                                 ";
                                 echo "<br>";
                                 if($dt->pin_desc){
-                                    echo "<p>$dt->pin_desc</p>";
+                                    echo "<p class='pin-desc'>$dt->pin_desc</p>";
                                 } else {
-                                    echo "<p class='text-secondary fst-italic'>- No Description -</p>";
+                                    echo "<p class='text-secondary fst-italic pin-desc'>- No Description -</p>";
                                 }
                                     if($dt->pin_call){
                                         echo "
-                                            <p class='mt-2 mb-0 fw-bold'>Person In Touch</p>
-                                            <p>$dt->pin_call</p>
+                                            <p class='mt-2 mb-0 fw-bold'>Contact</p>
+                                            <p class='pin-call'>$dt->pin_call</p>
                                         ";
                                     }
                                     if($dt->pin_address){
                                         echo "
                                             <p class='mt-2 mb-0 fw-bold'>Address</p>
-                                            <p>$dt->pin_address</p>
+                                            <p class='pin-address'>$dt->pin_address</p>
                                         ";
                                     }
                                 echo"
@@ -243,7 +252,7 @@
                                 foreach($dt_pin_list as $dt){
                                     echo "
                                         <tr>
-                                            <td style='width: 200px;'><h6>$dt->pin_name<h6></td>
+                                            <td style='width: 200px;'><h6 class='pin-name'>$dt->pin_name<h6></td>
                                             <td style='width: 450px;'>
                                                 <div id='map-board-$dt->id' class='map-board'></div>
                                                 <script>
@@ -256,7 +265,7 @@
                                                 if($dt->pin_address){
                                                     echo "
                                                         <p class='mt-2 mb-0 fw-bold'>Address</p>
-                                                        <p>$dt->pin_address</p>
+                                                        <p class='pin-address'>$dt->pin_address</p>
                                                     ";
                                                 }
 
@@ -266,18 +275,20 @@
                                                 echo"
                                             </td>
                                             <td>
+                                                <input hidden class='pin-lat' value='$dt->pin_lat'>
+                                                <input hidden class='pin-long' value='$dt->pin_long'>
                                                 <p class='mt-2 mb-0 fw-bold'>Category</p>
-                                                <p>$dt->pin_category</p>
+                                                <p class='pin-category'>$dt->pin_category</p>
                                                 <p class='mt-2 mb-0 fw-bold'>Description</p>";
                                                 if($dt->pin_desc){
-                                                    echo "<p>$dt->pin_desc</p>";
+                                                    echo "<p class='pin-desc'>$dt->pin_desc</p>";
                                                 } else {
-                                                    echo "<p class='text-secondary fst-italic'>- No Description -</p>";
+                                                    echo "<p class='text-secondary pin-desc fst-italic'>- No Description -</p>";
                                                 }
                                                 if($dt->pin_call){
                                                     echo "
-                                                        <p class='mt-2 mb-0 fw-bold'>Person In Touch</p>
-                                                        <p>$dt->pin_call</p>
+                                                        <p class='mt-2 mb-0 fw-bold'>Contact</p>
+                                                        <p class='pin-call'>$dt->pin_call</p>
                                                     ";
                                                 }
                                                 echo"
@@ -373,7 +384,6 @@
 
     $( document ).ready(function() {
         const date_holder = document.querySelectorAll('.date-target')
-
         date_holder.forEach(e => {
             const date = new Date(e.textContent);
             e.textContent = getDateToContext(e.textContent, "calendar")
@@ -382,6 +392,33 @@
         $('#share-global-pin-btn').on('click', function() {
             messageCopy('http://127.0.0.1:8080/DetailGlobalController/view/<?= $dt_detail->id ?>')
         })
+        $('.save-to-my-pin-btn').on('click', function() {
+            const idx = $(this).index('.save-to-my-pin-btn')
+            Swal.fire({
+                title: "Are you sure?",
+                html: `Want to save this pin?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, save it!"
+            })
+            .then((result) => {
+                if(result.isConfirmed){
+                    const pinInfo = {
+                        pin_lat: $('.pin-lat').eq(idx).val(),
+                        pin_long: $('.pin-long').eq(idx).val(),
+                        pin_name: $('.pin-name').eq(idx).text(),
+                        pin_category: $('.pin-category').eq(idx).text(),
+                        pin_address: $('.pin-address').eq(idx).text(),
+                        pin_call: $('.pin-call').eq(idx).text(),
+                        pin_desc: $('.pin-desc').eq(idx).text() === '- No Description -' ? null : $('.pin-desc').eq(idx).text()
+                    };
+                    const queryString = Object.keys(pinInfo).map(key => `${key}=${encodeURIComponent(pinInfo[key] || '')}`).join('&')
+
+                    window.location.href = `/AddController?${queryString}`
+                }                
+            })
+        })
+
         $('.list-tag-btn').on('click', function() {
             const idx = $(this).index('.list-tag-btn')
             
@@ -410,6 +447,7 @@
             $('#selected-tag-holder').append(tagEl)
             $(this).remove()
         })
+
         $(document).on('click', '.pin-tag-btn.remove', function() {            
             const idx = $(this).index('.pin-tag-btn.remove')
             const tag_name = $(this).text()

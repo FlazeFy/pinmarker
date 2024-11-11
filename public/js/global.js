@@ -172,6 +172,28 @@ const loading = () => {
     });   
 }
 
+const read_url_params = (type) => {
+    const params = new URLSearchParams(window.location.search)
+    let res = null
+
+    if (params.toString()) {
+        if(type == 'add pin'){
+            res = {
+                pin_name: params.get('pin_name') || '',
+                pin_category: params.get('pin_category') || '',
+                pin_person: params.get('pin_person') || '',
+                pin_lat: params.get('pin_lat') || '',
+                pin_long: params.get('pin_long') || '',
+                pin_address: params.get('pin_address') || '',
+                pin_call: params.get('pin_call') || '',
+                pin_desc: params.get('pin_desc') || ''
+            };
+        }
+    }
+
+    return res
+}
+
 const formValidation = () => {
     $(document).ready(function() {
         $('.form-validated').each(function(idx, el) {
