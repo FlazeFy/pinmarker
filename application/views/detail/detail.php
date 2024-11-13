@@ -2,6 +2,7 @@
 <div class="d-flex justify-content-between mt-4">
     <a class="btn btn-danger mb-4 py-3 px-4 me-2" href="/MapsController" id="back-page-btn"><i class="fa-solid fa-arrow-left"></i><?php if (!$is_mobile_device){ echo " Back"; } ?></a>
     <span>
+        <a class='btn btn-light mb-4 py-3 px-4 me-1' href="/CustomDocController/view/<?= $dt_detail_pin->id ?>"><i class='fa-solid fa-print'></i><?php if(!$is_mobile_device){ echo " Custom Print"; } else { echo " Custom"; }?></a>
         <form action="/DetailController/print_detail/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
             <button class='btn btn-light mb-4 py-3 px-4 me-1' id='preview-doc-btn'><i class='fa-solid fa-print'></i><?php
                 if(!$is_mobile_device){
@@ -282,31 +283,6 @@
         <?php endif; ?>
     </div>
 </div>
-
-<?php 
-    if($this->session->flashdata('message_error')){
-        echo "
-            <script>
-                Swal.fire({
-                    title: 'Failed!',
-                    text: '".$this->session->flashdata('message_error')."',
-                    icon: 'error'
-                });
-            </script>
-        ";
-    }
-    if($this->session->flashdata('message_success')){
-        echo "
-            <script>
-                Swal.fire({
-                    title: 'Success!',
-                    text: '".$this->session->flashdata('message_success')."',
-                    icon: 'success'
-                });
-            </script>
-        ";
-    }
-?>
 
 <script type="text/javascript">
     $( document ).ready(function() {

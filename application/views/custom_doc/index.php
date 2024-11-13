@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PinMarker | Detail</title>
+    <title>PinMarker | Custom</title>
     <link rel="icon" type="image/png" href="http://127.0.0.1:8080/public/images/logo_white.png"/>
 
     <!-- Fonts -->
@@ -28,50 +28,23 @@
     <script src="http://127.0.0.1:8080/public/js/global.js"></script>
     <script src="http://127.0.0.1:8080/public/js/maps.js"></script>
 
-    <!--Apex Chart-->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- Richtext -->
+    <link rel="stylesheet" href="http://127.0.0.1:8080/public/richtexteditor/rte_theme_default.css" />
+    <script type="text/javascript" src="http://127.0.0.1:8080/public/richtexteditor/rte.js"></script>
+    <script type="text/javascript" src="http://127.0.0.1:8080/public/richtexteditor/rte-upload.js"></script>
+    <script type="text/javascript" src="http://127.0.0.1:8080/public/richtexteditor/plugins/all_plugins.js"></script>
 
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <style>
-        .gallery-btn {
-            border: 2px solid black; border-radius: 15px;
-            padding: var(--spaceMD);
-            text-align: left;
-            background: var(--whiteColor);
-        }
-        .gallery-btn:hover {
-            transform: scale(1.05);
-        }
-    </style>
 </head>
 <body>
-    <?php $is_edit = $this->session->userdata('is_edit_mode'); ?>
-
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
-
     <div class="content">
         <?php $this->load->view('others/navbar'); ?>
-        <?php $this->load->view('detail/detail'); ?>
-
-        <?php if (!$is_edit): ?>
-            <hr>
-            <?php $this->load->view('detail/props'); ?>
-        <?php endif; ?>
+        <a class="btn btn-danger mb-4 py-3 px-4 me-2" href="/DetailController/view/<?= $id ?>" id="back-page-btn"><i class="fa-solid fa-arrow-left"></i><?php if (!$is_mobile_device){ echo " Back"; } ?></a>
+        <?php $this->load->view('custom_doc/workarea'); ?>
 
         <?php 
-            if($this->session->flashdata('message_error')){
-                echo "
-                    <script>
-                        Swal.fire({
-                            title: 'Failed!',
-                            text: '".$this->session->flashdata('message_error')."',
-                            icon: 'error'
-                        });
-                    </script>
-                ";
-            }
             if($this->session->flashdata('message_success')){
                 echo "
                     <script>

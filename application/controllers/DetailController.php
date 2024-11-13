@@ -197,31 +197,6 @@ class DetailController extends CI_Controller {
 			$options = new Options();
 			$options->set('defaultFont', 'Helvetica');
 			$dompdf = new Dompdf($options);
-			$body = "";
-
-			if(count($dt_visit_history) > 0){
-				foreach($dt_visit_history as $dt){
-					$body .= "
-					<tr>
-						<td>".($dt->visit_desc ?? '-')."</td>
-						<td>
-							<h6>Visit With : </h6>
-							".($dt->visit_with ?? '-')."
-							<h6>Visit By : </h6>
-							".($dt->visit_by ?? '-')."
-						</td>
-						<td>".date("Y-m-d H:i", strtotime($dt->created_at))."</td>
-					</tr>
-					";
-				}
-			} else {
-				$body = "
-				<tr>
-					<td colspan='3' style='font-style:italic; text-align:center;'>- No visit to show -</td>
-				</tr>
-				";
-			}
-
 			$pin_desc = "-";
 			$pin_call = "-";
 			$pin_email = "-";
@@ -250,44 +225,12 @@ class DetailController extends CI_Controller {
 
 			$html = "
 			<html>
-				".generate_document_template("html_header",null)."
+				<head>
+					<title>Pinmarker</title>
+					".generate_document_template("html_header",null)."
+				</head>
 				<body>
-					".generate_document_template("document_header",null)."
-					<h4 style='text-align:left;'>Pin Detail</h4>
-					<div style='text-align:left;'>
-						<p style='font-weight:normal;'>Pin Name :  $dt_pin->pin_name</p>
-						<p style='font-weight:normal;'>Description : $pin_desc</p>
-						<p style='font-weight:normal;'>Category : $dt_pin->pin_category</p>
-						<p style='font-weight:normal;'>Coordinate : $dt_pin->pin_lat,$dt_pin->pin_long</p>
-						<p style='font-weight:normal;'>Address : $pin_address</p>
-						<h5>Contact</h5>
-						<p style='font-weight:normal;'>Person : $pin_person</p>
-						<p style='font-weight:normal;'>Email : $pin_email</p>
-						<p style='font-weight:normal;'>Call : $pin_call</p>
-						<h5>Props</h5>
-						<p style='font-weight:normal;'>Created At : $dt_pin->created_at</p>
-						<p style='font-weight:normal;'>Updated At : $updated_at</p>
-						<br>
-						<h6>Google Maps : <a style='font-weight:normal; color:blue	;'>https://www.google.com/maps/place/$dt_pin->pin_lat,$dt_pin->pin_long</a></h6>
-					</div>
-					<h4 style='text-align:left;'>Visit List</h4>
-					<table>
-						<thead>
-							<tr>
-								<th>Description</th>
-								<th>Info</th>
-								<th>Created At</th>
-							</tr>
-						</thead>
-						<tbody>
-							".$body."
-							<tr style='font-weight:bold;'>
-								<td colspan='2'>Total Visit</td>
-								<td>".count($dt_visit_history)."</td>
-							</tr>
-						</tbody>
-					</table>
-					".generate_document_template("document_footer",$user->username)."
+					".generate_document_template("document_header",null).generate_document_pin_detail_body($dt_pin, $pin_desc, $pin_address, $pin_person, $pin_email, $pin_call, $updated_at, $dt_visit_history).generate_document_template("document_footer",$user->username)."
 				</body>
 			</html>";
 

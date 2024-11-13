@@ -227,6 +227,18 @@
 			return $data = $this->db->get()->row();
 		}
 
+		public function get_pin_coor_by_id($id){
+			$this->db->select('pin_lat, pin_long');
+			$this->db->from($this->table);
+			$condition = [
+				'id' => $id,
+				'created_by' => $this->session->userdata(self::SESSION_KEY)
+            ];
+			$this->db->where($condition);
+
+			return $data = $this->db->get()->row();
+		}
+
 		public function get_pin_by_category($cat, $id){
 			$this->db->select('id, pin_name, pin_desc, pin_lat, pin_long, created_at');
 			$this->db->from($this->table);

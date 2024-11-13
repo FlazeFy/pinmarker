@@ -98,7 +98,10 @@ class HistoryController extends CI_Controller {
 
 			$html = "
 			<html>
-				".generate_document_template("html_header",null)."
+				<head>
+					<title>Pinmarker</title>
+					".generate_document_template("html_header",null)."
+				</head>
 				<body>
 					".generate_document_template("document_header",null)."
 					<h4>Visit List</h4>
