@@ -70,7 +70,7 @@
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="setting-menu-btn">
                                         <li><a class="dropdown-item '; if($active_page == 'myprofile'){ echo 'active'; } echo'" href="/MyProfileController">My Profile</a></li>
-                                        <li><a class="dropdown-item" href="#">Help Center</a></li>
+                                        <li><a class="dropdown-item '; if($active_page == 'help'){ echo 'active'; } echo'" href="/HelpController">Help Center</a></li>
                                         <li><a class="dropdown-item '; if($active_page == 'feedback'){ echo 'active'; } echo'" href="/FeedbackController">Feedback</a></li>
                                         <li><a class="dropdown-item text-white" style="background:var(--dangerBG) !important;" data-bs-toggle="modal" data-bs-target="#signOutModal"><i class="fa-regular fa-circle-xmark"></i> Sign Out</a></li>
                                     </ul>
