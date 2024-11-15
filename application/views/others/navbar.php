@@ -118,7 +118,7 @@
             </div>
             <div class="modal-footer">
                 <form action="/LoginController/logout" method="POST">
-                    <button type="submit" class="btn btn-danger px-3 py-2" id='submit-sign-out-btn'><i class="fa-regular fa-circle-xmark"></i> Yes, Sign Out</button>
+                    <button type="submit" class="btn btn-danger px-3 py-2" id='submit-sign-out-btn'><i class="fa-regular fa-circle-xmark"></i> Yes, Sign Out!</button>
                 </form>
             </div>
         </div>

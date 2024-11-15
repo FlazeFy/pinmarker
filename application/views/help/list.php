@@ -17,6 +17,11 @@
         color: var(--primaryColor);
         cursor: pointer;
     }
+    .other-section {
+        color: var(--primaryColor);
+        font-weight: bold;
+        text-decoration: none;
+    }
 </style>
 
 <h1 class="fw-bold text-center mb-4">PinMarker User Manual</h1>
@@ -25,7 +30,7 @@
     ...
 </div>
 
-<div class="section-help">
+<div class="section-help" id="steps-login">
     <h3>How to Login?</h3>
     <p>In this section, you must provide your username or email and password. So you can login through this apps</p>
     <b>The Steps : </b>
@@ -33,6 +38,16 @@
         <li>In the landing page, press the <b>Go to Login</b> button or find the section with title <b>"Welcome to PinMarker"</b></li>
         <li>In this form, fill the <b>Email / Username</b> and <b>Password</b> field</li>
         <li>Press the <b class="text-success">Sign In</b> button to verify your login</li>
+    </ol>
+</div>
+
+<div class="section-help">
+    <h3>How to Sign Out?</h3>
+    <p>After you sign out from the apps. You can only use search Global List, the system also reset the session and the stored local data</p>
+    <b>The Steps : </b>
+    <ol>
+        <li>In the main menu after <a href="#steps-login" class="other-section">Login</a>, press the <b>Setting</b> dropdown and click the <b>Sign Out</b> button. And it will appear confirmation message</li>
+        <li>You can sign out from the apps by pressing the <b class="text-success">Yes, Sign Out!</b></li>
     </ol>
 </div>
 
@@ -123,6 +138,38 @@
         <li>Choose a list you want to browse the pins or markers, and then click <b>See Detail</b></li>
         <li>You will be <b class='text-success'>taken to Detail Global List</b> page, and you can find the List Name, Tag Attached, Description, and Pins Attached on it</li>
     </ol>
+    <h3>Attach New Pin into The Global List</h3>
+    <p>You can share your private pins or markers with others by attaching it into global list</p>
+    <b>The Steps : </b>
+    <ol>
+        <li>In the main menu, press the <a class='menu-btn-help' href='/GlobalListController'>Global-Collection</a> page</li>
+        <li>You will be taken to Global List page and then you will see section with title <b>"Global List"</b></li>
+        <li>Choose a list you want to browse the pins or markers, and then click <b>See Detail</b></li>
+        <li>Find section with title <b>"List Marker"</b>, press the <b>Add Marker</b> button, and then a popup of Add Marker will appear</li>
+        <li>In the section <b>"Available Pin"</b>, select some pins you want to attach</li>
+        <li>Under the maps, click button <b class="text-success">Submit this Pin</b></li>
+    </ol>
+    <h3>See Whole Markers Located in Global List Maps</h3>
+    <p>Showing all markers founded in a list just in one map</p>
+    <b>The Steps : </b>
+    <ol>
+        <li>In the main menu, press the <a class='menu-btn-help' href='/GlobalListController'>Global-Collection</a> page</li>
+        <li>You will be taken to Global List page and then you will see section with title <b>"Global List"</b></li>
+        <li>Choose a list you want to browse the pins or markers, and then click <b>See Detail</b></li>
+        <li>Find section with title <b>"List Marker"</b>, press the <b class="text-success">Whole Map</b> button, and then a popup of Whole Map will appear</li>
+    </ol>
+    <h3>Edit Global List</h3>
+    <p>To edit list you must provide the List Name that unique</p>
+    <b>The Steps : </b>
+    <ol>
+    <li>In the main menu, press the <a class='menu-btn-help' href='/GlobalListController'>Global-Collection</a> page</li>
+        <li>You will be taken to Global List page and then you will see section with title <b>"Global List"</b></li>
+        <li>Choose a list you want to browse the pins or markers, and then click <b>See Detail</b></li>
+        <li>At the top of the page, click <b>Open Edit Mode</b></li>
+        <li>Fill the form, start from mandatory field of <b>List Name</b></li>
+        <li>And you can also fill the optional form like <b>List Code</b>, <b>List Description</b>, and select the tag in <b>Tags</b> area</li>
+        <li>And lastly just press <b class="text-success">Save Changes</b> to submit</li>
+    </ol>
     <h3>Delete a Global List</h3>
     <p>After delete a list, other people can't access it. And this only remove attached pins not permentally delete the pins</p>
     <b>The Steps : </b>
@@ -153,7 +200,7 @@
     </ol>
 </div>
 
-<div class="section-help">
+<div class="section-help" id="steps-add-new-marker">
     <h2 class="fw-bold">Menu : List</h2>
     <h3>Add New Marker</h3>
     <p>To create a new marker you must provide the Location Name, Coordinate, and Category</p>
@@ -175,6 +222,50 @@
         <li>You will be taken to List page and then you will see section with title <b>"My Marker"</b></li>
         <li>Fill the <b>Filter By Name</b> and press the <b>Search</b> button</li>
         <li>The list <b class="text-success">will be refresh</b> and show pins based on your search</li>
+    </ol>
+    <h3>Edit Marker</h3>
+    <p>To edit a new marker you must provide the Location Name, Coordinate, and Category</p>
+    <b>The Steps : </b>
+    <ol>
+        <li>In the main menu, press the <a class='menu-btn-help' href='/ListController'>List</a> page</li>
+        <li>You will be taken to List page and then you will see section with title <b>"My Marker"</b></li>
+        <li>Choose a pin to edit and find the button <b>See Detail</b>, and you will be redirected to Detail Pin page</li>
+        <li>At the button <b>Switch to Edit Mode</b>, click the button</li>
+        <li>Fill the form, start from mandatory field like <b>Pin Name</b>, <b>Pin Category</b>, <b>Pin Lat</b>, and <b>Pin Long</b></li>
+        <li>For the coordinate, you can <b>input it manually</b> or <b>select on the maps board</b></li>
+        <li>And you can also fill the optional form like <b>Pin Desc</b>, <b>Pin Address</b>, <b>Pin Call</b>, <b>Pin Person</b>, <b>Pin Email</b>, and check the box of <b>Is Favorite</b> if the location is one of your favorite</li>
+        <li>To submit, just pressed the <b class="text-success">Save Changes</b> button</li>
+    </ol>
+    <h3>Toggle the Favorite</h3>
+    <p>To edit a new marker you must provide the Location Name, Coordinate, and Category</p>
+    <b>The Steps : </b>
+    <ol>
+        <li>In the main menu, press the <a class='menu-btn-help' href='/ListController'>List</a> page</li>
+        <li>You will be taken to List page and then you will see section with title <b>"My Marker"</b></li>
+        <li>Choose a pin to edit and find the button <b>See Detail</b>, and you will be redirected to Detail Pin page</li>
+        <li>At the button <b class="text-success">Add to Favorite</b>, click the button</li>
+    </ol>
+    <h3>Export Pin Detail & Visit History</h3>
+    <p>Export pin detail & visit history in PDF format and sended it to your Telegram</p>
+    <b>The Steps : </b>
+    <ol>
+        <li>In the main menu, press the <a class='menu-btn-help' href='/ListController'>List</a> page</li>
+        <li>You will be taken to List page and then you will see section with title <b>"My Marker"</b></li>
+        <li>Choose a pin to edit and find the button <b>See Detail</b>, and you will be redirected to Detail Pin page</li>
+        <li>If you want to just export default template, Click the button <b class="text-success">Print Detail</b></li>
+        <li>If you want to preview and modify the export, Click the button <b>Custom Print</b>. And you will be taken to Custom Print page</li>
+        <li>Modify the document as you want, and when its done. Press the <i>three dot</i> icon button</li>
+        <li>Finally press the button <b class='text-success'>Yes, deleted this!</b></li>
+    </ol>
+    <h3>Delete Pin</h3>
+    <p>This delete not directly permentally deleted the pin. This pin will be placed in Trash page for about 30 days before auto deleting</p>
+    <b>The Steps : </b>
+    <ol>
+        <li>In the main menu, press the <a class='menu-btn-help' href='/ListController'>List</a> page</li>
+        <li>You will be taken to List page and then you will see section with title <b>"My Marker"</b></li>
+        <li>Choose a pin to delete and find the button <b>See Detail</b>, and you will be redirected to Detail Pin page</li>
+        <li>At the button <b class="text-success">Delete</b>, click the button. And it will appear confirmation message</li>
+        <li>Finally you can delete it by pressing the <b class="text-success">Yes, delete it!</b></li>
     </ol>
     <h3>Reset the Name Filter</h3>
     <p>After search some pin and you want back to show all available pins or marker, you can use reset filter</p>
@@ -263,6 +354,41 @@
         <li>Click on the <b>Print</b> button</li>
         <li>System will be <b class="text-success">redirect you to preview</b> the document. And at the same time <b class="text-success">sending the file</b> to your <b>Telegram</b> chat</li>
     </ol>
+    <h3>Add New Visit</h3>
+    <p>To create a new visit history you must provide the Pin Name, Visit By, Visit Desc, Visit Date & Hour</p>
+    <b>The Steps : </b>
+    <ol>
+        <li>In the main menu, press the <a class='menu-btn-help' href='/HistoryController'>History</a> page</li>
+        <li>You will be taken to History page and then you will see section with title <b>"My Visit"</b></li>
+        <li>Click on the <b>Add Visit</b> button</li>
+        <li>System will be redirect you to Add Visit page. You can choose 3 way to add visit</li>
+        <li>The default is <b>Visit Only</b>, you must fill the mandaroty field first like select the <b>Pin Name</b>, <b>Visit By</b>, and fill the <b>Visit Date</b> & <b>Hour</b></li>
+        <li>When you choose <b>New Pin</b>, there will be extra format for adding a new Pin. Just fill the form like when you trying to <a href="#steps-add-new-marker" class="other-section">Add New Marker</a></li>
+        <li>And if you choose the <b>Custom Location</b>, the location is not from your saved pins or markers (Custom Name) without the coordinate to track</a></li>
+        <li>Finally you can submit it by pressing the <b class="text-success">Save Visit</b></li>
+    </ol>
+    <h3>Edit Visit</h3>
+    <p>To edit visit history you must provide the Pin Name, Visit By, Visit Desc, Visit Date & Hour</p>
+    <b>The Steps : </b>
+    <ol>
+        <li>In the main menu, press the <a class='menu-btn-help' href='/HistoryController'>History</a> page</li>
+        <li>You will be taken to History page and then you will see section with title <b>"My Visit"</b></li>
+        <li>At the Calendar, choose the visit history you want to edit</li>
+        <li>System will be redirect you to Edit Visit page</li>
+        <li>Fill the mandaroty field first like select the <b>Pin Name</b>, <b>Visit By</b>, and fill the <b>Visit Date</b> & <b>Hour</b></li>
+        <li>After editing, you can submit it by pressing the <b class="text-success">Save Changes</b></li>
+    </ol>
+    <h3>Delete Visit</h3>
+    <p>This delete is permentally deleted. So you can't restore it after press the delete button</p>
+    <b>The Steps : </b>
+    <ol>
+        <li>In the main menu, press the <a class='menu-btn-help' href='/HistoryController'>History</a> page</li>
+        <li>You will be taken to History page and then you will see section with title <b>"My Visit"</b></li>
+        <li>At the Calendar, choose the visit history you want to edit</li>
+        <li>System will be redirect you to Edit Visit page</li>
+        <li>At the button <b class="text-success">Delete</b>, click the button. And it will appear confirmation message</li>
+        <li>Finally you can delete it by pressing the <b class="text-success">Yes, delete it!</b></li>
+    </ol>
 </div>
 
 <div class="section-help">
@@ -272,7 +398,35 @@
 
 <div class="section-help">
     <h2 class="fw-bold">Menu : My Profile</h2>
-    ...
+    <b>What's contain?</b>
+    <ol> 
+        <li><b>Visit Activity in [YEAR]</b> refers to the total number of visits for every days for specified year. The data are presented using Heatmap Chart. Below the chart you will find visit history for current day</li> 
+        <li><b>Distance Traveled in [YEAR]</b> shows the total distance traveled in hours grouping format, the total in kilometers for the specified year. The data are presented using Line Chart</li> 
+    </ol>
+    <b>Change the Year using in the Chart</b>
+    <ol> 
+        <li>In the main menu, press the <b>Setting</b> dropdown and click the <a class='menu-btn-help' href='/MyProfileController'>My Profile</a> button</li>
+        <li>You will be taken to My Profile page and then you will see section with title <b>"Visit Activity in [YEAR]"</b></li>
+        <li>Next to it, you will see an option to select the <b>available years</b> that can be used to filter the stats. The years displayed are based on when your account was registered</li>
+        <li>Select a year, and <b class="text-success">it will refresh</b> the stats</li>
+    </ol>
+    <h3>Edit My Profile</h3>
+    <p>For profile editing you must provide the Username, Fullname, and Email</p>
+    <b>The Steps : </b>
+    <ol>
+        <li>In the main menu, press the <b>Setting</b> dropdown and click the <a class='menu-btn-help' href='/MyProfileController'>My Profile</a> button</li>
+        <li>You will be taken to My Profile page and then you will see section with profile image and user profile form</li>
+        <li>In this form, fill the <b>Username</b>, <b>Fullname</b>, and <b>Email</b></li>
+        <li>Press the <b class="text-success">Save Changes</b> button to submit the update</li>
+    </ol>
+    <h3>Browse All Gallery</h3>
+    <p>This section show all gallery found for every Pins or Markers</p>
+    <b>The Steps : </b>
+    <ol>
+        <li>In the main menu, press the <b>Setting</b> dropdown and click the <a class='menu-btn-help' href='/MyProfileController'>My Profile</a> button</li>
+        <li>You will be taken to My Profile page and then you will see section with title <b>"My Gallery"</b></li>
+        <li><b class="text-success">Click the box</b> of Pin Name to expand and show the gallery</li>
+    </ol>
 </div>
 
 <div class="section-help">
@@ -281,7 +435,7 @@
     <p>In this section, you can share your honest thoughts about our app. Feel free to offer criticism or suggestions to help us improve. Your feedback will remain anonymous, so don't hesitate to be open and honest about your experience.</p>
     <b>The Steps : </b>
     <ol>
-        <li>In the main menu, press the <b>Setting</b> dropdown and click the <a class='menu-btn-help' href='/FeedbackController'>Feedback</a> page</li>
+        <li>In the main menu, press the <b>Setting</b> dropdown and click the <a class='menu-btn-help' href='/FeedbackController'>Feedback</a> button</li>
         <li>You will be taken to Feedback page and then you will see section with title <b>"Give Us Feedback"</b></li>
         <li>In this form, fill the <b>Message</b> and choose the <b>Rate</b> for Us</li>
         <li>Press the <b class="text-success">Send Feedback</b> button to send your feedback</li>
