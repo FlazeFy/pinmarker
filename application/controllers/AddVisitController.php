@@ -34,7 +34,9 @@ class AddVisitController extends CI_Controller {
 			$data['is_mobile_device'] = is_mobile_device();
 			$data['is_signed'] = true;
 
-			$this->load->view('add_visit/index', $data);
+			$data['title_page'] = 'History | Add';
+			$data['content'] = $this->load->view('add_visit/index',$data,true);
+			$this->load->view('others/layout', $data);
 		} else {
 			redirect('LoginController');
 		}

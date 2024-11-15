@@ -31,7 +31,9 @@ class AddGlobalListController extends CI_Controller {
 			$data['dt_available_pin'] = $this->PinModel->get_all_my_pin_name();
 			$data['is_signed'] = true;
 
-			$this->load->view('add_global_list/index', $data);
+			$data['title_page'] = 'Global List | Add';
+			$data['content'] = $this->load->view('add_global_list/index',$data,true);
+			$this->load->view('others/layout', $data);
 		} else {
 			redirect('LoginController');
 		}

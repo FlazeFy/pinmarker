@@ -22,7 +22,9 @@ class GlobalListController extends CI_Controller {
 			$data['dt_global_list']= $this->GlobalListModel->get_global_list("");
 			$data['is_mobile_device'] = is_mobile_device();
 
-			$this->load->view('global/index', $data);
+			$data['title_page'] = 'PinMarker | Global List';
+			$data['content'] = $this->load->view('global/index',$data,true);
+			$this->load->view('others/layout', $data);
 		} else {
 			redirect('LoginController');
 		}

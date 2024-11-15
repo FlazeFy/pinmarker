@@ -38,7 +38,9 @@ class DetailGlobalController extends CI_Controller {
 		$data['dt_available_pin'] = $this->PinModel->get_all_my_pin_name();
 		$data['is_mobile_device'] = is_mobile_device();
 
-		$this->load->view('detail_global/index', $data);
+		$data['title_page'] = 'Global List | Detail | '.$data['dt_detail']->list_name;
+		$data['content'] = $this->load->view('detail_global/index',$data,true);
+		$this->load->view('others/layout', $data);
 	}
 
 	public function view_global_list_pin($id){

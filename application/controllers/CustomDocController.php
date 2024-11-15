@@ -32,7 +32,9 @@ class CustomDocController extends CI_Controller {
 			$data['detail_generated'] = $this->generate_detail($id);
 			$data['active_page']= 'list';
 
-			$this->load->view('custom_doc/index', $data);
+			$data['title_page'] = 'List | Detail | Custom';
+			$data['content'] = $this->load->view('custom_doc/index',$data,true);
+			$this->load->view('others/layout', $data);
 		} else {
 			redirect('LoginController');
 		}

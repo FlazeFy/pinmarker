@@ -23,6 +23,8 @@ class HelpController extends CI_Controller {
 		$data['active_page']= 'help';
 		$data['is_mobile_device'] = is_mobile_device();
 
-		$this->load->view('help/index', $data);
+		$data['title_page'] = 'PinMarker | Help';
+		$data['content'] = $this->load->view('help/index',$data,true);
+		$this->load->view('others/layout', $data);
 	}
 }

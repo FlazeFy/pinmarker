@@ -23,7 +23,9 @@ class MapsController extends CI_Controller {
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
 			$data['is_mobile_device'] = is_mobile_device();
 
-			$this->load->view('maps/index', $data);
+			$data['title_page'] = 'PinMarker | Maps';
+			$data['content'] = $this->load->view('maps/index',$data,true);
+			$this->load->view('others/layout', $data);
 		} else {
 			redirect('LoginController');
 		}

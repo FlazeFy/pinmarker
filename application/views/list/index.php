@@ -55,24 +55,7 @@
         <div class="d-flex justify-content-between">
             <div class="d-flex justify-content-start w-100">
                 <a class="btn btn-success btn-menu-main" href="/AddController" id='add-marker-btn'><i class="fa-solid fa-plus"></i><?php if(!$is_mobile_device){ echo " Add Marker";} ?></a>
-                    <?php 
-                        if($this->session->userdata('is_catalog_view') == false && !$this->session->userdata('open_pin_list_category')){
-                            echo "
-                            <form class='d-inline' method='POST' action='/ListController/view_toogle'>
-                                <button class='btn btn-dark btn-menu-main p-0' style='bottom:calc(4*var(--spaceXLG));' id='toggle-view-btn'><i class='fa-solid fa-folder-open'></i>"; if(!$is_mobile_device){ echo " Catalog";} echo"</button>
-                            </form>";
-                        } else if(!$this->session->userdata('open_pin_list_category')) {
-                            echo "
-                            <form class='d-inline' method='POST' action='/ListController/view_toogle'>
-                                <button class='btn btn-dark btn-menu-main p-0' style='bottom:calc(4*var(--spaceXLG));' id='toggle-view-btn'><i class='fa-solid fa-list'></i>"; if(!$is_mobile_device){ echo " List";} echo"</button>
-                            </form>";
-                        } else {
-                            echo "
-                            <form class='d-inline' method='POST' action='/ListController/view_catalog_detail/back'>
-                                <button class='btn btn-danger btn-menu-main p-0' style='bottom:calc(4*var(--spaceXLG));' id='toggle-view-btn'><i class='fa-solid fa-arrow-left'></i>"; if(!$is_mobile_device){ echo " Back";} echo"</button>
-                            </form>";
-                        }
-                    ?>
+                <?php $this->load->view('list/toggle_view'); ?>
                 <a class="btn btn-dark btn-menu-main" href="/ListController/print_pin" style='bottom:calc(7*var(--spaceXLG));' id='print-btn'><i class="fa-solid fa-print"></i><?php if(!$is_mobile_device){ echo " Print";} ?></a>
                 <?php 
                     if($this->session->userdata('role_key') == 1){

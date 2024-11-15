@@ -25,7 +25,9 @@ class FeedbackController extends CI_Controller {
 		$data['active_page']= 'feedback';
 		$data['is_mobile_device'] = is_mobile_device();
 
-		$this->load->view('feedback/index', $data);
+		$data['title_page'] = 'PinMarker | Feedback';
+		$data['content'] = $this->load->view('feedback/index',$data,true);
+		$this->load->view('others/layout', $data);
 	}
 
 	public function add_feedback(){

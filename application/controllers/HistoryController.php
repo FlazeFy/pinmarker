@@ -45,7 +45,9 @@ class HistoryController extends CI_Controller {
 			$data['dt_all_my_visit_header']= $this->VisitModel->get_all_my_visit_header();
 			$data['dt_my_activity']= $this->HistoryModel->get_my_activity($per_page, $offset);
 
-			$this->load->view('history/index', $data);
+			$data['title_page'] = 'PinMarker | History';
+			$data['content'] = $this->load->view('history/index',$data,true);
+			$this->load->view('others/layout', $data);
 		} else {
 			redirect('LoginController');
 		}

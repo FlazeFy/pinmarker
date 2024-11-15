@@ -31,7 +31,9 @@ class AddController extends CI_Controller {
 			$data['is_mobile_device'] = is_mobile_device();
 			$data['is_signed'] = true;
 
-			$this->load->view('add/index', $data);
+			$data['title_page'] = 'List | Add';
+			$data['content'] = $this->load->view('add/index',$data,true);
+			$this->load->view('others/layout', $data);
 		} else {
 			redirect('LoginController');
 		}

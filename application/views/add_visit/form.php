@@ -269,7 +269,7 @@
         map.addListener("click", (e) => {
             initMap()
             placeMarkerAndPanTo(e.latLng, map)
-            addContentCoor(e.latLng)
+            addContentCoor2(e.latLng)
         });
     }
 
@@ -292,7 +292,7 @@
         map.panTo(latLng)
     }
 
-    function addContentCoor(coor) {
+    function addContentCoor2(coor) {
         coor = coor.toJSON()
         document.getElementById('pin_lat').value = coor['lat']
         document.getElementById('pin_long').value = coor['lng']

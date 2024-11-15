@@ -51,7 +51,9 @@ class MyProfileController extends CI_Controller {
 				$data['dt_all_feedback'] = null;
 			}
 
-			$this->load->view('myprofile/index', $data);
+			$data['title_page'] = 'PinMarker | My Profile';
+			$data['content'] = $this->load->view('myprofile/index',$data,true);
+			$this->load->view('others/layout', $data);
 		} else {
 			redirect('LoginController');
 		}

@@ -24,7 +24,9 @@ class TrackController extends CI_Controller {
 			$data['dt_get_my_pin_coor'] = $this->PinModel->get_all_my_pin_name();
 			$data['is_mobile_device'] = is_mobile_device();
 
-			$this->load->view('track/index', $data);
+			$data['title_page'] = 'PinMarker | Track';
+			$data['content'] = $this->load->view('track/index',$data,true);
+			$this->load->view('others/layout', $data);
 		} else {
 			redirect('LoginController');
 		}

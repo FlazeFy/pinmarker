@@ -52,7 +52,9 @@ class DetailController extends CI_Controller {
 			$data['dt_all_gallery_by_pin']= $this->GalleryModel->get_all_gallery_by_pin($id);
 			$data['dt_total_visit_by_by_pin']= $this->VisitModel->get_total_visit_by_by_pin_id($id); 
 
-			$this->load->view('detail/index', $data);
+			$data['title_page'] = "List | Detail | ".$data['dt_detail_pin']->pin_name;
+			$data['content'] = $this->load->view('detail/index',$data,true);
+			$this->load->view('others/layout', $data);
 		} else {
 			redirect('LoginController');
 		}

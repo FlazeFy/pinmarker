@@ -3,56 +3,10 @@
     <a class="btn btn-danger mb-4 py-3 px-4 me-2" href="/MapsController" id="back-page-btn"><i class="fa-solid fa-arrow-left"></i><?php if (!$is_mobile_device){ echo " Back"; } ?></a>
     <span>
         <a class='btn btn-light mb-4 py-3 px-4 me-1' href="/CustomDocController/view/<?= $dt_detail_pin->id ?>"><i class='fa-solid fa-print'></i><?php if(!$is_mobile_device){ echo " Custom Print"; } else { echo " Custom"; }?></a>
-        <form action="/DetailController/print_detail/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
-            <button class='btn btn-light mb-4 py-3 px-4 me-1' id='preview-doc-btn'><i class='fa-solid fa-print'></i><?php
-                if(!$is_mobile_device){
-                    echo " Print Detail";
-                }
-            ?></button>
-        </form>
-        <form action="/DetailController/edit_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
-            <?php 
-                if($this->session->userdata('is_edit_mode') == false){
-                    echo "<button class='btn btn-light mb-4 btn-menu-main py-3 me-1' id='toggle-edit-btn'><i class='fa-solid fa-pen-to-square'></i>";
-                    if(!$is_mobile_device){
-                        echo " Switch to Edit Mode";
-                    }
-                    echo "</button>";
-                } else {
-                    echo "<button class='btn btn-danger mb-4 p py-3 me-1' id='toggle-edit-btn'><i class='fa-solid fa-pen-to-square'></i>";
-                    if(!$is_mobile_device){
-                        echo " Back to View Mode";
-                    }
-                    echo "</button>";
-                }
-            ?>
-        </form>
-        <form action="/DetailController/favorite_toogle/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline">
-            <?php 
-                if($dt_detail_pin->is_favorite == '1'){
-                    echo "<input name='is_favorite' value='0' hidden><button class='btn btn-dark mb-4 btn-menu-main py-3 me-1' style='bottom:calc(4*var(--spaceXLG));' id='toggle-favorite-btn'><i class='fa-solid fa-heart'></i>";
-                    if(!$is_mobile_device){
-                        echo " Saved to Favorite";
-                    }
-                    echo "</button>";
-                } else {
-                    echo "<input name='is_favorite' value='1' hidden><button class='btn btn-light mb-4 btn-menu-main py-3 me-1' style='bottom:calc(4*var(--spaceXLG));' id='toggle-favorite-btn'><i class='fa-solid fa-heart'></i>";
-                    if(!$is_mobile_device){
-                        echo " Add to Favorite";
-                    }
-                    echo "</button>";
-                }
-            ?>
-        </form>
-        <form action="/DetailController/delete_pin/<?= $dt_detail_pin->id ?>" method="POST" class="d-inline" id="delete-pin-form">
-            <a class='btn btn-danger mb-4 py-3 px-4' id="delete-pin-btn"><i class='fa-solid fa-trash'></i>
-            <?php
-                if(!$is_mobile_device){
-                    echo " Delete";
-                }
-            ?>
-            </a>
-        </form>
+        <?php $this->load->view('detail/print'); ?>
+        <?php $this->load->view('detail/edit_toggle'); ?>
+        <?php $this->load->view('detail/favorite_toggle'); ?>
+        <?php $this->load->view('detail/delete'); ?>
     </span>
 </div>
 

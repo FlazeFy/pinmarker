@@ -42,7 +42,9 @@ class DashboardController extends CI_Controller {
 				$data['dt_get_last_visit']= $this->VisitModel->get_last_visit();
 			}
 
-			$this->load->view('dashboard/index', $data);
+			$data['title_page'] = 'PinMarker | Dashboard';
+			$data['content'] = $this->load->view('dashboard/index',$data,true);
+			$this->load->view('others/layout', $data);
 		} else {
 			redirect('LoginController');
 		}
