@@ -1,6 +1,6 @@
 <?php if(!$is_mobile_device): ?>
     <table class="table table-bordered" id="tb_related_pin_track">
-        <thead style="font-size: var(--textMD);" class="text-center">
+        <thead>
             <tr>
                 <th scope="col">Pin Name</th>
                 <th scope="col">Visit Attached</th>
@@ -75,12 +75,3 @@
         }
     ?>
 <?php endif; ?>
-
-<script>
-    const date_holder = document.querySelectorAll('.date-target');
-
-    date_holder.forEach(e => {
-        const date = new Date(e.textContent);
-        e.textContent = getDateToContext(e.textContent, "calendar");
-    });
-</script>

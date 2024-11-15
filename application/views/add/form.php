@@ -71,7 +71,7 @@
 <div id="add_multiple_pin" style="display:none;">
     <form action="/AddController/add_marker/multiple" method="POST">
         <table class="table table-bordered" id="tb_imported_pin">
-            <thead style="font-size: var(--textMD);">
+            <thead>
                 <tr class="text-center">
                     <th scope="col">Pin Name</th>
                     <th scope="col">Category</th>
@@ -399,21 +399,12 @@
                     });
                 }
             })
-            .fail(function (xhr, ajaxOptions, thrownError) {
+            .fail(function (response, jqXHR, textStatus, errorThrown) {
                 Swal.hideLoading()
-                Swal.fire({ 
-                    title: 'Failed!', 
-                    text: 'Something went wrong.', 
-                    icon: 'error' 
-                });
+                response.status != 404 && unknownErrorSwal()
             });
-
         } else {
-            Swal.fire({ 
-                title: 'Failed!', 
-                text: `Something wrong happen`, 
-                icon: 'error' 
-            });
+            unknownErrorSwal()
         }
     }
 

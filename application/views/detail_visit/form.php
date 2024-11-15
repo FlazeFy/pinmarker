@@ -112,32 +112,6 @@
 
 <?php $this->load->view('add_visit/my_contact'); ?>
 
-<?php 
-    if($this->session->flashdata('message_error')){
-        echo "
-            <script>
-                Swal.fire({
-                    title: 'Failed!',
-                    text: '".$this->session->flashdata('message_error')."',
-                    icon: 'error'
-                });
-            </script>
-        ";
-    }
-    if($this->session->flashdata('message_success')){
-        echo "
-            <script>
-                Swal.fire({
-                    title: 'Success!',
-                    text: '".$this->session->flashdata('message_success')."',
-                    icon: 'success'
-                });
-            </script>
-        ";
-    }
-?>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $(document).on('click', '#submit-visit-wdir-btn', function() {

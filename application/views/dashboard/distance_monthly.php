@@ -6,6 +6,7 @@
 <script type="text/javascript">
     getMonthlyDistance()
     function getMonthlyDistance() {
+        Swal.showLoading()
         $.ajax({
             url: `http://127.0.0.1:8000/api/v1/track/year/<?= date('Y') ?>/<?= $this->session->userdata('user_id'); ?>`,
             dataType: 'json',
@@ -16,6 +17,7 @@
             }
         })
         .done(function (response) {
+            Swal.hideLoading()
             $("#tb_history_track_body").empty()
             
             let data = response.data
@@ -75,8 +77,9 @@
             var chart = new ApexCharts(document.querySelector("#distance_montly_line_chart"), options)
             chart.render()
         })
-        .fail(function (jqXHR, ajaxOptions, thrownError) {
-            // Do something
+        .fail(function (response, jqXHR, textStatus, errorThrown) {
+            Swal.hideLoading()
+            response.status != 404 && unknownErrorSwal()
         });
     }
 </script>

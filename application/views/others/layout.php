@@ -7,6 +7,12 @@
     <title><?= $title_page ?? ''; ?></title>
     <link rel="icon" type="image/png" href="http://127.0.0.1:8080/public/images/logo_white.png"/>
 
+    <?php 
+        $this->load->helper('url'); 
+        $full_url = current_url();
+        $cleanedUrl = str_replace("http://127.0.0.1:8080/", "", $full_url);    
+    ?>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,35 +25,66 @@
 
     <!-- CSS -->
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
-    <link href="http://127.0.0.1:8080/public/css/maps.css" rel="stylesheet"/>
-    <link href="http://127.0.0.1:8080/public/css/pin.css" rel="stylesheet"/>
+    
+    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController)', $cleanedUrl)): ?>
+        <!-- Maps CSS -->
+        <link href="http://127.0.0.1:8080/public/css/maps.css" rel="stylesheet"/>
+    <?php endif; ?>
+
+    <?php if(preg_match('(LoginController|GlobalListController|DetailGlobalController)', $cleanedUrl)): ?>
+        <!-- Pin CSS -->
+        <link href="http://127.0.0.1:8080/public/css/pin.css" rel="stylesheet"/>
+    <?php endif; ?>
+
+    <?php if(preg_match('(RegisterController|ForgetController)', $cleanedUrl)): ?>
+        <!-- Register & Forget Pass CSS -->
+        <link href="http://127.0.0.1:8080/public/css/register.css" rel="stylesheet"/>
+    <?php endif; ?>
+
+    <link href="http://127.0.0.1:8080/public/css/button.css" rel="stylesheet"/>
+    <link href="http://127.0.0.1:8080/public/css/form.css" rel="stylesheet"/>
+    <link href="http://127.0.0.1:8080/public/css/navbar.css" rel="stylesheet"/>
     
     <!-- Jquery -->
     <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-
-    <!-- Javascript -->
-    <script src="http://127.0.0.1:8080/public/js/global.js"></script>
-    <script src="http://127.0.0.1:8080/public/js/isotope.js"></script>
-    <script src="http://127.0.0.1:8080/public/js/maps.js"></script>
-
-    <!--Apex Chart-->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
     <!-- Swal -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Isotope -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
-    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+    <script src="http://127.0.0.1:8080/public/js/global.js"></script>
 
-    <!--Full calendar.-->
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+    <?php if(preg_match('(GlobalController|ListController|LoginController)', $cleanedUrl)): ?>
+        <!-- Isotope JS -->
+        <script src="http://127.0.0.1:8080/public/js/isotope.js"></script>
+    <?php endif; ?>
+
+    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController)', $cleanedUrl)): ?>
+        <!-- Maps JS -->
+        <script src="http://127.0.0.1:8080/public/js/maps.js"></script>
+    <?php endif; ?>
+
+    <?php if(preg_match('(DashboardController|MyProfileController|DetailController)', $cleanedUrl)): ?>
+        <!--Apex Chart-->
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <?php endif; ?>
+
+    <?php if(preg_match('(LoginController|ListController|GlobalListController|DetailGlobalController|MyProfileController)', $cleanedUrl)): ?>
+        <!-- Isotope -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+        <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+    <?php endif; ?>
+
+    <?php if($cleanedUrl == 'HistoryController'): ?>
+        <!--Full calendar.-->
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+    <?php endif; ?>
 </head>
 <body>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
-    
+    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController)', $cleanedUrl)): ?>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
+    <?php endif; ?>
+
     <div class="content">
-        <?php $this->load->view('others/navbar'); ?>
+        <?php preg_match('(LoginController|RegisterController|ForgetController|GlobalMapsController)', $cleanedUrl) ? null : $this->load->view('others/navbar'); ?>
         <?php echo $content ?? ''; ?>
     </div>
     <?php 
@@ -74,14 +111,18 @@
             ";
         }
     ?>
-    <script>
-        const date_holder = document.querySelectorAll('.date-target');
 
-        date_holder.forEach(e => {
-            const date = new Date(e.textContent);
-            e.textContent = getDateToContext(e.textContent, "calendar");
+    <script>
+        $( document ).ready(function() {
+            const date_holder = document.querySelectorAll('.date-target');
+
+            date_holder.forEach(e => {
+                const date = new Date(e.textContent);
+                e.textContent = getDateToContext(e.textContent, "calendar");
+            });
         });
     </script>
+
     <?php $this->load->view('others/footer'); ?>
 </body>
 </html>

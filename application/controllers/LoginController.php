@@ -22,7 +22,9 @@ class LoginController extends CI_Controller {
 		$data['dt_active_search'] = null;
 		$data['is_mobile_device'] = is_mobile_device();
 
-		$this->load->view('login/index',$data);
+		$data['title_page'] = 'PinMarker | Marks Your World';
+		$data['content'] = $this->load->view('login/index',$data,true);
+		$this->load->view('others/layout', $data);
 	}
 
 	public function view($search)
@@ -37,7 +39,9 @@ class LoginController extends CI_Controller {
 		$data['dt_active_search'] = $search;
 		$data['is_mobile_device'] = is_mobile_device();
 
-		$this->load->view('login/index',$data);
+		$data['title_page'] = 'PinMarker | Marks Your World';
+		$data['content'] = $this->load->view('login/index',$data,true);
+		$this->load->view('others/layout', $data);
 	}
 
 	public function login()

@@ -1,0 +1,20 @@
+.sub-tab .nav-item a{
+    color: var(--secondaryColor);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: var(--textXLG);
+}
+.sub-tab .nav-item{
+    text-align: center !important;
+    margin-right: var(--spaceLG);
+    padding: var(--spaceSM);
+    border-radius: var(--roundedLG);
+    cursor: pointer;
+}
+.sub-tab .nav-item.active a, .sub-tab .nav-item:hover a{
+    font-weight: 600;
+    color: var(--whiteColor);
+}
+.sub-tab .nav-item.active, .sub-tab .nav-item:hover{
+    background: var(--primaryColor);
+}

@@ -310,13 +310,6 @@
     window.initMap = initMap
 
     $( document ).ready(function() {
-        const date_holder = document.querySelectorAll('.date-target');
-
-        date_holder.forEach(e => {
-            const date = new Date(e.textContent);
-            e.textContent = getDateToContext(e.textContent, "calendar");
-        });
-
         $(document).on('click', '.delete-pin', function() {
             const idx = $(this).index('.delete-pin')
             Swal.fire({

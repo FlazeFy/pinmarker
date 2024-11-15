@@ -194,6 +194,28 @@ const read_url_params = (type) => {
     return res
 }
 
+const unknownErrorSwal = () => {
+    Swal.fire({
+        title: "Oops!",
+        text: "Something happen! Please call admin",
+        icon: "error"
+    });
+}
+
+const imagePreparation = () => {
+    $(document).ready(function() {
+        $('img').each(function() {
+            const src = $(this).attr('src')
+            let title = $(this).attr('title')
+            if (title === undefined) {
+                title = src;
+                $(this).attr('title', title)
+            }
+        })
+    })
+}
+imagePreparation()
+
 const formValidation = () => {
     $(document).ready(function() {
         $('.form-validated').each(function(idx, el) {

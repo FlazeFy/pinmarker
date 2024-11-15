@@ -17,7 +17,7 @@
                     <input id="filter_hour_track_history_end" type="time" class="form-control ms-2">
                 </div>
                 <table class="table table-bordered" id="tb_history_track">
-                    <thead style="font-size: var(--textMD);">
+                    <thead>
                         <tr class="text-center">
                             <th scope="col">Datetime</th>
                             <th scope="col">Coordinate</th>

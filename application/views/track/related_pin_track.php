@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <h6>From : <span id="coor_now"></span></h6>
                 <table class="table table-bordered" id="tb_related_pin_track">
-                    <thead style="font-size: var(--textMD);" class="text-center">
+                    <thead>
                         <tr>
                             <th scope="col">Pin Name</th>
                             <th scope="col">Coordinate</th>

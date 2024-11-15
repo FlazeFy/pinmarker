@@ -239,7 +239,7 @@
             } else {
                     echo "
                         <table class='table table-bordered' id='tb_related_pin_track'>
-                            <thead class='text-center'>
+                            <thead>
                                 <tr>
                                     <th scope='col'>Name</th>
                                     <th scope='col'>Location</th>
@@ -383,12 +383,6 @@
     }
 
     $( document ).ready(function() {
-        const date_holder = document.querySelectorAll('.date-target')
-        date_holder.forEach(e => {
-            const date = new Date(e.textContent);
-            e.textContent = getDateToContext(e.textContent, "calendar")
-        })
-
         $('#share-global-pin-btn').on('click', function() {
             messageCopy('http://127.0.0.1:8080/DetailGlobalController/view/<?= $dt_detail->id ?>')
         })

@@ -159,11 +159,7 @@
             }
         })
         .error(function (xhr, ajaxOptions, thrownError) {
-            Swal.fire({
-                title: "Oops!",
-                text: "Something error! Please call admin",
-                icon: "error"
-            });
+            unknownErrorSwal()
         })
     }
     
@@ -268,11 +264,7 @@
             });
         })
         .error(function (xhr, ajaxOptions, thrownError) {
-            Swal.fire({
-                title: "Oops!",
-                text: "Something error! Please call admin",
-                icon: "error"
-            });
+            unknownErrorSwal()
         })
     }
 
@@ -315,11 +307,7 @@
                             startTimer(900)
                         })
                         .error(function (xhr, ajaxOptions, thrownError) {
-                            Swal.fire({
-                                title: "Oops!",
-                                text: "Something error! Please call admin",
-                                icon: "error"
-                            });
+                            unknownErrorSwal()
                         })
                     } else {
                         Swal.fire({

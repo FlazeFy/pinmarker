@@ -48,17 +48,3 @@
         <?php endif; ?>
     </form>
 </div>
-
-<?php 
-    if($this->session->flashdata('message_error')){
-        echo "
-            <script>
-                Swal.fire({
-                    title: 'Failed!',
-                    text: '".$this->session->flashdata('message_error')."',
-                    icon: 'error'
-                });
-            </script>
-        ";
-    }
-?>

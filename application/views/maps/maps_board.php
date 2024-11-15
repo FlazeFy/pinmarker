@@ -30,8 +30,6 @@
     </div>
 </div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
-
 <script type="text/javascript">
     let map;
     let openInfoWindows = []
@@ -124,15 +122,6 @@
             }
         }
     }
-
-    $( document ).ready(function() {
-        const date_holder = document.querySelectorAll('.date-target');
-
-        date_holder.forEach(e => {
-            const date = new Date(e.textContent);
-            e.textContent = getDateToContext(e.textContent, "calendar");
-        });
-    });
 
     window.initMap = initMap;
 </script>

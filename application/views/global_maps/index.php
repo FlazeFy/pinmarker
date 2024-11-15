@@ -20,6 +20,9 @@
     <!-- CSS -->
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
     <link href="http://127.0.0.1:8080/public/css/pin.css" rel="stylesheet"/>
+    <link href="http://127.0.0.1:8080/public/css/button.css" rel="stylesheet"/>
+    <link href="http://127.0.0.1:8080/public/css/form.css" rel="stylesheet"/>
+    <link href="http://127.0.0.1:8080/public/css/navbar.css" rel="stylesheet"/>
 
     <!-- Javascript -->
     <script src="http://127.0.0.1:8080/public/js/global.js"></script>

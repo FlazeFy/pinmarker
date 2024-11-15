@@ -6,7 +6,7 @@
                     <div class='col-lg-6 col-md-12 col-sm-12 mx-auto position-relative'>
                         <button class='gallery-btn' data-bs-toggle='modal' data-bs-target='#gallery_modal_$dt->id'>";
                         if($dt->gallery_type == "image"){
-                            echo "<img class='rounded img img-fluid d-block mx-auto' src='$dt->gallery_url' alt='$dt->gallery_url'>";
+                            echo "<img class='img img-fluid d-block mx-auto' src='$dt->gallery_url' alt='$dt->gallery_url'>";
                         } else if($dt->gallery_type == "video"){
                             echo "
                                 <video controls class='rounded w-100 mx-auto mt-2' alt='$dt->gallery_url'>
@@ -46,7 +46,7 @@
                             </div>
                             <div class='modal-body'>";
                                 if($dt->gallery_type == "image"){
-                                    echo "<img class='rounded img img-fluid d-block mx-auto' src='$dt->gallery_url' alt='$dt->gallery_url'>";
+                                    echo "<img class='img img-fluid d-block mx-auto' src='$dt->gallery_url' alt='$dt->gallery_url'>";
                                 } else if($dt->gallery_type == "video"){
                                     echo "
                                         <video controls class='rounded w-100 mx-auto mt-2' alt='$dt->gallery_url'>

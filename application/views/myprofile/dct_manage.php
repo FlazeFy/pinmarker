@@ -1,6 +1,6 @@
 <?php $this->load->view('myprofile/add_category'); ?>
 <table class="table table-bordered my-3">
-    <thead class="text-center">
+    <thead>
         <tr>
             <th>Type</th>
             <th>Name</th>

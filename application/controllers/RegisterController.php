@@ -23,7 +23,9 @@ class RegisterController extends CI_Controller {
 		$data = [];
 		$data['is_mobile_device'] = is_mobile_device();
 
-		$this->load->view('register/index', $data);
+		$data['title_page'] = 'PinMarker | Register';
+		$data['content'] = $this->load->view('register/index',$data,true);
+		$this->load->view('others/layout', $data);
 	}
 
 	public function register(){

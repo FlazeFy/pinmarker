@@ -1,5 +1,5 @@
 <table class="table table-bordered my-3">
-    <thead class="text-center">
+    <thead>
         <tr>
             <th>Rate</th>
             <th>Body</th>

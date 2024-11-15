@@ -40,13 +40,6 @@
 </div>
 <script>
     $( document ).ready(function() {
-        const date_holder = document.querySelectorAll('.date-target')
-
-        date_holder.forEach(e => {
-            const date = new Date(e.textContent);
-            e.textContent = getDateToContext(e.textContent, "calendar")
-        })
-
         $('.share-global-pin-btn').on('click', function() {
             const idx = $(this).index('.share-global-pin-btn')
             const list_name = $(`#list-name-holder-${idx}`).text().trim().replace(' ','%20')

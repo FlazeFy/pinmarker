@@ -24,7 +24,9 @@ class ForgetController extends CI_Controller {
 		$data = [];
 		$data['is_mobile_device'] = is_mobile_device();
 
-		$this->load->view('forget/index', $data);
+		$data['title_page'] = 'PinMarker | Forget Password';
+		$data['content'] = $this->load->view('forget/index',$data,true);
+		$this->load->view('others/layout', $data);
 	}
 
 	public function forget_pass(){
