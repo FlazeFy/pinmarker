@@ -338,5 +338,8 @@
 			$this->db->where('id', $id);
 			return $this->db->update($this->table,$data);	
 		}
+		public function delete_visit($id){
+			return $this->db->delete($this->table,['id'=>$id]);	
+		}
 	}
 ?>

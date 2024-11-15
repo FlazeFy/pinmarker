@@ -92,4 +92,21 @@ class DetailVisitController extends CI_Controller {
 			}
 		}
 	}
+
+	public function delete_visit($id){
+		$visit = $this->VisitModel->get_visit_by_id($id);
+		if($visit){
+			if($this->VisitModel->delete_visit($id)){
+				$history_ctx = $visit->pin_name ? "$visit->pin_name at $visit->pin_name" : $visit->visit_desc; 
+				$this->HistoryModel->insert_history('Delete visit', $history_ctx);				
+				$this->session->set_flashdata('message_success', generate_message(true,'delete','visit',null));
+				redirect('HistoryController');
+			} else {
+				$this->session->set_flashdata('message_error', generate_message(false,'delete','visit','visit not found'));
+			}
+		} else {
+			$this->session->set_flashdata('message_error', generate_message(false,'delete','visit','visit not found'));
+		}
+		redirect('DetailVisitController/view/'.$id);
+	}
 }
