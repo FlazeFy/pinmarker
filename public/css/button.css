@@ -28,6 +28,13 @@
     margin-bottom: var(--spaceLG);
     width: 100%;
 }
+.btn-tag {
+    border-radius: var(--roundedLG);
+    background: var(--primaryColor);
+    color: var(--whiteColor);
+    font-size: var(--textLG);
+    padding: var(--spaceMini) var(--spaceMD);
+}
 .btn-socmed {
     border: 2px solid black;
     border-radius: 100%;

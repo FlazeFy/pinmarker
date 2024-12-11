@@ -103,13 +103,22 @@ const getDateToContext = (datetime, type) => {
                 result.setUTCHours(result.getUTCHours() + offsetHours)
             }
         
-            return `${result.getFullYear()}-${("0" + (result.getMonth() + 1)).slice(-2)}-${("0" + result.getDate()).slice(-2)} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}:00`;
+            return `${("0" + result.getDate()).slice(-2)} ${getMonthName((result.getMonth() + 1),false)} ${result.getFullYear()} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`;
         }        
     } else {
         return "-";
     }
 }
 
+const getMonthName = (idx, is_full_name) => {
+    const months = ['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December'];
+
+    if (idx < 0 || idx > 11) {
+        return 'Invalid month'
+    }
+
+    return is_full_name ? months[idx] : months[idx].slice(0, 3)
+}
 
 const getUTCHourOffset = () => {
     const offsetMi = new Date().getTimezoneOffset();
