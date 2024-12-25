@@ -5,6 +5,7 @@
                 <th scope="col">Name</th>
                 <th scope="col">Total Visit</th>
                 <th scope="col">Location History</th>
+                <th scope="col">Analyze</th>
             </tr>
         </thead>
         <tbody id="tb_related_pin_track_body" style="font-size: var(--textSM);">
@@ -31,6 +32,7 @@
                                 <td><h6>".ucwords($dt->name)."</h6></td>
                                 <td class='text-center'><b>$dt->total</b> Visit</td>
                                 <td>$location_element</td>
+                                <td><a class='btn btn-dark px-2 py-1 me-2 see-detail-btn' href='/DetailPersonController/view/$dt->name'><i class='fa-solid fa-circle-info'></i> See Detail</a></td>
                             </tr>
                         ";
                     }

@@ -103,7 +103,7 @@ const getDateToContext = (datetime, type) => {
                 result.setUTCHours(result.getUTCHours() + offsetHours)
             }
         
-            return `${("0" + result.getDate()).slice(-2)} ${getMonthName((result.getMonth() + 1),false)} ${result.getFullYear()} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`;
+            return `${result.getFullYear()}-${("0" + (result.getMonth() + 1)).slice(-2)}-${("0" + result.getDate()).slice(-2)} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}:00`;
         }        
     } else {
         return "-";

@@ -389,6 +389,55 @@
 			return $res;
 		}
 
+		public function get_total_appearance($name) {
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+			$name = str_replace("%20"," ",$name);
+
+			// Found on visit with
+			$this->db->select("COUNT(1) as total");
+			$this->db->from($this->table);
+			$this->db->like('visit_with', $name);
+    		$this->db->where('created_by', $user_id); 
+			$data_visit = $this->db->get()->row();		
+			$total_visit = $data_visit ? $data_visit->total : 0;
+
+			// Found on pin
+			$this->db->select('COUNT(1) as total');
+			$this->db->from("pin");
+			$this->db->like("pin_person", $name);
+			$this->db->where("created_by", $user_id);
+			$data_pin = $this->db->get()->row();
+			$total_pin = $data_pin ? $data_pin->total : 0;
+
+			$res = $total_pin + $total_visit; 	
+		
+			return $res;
+		}
+
+		public function get_visit_by_person($name,$limit,$start) {
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+			$name = str_replace("%20"," ",$name);
+
+			$this->db->select("visit.id, visit_desc, visit_with, visit_with, visit.created_at, pin_name");
+			$this->db->from($this->table);
+			$this->db->join('pin','pin.id = visit.pin_id');
+			$this->db->like('visit_with', $name);
+    		$this->db->where('visit.created_by', $user_id); 
+
+			if($limit > 0 && $start >= 0){
+				$db_count = clone $this->db;
+				$total_rows = $db_count->get()->num_rows();
+				$total_pages = ceil($total_rows / $limit);
+
+				$this->db->limit($limit, $start);
+				$data['data'] = $this->db->get()->result();
+				$data['total_page'] = $total_pages;
+				return $data;
+			} else {
+				return $data = $this->db->get()->result();
+			}
+		}
+
 		// Command
 		public function insert_visit($data){
 			return $this->db->insert($this->table,$data);	

@@ -198,3 +198,20 @@ if (!function_exists('generate_document_pin_detail_body')){
         return $html;
     }
 }
+
+if (!function_exists('highlight_item')){
+    function highlight_item($find, $items) {
+        $index = stripos($items, $find);
+        
+        if ($index === false) {
+            return $items;
+        }
+    
+        $beforeMatch = substr($items, 0, $index);
+        $match = substr($items, $index, strlen($find));
+        $afterMatch = substr($items, $index + strlen($find));
+        $res = $beforeMatch."<span class='fst-italic bg-dark text-white rounded px-2 py-0 mx-1'>{$match}</span>".$afterMatch;
+    
+        return $res;
+    }
+}
