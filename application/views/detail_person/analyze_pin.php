@@ -1,4 +1,4 @@
-<p class='mt-2 mb-0 fw-bold'>Found On Pin</p>
+<p class='my-2 fw-bold'>Found On Pin</p>
 <?php 
     if(count($dt_pin_by_person) > 0){
         foreach($dt_pin_by_person as $dt){    

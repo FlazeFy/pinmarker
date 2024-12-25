@@ -1,4 +1,4 @@
-<p class='mt-2 mb-0 fw-bold'>Found On Visit</p>
+<p class='my-2 fw-bold'>Found On Visit</p>
 <?php 
     if(count($dt_visit_by_person['data']) > 0){
         foreach($dt_visit_by_person['data'] as $dt){

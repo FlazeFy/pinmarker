@@ -1,4 +1,4 @@
-<p class='mt-2 mb-0 fw-bold'>Visit Time Analyze</p>
+<p class='my-2 fw-bold'>Visit Time Analyze</p>
 <?php 
     if(count($dt_visit_pertime) > 0){
         echo "<div class='row'>";

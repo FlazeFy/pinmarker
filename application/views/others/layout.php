@@ -26,7 +26,7 @@
     <!-- CSS -->
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
     
-    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|DetailPersonController)', $cleanedUrl)): ?>
         <!-- Maps CSS -->
         <link href="http://127.0.0.1:8080/public/css/maps.css" rel="stylesheet"/>
     <?php endif; ?>
@@ -57,7 +57,7 @@
         <script src="http://127.0.0.1:8080/public/js/isotope.js"></script>
     <?php endif; ?>
 
-    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|DetailPersonController)', $cleanedUrl)): ?>
         <!-- Maps JS -->
         <script src="http://127.0.0.1:8080/public/js/maps.js"></script>
     <?php endif; ?>
@@ -79,7 +79,7 @@
     <?php endif; ?>
 </head>
 <body>
-    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|DetailPersonController)', $cleanedUrl)): ?>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
     <?php endif; ?>
 
