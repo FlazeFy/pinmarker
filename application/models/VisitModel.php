@@ -438,6 +438,22 @@
 			}
 		}
 
+		public function get_visit_pertime_by_person($name) {
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+			$name = str_replace("%20"," ",$name);
+			$ctx = "HOUR(visit.created_at)";
+
+			$this->db->select("$ctx as context, COUNT(1) as total, IFNULL(GROUP_CONCAT(COALESCE(pin.pin_name, null) ORDER BY pin.pin_name ASC SEPARATOR ', '), '') as visit_list, ");
+			$this->db->from($this->table);
+			$this->db->join('pin','pin.id = visit.pin_id');
+			$this->db->like('visit_with', $name);
+    		$this->db->where('visit.created_by', $user_id); 
+			$this->db->group_by($ctx);
+			$res = $this->db->get()->result();
+
+			return $res;
+		}
+
 		// Command
 		public function insert_visit($data){
 			return $this->db->insert($this->table,$data);	

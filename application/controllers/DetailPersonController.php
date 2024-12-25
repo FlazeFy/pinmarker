@@ -34,6 +34,7 @@ class DetailPersonController extends CI_Controller {
 			}
 			$data['dt_visit_by_person'] = $this->VisitModel->get_visit_by_person($name, $per_page, $offset);
 			$data['dt_pin_by_person'] = $this->PinModel->get_pin_by_person($name);
+			$data['dt_visit_pertime'] = $this->VisitModel->get_visit_pertime_by_person($name);
 
 			$data['title_page'] = 'Detail | Person | '.$data['clean_name'];
 			$data['content'] = $this->load->view('detail_person/index',$data,true);
