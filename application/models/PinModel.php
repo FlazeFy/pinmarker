@@ -405,6 +405,21 @@
 			return $this->template_avg_count('visit', 'visit_count');
 		}
 
+		public function get_pin_by_person($name){
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+			$name = str_replace("%20"," ",$name);
+
+			$this->db->select("pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, is_favorite, pin.created_at, pin_call, pin_email, pin_address, IFNULL(COUNT(visit.id), 0) as total_visit, MAX(visit.created_at) as last_visit");
+			$this->db->join('visit','visit.pin_id = pin.id','left');
+			$this->db->from($this->table);
+			$this->db->like('pin_person', $name);
+			$this->db->where('pin.created_by', $user_id);
+			$this->db->where('deleted_at IS NULL');
+			$res = $this->db->get()->result();
+
+			return $res;
+		}
+
 		// Command
 		public function insert_marker($data){
 			return $this->db->insert($this->table,$data);	

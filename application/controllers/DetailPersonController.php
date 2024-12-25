@@ -6,6 +6,7 @@ class DetailPersonController extends CI_Controller {
 		parent::__construct();
 		$this->load->model('AuthModel');
 		$this->load->model('VisitModel');
+		$this->load->model('PinModel');
 
 		$this->load->helper('generator_helper');
 	}
@@ -32,6 +33,7 @@ class DetailPersonController extends CI_Controller {
 				$offset = $this->session->userdata('page_visit') * $per_page;
 			}
 			$data['dt_visit_by_person'] = $this->VisitModel->get_visit_by_person($name, $per_page, $offset);
+			$data['dt_pin_by_person'] = $this->PinModel->get_pin_by_person($name);
 
 			$data['title_page'] = 'Detail | Person | '.$data['clean_name'];
 			$data['content'] = $this->load->view('detail_person/index',$data,true);

@@ -31,7 +31,7 @@
         <link href="http://127.0.0.1:8080/public/css/maps.css" rel="stylesheet"/>
     <?php endif; ?>
 
-    <?php if(preg_match('(LoginController|GlobalListController|DetailGlobalController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(LoginController|GlobalListController|DetailGlobalController|DetailPersonController)', $cleanedUrl)): ?>
         <!-- Pin CSS -->
         <link href="http://127.0.0.1:8080/public/css/pin.css" rel="stylesheet"/>
     <?php endif; ?>

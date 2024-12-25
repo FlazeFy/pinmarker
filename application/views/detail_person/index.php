@@ -9,4 +9,7 @@
     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
         <?php $this->load->view('detail_person/analyze_visit'); ?>
     </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+        <?php $this->load->view('detail_person/analyze_pin'); ?>
+    </div>
 </div>
