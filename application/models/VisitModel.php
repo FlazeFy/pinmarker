@@ -488,6 +488,24 @@
 			return $res;
 		}
 
+		public function get_visit_location_category_by_person($name) {
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+			$name = str_replace("%20"," ",$name);
+
+			$this->db->select("pin_category as context, COUNT(1) as total");
+			$this->db->from($this->table);
+			$this->db->join('pin','pin.id = visit.pin_id');
+			$this->db->like('visit_with', $name);
+    		$this->db->where('visit.created_by', $user_id); 
+			$this->db->group_by('pin_category');
+			$this->db->order_by('total','DESC');
+			$this->db->limit(7);
+
+			$res = $this->db->get()->result();
+
+			return $res;
+		}
+
 		// Command
 		public function insert_visit($data){
 			return $this->db->insert($this->table,$data);	
