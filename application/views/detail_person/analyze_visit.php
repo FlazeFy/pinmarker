@@ -8,7 +8,7 @@
             }
 
             if($dt->pin_name){
-                $desc = "$desc at $dt->pin_name";
+                $desc = "$desc at <b>$dt->pin_name</b>";
             } 
 
             $visit_with_element = highlight_item($clean_name, $dt->visit_with);

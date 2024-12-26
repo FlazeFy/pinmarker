@@ -506,6 +506,46 @@
 			return $res;
 		}
 
+		// For attached pin to global list
+		public function get_visit_location_favorite_tag_by_person($name) {
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+			$name = str_replace("%20", " ", $name);
+		
+			$this->db->select("JSON_UNQUOTE(JSON_EXTRACT(list_tag, '$[*].tag_name')) AS tag_names");
+			$this->db->from($this->table);
+			$this->db->join('pin', 'pin.id = visit.pin_id');
+			$this->db->join('global_list_pin_relation', 'global_list_pin_relation.pin_id = pin.id');
+			$this->db->join('global_list', 'global_list.id = global_list_pin_relation.list_id');
+			$this->db->like('visit_with', $name);
+			$this->db->where('visit.created_by', $user_id);
+			$this->db->where('list_tag IS NOT NULL');
+			$query = $this->db->get();
+		
+			$tags = [];
+			foreach ($query->result() as $row) {
+				if (!empty($row->tag_names)) {
+					$tag_list = json_decode($row->tag_names);
+					foreach ($tag_list as $tag_name) {
+						if (isset($tags[$tag_name])) {
+							$tags[$tag_name]++;
+						} else {
+							$tags[$tag_name] = 1;
+						}
+					}
+				}
+			}
+		
+			$output = [];
+			foreach ($tags as $tag_name => $total) {
+				$output[] = (object) [
+					'context' => $tag_name,
+					'total' => $total,
+				];
+			}
+		
+			return $output;
+		}
+		
 		// Command
 		public function insert_visit($data){
 			return $this->db->insert($this->table,$data);	

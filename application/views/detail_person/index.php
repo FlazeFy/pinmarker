@@ -12,6 +12,9 @@
     <div class="col-lg-4 col-md-6 col-sm-12 col-12">
         <?php $this->load->view('detail_person/visited_pin_category'); ?><hr>
     </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+        <?php $this->load->view('detail_person/favorite_tag'); ?><hr>
+    </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-12">
         <?php $this->load->view('detail_person/monthly_person'); ?><hr>
     </div>
