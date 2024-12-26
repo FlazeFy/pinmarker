@@ -5,10 +5,12 @@
 		private $table = "visit";
         const SESSION_KEY = 'user_id';
 		private $role_key;
+		private $month_name;
 
 		public function __construct() {
 			parent::__construct();
 			$this->role_key = $this->session->userdata('role_key');
+			$this->month_name = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		}
 
 		public function rules($ext)
@@ -372,10 +374,8 @@
 			$this->db->group_by("context");
 			$this->db->order_by("context", 'desc');
 			$data = $this->db->get()->result();
-
-			$months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		
-			$result = array_fill_keys($months, 0);
+			$result = array_fill_keys($this->month_name, 0);
 		
 			foreach ($data as $row) {
 				$result[$row->context] = $row->total;
@@ -453,9 +453,7 @@
 			$data = $this->db->get()->result();
 
 			if($type == "month"){
-				$months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-			
-				$result = array_fill_keys($months, 0);
+				$result = array_fill_keys($this->month_name, 0);
 			
 				foreach ($data as $row) {
 					$result[$row->context] = $row->total;
