@@ -6,6 +6,9 @@
     <span class='bg-dark text-light px-3 py-2 rounded-pill' style='font-size: 16px;'><?= $total_appearance ?> Appearance</span>
 </h2>
 <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <?php $this->load->view('detail_person/monthly_person'); ?><hr>
+    </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
         <?php $this->load->view('detail_person/analyze_time'); ?><hr>
     </div>

@@ -17,7 +17,7 @@
                 <div class='p-3 mb-2' style='border: 2px solid black; border-radius: 15px;'>
                     <span>$desc with $visit_with_element</span>
                     <p class='mt-2 mb-0 fw-bold'>Visit At</p>
-                    <p class='date-target mb-0'>$dt->created_at</p>
+                    <p class='mb-0'>$dt->created_at</p>
                 </div>
             ";
         }

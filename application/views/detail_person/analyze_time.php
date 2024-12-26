@@ -1,8 +1,8 @@
 <p class='my-2 fw-bold'>Visit Time Analyze</p>
 <?php 
-    if(count($dt_visit_pertime) > 0){
+    if(count($dt_visit_pertime_hour) > 0){
         echo "<div class='row'>";
-        foreach($dt_visit_pertime as $dt){
+        foreach($dt_visit_pertime_hour as $dt){
             echo "
                 <div class='col-lg-6 col-md-12 col-sm-12 col-12'>
                     <div class='px-2 py-3 mb-3' style='border: 2px solid black; border-radius: 15px;'>

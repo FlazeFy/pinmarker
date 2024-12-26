@@ -15,6 +15,7 @@ class DetailPersonController extends CI_Controller {
 	{
 		if($this->AuthModel->current_user()){
 			$data = [];
+			$year = date('Y');
 			$data['is_mobile_device'] = is_mobile_device();
 			if($data['is_mobile_device']){
 				$per_page = 8;
@@ -34,7 +35,8 @@ class DetailPersonController extends CI_Controller {
 			}
 			$data['dt_visit_by_person'] = $this->VisitModel->get_visit_by_person($name, $per_page, $offset);
 			$data['dt_pin_by_person'] = $this->PinModel->get_pin_by_person($name);
-			$data['dt_visit_pertime'] = $this->VisitModel->get_visit_pertime_by_person($name);
+			$data['dt_visit_pertime_hour'] = $this->VisitModel->get_visit_pertime_by_person($name,'hour');
+			$data['dt_visit_pertime_year'] = $this->VisitModel->get_visit_pertime_by_person($name,'month',$year);
 			$data['dt_visit_location'] = $this->VisitModel->get_visit_location_by_person($name);
 
 			$data['title_page'] = 'Detail | Person | '.$data['clean_name'];

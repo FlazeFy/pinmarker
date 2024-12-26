@@ -62,7 +62,7 @@
         <script src="http://127.0.0.1:8080/public/js/maps.js"></script>
     <?php endif; ?>
 
-    <?php if(preg_match('(DashboardController|MyProfileController|DetailController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(DashboardController|MyProfileController|DetailController|DetailPersonController)', $cleanedUrl)): ?>
         <!--Apex Chart-->
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <?php endif; ?>
