@@ -506,6 +506,23 @@
 			return $res;
 		}
 
+		public function get_visit_location_favorite_by_person($name) {
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+			$name = str_replace("%20"," ",$name);
+
+			$this->db->select("CASE WHEN pin.is_favorite = 1 THEN 'Favorited' ELSE 'Normal' END as context, COUNT(1) as total");
+			$this->db->from($this->table);
+			$this->db->join('pin','pin.id = visit.pin_id');
+			$this->db->like('visit_with', $name);
+    		$this->db->where('visit.created_by', $user_id); 
+			$this->db->group_by('context');
+			$this->db->order_by('total','DESC');
+
+			$res = $this->db->get()->result();
+
+			return $res;
+		}
+
 		// For attached pin to global list
 		public function get_visit_location_favorite_tag_by_person($name) {
 			$user_id = $this->session->userdata(self::SESSION_KEY);
