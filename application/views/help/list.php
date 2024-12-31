@@ -392,6 +392,37 @@
 </div>
 
 <div class="section-help">
+    <h2 class="fw-bold">Menu : Person</h2>
+    <h3>The Stats & History</h3>
+    <p>In this section, we present your data analysis using charts with their legend.</p>    
+    <b>What's contain?</b>
+    <ol> 
+        <li><b>7 Top Person Journey</b> shows the Multiple Line Chart, each of the line show person's total visit history in every month for the last 12 month</li>
+        <li><b>All Person History</b> shows a table that contain person name, total visit, and location history of person that you have been traveled with</li>
+    </ol>
+</div>
+
+<div class="section-help">
+    <h2 class="fw-bold">Menu : Person Detail</h2>
+    <h3>The Stats & History</h3>
+    <p>In this section, we present your data analysis using charts with their legend.</p>    
+    <b>What's contain?</b>
+    <ol> 
+        <li><b>Summary Card</b> shows the information of the detail person. When the first or last visit (trip) happen, total visit ranking with other person, favorite hour when visit, favorite pin / marker category, and visit trends for the last month</li>
+        <li><b>Total Visit By Day</b> shows the Pie Chart of most visited days</li>
+        <li><b>Total Visit By Pin Category</b> shows the Pie Chart of maximum 7 most visited pin / marker category</li>
+        <li><b>Total Visit By Pin Favorite Status</b> shows the Pie Chart of comparison between favorited and normal visited pin / marker</li>
+        <li><b>Favorite Tag (Global List)</b> shows the list of attached tag that found in global pin that has been visited</li>
+        <li><b>Total Visit Daily & Hour</b> shows the HeatMap Chart of total visit for each hour in every day in a week</li>
+        <li><b>Total Visit By Month</b> shows the Line Chart of total visit in every month in a year</li>
+        <li><b>Visit Time Analyze</b> shows the list of total visit in every hour also with the pin / marker name</li>
+        <li><b>Maps History</b> shows the maps of visited location</li>
+        <li><b>Found On Visit</b> shows the list of person founded in every visit history</li>
+        <li><b>Found On Pin</b> shows the pin or marker that have same name with person in contact of every pin</li>
+    </ol>
+</div>
+
+<div class="section-help">
     <h2 class="fw-bold">Menu : Track</h2>
     ...
 </div>

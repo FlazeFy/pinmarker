@@ -79,7 +79,8 @@
 			$this->db->select("pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, is_favorite, pin.created_at, dictionary_color as pin_color, $extra");
 			$this->db->join('dictionary','dictionary.dictionary_name = pin.pin_category');
 
-            if($from == 'list'){
+			$category_filter = $this->session->userdata('filter_pin_by_cat');
+            if($from == 'list' || ($category_filter == "visited" && $from == 'maps') || ($category_filter == "unvisited" && $from == 'maps')){
                 $this->db->join('visit','visit.pin_id = pin.id','left');
             }
 			if($this->role_key == 0){
@@ -102,9 +103,12 @@
 				$this->db->like('pin_name', $search_pin_name, 'both');
 			}
 
-            if($from == 'list'){
+            if($from == 'list' || ($category_filter == "visited" && $from == 'maps') || ($category_filter == "unvisited" && $from == 'maps')){
                 $this->db->group_by('id');
-				$this->db->order_by('is_favorite','DESC');
+
+				if($from == 'list'){
+					$this->db->order_by('is_favorite','DESC');
+				}
             }
 			$this->db->order_by('created_at','DESC');
 
@@ -114,10 +118,13 @@
 			}
 
 			if($from == 'maps'){
-				$category_filter = $this->session->userdata('filter_pin_by_cat');
 				if($category_filter){
-					if($category_filter != "favorite"){
+					if($category_filter != "favorite" && $category_filter != "visited" && $category_filter != "unvisited"){
 						$this->db->where('pin_category',$category_filter);
+					} else if($category_filter == "visited"){
+						$this->db->where('pin_id IS NOT NULL', null, false);
+					} else if($category_filter == "unvisited"){
+						$this->db->where('pin_id IS NULL', null, false);
 					} else {
 						$this->db->where('is_favorite',1);
 					}
