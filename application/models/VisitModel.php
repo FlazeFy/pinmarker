@@ -591,6 +591,94 @@
 			return $res;
 		}
 
+		public function get_top_visit_person_journey() {
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+		
+			// Fetching
+			$this->db->select("LOWER(visit_with) AS context, DATE_FORMAT(visit.created_at, '%b %Y') as visit_at", false);
+			$this->db->from($this->table);
+			$condition = [
+				'visit.created_by' => $user_id,
+				'visit_with IS NOT NULL'
+			];
+			$this->db->where($condition);		
+			$this->db->where('visit.created_at >=', date('Y-m-01', strtotime('-12 months')));
+			$this->db->where('visit.created_at <', date('Y-m-01', strtotime('+1 month')));
+			$data = $this->db->get()->result();
+		
+			// Month generate
+			$months = [];
+			for ($i = 0; $i < 12; $i++) {
+				$months[] = date('M Y', strtotime("first day of -$i month"));
+			}
+			$months = array_reverse($months);
+		
+			$result = [];
+			// Mapping name
+			foreach ($data as $row) {
+				if (!empty($row->context)) {
+					$names = preg_split('/, and |, /', $row->context);
+		
+					foreach ($names as $name) {
+						$name = trim(strtolower($name));
+						if (!empty($name)) {
+							$key = "{$name}_{$row->visit_at}";
+							if (!isset($result[$key])) {
+								$result[$key] = (object)[
+									'name' => $name,
+									'total' => 0,
+									'visit_at' => $row->visit_at,
+								];
+							}
+							$result[$key]->total++;
+						}
+					}
+				}
+			}
+		
+			// Mapping name with month visited
+			$name_groups = [];
+			foreach ($result as $entry) {
+				$name_groups[$entry->name][$entry->visit_at] = $entry->total;
+			}
+		
+			// Assign to generated month
+			$final_result = [];
+			foreach ($name_groups as $name => $month_data) {
+				foreach ($months as $month) {
+					$final_result[] = (object)[
+						'name' => $name,
+						'total' => $month_data[$month] ?? 0,
+						'visit_at' => $month,
+					];
+				}
+			}
+		
+			$person_total_visits = [];
+			foreach ($name_groups as $name => $month_data) {
+				$person_total_visits[$name] = array_sum($month_data);
+			}
+		
+			arsort($person_total_visits);
+		
+			// Limit top person
+			$top_person = array_slice(array_keys($person_total_visits), 0, 7);
+			$filtered_result = array_filter($final_result, function ($dt) use ($top_person) {
+				return in_array($dt->name, $top_person);
+			});
+		
+			// Sorting
+			usort($filtered_result, function ($a, $b) {
+				if ($a->name === $b->name) {
+					return strtotime($a->visit_at) - strtotime($b->visit_at);
+				}
+				return strcmp($a->name, $b->name);
+			});
+		
+			return $filtered_result;
+		}
+						
+
 		public function get_ranking_visit($find_name) {
 			$user_id = $this->session->userdata(self::SESSION_KEY);
 			$find_name = str_replace("%20"," ",$find_name);

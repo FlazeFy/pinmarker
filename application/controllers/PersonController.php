@@ -19,6 +19,7 @@ class PersonController extends CI_Controller {
 			$data['is_signed'] = true;
 			$data['is_mobile_device'] = is_mobile_device();
 			$data['dt_person'] = $this->VisitModel->get_all_visit_with();
+			$data['dt_top_visit_person_journey'] = $this->VisitModel->get_top_visit_person_journey();
 
 			$data['title_page'] = 'PinMarker | Persons';
 			$data['content'] = $this->load->view('person/index',$data,true);

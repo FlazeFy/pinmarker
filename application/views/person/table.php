@@ -1,3 +1,4 @@
+<h4 class="text-center">All Person History</h4>
 <?php if(!$is_mobile_device): ?>
     <table class="table table-bordered" id="tb_related_pin_track">
         <thead>
@@ -5,7 +6,7 @@
                 <th scope="col">Name</th>
                 <th scope="col">Total Visit</th>
                 <th scope="col">Location History</th>
-                <th scope="col">Analyze</th>
+                <th scope="col" style="width:140px;">Analyze</th>
             </tr>
         </thead>
         <tbody id="tb_related_pin_track_body" style="font-size: var(--textSM);">
@@ -29,10 +30,10 @@
 
                         echo "
                             <tr>
-                                <td><h6>".ucwords($dt->name)."</h6></td>
+                                <td><b>"; echo $idx == 0 ? "<i class='fa-solid fa-crown text-warning'></i>" : ($idx <= 2 ? "<i class='fa-solid fa-star text-warning'></i>" : ""); echo ucwords($dt->name)."</b></td>
                                 <td class='text-center'><b>$dt->total</b> Visit</td>
                                 <td>$location_element</td>
-                                <td><a class='btn btn-dark px-2 py-1 me-2 see-detail-btn' href='/DetailPersonController/view/$dt->name'><i class='fa-solid fa-circle-info'></i> See Detail</a></td>
+                                <td><a class='btn btn-dark px-2 py-1 mx-auto see-detail-btn' href='/DetailPersonController/view/$dt->name'><i class='fa-solid fa-circle-info'></i> See Detail</a></td>
                             </tr>
                         ";
                     }
