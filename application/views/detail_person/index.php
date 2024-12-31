@@ -15,8 +15,11 @@
     <div class="col-lg-4 col-md-6 col-sm-12 col-12">
         <?php $this->load->view('detail_person/visited_pin_favorite'); ?><hr>
     </div>
-    <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+    <div class="col-lg-3 col-md-4 col-sm-12 col-12">
         <?php $this->load->view('detail_person/favorite_tag'); ?><hr>
+    </div>
+    <div class="col-lg-9 col-md-8 col-sm-12 col-12">
+        <?php $this->load->view('detail_person/daily_hour_visit'); ?><hr>
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 col-12">
         <?php $this->load->view('detail_person/monthly_person'); ?><hr>

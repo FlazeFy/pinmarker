@@ -3,8 +3,8 @@
     if(count($dt_visit_location_favorite_tag_by_person) > 0){
         foreach($dt_visit_location_favorite_tag_by_person as $dt){
             echo "
-                <div class='p-3 mb-2' style='border: 2px solid black; border-radius: 15px;'>
-                    <b><span class='text-white bg-dark px-2 py-1 rounded-pill me-2' style='font-size:var(--textJumbo);'>$dt->total Times</span> #$dt->context</b> 
+                <div class='py-3 px-2 mb-2' style='border: 2px solid black; border-radius: 15px;'>
+                    <b><span class='text-white bg-dark px-2 py-1 rounded-pill me-1' style='font-size:var(--textXLG);'>$dt->total Times</span> #$dt->context</b> 
                 </div>
             ";
         }

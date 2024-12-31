@@ -523,6 +523,56 @@
 			return $res;
 		}
 
+		public function get_visit_daily_hour_by_person($name) {
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+			$name = str_replace("%20"," ",$name);
+
+			$this->db->select("COUNT(1) as total, HOUR(visit.created_at) as hour, DAYNAME(visit.created_at) as day_name");
+			$this->db->from($this->table);
+			$this->db->join('pin', 'pin.id = visit.pin_id');
+			$this->db->like('visit_with', $name);
+			$this->db->where('visit.created_by', $user_id);
+			$this->db->group_by(['day_name', 'hour']);
+			$this->db->order_by("FIELD(DAYNAME(visit.created_at), 'Sunday', 'Saturday', 'Friday', 'Thursday', 'Wednesday', 'Tuesday', 'Monday')", false);
+			$this->db->order_by('hour', 'ASC');
+
+			$res = $this->db->get()->result();
+
+			$full_day = ['Sunday', 'Saturday', 'Friday', 'Thursday', 'Wednesday', 'Tuesday', 'Monday'];
+			$full_hour = ['00:00-00:59', '01:00-01:59', '02:00-02:59', '03:00-03:59','04:00-04:59', '05:00-05:59', '06:00-06:59', '07:00-07:59',
+				'08:00-08:59', '09:00-09:59', '10:00-10:59', '11:00-11:59','12:00-12:59', '13:00-13:59', '14:00-14:59', '15:00-15:59',
+				'16:00-16:59', '17:00-17:59', '18:00-18:59', '19:00-19:59','20:00-20:59', '21:00-21:59', '22:00-22:59', '23:00-23:59'
+			];
+
+			$final_res = [];
+			foreach ($full_day as $day) {
+				foreach (range(0, 23) as $hour) {
+					$found = false;
+					foreach ($res as $dt) {
+						if ($dt->day_name == $day && (int)$dt->hour == $hour) {
+							$final_res[] = [
+								'total' => (int)$dt->total,
+								'hour' => $full_hour[$hour],
+								'day' => $day
+							];
+							$found = true;
+							break;
+						}
+					}
+		
+					if (!$found) {
+						$final_res[] = [
+							'total' => 0,
+							'hour' => $full_hour[$hour],
+							'day' => $day
+						];
+					}
+				}
+			}
+
+			return $final_res;
+		}
+
 		// For attached pin to global list
 		public function get_visit_location_favorite_tag_by_person($name) {
 			$user_id = $this->session->userdata(self::SESSION_KEY);

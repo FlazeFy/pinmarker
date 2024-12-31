@@ -41,6 +41,7 @@ class DetailPersonController extends CI_Controller {
 			$data['dt_visit_location'] = $this->VisitModel->get_visit_location_by_person($name);
 			$data['dt_visit_location_category'] = $this->VisitModel->get_visit_location_category_by_person($name);
 			$data['dt_visit_location_favorite'] = $this->VisitModel->get_visit_location_favorite_by_person($name);
+			$data['dt_visit_daily_hour_by_person'] = $this->VisitModel->get_visit_daily_hour_by_person($name);
 			$data['dt_visit_location_favorite_tag_by_person'] = $this->VisitModel->get_visit_location_favorite_tag_by_person($name);
 
 			$data['title_page'] = 'Detail | Person | '.$data['clean_name'];
