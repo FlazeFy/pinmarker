@@ -591,6 +591,38 @@
 			return $res;
 		}
 
+		public function get_visit_trends($name){
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+			$name = str_replace("%20"," ",$name);
+			$last_month = date('m Y', strtotime("first day of -1 month"));
+			$last2_month = date('m Y', strtotime("first day of -2 month"));
+		
+			$this->db->select("COUNT(1) as total");
+			$this->db->from($this->table);
+			$this->db->like('visit_with', $name);
+			$this->db->where('visit.created_by', $user_id);
+			$this->db->where('DATE_FORMAT(visit.created_at, "%m %Y") =', $last_month);  
+			$res_last_month = $this->db->get()->row();
+		
+			$this->db->select("COUNT(1) as total");
+			$this->db->from($this->table);
+			$this->db->like('visit_with', $name);
+			$this->db->where('visit.created_by', $user_id);
+			$this->db->where('DATE_FORMAT(visit.created_at, "%m %Y") =', $last2_month);  
+			$res_last2_month = $this->db->get()->row();
+
+			// Count growth
+			$total_last_month = $res_last_month->total ?? 0;
+    		$total_last2_month = $res_last2_month->total ?? 0;
+			if ($total_last2_month > 0) {
+				$growth = (($total_last_month - $total_last2_month) / $total_last2_month) * 100;
+			} else {
+				$growth = ($total_last_month > 0) ? 100 : 0;
+			}
+		
+			return $growth;
+		}
+
 		public function get_top_visit_person_journey() {
 			$user_id = $this->session->userdata(self::SESSION_KEY);
 		

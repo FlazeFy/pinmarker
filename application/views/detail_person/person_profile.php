@@ -64,5 +64,13 @@
                 <h6><?= $dt_visit_person_summary->most_visited_category ?></h6>
             </div>
         </div>
+        <div class="d-flex justify-content-between">
+            <div>
+                <h5 class="fw-bold mb-0">Visit Trends</h5>
+                <h6 class="mt-1 <?= $dt_visit_trends > 0 ? "text-success" : ($dt_visit_trends < 0 ? "text-danger" : "text-secondary") ?>">
+                <i class="fa-solid <?= $dt_visit_trends > 0 ? "fa-arrow-trend-up" : ($dt_visit_trends < 0 ? "fa-arrow-trend-down" : "fa-arrow-right") ?> fa-xl"></i> 
+                <span style="font-weight:900; font-size:var(--textJumbo);"><?= $dt_visit_trends ?>% in <?= date('M Y', strtotime("first day of -1 month")); ?></span></h6>
+            </div>
+        </div>
     </div>
 </div>
