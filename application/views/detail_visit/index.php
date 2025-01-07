@@ -4,3 +4,4 @@
     <?php $this->load->view('detail_visit/delete'); ?>
 </div>
 <?php $this->load->view('detail_visit/form'); ?>
+<?php $this->load->view('detail_visit/review'); ?>

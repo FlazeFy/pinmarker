@@ -11,6 +11,7 @@ class DetailVisitController extends CI_Controller {
 		$this->load->model('HistoryModel');
 		$this->load->model('MultiModel');
 		$this->load->model('TokenModel');
+		$this->load->model('ReviewModel');
 
 		$this->load->helper('generator_helper');
 		$this->load->helper('validator_helper');
@@ -79,15 +80,15 @@ class DetailVisitController extends CI_Controller {
 
 						redirect("https://www.google.com/maps/dir/My+Location/$dir");
 					} else {
-						$this->session->set_flashdata('message_success', generate_message(true,'add','visit','failed to make maps direction'));
+						$this->session->set_flashdata('message_success', generate_message(true,'edit','visit','failed to make maps direction'));
 						redirect("DetailVisitController/view/$id");
 					}
 				} else {
-					$this->session->set_flashdata('message_success', generate_message(true,'add','visit',null));
+					$this->session->set_flashdata('message_success', generate_message(true,'edit','visit',null));
 					redirect("DetailVisitController/view/$id");
 				}
 			} else {
-				$this->session->set_flashdata('message_error', generate_message(false,'add','visit',null));
+				$this->session->set_flashdata('message_error', generate_message(false,'edit','visit',null));
 				redirect("DetailVisitController/view/$id");
 			}
 		}
@@ -108,5 +109,57 @@ class DetailVisitController extends CI_Controller {
 			$this->session->set_flashdata('message_error', generate_message(false,'delete','visit','visit not found'));
 		}
 		redirect('DetailVisitController/view/'.$id);
+	}
+
+	public function manage_review($id){
+		$rules = $this->ReviewModel->rules();
+		$this->form_validation->set_rules($rules);
+
+		if($this->form_validation->run() == FALSE){
+			$this->session->set_flashdata('message_error', generate_message(false,'add','review','validation failed'));
+			$this->session->set_flashdata('validation_error', validation_errors());
+			redirect('DetailVisitController/view/'.$id);
+		} else {
+			$success_insert = 0;
+			$failed_insert = 0;
+			$list_review = $this->input->post('list_review');
+
+			if($list_review != ""){
+				$split_review = explode(",", $list_review);
+
+				foreach ($split_review as $dt) {
+					$split_dt = explode("_", $dt);
+					$person = $split_dt[0];
+					$rate = $split_dt[1];
+
+					$data = [
+						'id' => get_UUID(), 
+						'visit_id' => $id, 
+						'review_person' => $person, 
+						'review_rate' => $rate,
+						'created_at' => date("Y-m-d H:i:s"), 
+						'created_by' => $this->session->userdata('user_id'),
+					];
+					
+					if($this->ReviewModel->insert_review($data)){
+						$success_insert++;
+					} else {
+						$failed_insert++;
+					}			
+				}
+
+				if($success_insert > 0 && $failed_insert == 0){
+					$this->session->set_flashdata('message_success', generate_message(true,'add','review',null));
+				} else if($success_insert > 0 && $failed_insert > 0){
+					$this->session->set_flashdata('message_success', generate_message(true,'add',"$success_insert review, and $failed_insert review to add",null));
+				} else {
+					$this->session->set_flashdata('message_error', generate_message(false,'add','review',null));
+				}
+			} else {
+				$this->session->set_flashdata('message_error', generate_message(false,'add','review',null));
+			}
+
+			redirect('DetailVisitController/view/'.$id);
+		}
 	}
 }

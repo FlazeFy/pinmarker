@@ -51,7 +51,7 @@
                 </div>
                 <label>Pin Description</label>
                 <?php 
-                    if($dt_detail_visit){
+                    if($dt_detail_visit->pin_desc){
                         echo "<p>$dt_detail_visit->pin_desc</p>";
                     } else {
                         echo "<p class='text-secondary fst-italic'>- No Description -</p>";
