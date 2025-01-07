@@ -17,6 +17,7 @@ class DetailController extends CI_Controller {
 		$this->load->model('HistoryModel');
 		$this->load->model('MultiModel');
 		$this->load->model('TokenModel');
+		$this->load->model('ReviewModel');
 
 		$this->load->helper('generator_helper');
 		$this->load->library('form_validation');
@@ -51,6 +52,7 @@ class DetailController extends CI_Controller {
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
 			$data['dt_all_gallery_by_pin']= $this->GalleryModel->get_all_gallery_by_pin($id);
 			$data['dt_total_visit_by_by_pin']= $this->VisitModel->get_total_visit_by_by_pin_id($id); 
+			$data['dt_review_history'] = $this->ReviewModel->get_review_by_pin($id);
 
 			$data['title_page'] = "List | Detail | ".$data['dt_detail_pin']->pin_name;
 			$data['content'] = $this->load->view('detail/index',$data,true);
