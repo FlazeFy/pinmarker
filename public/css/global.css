@@ -46,6 +46,19 @@
     min-height: 75vh;
     padding: 0 var(--spaceLG) var(--spaceLG) var(--spaceLG);
 }
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+a:hover, a {
+    color: var(--primaryColor);
+}
+.container {
+    background: var(--whiteColor);
+    text-align: start;
+    padding: var(--spaceMD);
+}
 .bordered {
     border: 1.75px solid var(--primaryColor);
     border-radius: var(--roundedMD);

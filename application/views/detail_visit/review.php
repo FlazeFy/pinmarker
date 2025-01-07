@@ -64,8 +64,8 @@
 
             echo "
                 <div class='col-lg-3 col-md-4 col-sm-6 col-6' id='review-$idx'>
-                    <div class='px-2 py-3 mb-3' style='border: 2px solid black; border-radius: 15px;'>
-                        <label>$dt</label><br>
+                    <div class='container bordered'>
+                        <label><a class='text-decoration-none text-dark' href='/DetailPersonController/view/$dt'>$dt</a></label><br>
                         <div class='d-inline review_holder'>
                             <input hidden name='person' value='$dt'>
                             <span onclick='setStar(1, $idx)' class='star "; if($rate >= 1){ echo $star; } echo "'>★</span>

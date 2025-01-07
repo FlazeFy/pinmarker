@@ -2,7 +2,7 @@
     if(count($dt_review_history) > 0){
         $show_page = true;
         foreach($dt_review_history as $dt){
-            echo "<li>$dt->review_person give <i class='fa-solid fa-star'></i> <b> $dt->review_rate</b> for this location review at <span class='date-target'>$dt->created_at</span></li>";
+            echo "<li><a class='fw-bold' href='/DetailPersonController/view/$dt->review_person'>$dt->review_person</a> give <i class='fa-solid fa-star'></i> <b> $dt->review_rate</b> for this location review at <span class='date-target'>$dt->created_at</span></li>";
         }
     } else {
         echo "

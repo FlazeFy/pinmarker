@@ -7,6 +7,7 @@ class DetailPersonController extends CI_Controller {
 		$this->load->model('AuthModel');
 		$this->load->model('VisitModel');
 		$this->load->model('PinModel');
+		$this->load->model('ReviewModel');
 
 		$this->load->helper('generator_helper');
 	}
@@ -45,6 +46,7 @@ class DetailPersonController extends CI_Controller {
 			$data['dt_visit_location_favorite_tag_by_person'] = $this->VisitModel->get_visit_location_favorite_tag_by_person($name);
 			$data['dt_visit_person_summary'] = $this->VisitModel->get_visit_person_summary($name);
 			$data['dt_visit_trends'] = $this->VisitModel->get_visit_trends($name);
+			$data['dt_review_history'] = $this->ReviewModel->get_review_by_context($name,'person');
 
 			$data['title_page'] = 'Detail | Person | '.$data['clean_name'];
 			$data['content'] = $this->load->view('detail_person/index',$data,true);

@@ -7,7 +7,20 @@
         foreach($dt_visit_history['data'] as $dt){
             echo "<li>$dt->visit_desc using "; echo strtolower($dt->visit_by);
                 if($dt->visit_with != null){
-                    echo " with $dt->visit_with";
+                    $names = preg_split('/, and |, /', $dt->visit_with);
+
+                    $linked_names = array_map(function ($name) {
+                        $encoded_name = rawurlencode(trim($name)); 
+                        return "<a class='fw-bold' href='/DetailPersonController/view/$encoded_name'>$name</a>";
+                    }, $names);
+
+                    $last_name = array_pop($linked_names);
+                    if (!empty($linked_names)) {
+                        $visit_with = implode(', ', $linked_names)." and ".$last_name;
+                    } else {
+                        $visit_with = $last_name;
+                    }
+                    echo " with $visit_with";
                 }    
             echo " at <span class='date-target'>$dt->created_at</span></li>";
         }

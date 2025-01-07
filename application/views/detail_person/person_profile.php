@@ -71,6 +71,11 @@
                 <i class="fa-solid <?= $dt_visit_trends > 0 ? "fa-arrow-trend-up" : ($dt_visit_trends < 0 ? "fa-arrow-trend-down" : "fa-arrow-right") ?> fa-xl"></i> 
                 <span style="font-weight:900; font-size:var(--textJumbo);"><?= $dt_visit_trends ?>% in <?= date('M Y', strtotime("first day of -1 month")); ?></span></h6>
             </div>
+            <div class="text-end">
+                <h5 class="fw-bold mb-0"><a class="bordered text-dark px-2 py-1" title="See Detail" data-bs-toggle="collapse" href="#collapseReview" style="cursor:pointer; font-size:var(--textMD);"><i class="fa-solid fa-up-right-and-down-left-from-center"></i></a> Visit Review</h5>
+                <h6><?= count($dt_review_history) ?> </h6>
+            </div>
         </div>
+        <?php $this->load->view('detail_person/person_review'); ?>
     </div>
 </div>

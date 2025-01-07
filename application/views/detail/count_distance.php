@@ -20,7 +20,7 @@
 </div>
 
 <script>
-    function calculateDistanceKm(lat1, lon1, lat2, lon2, unit = 'km') {
+    const calculateDistanceKm = (lat1, lon1, lat2, lon2, unit = 'km') => {
         const theta = lon1 - lon2
         let distance = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta))
         distance = Math.acos(distance)
@@ -42,11 +42,11 @@
         return distance
     }
 
-    function deg2rad(deg) {
+    const deg2rad = (deg) => {
         return deg * (Math.PI / 180)
     }
 
-    function rad2deg(rad) {
+    const rad2deg = (rad) => {
         return rad * (180 / Math.PI)
     }
 

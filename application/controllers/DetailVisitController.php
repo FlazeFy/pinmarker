@@ -30,7 +30,7 @@ class DetailVisitController extends CI_Controller {
 			$data['dt_all_my_pin_name']= $this->PinModel->get_all_my_pin_name();
 			$data['dt_my_contact']= $this->PinModel->get_person_in_contact();
             $data['dt_detail_visit']= $this->VisitModel->get_visit_by_id($id);
-			$data['dt_review_history'] = $this->ReviewModel->get_review_by_visit($id);
+			$data['dt_review_history'] = $this->ReviewModel->get_review_by_context($id,'visit');
 
 			$data['title_page'] = 'History | Detail | '.($data['dt_detail_visit']->pin_name ? $data['dt_detail_visit']->visit_desc." at ".$data['dt_detail_visit']->pin_name : $data['dt_detail_visit']->visit_desc);
 			$data['content'] = $this->load->view('detail_visit/index',$data,true);
