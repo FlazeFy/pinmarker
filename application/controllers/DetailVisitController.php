@@ -30,6 +30,7 @@ class DetailVisitController extends CI_Controller {
 			$data['dt_all_my_pin_name']= $this->PinModel->get_all_my_pin_name();
 			$data['dt_my_contact']= $this->PinModel->get_person_in_contact();
             $data['dt_detail_visit']= $this->VisitModel->get_visit_by_id($id);
+			$data['dt_review_history'] = $this->ReviewModel->get_review_by_visit($id);
 
 			$data['title_page'] = 'History | Detail | '.($data['dt_detail_visit']->pin_name ? $data['dt_detail_visit']->visit_desc." at ".$data['dt_detail_visit']->pin_name : $data['dt_detail_visit']->visit_desc);
 			$data['content'] = $this->load->view('detail_visit/index',$data,true);
@@ -55,6 +56,16 @@ class DetailVisitController extends CI_Controller {
 				$pin_id = null;
 				$visit_desc = $this->input->post('visit_desc')." at ".$this->input->post('location_name');
 			}
+
+			// If there's a change in visit with. Replace the old review
+			$visit_with = $this->input->post('visit_with');
+			$old_visit = $this->VisitModel->get_visit_by_id($id);
+			$old_visit_with = $old_visit->visit_with;
+			if($visit_with != $old_visit_with){
+				// Delete old review and replace with new one
+				$this->ReviewModel->delete_review_by_visit($id);
+			}
+
 			$data = [
 				'pin_id' => $this->input->post('type_add') != 'visit_custom' ? $pin_id : null, 
 				'visit_desc' => $visit_desc, 
@@ -123,6 +134,9 @@ class DetailVisitController extends CI_Controller {
 			$success_insert = 0;
 			$failed_insert = 0;
 			$list_review = $this->input->post('list_review');
+
+			// Delete old review and replace with new one
+			$this->ReviewModel->delete_review_by_visit($id);
 
 			if($list_review != ""){
 				$split_review = explode(",", $list_review);

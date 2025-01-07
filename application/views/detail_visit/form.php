@@ -85,6 +85,10 @@
             <?php endif; ?>
             <textarea name="visit_with" id="visit_with" rows="5" class="form-control form-validated visit-with" maxlength='500'><?= $dt_detail_visit->visit_with ?></textarea>
             
+            <?php if(count($dt_review_history) > 0): ?>
+            <div class="alert alert-warning" role="alert"><i class="fa-solid fa-triangle-exclamation"></i> The existing review on this visit will be reset if there's an changes in the <b>Visit With</b></div>
+            <?php endif; ?>
+
             <div class="d-flex justify-content-start mb-3">
                 <a class="btn btn-success see-person-btn" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> See Persons</a>
             </div>

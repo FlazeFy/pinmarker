@@ -45,20 +45,37 @@
         $visit_with = $dt_detail_visit->visit_with;
         $person_list = parseNames($visit_with);
 
+        $total_review = count($dt_review_history);
         foreach ($person_list as $idx => $dt) {
+            $rate = null;
+            $reviewed_at = null;
+            $star = "";
+
+            if($total_review > 0){
+                foreach ($dt_review_history as $rh) {
+                    if($rh->review_person == $dt){
+                        $rate = $rh->review_rate;
+                        $reviewed_at = "<p class='mb-0'>Reviewed at <span class='date-target'>$rh->created_at</span></p>";
+
+                        $star = $rate == 5 ? "five" : ($rate == 4 ? "four" : ($rate == 3 ? "three" : ($rate == 2 ? "two" : "one")));
+                    }
+                }
+            }
+
             echo "
                 <div class='col-lg-3 col-md-4 col-sm-6 col-6' id='review-$idx'>
                     <div class='px-2 py-3 mb-3' style='border: 2px solid black; border-radius: 15px;'>
                         <label>$dt</label><br>
                         <div class='d-inline review_holder'>
                             <input hidden name='person' value='$dt'>
-                            <span onclick='setStar(1, $idx)' class='star'>★</span>
-                            <span onclick='setStar(2, $idx)' class='star'>★</span>
-                            <span onclick='setStar(3, $idx)' class='star'>★</span>
-                            <span onclick='setStar(4, $idx)' class='star'>★</span>
-                            <span onclick='setStar(5, $idx)' class='star'>★</span>
+                            <span onclick='setStar(1, $idx)' class='star "; if($rate >= 1){ echo $star; } echo "'>★</span>
+                            <span onclick='setStar(2, $idx)' class='star "; if($rate >= 2){ echo $star; } echo "'>★</span>
+                            <span onclick='setStar(3, $idx)' class='star "; if($rate >= 3){ echo $star; } echo "'>★</span>
+                            <span onclick='setStar(4, $idx)' class='star "; if($rate >= 4){ echo $star; } echo "'>★</span>
+                            <span onclick='setStar(5, $idx)' class='star "; if($rate >= 5){ echo $star; } echo "'>★</span>
                         </div>
                         <p class='output mb-0'></p>
+                        $reviewed_at
                     </div>
                 </div>";
         }
