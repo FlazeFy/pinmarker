@@ -470,17 +470,23 @@
 			return $res;
 		}
 
-		public function get_visit_location_by_person($name) {
+		public function get_visit_location_by_person($name,$is_group) {
 			$user_id = $this->session->userdata(self::SESSION_KEY);
 			$name = str_replace("%20"," ",$name);
+			$ext = "";
 
-			$this->db->select("pin.id, pin_name, COUNT(1) as total_visit, pin_lat, pin_long, pin_category, pin_desc, dictionary_color as pin_color, is_favorite");
+			if($is_group){
+				$ext = ",COUNT(1) as total_visit";
+			}
+			$this->db->select("pin.id, pin_name, pin_lat, pin_long, pin_category, pin_desc, dictionary_color as pin_color, is_favorite, visit_by, visit_with, visit.created_at as visit_at$ext");
 			$this->db->from($this->table);
 			$this->db->join('pin','pin.id = visit.pin_id');
 			$this->db->join('dictionary','dictionary.dictionary_name = pin.pin_category');
 			$this->db->like('visit_with', $name);
     		$this->db->where('visit.created_by', $user_id); 
-			$this->db->group_by('pin.id');
+			if($is_group){
+				$this->db->group_by('pin.id');
+			}
 			$this->db->order_by('visit.created_at','DESC');
 
 			$res = $this->db->get()->result();

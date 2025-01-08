@@ -1,6 +1,7 @@
 <h2 class="text-center" style="font-weight:600;">Detail Person</h2>
-<div class="d-flex justify-content-between">
-    <a class="btn btn-danger mb-4 <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" href="/PersonController" id="back-page-btn"><i class="fa-solid fa-arrow-left"></i><?php if (!$is_mobile_device){ echo " Back"; } ?></a>
+<div class="d-flex justify-content-start">
+    <a class="btn btn-danger mb-4 me-2 <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" href="/PersonController" id="back-page-btn"><i class="fa-solid fa-arrow-left"></i><?php if (!$is_mobile_device){ echo " Back"; } ?></a>
+    <a class="btn btn-dark btn-menu-main" href="/DetailPersonController/print_visit/<?= $raw_name?>" style='bottom:calc(7*var(--spaceXLG));' id='print-btn'><i class="fa-solid fa-print"></i><?php if(!$is_mobile_device){ echo " Print Visit";} ?></a>
 </div>
 
 <?php $this->load->view('detail_person/person_profile'); ?>
