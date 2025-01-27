@@ -293,14 +293,16 @@
 			return $data = $this->db->get()->row();
 		}
 
-        public function get_most_category($limit){
+        public function get_most_category($limit, $year = null){
 			$this->db->select('pin_category as context, COUNT(1) as total');
 			$this->db->from($this->table);
 			$condition['deleted_at'] = null; 
 			if($this->role_key == 1){
 				$condition['created_by'] = $this->session->userdata(self::SESSION_KEY); 
 			}
-			$this->db->where($condition);
+			if($year){
+				$condition['YEAR(pin.created_at)'] = $year;
+			}
 			$this->db->where($condition);
             $this->db->order_by('total','desc');
             $this->db->group_by('pin_category');

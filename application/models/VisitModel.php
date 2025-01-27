@@ -112,26 +112,34 @@
 			return $data = $this->db->get()->result();
 		}
 
-		public function get_most_visit($ctx, $limit){
+		public function get_most_visit($ctx, $limit, $year = null) {
 			$user_id = $this->session->userdata(self::SESSION_KEY);
-
+		
 			$this->db->select("$ctx as context, COUNT(1) as total");
 			$this->db->from('pin');
-            $this->db->join('visit','visit.pin_id = pin.id', $ctx == 'pin_category' || $ctx == 'visit_by' ?'inner':'left');
-			$condition['deleted_at'] = null; 
-			if($this->role_key == 1){
-				$condition['pin.created_by'] = $this->session->userdata(self::SESSION_KEY); 
+			$this->db->join('visit', 'visit.pin_id = pin.id', $ctx == 'pin_category' || $ctx == 'visit_by' ? 'inner' : 'left');		
+			$condition = ['pin.deleted_at' => null];
+		
+			if ($this->role_key == 1) {
+				$condition['pin.created_by'] = $user_id;
 			}
 			$this->db->where($condition);
+			if ($year) {
+				$this->db->where('YEAR(visit.created_at)', $year);
+			}
+		
+			$this->db->group_start();
 			$this->db->or_where('visit.created_by', $user_id);
-            $this->db->group_by($ctx);
-            $this->db->order_by('total','desc');
-            $this->db->limit($limit);
-
-			if($limit == 1){
-				return $data = $this->db->get()->row();
-			} else if($limit > 1) {
-				return $data = $this->db->get()->result();
+			$this->db->group_end();
+		
+			$this->db->group_by($ctx);
+			$this->db->order_by('total', 'desc');
+			$this->db->limit($limit);
+		
+			if ($limit == 1 && $year == null) {
+				return $this->db->get()->row();
+			} else if ($limit > 1) {
+				return $this->db->get()->result();
 			}
 		}
 
@@ -212,7 +220,7 @@
 			return $data = $this->db->get()->result();
 		}
 
-		public function get_most_visit_with($limit) {
+		public function get_most_visit_with($limit, $year = null) {
 			$user_id = $this->session->userdata(self::SESSION_KEY);
 			$person_query = "LOWER(visit_with)";
 
@@ -222,6 +230,9 @@
 				'created_by' => $user_id,
 				'visit_with IS NOT NULL'
 			];
+			if($year){
+				$condition['YEAR(created_at)'] = $year;
+			}
 			$this->db->where($condition);
 			$data = $this->db->get()->result();
 			

@@ -18,6 +18,8 @@ class DashboardController extends CI_Controller {
 		$data = [];
 		$data['dt_my_profile'] = $this->AuthModel->current_user();
 		$year = $this->session->userdata('year_filter') ?? date('Y');
+		$year_pin = $this->session->userdata('year_filter_pin') ?? date('all');
+
 		if($data['dt_my_profile']){
 			$data['active_page']= 'dashboard';
 			$data['dt_count_my_pin']= $this->PinModel->count_my_pin();
@@ -25,12 +27,12 @@ class DashboardController extends CI_Controller {
 			$data['dt_get_most_category']= $this->PinModel->get_most_category(1);
 			$data['dt_get_latest_pin']= $this->PinModel->get_latest_pin();
 			$data['dt_get_most_visit']= $this->VisitModel->get_most_visit('pin_name',1);
-			$data['dt_get_most_visit_with']= $this->VisitModel->get_most_visit_with(7);
-			$data['dt_get_stats_total_pin_by_category']= $this->PinModel->get_most_category(7); // for now
-			$data['dt_get_stats_total_visit_pin_category']= $this->VisitModel->get_most_visit('pin_category',7); // for now
-			$data['dt_get_stats_total_visit_by']= $this->VisitModel->get_most_visit('visit_by',7); // for now
+			$data['dt_get_most_visit_with']= $this->VisitModel->get_most_visit_with(7, $year_pin != "all" ? $year_pin : null);
+			$data['dt_get_stats_total_pin_by_category']= $this->PinModel->get_most_category(7, $year_pin != "all" ? $year_pin : null); // for now
+			$data['dt_get_stats_total_visit_pin_category']= $this->VisitModel->get_most_visit('pin_category',7, $year_pin != "all" ? $year_pin : null); // for now
+			$data['dt_get_stats_total_visit_by']= $this->VisitModel->get_most_visit('visit_by',7, $year_pin != "all" ? $year_pin : null); // for now
 			$data['dt_get_total_visit_by_month']= $this->VisitModel->get_total_visit_by_month($year);
-			$data['dt_get_stats_total_gallery']= $this->GalleryModel->get_most_gallery(7);
+			$data['dt_get_stats_total_gallery']= $this->GalleryModel->get_most_gallery(7, $year_pin != "all" ? $year_pin : null);
 			$data['dt_available_year'] = $this->MultiModel->get_available_year();
 			$data['is_mobile_device'] = is_mobile_device();
 			$data['is_signed'] = true;
@@ -56,6 +58,14 @@ class DashboardController extends CI_Controller {
 	public function filter_year(){
 		$year = $this->input->post('year_filter');
 		$this->session->set_userdata('year_filter', $year);
+		$this->session->set_flashdata('message_success', generate_message(true,'change filter of','year',null));
+
+		redirect('DashboardController');
+	}
+
+	public function filter_year_pin(){
+		$year = $this->input->post('year_filter_pin');
+		$this->session->set_userdata('year_filter_pin', $year);
 		$this->session->set_flashdata('message_success', generate_message(true,'change filter of','year',null));
 
 		redirect('DashboardController');
