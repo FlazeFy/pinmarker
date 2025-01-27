@@ -15,6 +15,7 @@ class DetailPersonController extends CI_Controller {
 		$this->load->model('VisitModel');
 		$this->load->model('PinModel');
 		$this->load->model('ReviewModel');
+		$this->load->model('MultiModel');
 
 		$this->load->helper('generator_helper');
 
@@ -27,7 +28,8 @@ class DetailPersonController extends CI_Controller {
 	{
 		if($this->AuthModel->current_user()){
 			$data = [];
-			$year = date('Y');
+			$year = $this->session->userdata('year_filter') ?? date('Y');
+
 			$data['is_mobile_device'] = is_mobile_device();
 			if($data['is_mobile_device']){
 				$per_page = 8;
@@ -49,7 +51,7 @@ class DetailPersonController extends CI_Controller {
 			$data['dt_pin_by_person'] = $this->PinModel->get_pin_by_person($name);
 			$data['dt_visit_pertime_hour'] = $this->VisitModel->get_visit_pertime_by_person($name,'hour');
 			$data['dt_visit_pertime_year'] = $this->VisitModel->get_visit_pertime_by_person($name,'month',$year);
-			$data['dt_visit_pertime_dayname'] = $this->VisitModel->get_visit_pertime_by_person($name,'dayname',$year);
+			$data['dt_visit_pertime_dayname'] = $this->VisitModel->get_visit_pertime_by_person($name,'dayname',null);
 			$data['dt_visit_location'] = $this->VisitModel->get_visit_location_by_person($name,true);
 			$data['dt_visit_location_category'] = $this->VisitModel->get_visit_location_category_by_person($name);
 			$data['dt_visit_location_favorite'] = $this->VisitModel->get_visit_location_favorite_by_person($name);
@@ -58,6 +60,7 @@ class DetailPersonController extends CI_Controller {
 			$data['dt_visit_person_summary'] = $this->VisitModel->get_visit_person_summary($name);
 			$data['dt_visit_trends'] = $this->VisitModel->get_visit_trends($name);
 			$data['dt_review_history'] = $this->ReviewModel->get_review_by_context($name,'person');
+			$data['dt_available_year'] = $this->MultiModel->get_available_year();
 
 			$data['title_page'] = 'Detail | Person | '.$data['clean_name'];
 			$data['content'] = $this->load->view('detail_person/index',$data,true);
@@ -156,6 +159,14 @@ class DetailPersonController extends CI_Controller {
 		} else {
 			$this->session->set_flashdata('message_error', generate_message(false,'generate','document','no data to generated'));
 		}
+		redirect("DetailPersonController/view/$name");
+	}
+
+	public function filter_year($name){
+		$year = $this->input->post('year_filter');
+		$this->session->set_userdata('year_filter', $year);
+		$this->session->set_flashdata('message_success', generate_message(true,'change filter of','year',null));
+
 		redirect("DetailPersonController/view/$name");
 	}
 }

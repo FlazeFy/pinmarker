@@ -27,7 +27,7 @@ class MyProfileController extends CI_Controller {
 	{
 		if($this->AuthModel->current_user()){
 			$data = [];
-			$year = date('Y');
+			$year = $this->session->userdata('year_filter') ?? date('Y');
 			$date = date('Y-m-d');
 			$user_id = $this->session->userdata('user_id');
 			$role_key = $this->session->userdata('role_key');
@@ -39,6 +39,7 @@ class MyProfileController extends CI_Controller {
 			$data['dt_my_gallery'] = $this->GalleryModel->get_all_my_gallery();
 			$data['dt_active_telegram_user_id_request'] = $this->ValidateRequestModel->get_my_active_request('telegram_id_validation', $user_id);
 			$data['is_mobile_device'] = is_mobile_device();
+			$data['dt_available_year'] = $this->MultiModel->get_available_year();
 			$data['active_page']= 'myprofile';
 
 			if($role_key == 0){
@@ -428,6 +429,14 @@ class MyProfileController extends CI_Controller {
 		} else {
 			$this->session->set_flashdata('message_error', generate_message(false,'permanently deleted','feedback','feedback not found'));
 		}
+
+		redirect('MyProfileController');
+	}
+
+	public function filter_year(){
+		$year = $this->input->post('year_filter');
+		$this->session->set_userdata('year_filter', $year);
+		$this->session->set_flashdata('message_success', generate_message(true,'change filter of','year',null));
 
 		redirect('MyProfileController');
 	}

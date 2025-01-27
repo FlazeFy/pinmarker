@@ -354,7 +354,7 @@
 			return $data = $this->db->get()->result();
 		}
 
-		public function get_total_visit_by_month() {
+		public function get_total_visit_by_month($year) {
 			$user_id = $this->session->userdata(self::SESSION_KEY);
 
 			$this->db->select("DATE_FORMAT(visit.created_at, '%M') as context, COUNT(1) as total");
@@ -363,11 +363,11 @@
 			$condition = [
 				'pin.deleted_at' => null,
 				'pin.created_by' => $user_id,
-				'YEAR(visit.created_at)' => date('Y')
+				'YEAR(visit.created_at)' => $year
 			];
 			$condition_external_visit = [
 				'visit.created_by' => $user_id,
-				'YEAR(visit.created_at)' => date('Y')
+				'YEAR(visit.created_at)' => $year
 			];
 			$this->db->where($condition);
 			$this->db->where($condition_external_visit);
@@ -449,6 +449,9 @@
 			$this->db->join('pin','pin.id = visit.pin_id');
 			$this->db->like('visit_with', $name);
     		$this->db->where('visit.created_by', $user_id); 
+			if($year){
+				$this->db->where('YEAR(visit.created_at)', $year); 
+			}
 			$this->db->group_by($ctx);
 			$data = $this->db->get()->result();
 

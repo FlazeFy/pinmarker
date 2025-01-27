@@ -36,3 +36,12 @@ input, select, textarea {
 .form-select {
     background: transparent;
 }
+.form-select-custom {
+    border: none;
+    border-bottom: 1.5px solid var(--primaryColor);
+    border-radius: 0 !important;
+    margin-inline: var(--spaceSM);
+    font-weight: 700;
+    font-size: var(--spaceLG) !important;
+    margin-bottom: 0 !important;
+}
