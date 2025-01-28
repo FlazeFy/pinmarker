@@ -38,39 +38,6 @@
     let selected_pin = []
 
     $(document).ready(function() {
-        // Tag choose
-        $(document).on('click', '.pin-tag-btn:not(.remove)', function() {
-            const idx = $(this).index('.pin-tag-btn')
-            let tagEl = ''
-            const tag_name = $(this).text()
-
-            if($('#selected-tag-holder').children().length > 0){
-                tagEl = `
-                    <a class='pin-tag-btn remove me-2 mb-1 text-decoration-none'>${tag_name}</a>
-                `
-            } else {
-                tagEl = `
-                    <label>Selected Tags</label><br>
-                    <a class='pin-tag-btn remove me-2 mb-1 text-decoration-none'>${tag_name}</a>
-                `
-            }
-            $('#selected-tag-holder').append(tagEl)
-            $(this).remove()
-        })
-
-        $(document).on('click', '.pin-tag-btn.remove', function() {            
-            const idx = $(this).index('.pin-tag-btn.remove')
-            const tag_name = $(this).text()
-            let tagEl = ''
-
-            tagEl = `
-                <a class='pin-tag-btn me-2 mb-1 text-decoration-none'>${tag_name}</a>
-            `
-
-            $('#available-tag-holder').append(tagEl)
-            $(this).remove()
-        })
-
         // Input field
         $(document).on('input', '#list_code', function() {            
             const val = $(this).val().trim()

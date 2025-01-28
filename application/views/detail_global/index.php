@@ -161,28 +161,6 @@
                 }                
             })
         })
-
-        $(document).on('click', '.pin-tag-btn:not(.remove)', function() {
-            const idx = $(this).index('.pin-tag-btn')
-            const tag_name = $(this).text()
-
-            let tagEl = `<a class='pin-tag-btn remove me-2 mb-1 text-decoration-none bg-white' style='color:var(--primaryColor) !important;
-                border: calc(var(--spaceMini)/2) solid var(--primaryColor);'>${tag_name}</a>`
-
-            $('#selected-tag-holder').append(tagEl)
-            $(this).remove()
-        })
-
-        $(document).on('click', '.pin-tag-btn.remove', function() {            
-            const idx = $(this).index('.pin-tag-btn.remove')
-            const tag_name = $(this).text()
-            let tagEl = ''
-
-            tagEl = `<a class='pin-tag-btn me-2 mb-1 text-decoration-none'>${tag_name}</a>`
-
-            $('#available-tag-holder').append(tagEl)
-            $(this).remove()
-        })
         
         $(document).on('click', '#edit-list-detail-submit-btn', function() {      
             if($('#selected-tag-holder').children().length > 0){

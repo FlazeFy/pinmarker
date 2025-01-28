@@ -66,3 +66,31 @@
         ";
     }
 ?>
+
+<script>
+    $(document).ready(function() {
+        $(document).on('click', '.pin-tag-btn:not(.remove)', function() {
+            const idx = $(this).index('.pin-tag-btn')
+            const tag_name = $(this).text()
+            let tagEl = `<a class='pin-tag-btn remove me-2 mb-1 text-decoration-none bg-white' style='color:var(--primaryColor) !important;
+                border: calc(var(--spaceMini)/2) solid var(--primaryColor);'>${tag_name}</a>`
+
+            $('#selected-tag-holder').append(tagEl)
+            $(this).remove()
+
+            if($('#available-tag-holder').children().length == 0){
+                $(`#available-tag-holder`).html(`<p class='fst-italic text-secondary' id='no-available-tag-msg'>- No Available Tag -</p>`)
+            }
+        })
+
+        $(document).on('click', '.pin-tag-btn.remove', function() {            
+            const idx = $(this).index('.pin-tag-btn.remove')
+            const tag_name = $(this).text()
+            let tagEl = `<a class='pin-tag-btn me-2 mb-1 text-decoration-none'>${tag_name}</a>`
+
+            $('#available-tag-holder').append(tagEl)
+            $('#no-available-tag-msg').remove()
+            $(this).remove()
+        })
+    })
+</script>
