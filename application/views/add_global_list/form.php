@@ -1,54 +1,36 @@
 <br>
-<div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-        <?php 
-            if($this->session->flashdata('validation_error')){
-                echo "
-                    <div class='alert alert-danger' role='alert'>
-                        <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
-                        ".$this->session->flashdata('validation_error')."
-                    </div>
-                "; 
-            }
-        ?>
-        <form action="/AddGlobalListController/add_list" method="POST" id="form-add-global-list">
+<form action="/AddGlobalListController/add_list" method="POST" id="form-add-global-list">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+            <?php 
+                if($this->session->flashdata('validation_error')){
+                    echo "
+                        <div class='alert alert-danger' role='alert'>
+                            <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
+                            ".$this->session->flashdata('validation_error')."
+                        </div>
+                    "; 
+                }
+            ?>
             <input name="list_name" id="list_name" type="text" class="form-control form-validated" maxlength="75" required/>
-            
             <input name="list_code" id="list_code" type="text" class="form-control form-validated" maxlength="6"/>
-            <a class="msg-error-input" id='list_code_msg'></a><br>
-            <textarea name="list_desc" id="list_desc" rows="5" class="form-control"></textarea>
-            
-            <label>Tags</label>
-            <div class='mt-2' id='available-tag-holder'>
-                <?php 
-                    foreach($dt_global_tag as $dt){
-                        echo "<a class='pin-tag me-2 mb-1 text-decoration-none'>#$dt->tag_name</a>";
-                    }
-                ?>
-            </div>
-            <div id='selected-tag-holder'></div>
-            <input id="list_tag" class='d-none' name="list_tag">
+            <a class="msg-error-input" id='list_code_msg'></a>
+            <label>Description</label>
+            <textarea name="list_desc" id="list_desc" rows="4" class="form-control"></textarea>
+
+            <div id="map-board"></div>
+            <div id="selected-pin-holder"></div>
+
+            <?php $this->load->view('add_global_list/manage_tag'); ?>
             <hr>
-            <label>Attach some Pin</label>
-            <div id="available-pin-holder">
-                <?php 
-                    foreach($dt_available_pin as $dt){
-                        echo "
-                            <a class='pin-name me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> $dt->pin_name</a>
-                            <input hidden class='pin-id-coor' value='$dt->id,$dt->pin_lat,$dt->pin_long'>    
-                        ";
-                    }
-                ?>
-            </div>
-            <input id="list_pin" class='d-none'  name="list_pin">
+
             <a class="btn btn-success w-100 py-3 mt-3" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Save Global List <span id="submit-note"></span></a>
-        </form>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+            <?php $this->load->view('add_global_list/manage_pin'); ?>        
+        </div>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-        <div id="map-board"></div>
-        <div id="selected-pin-holder"></div>
-    </div>
-</div>
+</form>
 
 <script type="text/javascript">
     let markers = []
@@ -57,100 +39,36 @@
 
     $(document).ready(function() {
         // Tag choose
-        $(document).on('click', '.pin-tag:not(.remove)', function() {
-            const idx = $(this).index('.pin-tag')
+        $(document).on('click', '.pin-tag-btn:not(.remove)', function() {
+            const idx = $(this).index('.pin-tag-btn')
             let tagEl = ''
             const tag_name = $(this).text()
 
             if($('#selected-tag-holder').children().length > 0){
                 tagEl = `
-                    <a class='pin-tag remove me-2 mb-1 text-decoration-none'>${tag_name}</a>
+                    <a class='pin-tag-btn remove me-2 mb-1 text-decoration-none'>${tag_name}</a>
                 `
             } else {
                 tagEl = `
                     <label>Selected Tags</label><br>
-                    <a class='pin-tag remove me-2 mb-1 text-decoration-none'>${tag_name}</a>
+                    <a class='pin-tag-btn remove me-2 mb-1 text-decoration-none'>${tag_name}</a>
                 `
             }
             $('#selected-tag-holder').append(tagEl)
             $(this).remove()
         })
-        $(document).on('click', '.pin-tag.remove', function() {            
-            const idx = $(this).index('.pin-tag.remove')
+
+        $(document).on('click', '.pin-tag-btn.remove', function() {            
+            const idx = $(this).index('.pin-tag-btn.remove')
             const tag_name = $(this).text()
             let tagEl = ''
 
             tagEl = `
-                <a class='pin-tag me-2 mb-1 text-decoration-none'>${tag_name}</a>
+                <a class='pin-tag-btn me-2 mb-1 text-decoration-none'>${tag_name}</a>
             `
 
             $('#available-tag-holder').append(tagEl)
             $(this).remove()
-        })
-        // Pin choose
-        $(document).on('click', '.pin-name:not(.remove)', function() {
-            const idx = $(this).index('.pin-name')
-            let pinEl = ''
-            const pin_name = $(this).text().trim()
-            const coor_split = $('.pin-id-coor').eq(idx).val().split(',')
-
-            selected_pin.push({
-                'id': coor_split[0],
-                'pin_name': pin_name,
-                'pin_lat': coor_split[1],
-                'pin_long': coor_split[2],
-            })
-
-            if($('#selected-pin-holder').children().length > 0){
-                tagEl = `
-                    <a class='pin-name remove me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> ${pin_name}<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
-                `
-            } else {
-                tagEl = `
-                    <label>Attached Pin</label><br>
-                    <a class='pin-name remove me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> ${pin_name}<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
-                `
-            }
-            $('#selected-pin-holder').append(tagEl)
-
-            markers.push({
-                coords: {lat: parseFloat(coor_split[1]), lng: parseFloat(coor_split[2])},
-                icon: {
-                    url: 'https://maps.google.com/mapfiles/ms/icons/red.png',
-                    scaledSize: {width: 40, height: 40}
-                },
-                content: 
-                `<div class='mt-4'>
-                    <h6>${pin_name}</h6>
-                    <a class='btn btn-dark remove-via-marker px-2 py-1' style='font-size:12px;'><i class='fa-regular fa-circle-xmark'></i> Remove<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
-                </div>`
-            })
-
-            addMarker(markers)
-            initMap()
-    
-            $('.pin-name').eq(idx).remove()
-        })
-        $(document).on('click', '.pin-name.remove, .remove-via-marker', function() {            
-            const idx = $(this).closest('.pin-name.remove').index('.pin-name.remove')
-            const tag_name = $('.pin-name.remove').eq(idx).text()
-
-            const id = $(this).find('input.remove-from-id').val()
-            selected_pin.forEach((el,idxEl) => {
-                if(id == el.id){
-                    selected_pin.splice(idxEl, 1)
-                    return
-                }
-            });
-
-            const tagEl = `
-                <a class='pin-name me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> ${tag_name}</a>
-            `
-            $('#available-pin-holder').append(tagEl)
-            
-            $('.pin-name.remove').eq(idx).remove()
-            markers.splice(idx, 1)
-            initMap()
         })
 
         // Input field
@@ -172,7 +90,7 @@
                 
             if($('#selected-tag-holder').children().length > 0){
                 listTag = []
-                $('#selected-tag-holder .pin-tag').each(function(idx, el) {
+                $('#selected-tag-holder .pin-tag-btn').each(function(idx, el) {
                     listTag.push({
                         tag_name: $(el).text().replace('#','')
                     })

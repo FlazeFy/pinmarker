@@ -18,7 +18,7 @@ class DashboardController extends CI_Controller {
 		$data = [];
 		$data['dt_my_profile'] = $this->AuthModel->current_user();
 		$year = $this->session->userdata('year_filter') ?? date('Y');
-		$year_pin = $this->session->userdata('year_filter_pin') ?? date('all');
+		$year_pin = $this->session->userdata('year_filter_pin') ?? 'all';
 
 		if($data['dt_my_profile']){
 			$data['active_page']= 'dashboard';

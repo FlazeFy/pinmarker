@@ -6,7 +6,7 @@ $(document).ready(function() {
         checkVideos()
     });
 
-    function checkVideos() {
+    const checkVideos = () => {
         let videos = $grid.find('video')
         let loadedVideos = 0
         let totalVideos = videos.length
@@ -25,7 +25,7 @@ $(document).ready(function() {
         }
     }
 
-    function initIsotope() {
+    const initIsotope = () => {
         $grid.isotope({
             itemSelector: '.grid-item',
             layoutMode: 'masonry',

@@ -31,7 +31,7 @@
         <link href="http://127.0.0.1:8080/public/css/maps.css" rel="stylesheet"/>
     <?php endif; ?>
 
-    <?php if(preg_match('(LoginController|GlobalListController|DetailGlobalController|DetailPersonController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(LoginController|GlobalListController|DetailGlobalController|DetailPersonController|AddGlobalListController)', $cleanedUrl)): ?>
         <!-- Pin CSS -->
         <link href="http://127.0.0.1:8080/public/css/pin.css" rel="stylesheet"/>
     <?php endif; ?>
@@ -51,6 +51,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="http://127.0.0.1:8080/public/js/global.js"></script>
+
+    <?php if(preg_match('(AddGlobalListController)', $cleanedUrl)): ?>
+        <!-- Jquery DataTables -->
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+        <!-- Bootstrap dataTables Javascript -->
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <?php endif; ?>
 
     <?php if(preg_match('(GlobalController|ListController|LoginController)', $cleanedUrl)): ?>
         <!-- Isotope JS -->

@@ -36,7 +36,7 @@
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12 p-2 pt-3">
         <?php
-            $year_filter = $this->session->userdata('year_filter');
+            $year_filter = $this->session->userdata('year_filter') ?? date('Y');
             $stats['data'] = $dt_get_total_visit_by_month;
             $stats['ctx'] = "total_visit_by_month_$year_filter";
             $this->load->view('others/line_chart', $stats);

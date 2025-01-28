@@ -5,12 +5,29 @@
     padding: var(--spaceLG);
     margin-bottom: var(--spaceLG);
 }
-.btn-page {
+.paginate_button.page-item {
+    margin-right: var(--spaceXXSM) !important;
+}
+.btn-page, .paginate_button a {
+    color: var(--primaryColor);
+    margin-right: calc(var(--spaceMini)*0.25) !important;
+}
+.btn-page:hover, .btn-page.active, .page-item.active .page-link, .page-item:hover .page-link{
+    color: var(--whiteColor);
+    border-radius: var(--roundedMD) !important;
+}
+.btn-page:hover, .page-item:hover .page-link{
+    background: var(--thirdColor);
     color: var(--primaryColor);
 }
-.btn-page:hover, .btn-page.active{
-    color: var(--whiteColor);
+.page-item.active:hover a, .btn-page.active:hover {
+    color: var(--whiteColor) !important;
+}
+.btn-page.active, .page-item.active .page-link {
     background: var(--primaryColor);
+}
+.paginate_button a{
+    border: none !important;
 }
 .btn-link {
     color: var(--successBG) !important;
