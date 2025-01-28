@@ -52,7 +52,7 @@
 
     <script src="http://127.0.0.1:8080/public/js/global.js"></script>
 
-    <?php if(preg_match('(AddGlobalListController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(AddGlobalListController|DetailGlobalController)', $cleanedUrl)): ?>
         <!-- Jquery DataTables -->
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
         <!-- Bootstrap dataTables Javascript -->
@@ -86,7 +86,7 @@
     <?php endif; ?>
 </head>
 <body>
-    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|DetailPersonController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|DetailPersonController|DetailGlobalController)', $cleanedUrl)): ?>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
     <?php endif; ?>
 
@@ -129,6 +129,11 @@
             });
         });
     </script>
+
+    <?php if(preg_match('(DetailGlobalController|AddGlobalListController)', $cleanedUrl)): ?>
+        <!-- Manage Pin -->
+        <script src="http://127.0.0.1:8080/public/js/manage_pin.js"></script>
+    <?php endif; ?>
 
     <?php $this->load->view('others/footer'); ?>
 </body>

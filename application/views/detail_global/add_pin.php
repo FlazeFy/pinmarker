@@ -4,6 +4,18 @@
         border-radius: 15px;
     }
 </style>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+        $('#pinTable').DataTable({
+            pageLength: 14, 
+            lengthMenu: [ 
+                [14, 28, 75, 125],
+                [14, 28, 75, 125] 
+            ],
+        });
+        $('#pinTable_info').closest('.col-sm-12.col-md-5').remove()
+    });
+</script>
 
 <div class="modal fade" id="addMarker" tabindex="-1" aria-labelledby="addGalleriesLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -16,36 +28,49 @@
                 <div class="row">
                     <div class="col">
                         <div id="map-board"></div>
-                        <a class="btn btn-dark w-100 py-2 px-3 mt-2" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Submit this Pin</a>
-                    </div>
-                    <div class="col">
+                        <hr>
                         <label>Selected Pin</label>
                         <div id="selected-pin-holder"></div>
                         <form method="POST" action="/DetailGlobalController/add_pin_rel/<?= $dt_detail->id ?>" id="form-add-global-rel">
                             <input id="list_pin" class='d-none'  name="list_pin">
                         </form>
-                        <hr>
+                        <a class="btn btn-dark w-100 py-2 px-3 mt-2" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Submit this Pin</a>
+                    </div>
+                    <div class="col">
                         <label>Available Pin</label>
-                        <div id="available-pin-holder">
-                            <?php 
-                                foreach($dt_available_pin as $dt){
-                                    $found = false;
-                                    foreach($dt_pin_list as $pl){
-                                        if($pl->pin_name == $dt->pin_name){
-                                            $found = true;
-                                            break;
+                        <table id="pinTable" class="display table table-bordered w-100">
+                            <thead>
+                                <tr>
+                                    <th>Pin Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                    foreach($dt_available_pin as $dt){
+                                        $is_found = false;
+                                        foreach($dt_pin_list as $pl){
+                                            if($pl->pin_name == $dt->pin_name){
+                                                $is_found = true;
+                                                break;
+                                            }
+                                        }
+                        
+                                        if(!$is_found){
+                                            echo "
+                                                <tr>
+                                                    <td>
+                                                        <span class='pin-name-holder'>$dt->pin_name</span>
+                                                        <input hidden class='pin-id-coor' value='$dt->id,$dt->pin_lat,$dt->pin_long'>  
+                                                    </td>
+                                                    <td class='action-btn-holder'><a class='btn btn-success btn-add-pin'><i class='fa-solid fa-plus'></i></a></td>
+                                                </tr>   
+                                            ";
                                         }
                                     }
-
-                                    if(!$found){
-                                        echo "
-                                            <a class='pin-name-btn me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> $dt->pin_name</a>
-                                            <input hidden class='pin-id-coor' value='$dt->id,$dt->pin_lat,$dt->pin_long'>    
-                                        ";
-                                    }
-                                }
-                            ?>
-                        </div>
+                                ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -96,73 +121,7 @@
             });
         }
     }
-    $(document).ready(function() {
-        // Pin choose
-        $(document).on('click', '.pin-name-btn:not(.remove)', function() {
-            const idx = $(this).index('.pin-name-btn')
-            let pinEl = ''
-            const pin_name = $(this).text().trim()
-            const coor_split = $('.pin-id-coor').eq(idx).val().split(',')
-
-            selected_pin.push({
-                'id': coor_split[0],
-                'pin_name': pin_name,
-                'pin_lat': coor_split[1],
-                'pin_long': coor_split[2],
-            })
-
-            if($('#selected-pin-holder').children().length > 0){
-                tagEl = `
-                    <a class='pin-name-btn remove me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> ${pin_name}<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
-                `
-            } else {
-                tagEl = `
-                    <label>Attached Pin</label><br>
-                    <a class='pin-name-btn remove me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> ${pin_name}<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
-                `
-            }
-            $('#selected-pin-holder').append(tagEl)
-
-            markers.push({
-                coords: {lat: parseFloat(coor_split[1]), lng: parseFloat(coor_split[2])},
-                icon: {
-                    url: 'https://maps.google.com/mapfiles/ms/icons/red.png',
-                    scaledSize: {width: 40, height: 40}
-                },
-                content: 
-                `<div class='mt-4'>
-                    <h6>${pin_name}</h6>
-                    <a class='btn btn-dark remove-via-marker px-2 py-1' style='font-size:12px;'><i class='fa-regular fa-circle-xmark'></i> Remove<input hidden class='d-none remove-from-id' value='${coor_split[0]}'></a>
-                </div>`
-            })
-
-            addMarker(markers)
-            initMapAdd()
-    
-            $('.pin-name-btn').eq(idx).remove()
-        })
-        $(document).on('click', '.pin-name-btn.remove, .remove-via-marker', function() {            
-            const idx = $(this).closest('.pin-name-btn.remove').index('.pin-name-btn.remove')
-            const tag_name = $('.pin-name-btn.remove').eq(idx).text()
-
-            const id = $(this).find('input.remove-from-id').val()
-            selected_pin.forEach((el,idxEl) => {
-                if(id == el.id){
-                    selected_pin.splice(idxEl, 1)
-                    return
-                }
-            });
-
-            const tagEl = `
-                <a class='pin-name-btn me-2 mb-1 text-decoration-none'><i class='fa-solid fa-location-dot'></i> ${tag_name}</a>
-            `
-            $('#available-pin-holder').append(tagEl)
-            
-            $('.pin-name-btn.remove').eq(idx).remove()
-            markers.splice(idx, 1)
-            initMapAdd()
-        })
-
+    $(document).ready(function() { 
         // Submit form
         $(document).on('click', '#submit-btn', function() {  
             let listTag = null
