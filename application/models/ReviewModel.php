@@ -31,7 +31,7 @@
 			if($type == "person"){
 				$ext = ",pin_name,pin.id as pin_id";
 			}
-			$this->db->select("review_person, review_rate, review.created_at$ext");
+			$this->db->select("review_person, review_rate, review_body, review.created_at$ext");
 			$this->db->from($this->table);
 			$this->db->join('user', 'user.id = review.created_by');
 			$this->db->join('visit', 'visit.id = review.visit_id');

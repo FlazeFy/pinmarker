@@ -141,15 +141,17 @@ class DetailVisitController extends CI_Controller {
 			if($list_review != ""){
 				$split_review = explode(",", $list_review);
 
-				foreach ($split_review as $dt) {
+				foreach ($split_review as $idx => $dt) {
 					$split_dt = explode("_", $dt);
 					$person = $split_dt[0];
 					$rate = $split_dt[1];
+					$body = trim($this->input->post('review_body')[$idx]);
 
 					$data = [
 						'id' => get_UUID(), 
 						'visit_id' => $id, 
 						'review_person' => $person, 
+						'review_body' => $body != "" ? $body : null,
 						'review_rate' => $rate,
 						'created_at' => date("Y-m-d H:i:s"), 
 						'created_by' => $this->session->userdata('user_id'),
