@@ -4,33 +4,23 @@
         foreach($dt_pin_by_person as $dt){    
             echo "
                 <div class='pin-box solid'>
-                    <h3>$dt->pin_name</h3>
-                    <span class='bg-dark rounded-pill px-3 py-2 text-white'>$dt->pin_category</span>
-                    ";
-                    if($dt->is_favorite == 1){
-                        echo "<span class='btn bg-success px-3 py-2 text-white' style='font-size:var(--textXSM);'><i class='fa-solid fa-bookmark'></i></span>";
-                    }
-                    echo "<br><br>";
-                    if($dt->pin_desc){
-                        echo "<p>$dt->pin_desc</p>";
-                    } else {
-                        echo "<p class='text-secondary fst-italic'>- No Description -</p>";
-                    }
-                    echo "<div class='row py-0 my-0'>";
-                    if($dt->pin_person){
-                        echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Person In Touch</p>
-                        <p>$dt->pin_person</p></div>";
-                    }
-                    if($dt->pin_call && !$is_mobile_device){
-                        echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Phone Number</p>
-                        <p>$dt->pin_call</p></div>";
-                    }
-                    if($dt->pin_email && !$is_mobile_device){
-                        echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Email</p>
-                        <p>$dt->pin_email</p></div>";
-                    }
+                    <div class='pin_info-holder'>
+                        <span class='pin-category me-1'>$dt->pin_category</span>";
+                        if($dt->is_favorite == 1){
+                            echo "<span class='is-favorite'><i class='fa-solid fa-heart'></i></span>";
+                        }
+                        if($dt->pin_person){
+                            echo "<button class='pin-person ms-1' data-bs-toggle='popover' title='Pin Person' data-bs-content='$dt->pin_person'><i class='fa-solid fa-user'></i></button>";
+                        }
+                        if($dt->pin_call){
+                            echo "<button class='pin-person ms-1' data-bs-toggle='popover' title='Pin Call' data-bs-content='$dt->pin_call'><i class='fa-solid fa-phone'></i></button>";
+                        }
+                        if($dt->pin_email){
+                            echo "<button class='pin-person ms-1' data-bs-toggle='popover' title='Pin Email' data-bs-content='$dt->pin_email'><i class='fa-solid fa-envelope'></i></button>";
+                        }
                     echo"
                     </div>
+                    <h3>$dt->pin_name</h3>
                     <div class='row py-0 my-0'>";
 
                     if(!$is_mobile_device){
@@ -50,8 +40,8 @@
                             <p class='date-target'>$dt->last_visit</p>
                         </div>
                     </div>
-                    <a class='btn btn-dark px-2 py-1 me-2 see-detail-btn' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
-                    <a class='btn btn-light px-2 py-1 set-direction-btn' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                    <a class='btn btn-primary px-2 py-1 me-2 see-detail-btn' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
+                    <a class='btn btn-primary-outline px-2 py-1 set-direction-btn' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
                 </div>
             ";
         }

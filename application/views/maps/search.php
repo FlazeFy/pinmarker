@@ -5,11 +5,9 @@
     }
     .autocomplete input {
         margin: 0 !important;
-        border: 0;
         border-radius: 0;
         background: transparent !important;
-        color: white !important;
-        border-bottom: 1px solid white;
+        border: 1.5px solid black;
     }
     .autocomplete-items {
         position: absolute;
@@ -26,18 +24,19 @@
         cursor: pointer;
         background: white; 
         border-bottom: 1px solid #d4d4d4; 
+        -webkit-transition: all 0.35s;
+        -o-transition: all 0.35s;
+        transition: all 0.35s;
     }
     .autocomplete-items div:hover {
-        background: black; 
-        color: white;
+        font-weight: 600; 
     }
     .autocomplete-active {
         background-color: black !important; 
-        color: white; 
     }
 </style>
 
-<form autocomplete="off" class="d-inline" action="/MapsController/search_pin_name" method="POST" id="search_form">
+<form autocomplete="off" class="d-inline mb-0" action="/MapsController/search_pin_name" method="POST" id="search_form">
     <input hidden name="page" value="Maps">
     <div class="autocomplete form-floating mt-1 <?php if($is_mobile_device){ echo "w-100"; } ?>">
         <input id="pin_name" type="text" class="form-control" name="pin_name" value="<?= $this->session->userdata('search_pin_name_key') ?? "";?>" 
@@ -47,11 +46,11 @@
                     echo $search_pin_name;
                 } 
             ?>" required>
-        <label for="floatingSelect" class="text-white fw-normal">Filter By Name</label>
+        <label for="floatingSelect" class="fw-normal">Filter By Name</label>
     </div>
     <button class="btn btn-success" type="submit" id='search-btn'><i class="fa-solid fa-magnifying-glass"></i><?php if(!$is_mobile_device){ echo " Search"; } ?></button>
 </form>
-<form autocomplete="off" class="d-inline" action="/MapsController/reset_search_pin_name" method="POST">
+<form autocomplete="off" class="d-inline mb-0" action="/MapsController/reset_search_pin_name" method="POST">
     <input hidden name="page" value="Maps">
     <button class="btn btn-danger" type="submit" title="Reset search" id='reset-search-btn'><i class="fa-solid fa-rotate-left"></i></button>
 </form>

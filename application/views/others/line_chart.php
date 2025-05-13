@@ -20,7 +20,6 @@
                             echo "$c->total,";
                         }
                     ?>],
-                    color: 'var(--secondaryColor)'
                 }
             ],
         chart: {

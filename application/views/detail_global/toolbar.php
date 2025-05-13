@@ -20,9 +20,9 @@
                 echo "
                     <form action='/DetailGlobalController/edit_toggle/$dt_detail->id' method='POST' class='d-inline ms-2'>";
                         if($this->session->userdata('is_global_edit_mode') == false){
-                            echo "<button class='btn btn-light px-3 py-2 me-2' id='toggle-edit-btn'><i class='fa-solid fa-pen-to-square'></i> Open Edit Mode</button>";
+                            echo "<button class='btn btn-dark px-3 py-2 me-2' id='toggle-edit-btn'><i class='fa-solid fa-pen-to-square'></i> Open Edit Mode</button>";
                         } else {
-                            echo "<button class='btn btn-danger px-3 py-2 me-2' id='toggle-edit-btn'><i class='fa-solid fa-pen-to-square'></i> Close Edit Mode</button>";
+                            echo "<button class='btn btn-dark px-3 py-2 me-2' id='toggle-edit-btn'><i class='fa-solid fa-pen-to-square'></i> Close Edit Mode</button>";
                         }
                     echo"</form>
                 ";

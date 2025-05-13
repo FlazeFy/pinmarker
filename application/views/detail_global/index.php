@@ -10,7 +10,7 @@
 ?>
 
 <div class="d-flex justify-content-between mb-4">
-    <a class="btn btn-dark <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4 me-2" href="/GlobalListController"><i class="fa-solid fa-arrow-left"></i> <?php if (!$is_mobile_device){ echo "Back"; } ?></a>
+    <a class="btn btn-danger <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4 me-2" href="/GlobalListController"><i class="fa-solid fa-arrow-left"></i> <?php if (!$is_mobile_device){ echo "Back"; } ?></a>
     <?php 
         if ($is_mobile_device){
             echo "
@@ -40,9 +40,11 @@
 </div>
 
 <div class='mb-4 no-animation'>
-    <?php $this->load->view('detail_global/toolbar'); ?>
-    <?php $this->load->view('detail_global/detail'); ?>
-    <?php $this->load->view('detail_global/props'); ?>
+    <div class="container-fluid bg-light-primary p-4">
+        <?php $this->load->view('detail_global/toolbar'); ?>
+        <?php $this->load->view('detail_global/detail'); ?>
+        <?php $this->load->view('detail_global/props'); ?>
+    </div>
     <hr>
     <?php
         $data['view'] = $view; 

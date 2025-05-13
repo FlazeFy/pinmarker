@@ -1,10 +1,5 @@
-<div class="<?php if(!$dt_active_search){ echo"text-center"; } ?> position-relative pt-4 w-100" style="<?php if(!$is_mobile_device){ echo "margin-top:50vh;"; } else { echo "margin-top:13vh;"; } ?>" id="global-section">
-    <div class="position-absolute text-start" style="top:-60px;">
-        <h1 class="mb-0">PINMARKER</h1>
-        <h4 class="text-secondary">
-            <img class='img img-fluid mb-1' style='width:var(--spaceJumbo);' src='http://127.0.0.1:8080/public/images/logo.png'> Marks Your World
-        </h4>
-    </div>
+<div class="<?php if(!$dt_active_search){ echo"text-center"; } ?> position-relative pt-4 w-100" id="global-section">
+    <h1 class="mb-0">Welcome to Pinmarker</h1>
     <div style="border: var(--spaceMini) solid black; border-radius: 15px; <?php if(!$dt_active_search && !$is_mobile_device){ echo"height: 300px;"; } ?> z-index:1000; position: relative;" class="bg-white <?php if(!$is_mobile_device){ echo "p-4"; } else { echo "py-3 px-2"; } ?>">
         <h3>Search Global Pin</h3>
         <div class="position-relative mx-auto" style="max-width:600px;">
@@ -75,11 +70,6 @@
             <a class="btn btn-dark px-4 <?php if(!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> fw-bold" id='global-maps-btn' href="<?php if($dt_active_search){ echo"/GlobalMapsController/view/$dt_active_search"; } else { echo"/GlobalMapsController"; }?>"><i class="fa-solid fa-earth-americas"></i> Open Global Maps</a>
         </div>
     </div>
-    <?php if (!$is_mobile_device): ?>
-        <img class='img img-fluid position-absolute' style="max-width:480px; top:-42vh; z-index:98; left:25vw;" src='http://127.0.0.1:8080/public/images/pinmarker.png'>
-    <?php else:?>
-        <br><hr>
-    <?php endif; ?>
 </div>
 
 <script>

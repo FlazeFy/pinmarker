@@ -5,9 +5,10 @@
         foreach($dt_visit_pertime_hour as $dt){
             echo "
                 <div class='col-lg-6 col-md-12 col-sm-12 col-12'>
-                    <div class='px-2 py-3 mb-3' style='border: 2px solid black; border-radius: 15px;'>
-                        <div class='d-flex justify-content-between'>
-                            <span><span class='bg-dark rounded-pill px-3 py-1 text-white'>$dt->total Visit</span> At Hour <b>$dt->context:00</b> - "; echo "<b>".$dt->context+1; echo ":00</b>"; echo"</span>
+                    <div class='pin-box solid'>
+                        <div style='margin-bottom: var(--spaceXMD);'>
+                            <span class='time-context me-1'>$dt->context:00 - "; echo $dt->context+1; echo ":00</span>
+                            <span class='total-visit'>$dt->total Visit</span>
                         </div>
                         <p class='mt-2 mb-0 fw-bold'>Visit At</p>
                         <p class='mb-0 mt-1'>$dt->visit_list</p>

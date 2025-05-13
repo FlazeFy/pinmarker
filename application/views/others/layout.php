@@ -90,9 +90,10 @@
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
     <?php endif; ?>
 
+    <?php preg_match('(RegisterController|ForgetController|GlobalMapsController)', $cleanedUrl) ? null : $this->load->view('others/navbar'); ?>
     <div class="content">
-        <?php preg_match('(LoginController|RegisterController|ForgetController|GlobalMapsController)', $cleanedUrl) ? null : $this->load->view('others/navbar'); ?>
         <?php echo $content ?? ''; ?>
+        <?php $this->load->view('others/footer'); ?>
     </div>
     <?php 
         if($this->session->flashdata('message_success')){
@@ -127,6 +128,12 @@
                 const date = new Date(e.textContent);
                 e.textContent = getDateToContext(e.textContent, "calendar");
             });
+
+            //Popover
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl)
+            })
         });
     </script>
 
@@ -134,7 +141,5 @@
         <!-- Manage Pin -->
         <script src="http://127.0.0.1:8080/public/js/manage_pin.js"></script>
     <?php endif; ?>
-
-    <?php $this->load->view('others/footer'); ?>
 </body>
 </html>

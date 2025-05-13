@@ -2,7 +2,7 @@
 <div class="d-flex justify-content-between mt-4">
     <a class="btn btn-danger mb-4 py-3 px-4 me-2" href="/MapsController" id="back-page-btn"><i class="fa-solid fa-arrow-left"></i><?php if (!$is_mobile_device){ echo " Back"; } ?></a>
     <span>
-        <a class='btn btn-light mb-4 py-3 px-4 me-1' href="/CustomDocController/view/<?= $dt_detail_pin->id ?>"><i class='fa-solid fa-print'></i><?php if(!$is_mobile_device){ echo " Custom Print"; } else { echo " Custom"; }?></a>
+        <a class='btn btn-dark mb-4 py-3 px-4 me-1' href="/CustomDocController/view/<?= $dt_detail_pin->id ?>"><i class='fa-solid fa-print'></i><?php if(!$is_mobile_device){ echo " Custom Print"; } else { echo " Custom"; }?></a>
         <?php $this->load->view('detail/print'); ?>
         <?php $this->load->view('detail/edit_toggle'); ?>
         <?php $this->load->view('detail/favorite_toggle'); ?>

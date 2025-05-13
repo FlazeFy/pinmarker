@@ -46,18 +46,11 @@
     </script>
 </head>
 <body>
+    <?php $this->load->view('others/navbar'); ?>
     <div class="content">
-        <?php $this->load->view('others/navbar'); ?>
-        <h2 class="text-center" style="font-weight:600;">My Marker
-            <?php 
-                if($this->session->userdata('open_pin_list_category')){
-                    echo "<span class='btn-dark btn-main-page rounded-pill' style='font-size: var(--textJumbo);'>{$this->session->userdata('open_pin_list_category')}</span>";
-                }
-            ?>
-        </h2><br>
         <div class="d-flex justify-content-between">
             <div class="d-flex justify-content-start w-100">
-                <a class="btn btn-success btn-menu-main" href="/AddController" id='add-marker-btn'><i class="fa-solid fa-plus"></i><?php if(!$is_mobile_device){ echo " Add Marker";} ?></a>
+                <a class="btn btn-primary btn-menu-main" href="/AddController" id='add-marker-btn'><i class="fa-solid fa-plus"></i><?php if(!$is_mobile_device){ echo " Add Marker";} ?></a>
                 <?php $this->load->view('list/toggle_view'); ?>
                 <a class="btn btn-dark btn-menu-main" href="/ListController/print_pin" style='bottom:calc(7*var(--spaceXLG));' id='print-btn'><i class="fa-solid fa-print"></i><?php if(!$is_mobile_device){ echo " Print";} ?></a>
                 <?php 
@@ -90,7 +83,14 @@
             $this->load->view('list/list'); 
         ?>
         <hr>
+        <?php $this->load->view('others/footer'); ?>
     </div>
-    <?php $this->load->view('others/footer'); ?>
+    <script>
+        //Popover
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
+    </script>
 </body>
 </html>

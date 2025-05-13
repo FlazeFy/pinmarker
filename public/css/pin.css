@@ -1,18 +1,56 @@
 .pin-box {
     width: 100%;
-    border: 2.5px solid black;
-    padding: var(--spaceMD);
-    margin-bottom: 20px;
-    border-radius: 10px;
+    padding: var(--spaceLG);
+    margin-bottom: var(--spaceLG);
+    border-radius: var(--roundedLG);
     cursor: pointer;
     -webkit-transition: all 0.4s;
     -o-transition: all 0.4s;
     transition: all 0.4s;
     position: relative;
+    border: 2px solid #e0e0e0;
+}
+.pin-box.solid {
+    cursor:default;
+}
+.pin-box .pin_info-holder {
+    margin-bottom: var(--spaceXMD);
+}
+.pin-box .pin-category, .total-visit {
+    background: var(--warningBG);
+}
+.pin-box .is-favorite {
+    background: var(--dangerBG);
+}
+.pin-box .pin-person {
+    background: var(--infoBG);
+}
+.time-context {
+    background: var(--primaryColor);
+}
+.pin-box .pin-desc, .pin-box .list-pin-desc, .pin-box .list-desc{
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    display: -webkit-box; 
+    -webkit-line-clamp: 3; 
+    line-clamp: 3; 
+    -webkit-box-orient: vertical;
+    font-size: var(--textMD);
+}
+.pin-box .pin-category, .pin-box .is-favorite, .total-visit, .pin-box .pin-person, .time-context {
+    padding: var(--spaceMD) var(--spaceLG);
+    color: var(--whiteColor);
+    font-weight: 500;
+    letter-spacing: 0.5;
+    border: none;
+    font-size: var(--textMD);
+    margin-bottom: var(--spaceXXSM);
+    border-radius: var(--roundedLG);
 }
 .pin-box:not(.solid):hover {
-    transform: scale(1.05);
+    transform: scale(1.025);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border: 2px solid var(--primaryColor);
 }
 .pin-box-label, .pin-tag-btn, .pin-name-btn {
     background: var(--primaryColor);
