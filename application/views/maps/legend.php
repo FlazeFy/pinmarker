@@ -7,7 +7,7 @@
                 if($dt->total_pin > 0){
                     $used++;
                     echo "<span class='me-2'>
-                        <span class='container rounded mx-1' style='height: 20px; width: 20px; background: $dt->dictionary_color;'></span><b>($dt->total_pin)</b> $dt->dictionary_name
+                        <span class='container py-0 rounded mx-1' style='background: $dt->dictionary_color;'></span><b>($dt->total_pin)</b> $dt->dictionary_name
                     </span>";
                 }
             }

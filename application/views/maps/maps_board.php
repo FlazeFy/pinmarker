@@ -1,14 +1,11 @@
 <style>
     #map-board {
         height:70vh;
-        border-radius: 0 0 15px 15px;
+        border-radius: 0 0 var(--roundedMD) var(--roundedMD);
     }
-
     .maps-toolbar {
-        border-radius: 20px;
-        border: 5px solid black;
+        border-radius: var(--roundedLG);
         padding: 0 !important;
-        background: black;
     }
     .maps-toolbar button {
         margin: 10px !important;
@@ -16,17 +13,19 @@
     }
 </style>
 
-<div class="maps-toolbar">
-    <?php if((!$is_mobile_device)): ?>
-    <div class="d-flex justify-content-end">
-    <?php endif; ?>
-        <?php $this->load->view('maps/filter_category'); ?>
-        <?php $this->load->view('maps/search'); ?>
-    <?php if((!$is_mobile_device)): ?>
-    </div>
-    <?php endif; ?>
-    <div class="position-relative">
-        <div id="map-board"></div>
+<div class="container-fluid bg-light-primary">
+    <div class="maps-toolbar">
+        <?php if((!$is_mobile_device)): ?>
+        <div class="d-flex justify-content-end">
+        <?php endif; ?>
+            <?php $this->load->view('maps/filter_category'); ?>
+            <?php $this->load->view('maps/search'); ?>
+        <?php if((!$is_mobile_device)): ?>
+        </div>
+        <?php endif; ?>
+        <div class="position-relative">
+            <div id="map-board"></div>
+        </div>
     </div>
 </div>
 

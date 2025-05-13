@@ -18,23 +18,24 @@
     .nav-link {
         color: var(--secondaryColor) !important;
         font-weight: 500;
-        padding: var(--spaceSM) var(--spaceJumbo);
+        padding: var(--spaceSM) var(--spaceMD) !important;
         border-radius: var(--roundedMD);
         letter-spacing: 0.075em;
     }
     .nav-item:hover {
-        color: var(--infoBG);
-        border-bottom: 2px solid var(--infoBG);
+        color: var(--primaryColor);
+        border-bottom: 2px solid var(--primaryColor);
     }
     .navbar-brand {
         font-weight: 800;
         font-size: var(--textXJumbo);
         letter-spacing: 0.1em;
+        color: var(--secondaryColor);
     }
     .nav-link.active {
         font-weight: 600;
-        color: var(--infoBG);
-        border: 2px solid var(--infoBG);
+        color: var(--primaryColor);
+        border: 2px solid var(--primaryColor);
     }
 </style>
 

@@ -30,16 +30,18 @@
     --spaceMini : 4px;
 
     /* Color Pallete */
-    --successBG : #198754;
-    --dangerBG : #dc3545;
-    --infoBG: #df88ff;
-    --warningBG : rgb(244, 178, 46);
-    --lightWarningBG: #ffd499;
+    --successBG : #008e66;
+    --successLightBG: #6abaa4;
+    --dangerBG : #f5176c;
+    --dangerLightBG : #ffc1d9;
+    --infoBG: #00cbe6;
+    --warningBG : #ffc658;
+    --lightWarningBG: #ffddae;
 
-    --primaryColor : #00cbe6;
-    --primaryLightColor: #a9eff9;
+    --primaryColor : #6965f6;
+    --primaryLightColor: #f4ecff;
     --whiteColor : #FFFFFF;
-    --secondaryColor : #414141;
+    --secondaryColor : #484554;
     --thirdColor : #ededed;
 }
 
@@ -58,6 +60,10 @@ a {
 a:hover, a {
     color: var(--primaryColor);
 }
+h1, h2, h3, h4, h5, h6, p, a, b, input, label {
+    color: var(--secondaryColor);
+}
+
 .container-fluid, .container {
     background: var(--whiteColor);
     text-align: start;

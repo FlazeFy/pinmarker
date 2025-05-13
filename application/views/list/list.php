@@ -93,59 +93,71 @@
                 </form>
                 ";
             } else {
+                if($this->session->userdata('is_catalog_view') == false){
+                    echo "<div class='row'>";
+                }
                 foreach($dt_my_pin['data'] as $dt){
-                    echo "
-                        <div class='pin-box "; if($is_mobile_device){ echo "solid"; } echo"'>
-                            <h3>$dt->pin_name</h3>
-                            <span class='bg-dark rounded-pill px-3 py-2 text-white'>$dt->pin_category</span>
-                            ";
-                            if($dt->is_favorite == 1){
-                                echo "<span class='btn bg-success px-3 py-2 text-white' style='font-size:var(--textXSM);'><i class='fa-solid fa-bookmark'></i></span>";
-                            }
-                            echo "<br><br>";
-                            if($dt->pin_desc){
-                                echo "<p>$dt->pin_desc</p>";
-                            } else {
-                                echo "<p class='text-secondary fst-italic'>- No Description -</p>";
-                            }
-                            echo "<div class='row py-0 my-0'>";
-                            if($dt->pin_person){
-                                echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Person In Touch</p>
-                                <p>$dt->pin_person</p></div>";
-                            }
-                            if($dt->pin_call && !$is_mobile_device){
-                                echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Phone Number</p>
-                                <p>$dt->pin_call</p></div>";
-                            }
-                            if($dt->pin_email && !$is_mobile_device){
-                                echo "<div class='col-lg-4 col-md-6 col-sm-12'><p class='mt-2 mb-0 fw-bold'>Email</p>
-                                <p>$dt->pin_email</p></div>";
-                            }
-                            echo"
-                            </div>
-                            <div class='row py-0 my-0'>";
-    
-                            if(!$is_mobile_device){
+                    if($this->session->userdata('is_catalog_view') == false){
+                        echo "
+                            <div class='col-lg-4 col-md-6'>";
+                    }
+                        echo"
+                            <div class='pin-box "; if($is_mobile_device){ echo "solid"; } echo"'>
+                                <div class='pin_info-holder'>
+                                    <span class='pin-category me-1'>$dt->pin_category</span>";
+                                    if($dt->total_visit > 0){
+                                        echo "<span class='total-visit'>$dt->total_visit Visit</span>";
+                                    }
+                                    if($dt->is_favorite == 1){
+                                        echo "<span class='is-favorite ms-1'><i class='fa-solid fa-heart'></i></span>";
+                                    }
+                                    if($dt->pin_person){
+                                        echo "<button class='pin-person ms-1' data-bs-toggle='popover' title='Pin Person' data-bs-content='$dt->pin_person'><i class='fa-solid fa-user'></i></button>";
+                                    }
+                                    if($dt->pin_call){
+                                        echo "<button class='pin-person ms-1' data-bs-toggle='popover' title='Pin Call' data-bs-content='$dt->pin_call'><i class='fa-solid fa-phone'></i></button>";
+                                    }
+                                    if($dt->pin_email){
+                                        echo "<button class='pin-person ms-1' data-bs-toggle='popover' title='Pin Email' data-bs-content='$dt->pin_email'><i class='fa-solid fa-envelope'></i></button>";
+                                    }
                                 echo"
-                                <div class='col-lg-4 col-md-6 col-sm-12'>
-                                    <p class='mt-2 mb-0 fw-bold'>Created At</p>
-                                    <p class='date-target'>$dt->created_at</p>
                                 </div>
-                                <div class='col-lg-4 col-md-6 col-sm-12'>
-                                    <p class='mt-2 mb-0 fw-bold'>Total Visit</p>
-                                    <p>$dt->total_visit</p>
-                                </div>";
-                            }
+                                <h4>$dt->pin_name</h4>
+                                <div class='pin-desc'>";
+                                if($dt->pin_desc){
+                                    echo "<p class='text-secondary'>$dt->pin_desc</p>";
+                                } else {
+                                    echo "<p class='text-secondary fst-italic'>- No Description -</p>";
+                                }
+                                echo "
+                                </div>
+                                <div class='row py-0 my-0'>";
+        
+                                if(!$is_mobile_device){
+                                    echo"
+                                    <div class='col-md-6 col-sm-12'>
+                                        <p class='mt-2 mb-0 fw-bold'>Created At</p>
+                                        <p class='date-target'>$dt->created_at</p>
+                                    </div>";
+                                }
                                 echo"
-                                <div class='col-lg-4 col-md-6 col-sm-12'>
-                                    <p class='mt-2 mb-0 fw-bold'>Last Visit</p>
-                                    <p class='date-target'>$dt->last_visit</p>
+                                    <div class='col-md-6 col-sm-12'>
+                                        <p class='mt-2 mb-0 fw-bold'>Last Visit</p>
+                                        <p class='date-target'>"; echo $dt->last_visit ?? "-"; echo"</p>
+                                    </div>
                                 </div>
+                                <a class='btn btn-primary px-2 py-1 me-2 see-detail-btn' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
+                                <a class='btn btn-primary-outline px-2 py-1 set-direction-btn' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
+                            </div>";
+
+                    if($this->session->userdata('is_catalog_view') == false){
+                        echo "
                             </div>
-                            <a class='btn btn-dark px-2 py-1 me-2 see-detail-btn' href='/DetailController/view/$dt->id'><i class='fa-solid fa-circle-info'></i> See Detail</a>
-                            <a class='btn btn-light px-2 py-1 set-direction-btn' href='https://www.google.com/maps/dir/My+Location/$dt->pin_lat,$dt->pin_long'><i class='fa-solid fa-location-arrow'></i> Set Direction</a>
-                        </div>
-                    ";
+                        ";
+                    }
+                }
+                if($this->session->userdata('is_catalog_view') == false){
+                    echo "</div>";
                 }
             }
 
@@ -193,7 +205,9 @@
                 echo "
                     <div class='col-lg-4 col-md-6 col-sm-12 col-12 grid-item'>
                         <div class='pin-box mb-4'>
-                            <div class='pin-box-label "; if(!$is_mobile_device){ echo "position-absolute"; } else { echo "float-end mb-1"; } echo "'"; if(!$is_mobile_device){ echo "style='right:-15px; top:-15px;'"; } echo ">$dt->total Marker</div>
+                            <div class='pin_info-holder'>
+                                <span class='total-visit'>$dt->total Visit</span>  
+                            </div>
                             <h3 class='dictionary_name_holder'>$dt->dictionary_name</h3>
                             <p class='list-pin-desc'>"; 
                                 if($dt->pin_list){
@@ -203,9 +217,9 @@
                                 }
                             echo"</p>
                             <form method='POST' action='/ListController/view_catalog_detail/$dt->dictionary_name' class='d-inline'>
-                                <button class='btn btn-dark px-2 py-1 me-2 see-detail-btn' href='/DetailController/'><i class='fa-solid fa-circle-info'></i> See Detail</button>
+                                <button class='btn btn-primary px-2 py-1 me-2 see-detail-btn' href='/DetailController/'><i class='fa-solid fa-circle-info'></i> See Detail</button>
                             </form>
-                            <a class='btn btn-dark px-2 py-1 publish-to-global'><i class='fa-solid fa-globe'></i> Publish to Global</a>
+                            <a class='btn btn-primary-outline px-2 py-1 publish-to-global'><i class='fa-solid fa-globe'></i> Publish to Global</a>
                         </div>
                     </div>
                 ";
