@@ -32,16 +32,19 @@
     /* Color Pallete */
     --successBG : #198754;
     --dangerBG : #dc3545;
-    --warningBG : #ffc107;
+    --infoBG: #df88ff;
+    --warningBG : rgb(244, 178, 46);
+    --lightWarningBG: #ffd499;
 
-    --primaryColor : #000000;
+    --primaryColor : #00cbe6;
+    --primaryLightColor: #a9eff9;
     --whiteColor : #FFFFFF;
     --secondaryColor : #414141;
     --thirdColor : #ededed;
 }
 
 .content {
-    width: 1280px;
+    width: 1400px;
     display: block;
     margin-inline: auto;
     min-height: 75vh;
@@ -55,10 +58,14 @@ a {
 a:hover, a {
     color: var(--primaryColor);
 }
-.container {
+.container-fluid, .container {
     background: var(--whiteColor);
     text-align: start;
-    padding: var(--spaceMD);
+    padding: var(--spaceXMD);
+    border-radius: var(--roundedLG);
+}
+.shadow {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
 }
 .bordered {
     border: 1.75px solid var(--primaryColor);
@@ -103,6 +110,15 @@ a:hover, a {
 .bg-danger-light {
     background-color: rgba(240, 34, 116, 0.2);
     border: 2px solid var(--dangerBG);
+}
+.bg-light-warning {
+    background-color: rgba(244, 178, 46, 0.25);
+}
+.bg-light-primary {
+    background-color: rgba(169, 239, 249, 0.25);
+}
+.container-fluid .bg-light-primary {
+    border: none;
 }
   
 table thead {
@@ -213,4 +229,17 @@ table tbody {
         padding-inline: inherit;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
+}
+
+.carousel {
+    margin-top: var(--spaceJumbo);
+    position: relative;
+}
+.carousel-control-prev, .carousel-control-next {
+    background: var(--primaryLightColor);
+    opacity: 1;
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    margin-right: var(--spaceMD);
 }

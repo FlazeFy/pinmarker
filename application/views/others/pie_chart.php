@@ -23,31 +23,31 @@
             ?>
         ],
         chart: {
-        width: '360',
-        type: 'pie',
-    },
-    labels: [
-        <?php 
-            foreach($data as $c){
-                echo "'$c->context',";
+            width: '420',
+            type: 'pie',
+        },
+        labels: [
+            <?php 
+                foreach($data as $c){
+                    echo "'$c->context',";
+                }
+            ?>
+        ],
+        // colors: ['#000','#2A272A','#4B4A54','#677381','#82A0AA','#B9B9B9'],
+        legend: {
+            position: 'bottom'
+        },
+        responsive: [{
+            // breakpoint: 480,
+            options: {
+                chart: {
+                    width: 160
+                },
+                legend: {
+                    position: 'bottom'
+                }
             }
-        ?>
-    ],
-    colors: ['#000','#2A272A','#4B4A54','#677381','#82A0AA','#B9B9B9'],
-    legend: {
-        position: 'bottom'
-    },
-    responsive: [{
-        // breakpoint: 480,
-        options: {
-            chart: {
-                width: 160
-            },
-            legend: {
-                position: 'bottom'
-            }
-        }
-    }]
+        }]
     };
 
     var chart = new ApexCharts(document.querySelector("#Pie_<?= $ctx ?>"), options);

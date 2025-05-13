@@ -30,12 +30,15 @@
     border: none !important;
 }
 .btn-link {
-    color: var(--successBG) !important;
+    color: var(--secondaryColor) !important;
     padding: var(--spaceXXSM);
-    border: 2px solid var(--successBG);
     text-decoration: none;
     width: 100%;
     margin-top: var(--spaceXXSM);
+    border: 2px solid transparent;
+}
+.btn-link:hover {
+    border: 2px solid var(--secondaryColor);
 }
 .btn-collapse {
     border: 2px solid black;

@@ -4,30 +4,42 @@
         margin-bottom: 20px !important;
         border-radius: 0 0 20px 20px;
         padding: 20px;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         opacity: 1 !important;
         z-index: 999;
+        background: var(--whiteColor);
     }
     .nav-item {
         -webkit-transition: all 0.4s;
         -o-transition: all 0.4s;
         transition: all 0.4s;
         border-bottom: 2px solid transparent;
-        margin-right: 10px;
+        margin-right: var(--spaceLG);
+    }
+    .nav-link {
+        color: var(--secondaryColor) !important;
+        font-weight: 500;
+        padding: var(--spaceSM) var(--spaceJumbo);
+        border-radius: var(--roundedMD);
+        letter-spacing: 0.075em;
     }
     .nav-item:hover {
-        border-bottom: 2px solid white;
+        color: var(--infoBG);
+        border-bottom: 2px solid var(--infoBG);
     }
     .navbar-brand {
-        font-weight: bold;
+        font-weight: 800;
+        font-size: var(--textXJumbo);
+        letter-spacing: 0.1em;
     }
     .nav-link.active {
         font-weight: 600;
+        color: var(--infoBG);
+        border: 2px solid var(--infoBG);
     }
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark position-sticky w-100" style="top: 0;">
-    <div class="container-fluid">
+<nav class="navbar navbar-expand-lg position-sticky w-100" style="top: 0;">
+    <div class="container-fluid d-flex justify-content-between p-0" style="box-shadow:none;">
         <a class="navbar-brand" href="#"><?php 
             if($is_mobile_device){
                 echo ucfirst($active_page);
@@ -35,73 +47,68 @@
                 echo "PinMarker";
             }
         ?></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" id='expand-navbar-btn' aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                <?php 
-                    if($is_signed){
-                        echo '
-                            <li class="nav-item">
-                                <a class="nav-link '; if($active_page == 'dashboard'){ echo 'active'; } echo'" aria-current="page" href="/DashboardController" id="dashboard-page-btn">Dashboard</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link '; if($active_page == 'maps'){ echo 'active'; } echo'" href="/MapsController" id="maps-page-btn">Maps</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link '; if($active_page == 'global_list'){ echo 'active'; } echo'" href="/GlobalListController" id="global-page-btn">Global-Collection</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link '; if($active_page == 'list'){ echo 'active'; } echo'" href="/ListController" id="list-page-btn">List</a>
-                            </li>';
+        <ul class="navbar-nav">
+            <?php 
+                if($is_signed){
+                    echo '
+                        <li class="nav-item">
+                            <a class="nav-link '; if($active_page == 'dashboard'){ echo 'active'; } echo'" aria-current="page" href="/DashboardController" id="dashboard-page-btn">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link '; if($active_page == 'maps'){ echo 'active'; } echo'" href="/MapsController" id="maps-page-btn">Maps</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link '; if($active_page == 'global_list'){ echo 'active'; } echo'" href="/GlobalListController" id="global-page-btn">Global-Collection</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link '; if($active_page == 'list'){ echo 'active'; } echo'" href="/ListController" id="list-page-btn">List</a>
+                        </li>';
 
-                            if($this->session->userdata('role_key') == 1){
-                                echo '
-                                <li class="nav-item">
-                                    <a class="nav-link '; if($active_page == 'history'){ echo 'active'; } echo'" href="/HistoryController" id="history-page-btn">History</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link '; if($active_page == 'track'){ echo 'active'; } echo'" href="/TrackController" id="track-page-btn">Track</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="setting-menu-btn" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Setting
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="setting-menu-btn">
-                                        <li><a class="dropdown-item '; if($active_page == 'myprofile'){ echo 'active'; } echo'" href="/MyProfileController">My Profile</a></li>
-                                        <li><a class="dropdown-item '; if($active_page == 'help'){ echo 'active'; } echo'" href="/HelpController">Help Center</a></li>
-                                        <li><a class="dropdown-item '; if($active_page == 'feedback'){ echo 'active'; } echo'" href="/FeedbackController">Feedback</a></li>
-                                        <li><a class="dropdown-item text-white" style="background:var(--dangerBG) !important;" data-bs-toggle="modal" data-bs-target="#signOutModal"><i class="fa-regular fa-circle-xmark"></i> Sign Out</a></li>
-                                    </ul>
-                                </li>
-                                ';
-                            } else {
-                                echo '
-                                <li class="nav-item">
-                                    <a class="nav-link '; if($active_page == 'myprofile'){ echo 'active'; } echo'" href="/MyProfileController" id="manage-page-btn">Manage</a>
-                                </li>';
-                            }
-                            
-                    } else {
-                        echo '
+                        if($this->session->userdata('role_key') == 1){
+                            echo '
                             <li class="nav-item">
-                                <a class="nav-link" href="/LoginController#login-section" id="login-page-btn">Login</a>
+                                <a class="nav-link '; if($active_page == 'history'){ echo 'active'; } echo'" href="/HistoryController" id="history-page-btn">History</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link '; if($active_page == 'global_list'){ echo 'active'; } echo'" href="/DetailGlobalController/view/'; echo $this->session->userdata('search_global_id'); echo'" id="global-page-btn">Global-Collection</a>
+                                <a class="nav-link '; if($active_page == 'track'){ echo 'active'; } echo'" href="/TrackController" id="track-page-btn">Track</a>
                             </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="setting-menu-btn" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Setting
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="setting-menu-btn">
+                                    <li><a class="dropdown-item '; if($active_page == 'myprofile'){ echo 'active'; } echo'" href="/MyProfileController">My Profile</a></li>
+                                    <li><a class="dropdown-item '; if($active_page == 'help'){ echo 'active'; } echo'" href="/HelpController">Help Center</a></li>
+                                    <li><a class="dropdown-item '; if($active_page == 'feedback'){ echo 'active'; } echo'" href="/FeedbackController">Feedback</a></li>
+                                </ul>
+                            </li>
+                            ';
+                        } else {
+                            echo '
                             <li class="nav-item">
-                                <a class="nav-link '; if($active_page == 'feedback'){ echo 'active'; } echo'" aria-current="page" href="/FeedbackController" id="feedback-page-btn">Feedback</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/RegisterController" id="register-page-btn">Register</a>
-                            </li>
-                        ';
-                    }
-                ?>
-            </ul>
-        </div>
+                                <a class="nav-link '; if($active_page == 'myprofile'){ echo 'active'; } echo'" href="/MyProfileController" id="manage-page-btn">Manage</a>
+                            </li>';
+                        }
+                        
+                } else {
+                    echo '
+                        <li class="nav-item">
+                            <a class="nav-link" href="/LoginController#login-section" id="login-page-btn">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link '; if($active_page == 'global_list'){ echo 'active'; } echo'" href="/DetailGlobalController/view/'; echo $this->session->userdata('search_global_id'); echo'" id="global-page-btn">Global-Collection</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link '; if($active_page == 'feedback'){ echo 'active'; } echo'" aria-current="page" href="/FeedbackController" id="feedback-page-btn">Feedback</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/RegisterController" id="register-page-btn">Register</a>
+                        </li>
+                    ';
+                }
+            ?>
+        </ul>
+        <a class="btn btn-danger text-white" style="background:var(--dangerBG) !important;" data-bs-toggle="modal" data-bs-target="#signOutModal"><i class="fa-regular fa-circle-xmark"></i> Sign Out</a>
     </div>
 </nav>
 
