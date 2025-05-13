@@ -123,13 +123,16 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
 .bg-light-primary {
     background-color: rgba(169, 239, 249, 0.25);
 }
+.bg-primary {
+    background: var(--primaryColor) !important;
+}
 .container-fluid .bg-light-primary {
     border: none;
 }
   
 table thead {
-    background: var(--primaryColor);
-    color: var(--whiteColor); 
+    background: var(--primaryLightColor);
+    color: var(--secondaryColor); 
     font-size: var(--textXMD);
     text-align: center;
 }

@@ -39,6 +39,18 @@
     }
 </style>
 
+<?php 
+    $this->load->helper('url'); 
+    $full_url = current_url();
+    $cleanedUrl = str_replace("http://127.0.0.1:8080/", "", $full_url);    
+    $is_signed = true;
+
+    if($cleanedUrl == "LoginController"){
+        $is_signed = false;
+        $active_page = "Login";
+    }
+?>
+
 <nav class="navbar navbar-expand-lg position-sticky w-100" style="top: 0;">
     <div class="container-fluid d-flex justify-content-between p-0" style="box-shadow:none;">
         <a class="navbar-brand" href="#"><?php 

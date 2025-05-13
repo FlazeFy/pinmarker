@@ -33,7 +33,7 @@
                                 <td><b>"; echo $idx == 0 ? "<i class='fa-solid fa-crown text-warning'></i>" : ($idx <= 2 ? "<i class='fa-solid fa-star text-warning'></i>" : ""); echo ucwords($dt->name)."</b></td>
                                 <td class='text-center'><b>$dt->total</b> Visit</td>
                                 <td>$location_element</td>
-                                <td><a class='btn btn-dark px-2 py-1 mx-auto see-detail-btn' href='/DetailPersonController/view/$dt->name'><i class='fa-solid fa-circle-info'></i> See Detail</a></td>
+                                <td><a class='btn btn-primary px-2 py-1 mx-auto see-detail-btn' href='/DetailPersonController/view/$dt->name'><i class='fa-solid fa-circle-info'></i> See Detail</a></td>
                             </tr>
                         ";
                     }

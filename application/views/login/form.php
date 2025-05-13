@@ -1,5 +1,4 @@
-<div class="d-block mx-auto p-4 position-relative bg-white" style="max-width: 480px; border: var(--spaceMini) solid black; border-radius: 15px; top:-20px;"
-    id="login-section">
+<div class="container-fluid bg-light-primary"id="login-section" style="padding: var(--spaceJumbo);">
     <?php if (!$is_mobile_device): ?>
         <a class="position-absolute btn btn-dark px-4 py-2" href="#global-section" style="left:32.5%; top:-60px;"><i class="fa-solid fa-arrow-up"></i> Browse Global</a>
     <?php endif; ?>

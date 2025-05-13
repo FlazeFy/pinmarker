@@ -10,10 +10,13 @@
     position: relative;
     border: 2px solid #e0e0e0;
 }
+.pin-box.solid {
+    cursor:default;
+}
 .pin-box .pin_info-holder {
     margin-bottom: var(--spaceXMD);
 }
-.pin-box .pin-category, .pin-box .total-visit {
+.pin-box .pin-category, .total-visit {
     background: var(--warningBG);
 }
 .pin-box .is-favorite {
@@ -21,6 +24,9 @@
 }
 .pin-box .pin-person {
     background: var(--infoBG);
+}
+.time-context {
+    background: var(--primaryColor);
 }
 .pin-box .pin-desc, .pin-box .list-pin-desc, .pin-box .list-desc{
     overflow: hidden; 
@@ -31,7 +37,7 @@
     -webkit-box-orient: vertical;
     font-size: var(--textMD);
 }
-.pin-box .pin-category, .pin-box .is-favorite, .pin-box .total-visit, .pin-box .pin-person {
+.pin-box .pin-category, .pin-box .is-favorite, .total-visit, .pin-box .pin-person, .time-context {
     padding: var(--spaceMD) var(--spaceLG);
     color: var(--whiteColor);
     font-weight: 500;
