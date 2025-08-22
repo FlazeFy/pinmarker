@@ -37,6 +37,16 @@
         }
 		
 		// Query
+		public function distribution_visit_by_context($ctx,$limit = 7){
+			$this->db->select("$ctx as context, count(1) as total");
+			$this->db->from($this->table);
+			$this->db->group_by($ctx);
+			$this->db->order_by('total');
+            $this->db->limit($limit);
+
+			return $data = $this->db->get()->result();
+		}
+
         public function get_all_my_visit_header(){
 			$user_id = $this->session->userdata(self::SESSION_KEY);
 

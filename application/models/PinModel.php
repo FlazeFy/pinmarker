@@ -278,6 +278,18 @@
 			return $data = $this->db->get()->row();
 		}
 
+		public function distribution_pin_by_context($ctx,$limit = 7){
+			$this->db->select("$ctx as context, count(1) as total");
+			$this->db->from($this->table);
+			$condition['deleted_at'] = null; 
+			$this->db->where($condition);
+			$this->db->group_by($ctx);
+			$this->db->order_by('total');
+            $this->db->limit($limit);
+
+			return $data = $this->db->get()->result();
+		}
+
         public function count_my_fav_pin(){
 			$this->db->select('count(1) as total');
 			$this->db->from($this->table);
