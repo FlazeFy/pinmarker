@@ -7,6 +7,7 @@ class EmbedController extends CI_Controller {
 		$this->load->model('AuthModel');
         $this->load->model('PinModel');
         $this->load->model('VisitModel');
+		$this->load->model('BotRelModel');
 	}
 
 	public function apps_summary()
@@ -33,7 +34,6 @@ class EmbedController extends CI_Controller {
 		$data['dt_distribution_pin']= $this->PinModel->distribution_pin_by_context('pin_category',$limit_pin);
 		$data['dt_distribution_visit']= $this->VisitModel->distribution_visit_by_context('visit_by',$limit_visit);
 
-
 		$data['active_page']= 'embed';
 		$data['is_mobile_device'] = is_mobile_device();
 		$data['title_page'] = 'PinMarker | Content Distribution';
@@ -41,5 +41,17 @@ class EmbedController extends CI_Controller {
 		$this->load->view('others/layout', $data);
 	}
 
+	public function distribution_bot()
+	{
+		$data = [];
 
+		$data['dt_relation_type']= $this->BotRelModel->distribution_bot_by_context('relation_type');
+		$data['dt_relation_platform']= $this->BotRelModel->distribution_bot_by_context('relation_platform');
+
+		$data['active_page']= 'embed';
+		$data['is_mobile_device'] = is_mobile_device();
+		$data['title_page'] = 'PinMarker | Bot Distribution';
+		$data['content'] = $this->load->view('embed/bot_distribution',$data,true);
+		$this->load->view('others/layout', $data);
+	}
 }
