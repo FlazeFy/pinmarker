@@ -8,6 +8,7 @@ class EmbedController extends CI_Controller {
         $this->load->model('PinModel');
         $this->load->model('VisitModel');
 		$this->load->model('BotRelModel');
+		$this->load->model('FeedbackModel');
 	}
 
 	public function apps_summary()
@@ -80,6 +81,19 @@ class EmbedController extends CI_Controller {
 		$data['is_mobile_device'] = is_mobile_device();
 		$data['title_page'] = 'PinMarker | Most Visited Pin Category';
 		$data['content'] = $this->load->view('embed/most_visited_pin_category',$data,true);
+		$this->load->view('others/layout', $data);
+	}
+
+	public function feedback_distribution()
+	{
+		$data = [];
+
+		$data['dt_feedback_distribution']= $this->FeedbackModel->feedback_distribution();
+
+		$data['active_page']= 'embed';
+		$data['is_mobile_device'] = is_mobile_device();
+		$data['title_page'] = 'PinMarker | Feedback Distribution';
+		$data['content'] = $this->load->view('embed/feedback_distribution',$data,true);
 		$this->load->view('others/layout', $data);
 	}
 }
