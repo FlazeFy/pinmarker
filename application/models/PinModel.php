@@ -296,7 +296,7 @@
 			$this->db->join('user', 'user.id = pin.created_by');
 			$condition['deleted_at'] = null; 
 			$this->db->where($condition);
-			$this->db->group_by("username");
+			$this->db->group_by("user.id");
 			$this->db->order_by('total','desc');
             $this->db->limit($limit);
 
