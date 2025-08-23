@@ -41,7 +41,22 @@
 			$this->db->select("$ctx as context, count(1) as total");
 			$this->db->from($this->table);
 			$this->db->group_by($ctx);
-			$this->db->order_by('total');
+			$this->db->order_by('total','desc');
+            $this->db->limit($limit);
+
+			return $data = $this->db->get()->result();
+		}
+
+		public function most_visited_pin_category($limit = 7){
+			$this->db->select("dictionary_name as context, count(1) as total");
+			$this->db->from($this->table);
+			$this->db->join('pin', "pin.id = $this->table.pin_id");
+			$this->db->join('dictionary', "dictionary.dictionary_name = pin.pin_category");
+			$condition['deleted_at'] = null; 
+			$condition['dictionary_type'] = 'pin_category';
+			$this->db->where($condition);
+			$this->db->group_by("pin_category");
+			$this->db->order_by('total','desc');
             $this->db->limit($limit);
 
 			return $data = $this->db->get()->result();

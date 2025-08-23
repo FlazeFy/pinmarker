@@ -8,6 +8,7 @@ class EmbedController extends CI_Controller {
         $this->load->model('PinModel');
         $this->load->model('VisitModel');
 		$this->load->model('BotRelModel');
+		$this->load->model('FeedbackModel');
 	}
 
 	public function apps_summary()
@@ -52,6 +53,47 @@ class EmbedController extends CI_Controller {
 		$data['is_mobile_device'] = is_mobile_device();
 		$data['title_page'] = 'PinMarker | Bot Distribution';
 		$data['content'] = $this->load->view('embed/bot_distribution',$data,true);
+		$this->load->view('others/layout', $data);
+	}
+
+	public function most_active_user()
+	{
+		$data = [];
+		$limit_user = $this->input->get('limit_user') ?? 7;
+
+		$data['dt_user_most_pin']= $this->PinModel->user_most_pin($limit_user);
+
+		$data['active_page']= 'embed';
+		$data['is_mobile_device'] = is_mobile_device();
+		$data['title_page'] = 'PinMarker | Most Active User';
+		$data['content'] = $this->load->view('embed/most_active_user',$data,true);
+		$this->load->view('others/layout', $data);
+	}
+
+	public function most_visited_pin_category()
+	{
+		$data = [];
+		$limit_category = $this->input->get('limit_category') ?? 7;
+
+		$data['dt_most_visited_pin_category']= $this->VisitModel->most_visited_pin_category($limit_category);
+
+		$data['active_page']= 'embed';
+		$data['is_mobile_device'] = is_mobile_device();
+		$data['title_page'] = 'PinMarker | Most Visited Pin Category';
+		$data['content'] = $this->load->view('embed/most_visited_pin_category',$data,true);
+		$this->load->view('others/layout', $data);
+	}
+
+	public function feedback_distribution()
+	{
+		$data = [];
+
+		$data['dt_feedback_distribution']= $this->FeedbackModel->feedback_distribution();
+
+		$data['active_page']= 'embed';
+		$data['is_mobile_device'] = is_mobile_device();
+		$data['title_page'] = 'PinMarker | Feedback Distribution';
+		$data['content'] = $this->load->view('embed/feedback_distribution',$data,true);
 		$this->load->view('others/layout', $data);
 	}
 }

@@ -284,7 +284,20 @@
 			$condition['deleted_at'] = null; 
 			$this->db->where($condition);
 			$this->db->group_by($ctx);
-			$this->db->order_by('total');
+			$this->db->order_by('total','desc');
+            $this->db->limit($limit);
+
+			return $data = $this->db->get()->result();
+		}
+
+		public function user_most_pin($limit = 7){
+			$this->db->select("username as context, count(1) as total");
+			$this->db->from($this->table);
+			$this->db->join('user', 'user.id = pin.created_by');
+			$condition['deleted_at'] = null; 
+			$this->db->where($condition);
+			$this->db->group_by("user.id");
+			$this->db->order_by('total','desc');
             $this->db->limit($limit);
 
 			return $data = $this->db->get()->result();
