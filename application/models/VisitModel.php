@@ -41,7 +41,7 @@
 			$this->db->select("$ctx as context, count(1) as total");
 			$this->db->from($this->table);
 			$this->db->group_by($ctx);
-			$this->db->order_by('total');
+			$this->db->order_by('total','desc');
             $this->db->limit($limit);
 
 			return $data = $this->db->get()->result();

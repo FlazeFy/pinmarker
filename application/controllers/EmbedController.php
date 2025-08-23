@@ -54,4 +54,18 @@ class EmbedController extends CI_Controller {
 		$data['content'] = $this->load->view('embed/bot_distribution',$data,true);
 		$this->load->view('others/layout', $data);
 	}
+
+	public function most_active_user()
+	{
+		$data = [];
+		$limit_user = $this->input->get('limit_user') ?? 7;
+
+		$data['dt_user_most_pin']= $this->PinModel->user_most_pin($limit_user);
+
+		$data['active_page']= 'embed';
+		$data['is_mobile_device'] = is_mobile_device();
+		$data['title_page'] = 'PinMarker | Most Active User';
+		$data['content'] = $this->load->view('embed/most_active_user',$data,true);
+		$this->load->view('others/layout', $data);
+	}
 }
