@@ -6,6 +6,7 @@ class EmbedController extends CI_Controller {
 		parent::__construct();
 		$this->load->model('AuthModel');
         $this->load->model('PinModel');
+		$this->load->model('MultiModel');
         $this->load->model('VisitModel');
 		$this->load->model('BotRelModel');
 		$this->load->model('FeedbackModel');
@@ -102,12 +103,30 @@ class EmbedController extends CI_Controller {
 		$data = [];
 		$year = $this->input->get('year') ?? date('Y');
 
-		$data['dt_total_pin_created_monthly_by_year']= $this->PinModel->get_total_pin_created_monthly_by_year($year);
+		$data['dt_total_context_created_monthly_by_year']= $this->MultiModel->get_total_context_created_monthly_by_year($year,"pin");
 
 		$data['active_page']= 'embed';
 		$data['is_mobile_device'] = is_mobile_device();
 		$data['title_page'] = 'PinMarker | Total Pin Created Monthly By Year';
-		$data['content'] = $this->load->view('embed/total_pin_created_monthly_by_year',$data,true);
+		$data['ctx'] = "total_created_pin_by_month";
+		$data['label'] = "Total Pin";
+		$data['content'] = $this->load->view('embed/total_context_created_monthly_by_year',$data,true);
+		$this->load->view('others/layout', $data);
+	}
+
+	public function total_visit_monthly_by_year()
+	{
+		$data = [];
+		$year = $this->input->get('year') ?? date('Y');
+
+		$data['dt_total_context_created_monthly_by_year']= $this->MultiModel->get_total_context_created_monthly_by_year($year,"visit");
+
+		$data['active_page']= 'embed';
+		$data['is_mobile_device'] = is_mobile_device();
+		$data['title_page'] = 'PinMarker | Total Visit Monthly By Year';
+		$data['ctx'] = "total_visit_by_month";
+		$data['label'] = "Total Visit";
+		$data['content'] = $this->load->view('embed/total_context_created_monthly_by_year',$data,true);
 		$this->load->view('others/layout', $data);
 	}
 }
