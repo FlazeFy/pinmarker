@@ -40,6 +40,7 @@
 
     --primaryColor : #6965f6;
     --primaryLightColor: #f4ecff;
+    --containerColor: #F5F5F5;
     --whiteColor : #FFFFFF;
     --secondaryColor : #484554;
     --thirdColor : #ededed;
@@ -64,12 +65,61 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
     color: var(--secondaryColor);
 }
 
-.container-fluid, .container {
-    background: var(--whiteColor);
+/* Container & Box */
+.container-fluid, .container, .navbar, .dropdown-menu {
+    background: var(--containerColor);
     text-align: start;
-    padding: var(--spaceXMD);
+    padding: var(--spaceJumbo);
     border-radius: var(--roundedLG);
 }
+.container-fluid, .container {
+    margin-bottom: var(--spaceXLG);
+}
+
+/* Dropdown */
+.dropdown-menu {
+    padding: var(--spaceSM);
+    margin-top: var(--spaceJumbo) !important;
+    border: none;
+    border-radius: var(--roundedLG);
+}
+.dropdown-menu li a {
+    padding: var(--spaceSM)  var(--spaceMD);
+    margin-bottom: var(--spaceXSM);
+} 
+.dropdown-item {
+    border-radius: var(--roundedSM) !important;
+}
+
+/* Navbar & Dropdown */
+.nav-link, .dropdown-menu li a {
+    color: var(--secondaryColor) !important;
+    font-weight: 500;
+    letter-spacing: 0.075em;
+}
+.nav-link.active, .dropdown-item.active {
+    font-weight: 600;
+    color: var(--primaryColor);
+    border: 2px solid var(--primaryColor);
+}
+.nav-item, .dropdown-item {
+    background: var(--thirdColor) !important;
+}
+.nav-item:hover, .dropdown-item:hover {
+    border-bottom: var(--spaceMini) solid var(--primaryColor);
+}
+.dropdown-menu, .navbar {
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+/* Transition */
+.nav-item, .dropdown-item, .section-help, .fc-daygrid-event, .fc-timegrid-event, .fc-popover.fc-more-popover, .fc-popover-close, .autocomplete-items div, .btn-change-image
+, .reset-image-btn, .btn-account-attach, .pin-box, .gallery-btn, .progressBar li:before {
+    -webkit-transition: all 0.35s;
+    -o-transition: all 0.35s;
+    transition: all 0.35s;
+}
+
 .shadow {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
 }
@@ -96,9 +146,6 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
 }
 
 .gallery-btn {
-    -webkit-transition: all 0.35s;
-    -o-transition: all 0.35s;
-    transition: all 0.35s;
     border: 2px solid black; border-radius: 15px;
     padding: var(--spaceMD);
     text-align: left;
@@ -237,6 +284,9 @@ table tbody {
         z-index: 996;
         padding-inline: inherit;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+    .container-fluid, .container {
+        padding: var(--spaceLG);
     }
 }
 

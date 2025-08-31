@@ -13,7 +13,7 @@
     }
 </style>
 
-<div class="container-fluid bg-light-primary">
+<div class="container-fluid">
     <div class="maps-toolbar">
         <?php if((!$is_mobile_device)): ?>
         <div class="d-flex justify-content-end">

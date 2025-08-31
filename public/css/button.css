@@ -26,20 +26,28 @@
     border: 1.5px solid var(--primaryColor);
     color: var(--secondaryColor) !important;
 }
+
+/* Pagination */
+.pagination-holder {
+    text-align: center;
+    background: var(--primaryLightColor);
+    padding: var(--spaceLG);
+    border-radius: var(--roundedLG);
+}
 .paginate_button.page-item {
     margin-right: var(--spaceXXSM) !important;
 }
 .btn-page, .paginate_button a {
-    color: var(--primaryColor);
+    color: var(--secondaryColor);
     margin-right: calc(var(--spaceMini)*0.25) !important;
+    border: calc(var(--spaceMini) / 2) solid transparent;
 }
 .btn-page:hover, .btn-page.active, .page-item.active .page-link, .page-item:hover .page-link{
     color: var(--whiteColor);
-    border-radius: var(--roundedMD) !important;
 }
 .btn-page:hover, .page-item:hover .page-link{
-    background: var(--thirdColor);
-    color: var(--primaryColor);
+    color: var(--secondaryColor);
+    border: calc(var(--spaceMini) / 2) solid var(--primaryColor);
 }
 .page-item.active:hover a, .btn-page.active:hover {
     color: var(--whiteColor) !important;
@@ -50,6 +58,7 @@
 .paginate_button a{
     border: none !important;
 }
+
 .btn-link {
     color: var(--secondaryColor) !important;
     padding: var(--spaceXXSM);
@@ -86,9 +95,6 @@
     font-weight: 500;
     color: var(--blackColor);
     text-decoration: none;
-    -webkit-transition: all 0.25s;
-    -o-transition: all 0.25s;
-    transition: all 0.25s;
     padding: var(--spaceXXSM) var(--spaceXSM);
     border: 0;
     border-radius: var(--spaceMD);

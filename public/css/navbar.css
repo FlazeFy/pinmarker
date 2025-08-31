@@ -1,3 +1,27 @@
+.navbar {
+    margin: 0;
+    margin-bottom: var(--spaceLG) !important;
+    border-radius: 0 0 var(--roundedLG) var(--roundedLG);
+    padding: var(--spaceLG);
+    opacity: 1 !important;
+    z-index: 999;
+}
+.nav-item {
+    border-bottom: 2px solid transparent;
+    margin-right: var(--spaceLG);
+    border-radius: var(--roundedLG);
+}
+.nav-link {
+    padding: var(--spaceSM) var(--spaceMD) !important;
+    border-radius: var(--roundedMD);
+}
+.navbar-brand {
+    font-weight: 800;
+    font-size: var(--textXJumbo);
+    letter-spacing: 0.1em;
+    color: var(--secondaryColor);
+}
+
 .sub-tab .nav-item a{
     color: var(--secondaryColor);
     text-decoration: none;

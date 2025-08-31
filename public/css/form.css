@@ -3,24 +3,6 @@ label {
     font-weight: 600 !important;
 }
 
-/* Dropdown */
-.dropdown-menu {
-    padding: var(--spaceSM);
-    margin-top: var(--spaceJumbo) !important;
-    border: calc(var(--spaceMini)/2) solid var(--primaryColor);
-    border-radius: var(--roundedLG);
-}
-.dropdown-menu li a{
-    padding: var(--spaceSM)  var(--spaceMD);
-    margin-bottom: var(--spaceXSM);
-}
-.dropdown-item.active {
-    background: var(--primaryColor);
-}
-.dropdown-item {
-    border-radius: var(--roundedSM) !important;
-}
-
 /* Input */
 input, select, textarea {
     border-radius: var(--roundedMD) !important;

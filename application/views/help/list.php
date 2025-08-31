@@ -4,9 +4,7 @@
         padding: var(--spaceXMD);
         border-radius: var(--roundedLG);
         margin-bottom: var(--spaceJumbo);
-        -webkit-transition: all 0.35s;
-        -o-transition: all 0.35s;
-        transition: all 0.35s;
+        background: var(--containerColor);
     }
     .section-help:hover {
         transform: scale(1.025);

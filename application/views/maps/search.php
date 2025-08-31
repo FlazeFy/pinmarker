@@ -24,9 +24,6 @@
         cursor: pointer;
         background: white; 
         border-bottom: 1px solid #d4d4d4; 
-        -webkit-transition: all 0.35s;
-        -o-transition: all 0.35s;
-        transition: all 0.35s;
     }
     .autocomplete-items div:hover {
         font-weight: 600; 

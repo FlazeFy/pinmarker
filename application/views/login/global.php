@@ -1,6 +1,6 @@
 <div class="<?php if(!$dt_active_search){ echo"text-center"; } ?> position-relative pt-4 w-100" id="global-section">
     <h1 class="mb-0">Welcome to Pinmarker</h1>
-    <div style="border: var(--spaceMini) solid black; border-radius: 15px; <?php if(!$dt_active_search && !$is_mobile_device){ echo"height: 300px;"; } ?> z-index:1000; position: relative;" class="bg-white <?php if(!$is_mobile_device){ echo "p-4"; } else { echo "py-3 px-2"; } ?>">
+    <div style="border: var(--spaceMini) solid black; border-radius: 15px; <?php if(!$dt_active_search && !$is_mobile_device){ echo"height: 300px;"; } ?> z-index:998; position: relative;" class="bg-white <?php if(!$is_mobile_device){ echo "p-4"; } else { echo "py-3 px-2"; } ?>">
         <h3>Search Global Pin</h3>
         <div class="position-relative mx-auto" style="max-width:600px;">
             <input class="form-control <?php if(!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" placeholder="Search by list name or list tag..." style="font-weight: <?php if(!$is_mobile_device){ echo "700; font-size: var(--textJumbo)"; } else { echo "500; font-size: var(--textXLG)"; } ?>" id="search_input" value="<?= $dt_active_search ?>" style="max-width: 480px;">

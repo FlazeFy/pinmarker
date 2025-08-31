@@ -34,9 +34,6 @@
         left: 40px;
         border: 3px solid var(--primaryColor);
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        -webkit-transition: all 0.6s;
-        -o-transition: all 0.5s;
-        transition: all 0.5s;
     }
     .reset-image-btn{
         height:50px; 
@@ -49,9 +46,6 @@
         color: var(--whiteColor) !important;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         border: 3px solid var(--primaryColor);
-        -webkit-transition: all 0.6s;
-        -o-transition: all 0.5s;
-        transition: all 0.5s;
         bottom: 10px; 
         right: 50px;
     } 

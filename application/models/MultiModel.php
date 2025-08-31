@@ -66,6 +66,43 @@
 			return $data;
 		}
 
+		public function get_total_context_created_monthly_by_year($year,$table){
+			$months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+		
+			// Init 0 total per month
+			$results = [];
+			foreach ($months as $i => $m) {
+				$results[$m] = 0;
+			}
+		
+			// Query
+			$this->db->select("MONTH(created_at) as month, COUNT(1) as total");
+			$this->db->from($table);
+			if($table == "pin"){
+				$this->db->where('deleted_at', null);
+			}
+			$this->db->where("YEAR(created_at)", $year);
+			$this->db->group_by("MONTH(created_at)");
+			$this->db->order_by("MONTH(created_at)", "ASC");
+			$query = $this->db->get()->result();
+		
+			// Merge query with month list
+			foreach ($query as $row) {
+				$monthName = $months[$row->month - 1]; 
+				$results[$monthName] = (int) $row->total;
+			}
+		
+			$final = [];
+			foreach ($results as $month => $total) {
+				$final[] = (object)[
+					'context' => $month,
+					'total'   => $total
+				];
+			}
+		
+			return $final;
+		}
+
 		// Command
 		public function insert($table, $data){
 			return $this->db->insert($table,$data);	

@@ -14,7 +14,7 @@
     var options = {
             series: [
                 {
-                    name: 'Total Visit',
+                    name: '<?= $label ?>',
                     data: [<?php 
                         foreach($data as $c){
                             echo "$c->total,";
