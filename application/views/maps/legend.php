@@ -1,5 +1,5 @@
-<h4 class="text-center mt-2">Category</h4>
-<div class="mb-2 text-center">
+<div class="container-fluid my-2 text-center">
+    <h4 class="text-center">Category</h4>
     <?php 
         if(count($dt_dct_pin_category) > 0){
             $used = 0;

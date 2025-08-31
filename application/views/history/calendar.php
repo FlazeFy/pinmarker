@@ -81,10 +81,7 @@
         white-space: normal !important;
         font-weight: 500;
     }
-    .fc-daygrid-event, .fc-timegrid-event{
-        -webkit-transition: all 0.4s;
-        -o-transition: all 0.4s;
-        transition: all 0.4s;
+    .fc-daygrid-event, .fc-timegrid-event {
         z-index: 999 !important;
     }
     .fc-daygrid-event:hover, .fc-timegrid-event:hover{
@@ -159,9 +156,6 @@
     /* Show More */
     .fc-popover.fc-more-popover{
         border-radius: 10px;
-        -webkit-transition: all 0.25s;
-        -o-transition: all 0.25s;
-        transition: all 0.25s;
     }
     .fc-popover.fc-more-popover .fc-popover-title{
         font-weight: 500;
@@ -172,11 +166,6 @@
         height: 60vh;
         z-index: 999;
         overflow-y: scroll;
-    }
-    .fc-popover-close {
-        -webkit-transition: all 0.4s !important;
-        -o-transition: all 0.4s !important;
-        transition: all 0.4s !important;
     }
     .fc-popover-close:hover{
         transform: scale(1.1);

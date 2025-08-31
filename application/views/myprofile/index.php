@@ -16,7 +16,10 @@
                 echo "<h4>Profile</h4><hr>";
             }
         ?>
-        <?php $this->load->view('myprofile/profile'); ?>
+        <div class="container-fluid p-3" id="edit_profile-section">
+            <h2>Edit Profile</h2><hr>
+            <?php $this->load->view('myprofile/profile'); ?>
+        </div>
     </div>
     <div class="col-lg-9 col-md-12 col-sm-12">
         <?php 

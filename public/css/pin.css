@@ -1,14 +1,11 @@
 .pin-box {
     width: 100%;
-    padding: var(--spaceLG);
+    padding: var(--spaceXLG);
     margin-bottom: var(--spaceLG);
     border-radius: var(--roundedLG);
     cursor: pointer;
-    -webkit-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    transition: all 0.4s;
     position: relative;
-    border: 2px solid #e0e0e0;
+    background: var(--containerColor);
 }
 .pin-box.solid {
     cursor:default;

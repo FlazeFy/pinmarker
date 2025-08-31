@@ -45,7 +45,7 @@
         }
         echo "</div>";
 
-        echo "<div class='d-inline-block'>
+        echo "<div class='pagination-holder'>
             <h5>Page</h5>";
 
         $active = 0;

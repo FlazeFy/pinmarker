@@ -1,5 +1,5 @@
 
-<div class="container-fluid bg-light-primary p-4">
+<div class="container-fluid" id="add_feedback-section">
     <div class="text-center mt-3 mb-4">
         <h2 class="mb-0">Give Us Feedback</h2>
         <h5 class="text-secondary">Your words are helpfull for us to develop</h5>
@@ -23,8 +23,7 @@
         <br>
         <label>Message</label>
         <textarea name="feedback_body" id="feedback_body" rows="4" class="form-control"></textarea>
-        
-        <button class="btn btn-success mt-3" type="submit" id='submit-btn'><i class="fa-solid fa-paper-plane"></i> Send Feedback</button>
+        <button class="btn btn-success mt-3 py-3 w-100" type="submit" id='submit-btn'><i class="fa-solid fa-paper-plane"></i> Send Feedback</button>
     </form>
 </div>
 

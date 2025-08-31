@@ -24,9 +24,6 @@
     text-align: center;
     margin: 0 auto 10px;
     background-color: white;
-    -webkit-transition: all 0.5s;
-    -o-transition: all 0.5s;
-    transition: all 0.5s;
 }
 .progressBar li:after {
     content: "";

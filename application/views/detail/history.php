@@ -36,8 +36,8 @@
 </ol>
 <?php 
     if($show_page){
-        echo "<div class='d-inline-block'>
-        <h6>Page History</h6>";
+        echo "<div class='pagination-holder'>
+        <h6>Page</h6>";
 
         $active = 0;
         if($this->session->userdata('page_detail_history')){

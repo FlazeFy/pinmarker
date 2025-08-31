@@ -1,44 +1,3 @@
-<style>
-    .navbar {
-        margin: 0;
-        margin-bottom: 20px !important;
-        border-radius: 0 0 20px 20px;
-        padding: 20px;
-        opacity: 1 !important;
-        z-index: 999;
-        background: var(--whiteColor);
-    }
-    .nav-item {
-        -webkit-transition: all 0.4s;
-        -o-transition: all 0.4s;
-        transition: all 0.4s;
-        border-bottom: 2px solid transparent;
-        margin-right: var(--spaceLG);
-    }
-    .nav-link {
-        color: var(--secondaryColor) !important;
-        font-weight: 500;
-        padding: var(--spaceSM) var(--spaceMD) !important;
-        border-radius: var(--roundedMD);
-        letter-spacing: 0.075em;
-    }
-    .nav-item:hover {
-        color: var(--primaryColor);
-        border-bottom: 2px solid var(--primaryColor);
-    }
-    .navbar-brand {
-        font-weight: 800;
-        font-size: var(--textXJumbo);
-        letter-spacing: 0.1em;
-        color: var(--secondaryColor);
-    }
-    .nav-link.active {
-        font-weight: 600;
-        color: var(--primaryColor);
-        border: 2px solid var(--primaryColor);
-    }
-</style>
-
 <?php 
     $this->load->helper('url'); 
     $full_url = current_url();
@@ -52,7 +11,7 @@
 ?>
 
 <nav class="navbar navbar-expand-lg position-sticky w-100" style="top: 0;">
-    <div class="container-fluid d-flex justify-content-between p-0" style="box-shadow:none;">
+    <div class="container-fluid mb-0 d-flex justify-content-between p-0" style="background:transparent">
         <a class="navbar-brand" href="#"><?php 
             if($is_mobile_device){
                 echo ucfirst($active_page);
