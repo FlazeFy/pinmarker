@@ -96,4 +96,18 @@ class EmbedController extends CI_Controller {
 		$data['content'] = $this->load->view('embed/feedback_distribution',$data,true);
 		$this->load->view('others/layout', $data);
 	}
+
+	public function total_pin_created_monthly_by_year()
+	{
+		$data = [];
+		$year = $this->input->get('year') ?? date('Y');
+
+		$data['dt_total_pin_created_monthly_by_year']= $this->PinModel->get_total_pin_created_monthly_by_year($year);
+
+		$data['active_page']= 'embed';
+		$data['is_mobile_device'] = is_mobile_device();
+		$data['title_page'] = 'PinMarker | Total Pin Created Monthly By Year';
+		$data['content'] = $this->load->view('embed/total_pin_created_monthly_by_year',$data,true);
+		$this->load->view('others/layout', $data);
+	}
 }
