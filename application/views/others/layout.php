@@ -30,7 +30,7 @@
         <!-- Maps CSS -->
         <link href="http://127.0.0.1:8080/public/css/maps.css" rel="stylesheet"/>
     <?php endif; ?>
-    <?php if($cleanedUrl === "LandingController"): ?>
+    <?php if(preg_match('(LandingController|LoginController)', $cleanedUrl)): ?>
         <!-- Landing CSS -->
         <link href="http://127.0.0.1:8080/public/css/landing.css" rel="stylesheet"/>
     <?php endif; ?>
@@ -94,10 +94,10 @@
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
     <?php endif; ?>
 
-    <?php preg_match('(LandingController|RegisterController|ForgetController|GlobalMapsController|EmbedController)', $cleanedUrl) ? null : $this->load->view('others/navbar'); ?>
+    <?php preg_match('(LandingController|LoginController|RegisterController|ForgetController|GlobalMapsController|EmbedController)', $cleanedUrl) ? null : $this->load->view('others/navbar'); ?>
     <div class="content">
         <?php echo $content ?? ''; ?>
-        <?php preg_match('(EmbedController)', $cleanedUrl) ? null : $this->load->view('others/footer'); ?>
+        <?php preg_match('(EmbedController|LoginController)', $cleanedUrl) ? null : $this->load->view('others/footer'); ?>
     </div>
     <?php 
         if($this->session->flashdata('message_success')){

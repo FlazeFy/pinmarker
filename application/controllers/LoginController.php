@@ -13,13 +13,23 @@ class LoginController extends CI_Controller {
 		$this->load->helper('generator_helper');
 	}
 
-    public function index()
+    public function index_old()
 	{
 		$data = [];
 		$data['dt_total_pin'] = $this->PinModel->get_total_all();
 		$data['dt_total_user'] = $this->AuthModel->get_total_all();
 		$data['dt_total_visit'] = $this->VisitModel->get_total_all();
 		$data['dt_active_search'] = null;
+		$data['is_mobile_device'] = is_mobile_device();
+
+		$data['title_page'] = 'PinMarker | Marks Your World';
+		$data['content'] = $this->load->view('login/index_old',$data,true);
+		$this->load->view('others/layout', $data);
+	}
+
+	public function index()
+	{
+		$data = [];
 		$data['is_mobile_device'] = is_mobile_device();
 
 		$data['title_page'] = 'PinMarker | Marks Your World';

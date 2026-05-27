@@ -15,7 +15,7 @@
                 <a href="#" class="btn-primary btn-lg">
                     Start Explore Free <i class="fa-solid fa-arrow-right ms-2"></i>
                 </a>
-                <a href="#" class="btn-outline btn-lg">Sign In Now</a>
+                <a href="/LoginController" class="btn-outline btn-lg">Sign In Now</a>
             </div>
         </div>
         <div class="col-lg-6 position-relative">
