@@ -301,6 +301,7 @@ class CI_Session {
 		else
 		{
 			ini_set('session.name', $params['cookie_name']);
+			// ini_set('session.id', $params['cookie_name']);
 		}
 
 		isset($params['cookie_path']) OR $params['cookie_path'] = config_item('cookie_path');
@@ -423,7 +424,7 @@ class CI_Session {
 			{
 				// Add as many more characters as necessary to reach at least 160 bits
 				$sid_length += (int) ceil((160 % $bits) / $bits_per_character);
-				ini_set('session.sid_length', $sid_length);
+				// ini_set('session.sid_length', $sid_length);
 			}
 		}
 

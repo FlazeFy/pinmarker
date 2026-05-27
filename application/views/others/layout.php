@@ -30,6 +30,10 @@
         <!-- Maps CSS -->
         <link href="http://127.0.0.1:8080/public/css/maps.css" rel="stylesheet"/>
     <?php endif; ?>
+    <?php if($cleanedUrl === "LandingController"): ?>
+        <!-- Landing CSS -->
+        <link href="http://127.0.0.1:8080/public/css/landing.css" rel="stylesheet"/>
+    <?php endif; ?>
 
     <?php if(preg_match('(LoginController|GlobalListController|DetailGlobalController|DetailPersonController|AddGlobalListController)', $cleanedUrl)): ?>
         <!-- Pin CSS -->
@@ -90,7 +94,7 @@
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
     <?php endif; ?>
 
-    <?php preg_match('(RegisterController|ForgetController|GlobalMapsController|EmbedController)', $cleanedUrl) ? null : $this->load->view('others/navbar'); ?>
+    <?php preg_match('(LandingController|RegisterController|ForgetController|GlobalMapsController|EmbedController)', $cleanedUrl) ? null : $this->load->view('others/navbar'); ?>
     <div class="content">
         <?php echo $content ?? ''; ?>
         <?php preg_match('(EmbedController)', $cleanedUrl) ? null : $this->load->view('others/footer'); ?>

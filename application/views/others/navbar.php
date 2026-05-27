@@ -7,6 +7,9 @@
     if($cleanedUrl == "LoginController"){
         $is_signed = false;
         $active_page = "Login";
+    } else if($cleanedUrl == "LandingController"){
+        $is_signed = false;
+        $active_page = "Landing";
     }
 ?>
 

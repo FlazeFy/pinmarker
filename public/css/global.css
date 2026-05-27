@@ -30,20 +30,25 @@
     --spaceMini : 4px;
 
     /* Color Pallete */
-    --successBG : #008e66;
-    --successLightBG: #6abaa4;
-    --dangerBG : #f5176c;
-    --dangerLightBG : #ffc1d9;
+    --successBG : #00966b;
+    --successLightBG: #69baa5;
+    --dangerBG : #ef0025;
+    --dangerLightBG : #ff5153;
     --infoBG: #00cbe6;
-    --warningBG : #ffc658;
+    --warningBG : #ff9f43;
     --lightWarningBG: #ffddae;
 
-    --primaryColor : #6965f6;
-    --primaryLightColor: #f4ecff;
-    --containerColor: #F5F5F5;
-    --whiteColor : #FFFFFF;
-    --secondaryColor : #484554;
-    --thirdColor : #ededed;
+    --primaryColor : #635bff;
+    --primaryLightColor: #f0efff;
+    --containerColor: #f8f9fd;
+    --whiteColor : #f8f9fd;
+    --secondaryColor : #191C1F;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--containerColor);
+    color: var(--secondaryColor);
 }
 
 .content {
@@ -63,6 +68,63 @@ a:hover, a {
 }
 h1, h2, h3, h4, h5, h6, p, a, b, input, label {
     color: var(--secondaryColor);
+}
+
+/* Accordion */
+.accordion { 
+    display: flex; 
+    flex-direction: column; 
+    gap: var(--spaceMD); 
+}
+.accordion-item {
+    border: 1px solid #e1e2e6 !important;
+    border-radius: var(--roundedLG) !important;
+    overflow: hidden;
+    background: #fff;
+}
+.accordion-btn {
+    font-size: var(--textMD);
+    font-weight: 600;
+    color: var(--secondaryColor);
+    background: var(--whiteColor);
+    padding: var(--spaceXMD) var(--spaceXLG);
+    box-shadow: none !important;
+}
+.accordion-btn:not(.collapsed) { 
+    color: #fff; 
+    background: var(--primaryColor); 
+}
+.accordion-btn::after { 
+    filter: none; 
+}
+.accordion-body { 
+    margin-top: var(--spaceLG);
+    font-size: var(--textMD); 
+    color: #5d5d6b; 
+    line-height: 1.7; 
+    padding: 0 var(--spaceXLG) var(--spaceXMD); 
+}
+
+/* Button */
+.btn-primary {
+    background: var(--primaryColor);
+    color: var(--whiteColor);
+}
+.btn-outline {
+    background: var(--whiteColor);
+    color: var(--secondaryColor);
+    border: 1.5px solid #c7c4d8;
+    border-radius: var(--roundedXLG);
+    padding: 13px 28px;
+    font-size: var(--textXMD);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all .2s;
+    display: inline-block;
+}
+.btn-outline:hover { 
+    background: #f2f3f7; 
+    color: var(--secondaryColor); 
 }
 
 /* Container & Box */
@@ -175,6 +237,11 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
 }
 .container-fluid .bg-light-primary {
     border: none;
+}
+
+/* Typography */
+.text-primary { 
+    color: var(--primaryColor) !important; 
 }
   
 table thead {
