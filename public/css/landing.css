@@ -142,59 +142,66 @@
     border-radius: var(--roundedJumbo);
     overflow: hidden;
     border: 1px solid #e1e2e6;
-    background: linear-gradient(135deg, #2d2d4e 0%, #1a1a2e 50%, #3d3d6b 100%);
 }
-.map-dots {
-    position: absolute; inset: 0;
-    background-image: radial-gradient(rgba(199,196,216,.35) 1px, transparent 1px);
-    background-size: 22px 22px;
-    opacity: .6;
+
+#map {
+    height: 100%;
+    width: 100%;
+    z-index: 1;
 }
-.map-content { 
-    position: relative; 
-    height: 100%; 
+
+/* Floating Content */
+.map-content {
+    position: absolute;
+    inset: 0;
+    z-index: 996;
+    pointer-events: none;
 }
+
+.map-card, .map-search {
+    pointer-events: auto;
+}
+
+/* Left Floating Card */
 .map-card {
     position: absolute;
-    top: 24px; left: 24px;
+    top: 24px;
+    left: 24px;
     background: rgba(255,255,255,.82);
     backdrop-filter: blur(14px);
     border-radius: var(--roundedLG);
     padding: var(--spaceXMD);
-    width: 240px;
+    width: 280px;
     box-shadow: 0 4px 20px rgba(0,0,0,.12);
     border: 1px solid rgba(255,255,255,.5);
 }
-.icon-wrap {
-    width: 36px; height: 36px;
-    background: var(--primaryLightColor);
-    border-radius: var(--roundedSM);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--primaryColor);
-    font-size: var(--textXMD);
-}
+
 .map-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px var(--spaceSM);
+    padding: 10px var(--spaceSM);
     border-radius: var(--roundedMini);
     font-size: var(--textXSM);
     font-weight: 500;
     cursor: pointer;
-    transition: background .2s;
+    transition: .2s;
 }
-.map-item:hover { 
-    background: rgba(99,91,255,.08); 
+
+.map-item:hover {
+    background: rgba(99,91,255,.08);
 }
+
 .distance-badge {
     background: #e2e1f1;
     color: #5d5d6b;
     font-size: 10px;
     font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 4px;
+    padding: 4px 8px;
+    border-radius: 999px;
 }
+
+/* Search Bar */
 .map-search {
     position: absolute;
     bottom: 24px;
@@ -211,6 +218,7 @@
     box-shadow: 0 8px 32px rgba(0,0,0,.18);
     border: 1px solid rgba(199,196,216,.3);
 }
+
 .map-search-input {
     flex: 1;
     border: none;
@@ -218,6 +226,100 @@
     font-size: var(--textMD);
     font-family: inherit;
     background: transparent;
+}
+
+/* Leaflet Popup */
+.leaflet-popup-content-wrapper {
+    border-radius: 32px;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,.18);
+}
+.leaflet-popup-content {
+    margin: 0 !important;
+    width: 420px !important;
+}
+.leaflet-popup-tip {
+    box-shadow: none;
+}
+
+/* Popup Card */
+.map-placeholder .place-popup {
+    padding: 32px;
+    background: white;
+}
+.map-placeholder .popup-label {
+    color: #6b9d92;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+}
+.map-placeholder .place-popup h3 {
+    font-size: 34px;
+    line-height: 1.1;
+    margin-bottom: 18px;
+    color: #1e293b;
+    font-weight: 800;
+}
+.map-placeholder .popup-address {
+    color: #64748b;
+    font-size: 18px;
+    margin-bottom: 24px;
+}
+.map-placeholder .place-popup hr {
+    margin: 24px 0;
+    border-color: #e5e7eb;
+}
+
+/* Popup Information */
+.popup-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 22px;
+}
+.popup-info span {
+    font-size: 13px;
+    font-weight: 700;
+    color: #94a3b8;
+}
+.popup-info h5 {
+    margin: 0;
+    font-size: 20px;
+    color: #1e293b;
+    font-weight: 700;
+}
+.popup-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+.popup-icon.green {
+    background: rgba(6, 95, 70, .1);
+    color: #065f46;
+}
+.popup-icon.blue {
+    background: rgba(37, 99, 235, .1);
+    color: #2563eb;
+}
+
+/* Leaflet Zoom */
+.leaflet-control-zoom {
+    border: none !important;
+    overflow: hidden;
+    border-radius: 18px !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.12);
+}
+.leaflet-control-zoom a {
+    width: 42px !important;
+    height: 42px !important;
+    line-height: 42px !important;
+    font-size: 18px !important;
 }
 
 /* Feature */

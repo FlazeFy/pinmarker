@@ -39,6 +39,7 @@
     --lightWarningBG: #ffddae;
 
     --primaryColor : #635bff;
+    --secondaryColor: #8b85ff;
     --primaryLightColor: #f0efff;
     --containerColor: #f8f9fd;
     --whiteColor : #f8f9fd;
@@ -255,15 +256,17 @@ table tbody {
 }
 
 .swal2-popup {
-    border: 4px solid black !important;
-    border-radius: var(--roundedLG);
-    box-shadow: rgba(255, 255, 255, 0.75) 0px 5px 15px;
+    border-radius: var(--roundedJumbo);
+    padding: var(--spaceLG);
 }
 .swal2-confirm {
-    background: var(--successBG);
+    background: var(--primaryColor);
 }
 .swal2-cancel {
     background: var(--dangerBG);
+}
+.swal2-confirm, .swal2-cancel {
+    border-radius: var(--roundedJumbo);
 }
 
 .nodata-icon {

@@ -2,7 +2,8 @@
     <?php $this->load->view("landing/welcome"); ?>
 </section>
 
-<section class="section-sm text-center" id="map-section">
+<?php $this->load->view("landing/map_header"); ?>
+<section class="section-sm text-center pt-0" id="map-section">
     <?php $this->load->view("landing/map"); ?>
 </section>
 
