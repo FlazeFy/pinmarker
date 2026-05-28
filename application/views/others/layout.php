@@ -25,6 +25,7 @@
 
     <!-- CSS -->
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
+    <link href="http://127.0.0.1:8080/public/css/frame.css" rel="stylesheet"/>
     
     <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|DetailPersonController)', $cleanedUrl)): ?>
         <!-- Maps CSS -->
@@ -138,6 +139,12 @@
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
                 return new bootstrap.Popover(popoverTriggerEl)
             })
+
+            // Remove all element before meta charset (hide error CI)
+            $('meta[charset="UTF-8"]').prevAll().remove()
+            $('body').contents().filter(function () {
+                return this.nodeType === 3
+            }).remove()
         });
     </script>
 

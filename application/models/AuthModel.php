@@ -96,16 +96,12 @@
 
         public function current_user()
         {
-            if (!$this->session->has_userdata(self::SESSION_KEY)) {
-                return null;
-            }
+            if (!$this->session->has_userdata(self::SESSION_KEY)) return null;
 
             $user_id = $this->session->userdata(self::SESSION_KEY);
             $user = $this->db->get_where($this->table_user, ['id' => $user_id]);
 
-            if (!$user->row()) {
-                $user = $this->db->get_where($this->table_admin, ['id' => $user_id]);
-            }
+            if (!$user->row()) $user = $this->db->get_where($this->table_admin, ['id' => $user_id]);
 
             return $user->row();
         }

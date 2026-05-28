@@ -1,6 +1,12 @@
 /* Label */
-label {
-    font-weight: 600 !important;
+.form-label {
+    display: block;
+    font-size: var(--textXSM);
+    font-weight: 700;
+    letter-spacing: .04em;
+    color: #464555;
+    margin-bottom: 6px;
+    text-transform: uppercase;
 }
 
 /* Input */
@@ -26,4 +32,65 @@ input, select, textarea {
     font-weight: 700;
     font-size: var(--spaceLG) !important;
     margin-bottom: 0 !important;
+}
+.form-control-wrap { 
+    position: relative; 
+}
+.form-control-icon {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #777587;
+    transition: color .2s;
+    pointer-events: none;
+}
+.form-control {
+    width: 100%;
+    padding: 12px 14px 12px 40px;
+    background: #f2f3f7;
+    border: 1.5px solid #e1e2e6;
+    border-radius: var(--roundedMD);
+    font-size: var(--textXMD);
+    font-family: inherit;
+    color: var(--secondaryColor);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+.form-control:focus {
+    border-color: var(--primaryColor);
+    box-shadow: 0 0 0 3px rgba(99,91,255,.12);
+    background: #fff;
+}
+.form-control.focused + .form-control-icon, .form-control-icon.active { 
+    color: var(--primaryColor); 
+}
+
+/* Alert */
+.alert {
+    text-align: start;
+    border-radius: var(--roundedLG);
+}
+.alert h6 {
+    color: var(--dangerColor);
+    font-size: var(--textMD);
+}
+.alert p {
+    margin-bottom: 0;
+    color: var(--secondaryColor) !important;
+    font-size: var(--textSM);
+}
+
+/* Carousel */
+.carousel {
+    margin-top: var(--spaceJumbo);
+    position: relative;
+}
+.carousel-control-prev, .carousel-control-next {
+    background: var(--primaryLightColor);
+    opacity: 1;
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    margin-right: var(--spaceMD);
 }

@@ -6,7 +6,8 @@
     margin-bottom: var(--spaceLG);
 }
 .btn-primary {
-    background: var(--primaryColor) !important;
+    background: var(--primaryColor);
+    color: var(--whiteColor);
 }
 .btn-danger {
     background: var(--dangerBG) !important;
@@ -25,6 +26,22 @@
     background: transparent !important;
     border: 1.5px solid var(--primaryColor);
     color: var(--secondaryColor) !important;
+}
+.btn-outline {
+    background: var(--whiteColor);
+    color: var(--secondaryColor);
+    border: 1.5px solid #c7c4d8;
+    border-radius: var(--roundedXLG);
+    padding: 13px 28px;
+    font-size: var(--textXMD);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all .2s;
+    display: inline-block;
+}
+.btn-outline:hover { 
+    background: #f2f3f7; 
+    color: var(--secondaryColor); 
 }
 
 /* Pagination */
