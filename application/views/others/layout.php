@@ -73,7 +73,7 @@
         <script src="http://127.0.0.1:8080/public/js/isotope.js"></script>
     <?php endif; ?>
 
-    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|DetailPersonController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(LandingController|DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|DetailPersonController)', $cleanedUrl)): ?>
         <!-- Maps JS -->
         <script src="http://127.0.0.1:8080/public/js/maps.js"></script>
     <?php endif; ?>

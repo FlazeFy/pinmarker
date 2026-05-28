@@ -9,14 +9,7 @@
                     <span style="font-weight:700; font-size:var(--textMD);">Global Place</span>
                     <a><i class="fa-solid fa-angle-down"></i></a>
                 </div>
-                <div class="map-item">
-                    <span>Central Park Marker</span>
-                    <span class="distance-badge">1.2km</span>
-                </div>
-                <div class="map-item">
-                    <span>Design Studio Visit</span>
-                    <span class="distance-badge">3.5km</span>
-                </div>
+                <div id="global-place-holder"></div>
             </div>
             <div>
                 <div class="d-flex align-items-center gap-2 justify-content-between">
@@ -84,35 +77,7 @@
             weight: 3
         }).addTo(map)
 
-        // Custom marker
-        const branchMarker = L.marker([-6.175392, 106.827153]).addTo(map)
-
-        // Marker popup
-        branchMarker.bindPopup(`
-            <div class="place-popup">
-                <h3>Place A</h3>
-                <p class="popup-address">Address...</p>
-                <hr>
-                <div class="popup-info">
-                    <div class="popup-icon green">
-                        <i class="fa-solid fa-location-dot"></i>
-                    </div>
-                    <div>
-                        <span>Distance</span>
-                        <h5>3.6 km</h5>
-                    </div>
-                </div>
-                <div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                </div>
-                <div class="d-flex flex-column gap-2 mt-4">
-                    <button class="btn btn-primary">See Detail</button>
-                    <button class="btn btn-success">Set Direction</button>
-                </div>
-            </div>
-        `)
-
-        // Update user coordinate
+        // Update User Coordinate
         const updateUserLocation = (lat, lng) => {
             userLat = lat
             userLng = lng
@@ -141,7 +106,88 @@
 
             // Move Camera
             map.setView([userLat, userLng], 12)
+
+            fetchNearbyPlaces()
         }
+
+        // Fetch Nearby Place
+        const fetchNearbyPlaces = () => {
+            $('.map-card').find('.global-place-list').remove()
+
+            $('.map-card').prepend(`
+                <div class="global-place-list">
+                    <div class="map-item-skeleton"></div>
+                    <div class="map-item-skeleton"></div>
+                    <div class="map-item-skeleton"></div>
+                </div>
+            `)
+
+            $.ajax({
+                url: `/api/v1/location/reverse?lat=${userLat}&long=${userLng}`,
+                method: 'GET',
+                success: (response) => {
+                    const nearby = response.data.nearby
+
+                    $('.global-place-list').remove()
+
+                    let html = ''
+
+                    nearby.forEach(place => {
+                        const marker = L.marker([place.lat, place.lng]).addTo(map)
+
+                        marker.bindPopup(`
+                            <div class="place-popup">
+                                <h3>${place.name}</h3>
+                                <p class="popup-address">${place.amenity}</p>
+                                <hr>
+                                <div class="popup-info">
+                                    <div class="popup-icon green">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div>
+                                        <span>Distance</span>
+                                        <h5>${place.distance} m</h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column gap-2 mt-4">
+                                    <button class="btn btn-primary">See Detail</button>
+                                    <button class="btn btn-success btn-direction" data-lat="${place.lat}" data-long="${place.lng}">
+                                        Set Direction
+                                    </button>
+                                </div>
+                            </div>
+                        `)
+
+                        html += `
+                            <div class="map-item" data-lat="${place.lat}" data-lng="${place.lng}">
+                                <div class="d-flex flex-column align-items-start">
+                                    <b>${place.name}</b>
+                                    <a class="tag bg-primary mt-1">${place.amenity}</a>
+                                </div>
+                                <span class="distance-badge">${place.distance}m</span>
+                            </div>
+                        `
+                    })
+
+                    $('#global-place-holder').prepend(html)
+                },
+                error: () => {
+                    $('.global-place-list').html(`
+                        <div class="map-item">
+                            <span>Failed fetch nearby place</span>
+                        </div>
+                    `)
+                }
+            })
+        }
+
+        // Focus Marker
+        $(document).on('click', '.map-item', function () {
+            const lat = $(this).data('lat')
+            const lng = $(this).data('lng')
+
+            map.setView([lat, lng], 16)
+        })
 
         // Check Location Permission
         navigator.permissions.query({ name: 'geolocation' }).then(permission => {
@@ -175,6 +221,8 @@
                                 text: 'Unable to access your location.'
                             })
                         })
+                    } else {
+                        fetchNearbyPlaces()
                     }
                 })
             }

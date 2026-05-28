@@ -32,7 +32,7 @@
         `)
 
         $.ajax({
-            url: 'http://127.0.0.1:8080/api/v1/location/weather?lat=-6.226341056289639&long=106.82254165458681',
+            url: '/api/v1/location/weather?lat=-6.226341056289639&long=106.82254165458681',
             method: 'GET',
             success: (response) => {
                 const weather = response.data.weather
@@ -52,12 +52,10 @@
                     <span class="tag bg-secondary py-2 px-3">
                         ${weatherLabel}
                     </span>
-
                     <span class="tag bg-secondary py-2 px-3">
                         <i class="fa-solid fa-temperature-high"></i> 
                         ${weather.temperature}${weather.unit}
                     </span>
-
                     <span class="tag bg-secondary py-2 px-3">
                         <i class="fa-solid fa-droplet"></i> 
                         ${weather.humidity}%
@@ -83,12 +81,7 @@
         width: 60px;
         height: 24px;
         border-radius: var(--roundedJumbo);
-        background: linear-gradient(
-            90deg,
-            #e5e7eb 25%,
-            #f3f4f6 50%,
-            #e5e7eb 75%
-        );
+        background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
         background-size: 200% 100%;
         animation: skeleton-loading 1.2s infinite linear;
     }
