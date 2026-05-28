@@ -215,3 +215,18 @@ if (!function_exists('highlight_item')){
         return $res;
     }
 }
+
+
+if(!function_exists('api_response')){
+    function api_response($status_code, $status, $message, $data=null){
+        $CI =& get_instance();
+
+        return $CI->output->set_content_type('application/json')
+            ->set_status_header($status_code)
+            ->set_output(json_encode([
+                'status' => $status,
+                'message' => $message,
+                'data' => $data
+            ]));
+    }
+}

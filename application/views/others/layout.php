@@ -142,12 +142,6 @@
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
                 return new bootstrap.Popover(popoverTriggerEl)
             })
-
-            // Remove all element before meta charset (hide error CI)
-            $('meta[charset="UTF-8"]').prevAll().remove()
-            $('body').contents().filter(function () {
-                return this.nodeType === 3
-            }).remove()
         });
     </script>
 
