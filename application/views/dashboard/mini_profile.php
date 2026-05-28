@@ -22,3 +22,83 @@
         </div>
     </div>
 </div>
+
+<script>
+    const fetchWeather = () => {
+        $('.progress-block').first().find('.d-flex.gap-1').html(`
+            <div class="weather-skeleton"></div>
+            <div class="weather-skeleton"></div>
+            <div class="weather-skeleton"></div>
+        `)
+
+        $.ajax({
+            url: 'http://127.0.0.1:8080/api/v1/location/weather?lat=-6.226341056289639&long=106.82254165458683',
+            method: 'GET',
+            success: (response) => {
+                const weather = response.data.data.weather
+
+                const weatherEmoji = {
+                    0: '☀️ Clear',
+                    1: '🌤️ Cloudy',
+                    2: '☁️ Overcast',
+                    3: '🌧️ Rain',
+                    45: '🌫️ Fog',
+                    61: '🌦️ Drizzle'
+                }
+
+                const weatherLabel = weatherEmoji[weather.code] || '🌍 Weather'
+
+                $('.progress-block').first().find('.d-flex.gap-1').html(`
+                    <span class="tag bg-secondary py-2 px-3">
+                        ${weatherLabel}
+                    </span>
+
+                    <span class="tag bg-secondary py-2 px-3">
+                        <i class="fa-solid fa-temperature-high"></i> 
+                        ${weather.temperature}${weather.unit}
+                    </span>
+
+                    <span class="tag bg-secondary py-2 px-3">
+                        <i class="fa-solid fa-droplet"></i> 
+                        ${weather.humidity}%
+                    </span>
+                `)
+            },
+            error: () => {
+                $('.progress-block').first().find('.d-flex.gap-1').html(`
+                    <span class="tag bg-danger py-2 px-3">
+                        Failed fetch weather
+                    </span>
+                `)
+            }
+        })
+    }
+    $(document).ready(() => {
+        fetchWeather()
+    })
+</script>
+
+<style>
+    .weather-skeleton{
+        width: 60px;
+        height: 24px;
+        border-radius: var(--roundedJumbo);
+        background: linear-gradient(
+            90deg,
+            #e5e7eb 25%,
+            #f3f4f6 50%,
+            #e5e7eb 75%
+        );
+        background-size: 200% 100%;
+        animation: skeleton-loading 1.2s infinite linear;
+    }
+
+    @keyframes skeleton-loading{
+        0%{
+            background-position:200% 0;
+        }
+        100%{
+            background-position:-200% 0;
+        }
+    }
+</style>
