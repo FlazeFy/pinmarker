@@ -87,10 +87,11 @@ input, select, textarea {
     position: relative;
 }
 .carousel-control-prev, .carousel-control-next {
-    background: var(--primaryLightColor);
+    background: var(--primaryColor);
     opacity: 1;
     border-radius: 100%;
-    width: 60px;
-    height: 60px;
+    width: 30px;
+    height: 30px;
+    padding: var(--spaceXSM);
     margin-right: var(--spaceMD);
 }

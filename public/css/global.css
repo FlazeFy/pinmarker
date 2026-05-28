@@ -7,7 +7,8 @@
     --textXMD : 14px;
     --textMD : 13px;
     --textSM : 12px;
-    --textXSM : 11px;
+    --textXSM : 10px;
+    --textMini : 8px;
 
     /* Rounded */
     --roundedCircle : 100%;
@@ -56,11 +57,10 @@ body {
 }
 
 .content {
-    width: 1400px;
     display: block;
     margin-inline: auto;
     min-height: 75vh;
-    padding: 0 var(--spaceLG) var(--spaceLG) var(--spaceLG);
+    padding: var(--spaceLG);
 }
 
 a {
@@ -115,7 +115,6 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
 .dropdown-item {
     border-radius: var(--roundedSM) !important;
 }
-
 
 .dropdown-menu, .navbar {
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
@@ -181,6 +180,11 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
 }
 .bg-primary {
     background: var(--primaryColor) !important;
+}
+.bg-secondary {
+    background: rgba(175, 175, 175, 0.15) !important;
+    backdrop-filter: blur(8px) !important;
+    color: var(--darkColor) !important;
 }
 .container-fluid .bg-light-primary {
     border: none;

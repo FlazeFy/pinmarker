@@ -22,6 +22,10 @@
     border-radius: var(--roundedXLG); 
 }
 
+.content {
+    max-width: 1400px;
+}
+
 /* Welcome */
 .hero {
     background: radial-gradient(circle at 50% 0%, #e2dfff 0%, #f8f9fd 70%);

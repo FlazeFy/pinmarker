@@ -1,5 +1,20 @@
 .btn {
-    border-radius: var(--roundedJumbo);
+    border-radius: var(--roundedMD);
+    gap: var(--spaceSM);
+    display: flex;
+    border: none;
+    color: #fff;
+    font-size: var(--textXMD);
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(99,91,255,.25);
+    transition: all .2s;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spaceMD);
+}
+.btn:hover { 
+    transform: scale(.98); 
 }
 .btn-main-page {
     padding: var(--spaceLG);
@@ -42,6 +57,31 @@
 .btn-outline:hover { 
     background: #f2f3f7; 
     color: var(--secondaryColor); 
+}
+
+/* Based On Context */
+.btn-see-more {
+    background: #f2f3f7;
+    border: none;
+    border-radius: var(--roundedMD);
+    padding: 12px;
+    font-size: var(--textXMD);
+    font-weight: 700;
+    color: #464555;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .2s;
+}
+.btn-see-more:hover { 
+    background: var(--primaryColor); color: #fff; 
+}
+.tag {
+    font-size: var(--textXSM); 
+    font-weight: 600;
+    color: var(--whiteColor);
+    padding: 2px 8px;
+    border-radius: var(--roundedJumbo);
+    display: inline-block;
 }
 
 /* Pagination */
@@ -123,4 +163,30 @@
 .btn-light {
     background: var(--whiteColor);
     border: 2px solid var(--primaryColor) !important;
+}
+
+/* Icon Button */
+.icon-btn {
+    width: 36px; height: 36px;
+    background: #fff;
+    border: 1.5px solid #e1e2e6;
+    border-radius: var(--roundedSM);
+    display: flex; align-items: center; justify-content: center;
+    color: #464555;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all .2s;
+    position: relative;
+}
+.icon-btn:hover { 
+    background: #e2e1f1; 
+    color: var(--primaryColor); 
+    border-color: #c7c4d8; 
+}
+.notif-dot {
+    position: absolute; top: 6px; right: 6px;
+    width: 7px; height: 7px;
+    background: var(--dangerBG);
+    border-radius: 50%;
+    border: 2px solid #fff;
 }

@@ -14,8 +14,8 @@
         <div class="topnav-divider"></div>
         <div class="d-flex align-items-center gap-2">
             <div class="text-end">
-                <div class="user-name">jalanjalan</div>
-                <div class="user-level">Explorer Level 5</div>
+                <div class="fw-bold">jalanjalan</div>
+                <div style="font-size: var(--textSM);">Explorer Level 5</div>
             </div>
             <img src="http://127.0.0.1:8080/public/images/avatar.png" alt="avatar" class="avatar-sm">
         </div>

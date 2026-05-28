@@ -340,20 +340,6 @@
 			}
 		}
 
-        public function get_latest_pin(){
-			$this->db->select('pin_name');
-			$this->db->from($this->table);
-			$condition['deleted_at'] = null; 
-			if($this->role_key == 1){
-				$condition['created_by'] = $this->session->userdata(self::SESSION_KEY); 
-			}
-			$this->db->where($condition);
-            $this->db->order_by('created_at','desc');
-            $this->db->limit(1);
-
-			return $data = $this->db->get()->row();
-		}
-
 		public function get_person_in_contact(){
 			$this->db->select("pin_person, IFNULL(GROUP_CONCAT(COALESCE(pin.pin_name, null) ORDER BY pin.pin_name ASC SEPARATOR ', '), '') as pin_list");
 			$this->db->from($this->table);

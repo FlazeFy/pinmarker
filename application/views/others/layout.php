@@ -35,6 +35,10 @@
         <!-- Landing CSS -->
         <link href="http://127.0.0.1:8080/public/css/landing.css" rel="stylesheet"/>
     <?php endif; ?>
+    <?php if(!preg_match('(LandingController|LoginController|RegisterController)', $cleanedUrl)): ?>
+        <!-- Sidebar CSS -->
+        <link href="http://127.0.0.1:8080/public/css/sidebar.css" rel="stylesheet"/>
+    <?php endif; ?>
 
     <?php if(preg_match('(LoginController|GlobalListController|DetailGlobalController|DetailPersonController|AddGlobalListController)', $cleanedUrl)): ?>
         <!-- Pin CSS -->
@@ -97,7 +101,7 @@
 
     <div class="content">
         <?php echo $content ?? ''; ?>
-        <?php preg_match('(EmbedController|LoginController)', $cleanedUrl) ? null : $this->load->view('others/footer'); ?>
+        <?php if($cleanedUrl === "LandingController") $this->load->view('others/footer'); ?>
     </div>
     <?php 
         if($this->session->flashdata('message_success')){

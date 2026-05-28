@@ -53,14 +53,12 @@ class UnitTestController extends CI_Controller {
         $test_count_my_pin = $this->PinModel->count_my_pin();
         $test_count_my_fav_pin = $this->PinModel->count_my_fav_pin();
         $test_get_most_category_one = $this->PinModel->get_most_category(1);
-        $test_get_latest_pin = $this->PinModel->get_latest_pin();
         $test_get_most_category_six = $this->PinModel->get_most_category(6);
         $test_get_last_visit = $this->VisitModel->get_last_visit();
         
         $this->unit->run($test_count_my_pin, 'is_object', $test_name);
         $this->unit->run($test_count_my_fav_pin, 'is_object', $test_name);
         $this->unit->run($test_get_most_category_one, 'is_object', $test_name);
-        $this->unit->run($test_get_latest_pin, 'is_object', $test_name);
         $this->unit->run($test_get_most_category_six, 'is_array', $test_name);
         $this->unit->run($test_get_last_visit, 'is_object', $test_name);
     }
@@ -70,12 +68,10 @@ class UnitTestController extends CI_Controller {
 
         $test_get_most_visit_pin_name = $this->VisitModel->get_most_visit('pin_name',1);
         $test_get_most_visit_pin_category = $this->VisitModel->get_most_visit('pin_category',6);
-        $test_get_most_gallery = $this->GalleryModel->get_most_gallery('pin_category',6);
         $test_get_total_visit_by_month = $this->VisitModel->get_total_visit_by_month();
         
         $this->unit->run($test_get_most_visit_pin_name, 'is_object', $test_name);
         $this->unit->run($test_get_most_visit_pin_category, 'is_array', $test_name);
-        $this->unit->run($test_get_most_gallery, 'is_array', $test_name);
         $this->unit->run($test_get_total_visit_by_month, 'is_array', $test_name);
     }
 }

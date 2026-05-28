@@ -9,6 +9,9 @@
         </div>
     </div>
     <nav class="sidebar-nav flex-grow-1">
+        <a href="/DetailController/add_visit" class="btn btn-success mb-2">
+            <i class="fa-solid fa-circle-plus"></i> Add New Visit
+        </a>
         <div class="nav-group-label">Overview</div>
         <a href="/DashboardController" class="nav-item active">
             <i class="fa-solid fa-gauge-high"></i> Dashboard
@@ -41,9 +44,6 @@
         </a>
     </nav>
     <div class="sidebar-bottom">
-        <a href="/DetailController/add_visit" class="btn-add-visit">
-            <i class="fa-solid fa-circle-plus"></i> Add New Visit
-        </a>
         <a href="/LoginController/logout" class="nav-item nav-logout mt-2">
             <i class="fa-solid fa-right-from-bracket"></i> Logout
         </a>
