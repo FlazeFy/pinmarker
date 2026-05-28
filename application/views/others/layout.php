@@ -95,7 +95,6 @@
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
     <?php endif; ?>
 
-    <?php preg_match('(LandingController|LoginController|RegisterController|ForgetController|GlobalMapsController|EmbedController)', $cleanedUrl) ? null : $this->load->view('others/navbar'); ?>
     <div class="content">
         <?php echo $content ?? ''; ?>
         <?php preg_match('(EmbedController|LoginController)', $cleanedUrl) ? null : $this->load->view('others/footer'); ?>
