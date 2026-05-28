@@ -32,10 +32,10 @@
         `)
 
         $.ajax({
-            url: 'http://127.0.0.1:8080/api/v1/location/weather?lat=-6.226341056289639&long=106.82254165458683',
+            url: 'http://127.0.0.1:8080/api/v1/location/weather?lat=-6.226341056289639&long=106.82254165458681',
             method: 'GET',
             success: (response) => {
-                const weather = response.data.data.weather
+                const weather = response.data.weather
 
                 const weatherEmoji = {
                     0: '☀️ Clear',

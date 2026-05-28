@@ -230,3 +230,34 @@ if(!function_exists('api_response')){
             ]));
     }
 }
+
+if(!function_exists('calculate_distance')){
+    function calculate_distance($lat1, $lon1, $lat2, $lon2, $unit = 'km'){
+        $earth_radius = 6371000;
+
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($dLon / 2) * sin($dLon / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        $distance_meter = $earth_radius * $c;
+
+        switch($unit){
+            case 'm':
+                return round($distance_meter, 2);
+
+            case 'km':
+                return round($distance_meter / 1000, 2);
+
+            case 'mi':
+                return round($distance_meter / 1609.344, 2);
+
+            default:
+                return round($distance_meter / 1000, 2);
+        }
+    }
+}
