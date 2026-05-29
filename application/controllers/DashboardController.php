@@ -6,7 +6,6 @@ class DashboardController extends CI_Controller {
 		parent::__construct();
 		$this->load->model('PinModel');
 		$this->load->model('VisitModel');
-		$this->load->model('GalleryModel');
 		$this->load->model('AuthModel');
 		$this->load->model('MultiModel');
 
@@ -22,16 +21,22 @@ class DashboardController extends CI_Controller {
 
 		if($data['dt_my_profile']){
 			$data['active_page'] = 'dashboard';
+			// Summary
 			$data['dt_count_my_pin'] = $this->PinModel->count_my_pin();
 			$data['dt_count_my_fav_pin'] = $this->PinModel->count_my_fav_pin();
 			$data['dt_get_most_category'] = $this->PinModel->get_most_category(1);
 			$data['dt_get_most_visit'] = $this->VisitModel->get_most_visit('pin_name',1);
+			$data['dt_get_pin_distribution_main_category'] = $this->PinModel->get_distribution_main_category();
+			// Pie chart
 			$data['dt_get_most_visit_with'] = $this->VisitModel->get_most_visit_with(7, $year_pin != "all" ? $year_pin : null);
 			$data['dt_get_stats_total_pin_by_category'] = $this->PinModel->get_most_category(7, $year_pin != "all" ? $year_pin : null); // for now
 			$data['dt_get_stats_total_visit_pin_category'] = $this->VisitModel->get_most_visit('pin_category',7, $year_pin != "all" ? $year_pin : null); // for now
 			$data['dt_get_stats_total_visit_by'] = $this->VisitModel->get_most_visit('visit_by',7, $year_pin != "all" ? $year_pin : null); // for now
+			// Line chart
 			$data['dt_get_total_visit_by_month'] = $this->VisitModel->get_total_visit_by_month($year);
-			$data['dt_get_pin_distribution_main_category'] = $this->PinModel->get_distribution_main_category();
+			// Recent visit history
+			$data['dt_recent_visit'] = $this->VisitModel->get_recent_visit();
+			// For filter
 			$data['dt_available_year'] = $this->MultiModel->get_available_year();
 			$data['is_mobile_device'] = is_mobile_device();
 			$data['is_signed'] = true;

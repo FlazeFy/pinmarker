@@ -829,6 +829,25 @@
 			return $res;
 		}
 
+		public function get_recent_visit() {
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+		
+			$this->db->select("
+				visit.id, pin_name, pin_category, visit.created_at as visit_at, pin_address, visit_with,
+				is_favorite, GROUP_CONCAT(global_list.list_name SEPARATOR ', ') as list_names
+			", false);
+			$this->db->from($this->table);
+			$this->db->join('pin', 'pin.id = visit.pin_id');
+			$this->db->join('global_list_pin_relation', 'global_list_pin_relation.pin_id = pin.id', 'left');
+			$this->db->join('global_list', 'global_list.id = global_list_pin_relation.list_id', 'left');
+			$this->db->where('visit.created_at >=', date('Y-m-d H:i:s', strtotime('-2 weeks')));
+			$this->db->group_by('visit.id');
+			$this->db->order_by('visit.created_at', 'desc');
+			$res = $this->db->get()->result();
+		
+			return $res;
+		}
+
 		// For attached pin to global list
 		public function get_visit_location_favorite_tag_by_person($name) {
 			$user_id = $this->session->userdata(self::SESSION_KEY);

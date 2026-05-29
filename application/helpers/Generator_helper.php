@@ -261,3 +261,27 @@ if(!function_exists('calculate_distance')){
         }
     }
 }
+
+if(!function_exists('datetime_text')) {
+    function datetime_text($datetime) {
+        $visit_time = strtotime($datetime);
+        $now = time();
+        $diff_seconds = $now - $visit_time;
+        $diff_hours = floor($diff_seconds / 3600);
+    
+        // Same Day
+        if (date('Y-m-d', $visit_time) == date('Y-m-d')) {
+            if ($diff_hours < 2) return "Recently";
+            return $diff_hours . " hours ago";
+        }
+    
+        // Yesterday
+        if (date('Y-m-d', $visit_time) == date('Y-m-d', strtotime('-1 day'))) return "Yesterday at " . date('H:i', $visit_time);
+
+        // Same week
+        if (date('W', $visit_time) == date('W') && date('Y', $visit_time) == date('Y')) return date('l \a\t H:i', $visit_time);
+    
+        // Different week
+        return date('d M y \a\t H:i', $visit_time);
+    }
+}

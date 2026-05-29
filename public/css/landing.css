@@ -192,10 +192,6 @@
     transition: .2s;
 }
 
-.map-item:hover {
-    background: rgba(99,91,255,.08);
-}
-
 .distance-badge {
     background: #e2e1f1;
     color: #5d5d6b;
