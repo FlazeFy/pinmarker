@@ -425,6 +425,44 @@
 			return $res;
 		}
 
+		public function get_total_visit_by_month_year($month_year) {
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+		
+			$this->db->select('COUNT(1) as total');
+			$this->db->from($this->table);
+			$this->db->where('created_by', $user_id);
+			$this->db->where("DATE_FORMAT(created_at, '%Y-%m') =", $month_year);
+			$res = $this->db->get()->row();
+		
+			return $res ? $res->total : 0;
+		}
+
+		public function get_visited_pin_progress() {
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+		
+			// Total pin
+			$this->db->select('COUNT(pin.id) as total_pin');
+			$this->db->from('pin');
+			$this->db->where('pin.created_by', $user_id);
+			$total_pin_res = $this->db->get()->row();
+			$total_pin = $total_pin_res ? (int) $total_pin_res->total_pin : 0;
+			if ($total_pin == 0) return 0;
+		
+			// Total visited pin
+			$this->db->select('COUNT(DISTINCT visit.pin_id) as total_visited');
+			$this->db->from($this->table);
+			$this->db->join('pin', 'pin.id = visit.pin_id', 'left');
+			$this->db->where('pin.created_by', $user_id);
+			$this->db->where('visit.id IS NOT NULL', null, false);
+			$visited_res = $this->db->get()->row();
+			$total_visited = $visited_res ? (int) $visited_res->total_visited : 0;
+		
+			// Percentage
+			$percentage = ($total_visited / $total_pin) * 100;
+		
+			return (int) round($percentage);
+		}
+
 		public function get_total_appearance($name) {
 			$user_id = $this->session->userdata(self::SESSION_KEY);
 			$name = str_replace("%20"," ",$name);

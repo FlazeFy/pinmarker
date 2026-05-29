@@ -27,6 +27,9 @@ class DashboardController extends CI_Controller {
 			$data['dt_get_most_category'] = $this->PinModel->get_most_category(1);
 			$data['dt_get_most_visit'] = $this->VisitModel->get_most_visit('pin_name',1);
 			$data['dt_get_pin_distribution_main_category'] = $this->PinModel->get_distribution_main_category();
+			$data['dt_get_visited_pin_progress'] = $this->VisitModel->get_visited_pin_progress();
+			$month_year = date('Y-m');
+			$data['dt_get_total_visit_current_month'] = $this->VisitModel->get_total_visit_by_month_year($month_year);
 			// Pie chart
 			$data['dt_get_most_visit_with'] = $this->VisitModel->get_most_visit_with(7, $year_pin != "all" ? $year_pin : null);
 			$data['dt_get_stats_total_pin_by_category'] = $this->PinModel->get_most_category(7, $year_pin != "all" ? $year_pin : null); // for now

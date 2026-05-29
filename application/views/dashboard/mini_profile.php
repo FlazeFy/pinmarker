@@ -1,6 +1,6 @@
 <div class="card text-start mb-4">
     <h3 class="card-title">Good Morning, jalanjalan!</h3>
-    <p class="card-sub mt-1">You've visited 4 new places this month. Keep exploring!</p>
+    <p class="card-sub mt-1">You've visited <b><?= $dt_get_total_visit_current_month ?> places</b> this month. Keep exploring!</p>
     <div class="progress-block mt-3 d-flex justify-content-between align-items-center">
         <div class="d-flex flex-column">
             <span style="font-size:var(--textSM); font-weight:700;">Today's Weather</span>
@@ -15,7 +15,7 @@
     <div class="progress-block mt-3">
         <div class="d-flex justify-content-between mb-1">
             <span style="font-size:var(--textSM); font-weight:700;">Explorer Progress</span>
-            <span style="font-size:var(--textSM); font-weight:700; color:var(--primaryColor);">75%</span>
+            <span style="font-size:var(--textSM); font-weight:700; color:var(--primaryColor);"><?= $dt_get_visited_pin_progress ?>%</span>
         </div>
         <div class="progress-bar">
             <div class="progress-fill" style="width:75%;"></div>
