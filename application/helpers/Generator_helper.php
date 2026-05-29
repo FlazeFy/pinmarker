@@ -215,3 +215,73 @@ if (!function_exists('highlight_item')){
         return $res;
     }
 }
+
+
+if(!function_exists('api_response')){
+    function api_response($status_code, $status, $message, $data=null){
+        $CI =& get_instance();
+
+        return $CI->output->set_content_type('application/json')
+            ->set_status_header($status_code)
+            ->set_output(json_encode([
+                'status' => $status,
+                'message' => $message,
+                'data' => $data
+            ]));
+    }
+}
+
+if(!function_exists('calculate_distance')){
+    function calculate_distance($lat1, $lon1, $lat2, $lon2, $unit = 'km'){
+        $earth_radius = 6371000;
+
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($dLon / 2) * sin($dLon / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        $distance_meter = $earth_radius * $c;
+
+        switch($unit){
+            case 'm':
+                return round($distance_meter, 2);
+
+            case 'km':
+                return round($distance_meter / 1000, 2);
+
+            case 'mi':
+                return round($distance_meter / 1609.344, 2);
+
+            default:
+                return round($distance_meter / 1000, 2);
+        }
+    }
+}
+
+if(!function_exists('datetime_text')) {
+    function datetime_text($datetime) {
+        $visit_time = strtotime($datetime);
+        $now = time();
+        $diff_seconds = $now - $visit_time;
+        $diff_hours = floor($diff_seconds / 3600);
+    
+        // Same Day
+        if (date('Y-m-d', $visit_time) == date('Y-m-d')) {
+            if ($diff_hours < 2) return "Recently";
+            return $diff_hours . " hours ago";
+        }
+    
+        // Yesterday
+        if (date('Y-m-d', $visit_time) == date('Y-m-d', strtotime('-1 day'))) return "Yesterday at " . date('H:i', $visit_time);
+
+        // Same week
+        if (date('W', $visit_time) == date('W') && date('Y', $visit_time) == date('Y')) return date('l \a\t H:i', $visit_time);
+    
+        // Different week
+        return date('d M y \a\t H:i', $visit_time);
+    }
+}

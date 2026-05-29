@@ -1,7 +1,7 @@
 <div class="text-center">
     <?php 
         if(count($data) != 0){
-            echo "<h4>"; echo ucwords(str_replace('_',' ',$ctx)); echo"</h4>
+            echo "<h3>"; echo ucwords(str_replace('_',' ',$ctx)); echo"</h3>
             <div id='Pie_$ctx'></div>";
         } else {
             echo "

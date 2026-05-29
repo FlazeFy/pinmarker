@@ -1,49 +1,68 @@
-<div class="container-fluid bg-light-primary"id="login-section" style="padding: var(--spaceJumbo);">
-    <?php if (!$is_mobile_device): ?>
-        <a class="position-absolute btn btn-dark px-4 py-2" href="#global-section" style="left:32.5%; top:-60px;"><i class="fa-solid fa-arrow-up"></i> Browse Global</a>
-    <?php endif; ?>
-    <form action="/LoginController/login" method="post">
-        <h2 class="text-center" style="font-weight:600;">Welcome to PinMarker</h2><br>
-        <div>
-            <label for="name">Email/Username</label>
-            <input type="text" name="username" id="username" class="form-control <?= form_error('username') ? 'invalid' : '' ?>"
-                placeholder="Your username or email" value="<?= set_value('username') ?>" required />
-            <div class="msg-error-input">
-                <?= form_error('username') ?>
+<div class="login-wrap text-center">
+    <div class="mb-4">
+        <h1 class="text-primary fw-bold">PinMarker</h1>
+        <p class="text-secondary">Marks Your World</p>
+    </div>
+    <div class="card">
+        <h2 class="card-title">Welcome Back</h2>
+        <p class="card-sub">Sign in to your account to continue exploring.</p>
+        <hr>
+        <form action="/LoginController/login" method="POST">
+            <div class="field mb-3 text-start">
+                <label class="form-label" for="username">Email or Username</label>
+                <div class="form-control-wrap">
+                    <i class="fa-solid fa-user form-control-icon" id="icon-username"></i>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Enter your email" required>
+                </div>
             </div>
+            <div class="field mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <label class="form-label" for="password">Password</label>
+                    <a href="/ForgotController" class="forgot">Forgot Password?</a>
+                </div>
+                <div class="form-control-wrap">
+                    <i class="fa-solid fa-lock form-control-icon" id="icon-password"></i>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+                </div>
+            </div>
+            <?php 
+                if($this->session->flashdata('validation_error')){
+                    echo "
+                        <div class='alert alert-danger' role='alert'>
+                            <h6><i class='fa-solid fa-triangle-exclamation'></i> Failed</h6>
+                            ".$this->session->flashdata('validation_error')."
+                        </div>
+                    "; 
+                }
+            ?>
+            <?php 
+                if($this->session->flashdata('message_error')){
+                    echo "
+                        <div class='alert alert-danger' role='alert'>
+                            <h6><i class='fa-solid fa-triangle-exclamation'></i> Failed</h6>
+                            ".$this->session->flashdata('message_error')."
+                        </div>
+                    "; 
+                }
+            ?>
+            <button type="submit" class="btn-primary btn-lg w-100">Sign In</button>
+        </form>
+        <div class="divider">
+            <span>Or Continue With</span>
         </div>
-        <div class="mt-2">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" class="form-control <?= form_error('password') ? 'invalid' : '' ?>"
-                placeholder="Enter your password" value="<?= set_value('password') ?>" required />
-            <div class="msg-error-input">
-                <?= form_error('password') ?>
-            </div>
+        <a href="/LoginController/google" class="btn-outline d-flex justify-content-center gap-2 align-items-center mb-4">
+            <i class="fa-brands fa-google"></i> Google
+        </a>
+        <p class="card-sub">Don't have an account? <a href="/RegisterController" class="link-primary">Register Now</a></p>
+    </div>
+    <div class="util-footer">
+        <a href="/HelpController" class="help-btn">
+            <i class="fa-regular fa-circle-question"></i> Help Center
+        </a>
+        <div class="util-links">
+            <a href="/PrivacyController">Privacy Policy</a>
+            <span>•</span>
+            <a href="/TermsController">Terms of Service</a>
         </div>
-        <?php 
-            if($this->session->flashdata('validation_error')){
-                echo "
-                    <div class='alert alert-danger' role='alert'>
-                        <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
-                        ".$this->session->flashdata('validation_error')."
-                    </div>
-                "; 
-            }
-        ?>
-
-        <br>
-        <button type="submit" class="btn btn-success mt-3 py-3 w-100" id="sign-in-btn"><i class="fa-solid fa-right-to-bracket"></i> Sign In</button>
-        <a class="btn btn-white w-100 py-3 mt-3" href="/RegisterController" id='register-btn' style="border: 2.5px solid black;"><?php if(!$is_mobile_device){ echo "Does'nt have an account? "; } ?><b>Register Now</b></a>
-        <?php if (!$is_mobile_device): ?>
-            <div class="my-2 text-center d-flex">
-                <h6 class="my-2 me-2">Or, forget your password</h6>
-                <a class="btn btn-dark py-2 px-4 me-2" href="/ForgetController" id='forget-pass-btn'><i class="fa-solid fa-lock-open"></i> Change Password?</a>
-            </div>
-        <?php else: ?>
-            <div class="my-2 text-center">
-                <h6 class="my-2 me-2">Or, forget your password</h6>
-                <a class="btn btn-dark py-2 px-4 me-2 w-100" href="/ForgetController" id='forget-pass-btn'><i class="fa-solid fa-lock-open"></i> Change Password?</a>
-            </div>
-        <?php endif; ?>
-    </form>
+    </div>
 </div>

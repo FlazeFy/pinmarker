@@ -1,7 +1,7 @@
 <div class="text-center">
     <?php 
         if(count($data) != 0){
-            echo "<h4>"; echo ucwords(str_replace('_',' ',$ctx)); echo"</h4>
+            echo "<h3>"; echo ucwords(str_replace('_',' ',$ctx)); echo"</h3>
             <div id='Line_$ctx'></div>";
         } else {
             echo "<img src='' class='img nodata-icon'>
@@ -12,16 +12,16 @@
 
 <script type="text/javascript">
     var options = {
-            series: [
-                {
-                    name: '<?= $label ?>',
-                    data: [<?php 
-                        foreach($data as $c){
-                            echo "$c->total,";
-                        }
-                    ?>],
-                }
-            ],
+        series: [
+            {
+                name: '<?= $label ?>',
+                data: [<?php 
+                    foreach($data as $c){
+                        echo "$c->total,";
+                    }
+                ?>],
+            }
+        ],
         chart: {
             height: 350,
             type: 'area',

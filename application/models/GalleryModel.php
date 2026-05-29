@@ -64,25 +64,6 @@
 			return $data = $this->db->get()->result();
 		}
 
-		public function get_most_gallery($limit, $year = null){
-			$this->db->select('pin_name as context, COUNT(1) as total');
-			$this->db->from($this->table);
-			$this->db->join('pin','pin.id = gallery.pin_id');
-
-			$condition['deleted_at'] = null; 
-			if($this->role_key == 1){
-				$condition['gallery.created_by'] = $this->session->userdata(self::SESSION_KEY); 
-			}
-			if($year){
-				$condition['YEAR(gallery.created_at)'] = $year;
-			}
-			$this->db->where($condition);
-			$this->db->group_by('pin_name');
-			$this->db->limit($limit);
-
-			return $data = $this->db->get()->result();
-		}
-
         // Command
 		public function insert_gallery($data){
 			return $this->db->insert($this->table,$data);	

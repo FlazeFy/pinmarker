@@ -1,21 +1,5 @@
 <div class="mt-2">
     <?php 
-        function calculateDistance($lat1, $lon1, $lat2, $lon2, $unit = 'km') {
-            $theta = $lon1 - $lon2;
-            $distance = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
-            $distance = acos($distance);
-            $distance = rad2deg($distance);
-            $distance = $distance * 60 * 1.1515; 
-
-            if ($unit == 'km') {
-                $distance = $distance * 1.609344;
-            }
-
-            $distance = number_format($distance, 2);
-            
-            return $distance;
-        }
-
         if(count($dt_my_personal_pin) > 0){
             foreach($dt_my_personal_pin as $dt){
                 echo "
@@ -32,7 +16,7 @@
                             </div>
                             <div class='col-5'>
                                 <h6 class='mb-0'>Distance To</h6>
-                                <h3>"; echo calculateDistance($dt->pin_lat, $dt->pin_long, $dt_detail_pin->pin_lat, $dt_detail_pin->pin_long, $unit = 'km'); echo" Km</h3>
+                                <h3>"; echo calculateDistance($dt->pin_lat, $dt->pin_long, $dt_detail_pin->pin_lat, $dt_detail_pin->pin_long, 'km'); echo" Km</h3>
                             </div>
                         </div>
                         <div class='row'>
