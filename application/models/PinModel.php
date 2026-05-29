@@ -340,6 +340,34 @@
 			}
 		}
 
+		public function get_distribution_main_category() {
+			// Main category mapping
+			$culinary_categories = ['Restaurant', 'Cafe', 'Coffee Shop', 'Bakery', 'Food Court', 'Bar', 'Fast Food', 'Street Food', 'Ice Cream Shop', 'Tea House'];
+			$entertainment_categories = ['Park', 'Library', 'Amusement Park', 'Mall', 'Cinema', 'Museum', 'Zoo', 'Aquarium', 'Arcade', 'Karaoke', 'Beach', 'Playground', 'Tourist Attraction', 'Camping Ground', 'Art Gallery', 'Concert Hall', 'Bowling Alley', 'Night Club'];
+		
+			// Convert arr to sql string
+			$culinary = "'" . implode("','", $culinary_categories) . "'";
+			$entertainment = "'" . implode("','", $entertainment_categories) . "'";
+		
+			$this->db->select("
+				CASE
+					WHEN pin_category IN ($culinary) THEN 'Culinary Spots'
+					WHEN pin_category IN ($entertainment) THEN 'Entertainments'
+					ELSE 'Others'
+				END as main_category,
+				COUNT(*) as total
+			", false);
+			$this->db->from($this->table);
+			$condition['deleted_at'] = null;
+			if ($this->role_key == 1) {
+				$condition['created_by'] = $this->session->userdata(self::SESSION_KEY);
+			}
+			$this->db->where($condition);
+			$this->db->group_by('main_category');
+		
+			return $this->db->get()->result();
+		}
+
 		public function get_person_in_contact(){
 			$this->db->select("pin_person, IFNULL(GROUP_CONCAT(COALESCE(pin.pin_name, null) ORDER BY pin.pin_name ASC SEPARATOR ', '), '') as pin_list");
 			$this->db->from($this->table);

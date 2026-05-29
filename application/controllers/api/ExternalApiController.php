@@ -2,8 +2,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class ExternalApiController extends CI_Controller {
+    private $flazenHandBaseUrl;
     function __construct(){
         parent::__construct();
+
+        $this->flazenHandBaseUrl = "http://127.0.0.1:8000/api/v1";
     }
 
     // From FlazenHand app
@@ -28,7 +31,7 @@ class ExternalApiController extends CI_Controller {
         }
 
         // API Endpoint
-        $url = "http://127.0.0.1:8000/api/v1/locations/weather?lat=$lat&long=$long";
+        $url = "{$this->flazenHandBaseUrl}/locations/weather?lat=$lat&long=$long";
 
         // CURL request
         $curl = curl_init();
@@ -105,7 +108,7 @@ class ExternalApiController extends CI_Controller {
         $cache_path = $cache_dir . $cache_key . '.json';
     
         // API Endpoint
-        $url = "http://127.0.0.1:8000/api/v1/locations/reverse?lat=$lat&long=$long";
+        $url = "{$this->flazenHandBaseUrl}/locations/reverse?lat=$lat&long=$long";
     
         // CURL request
         $curl = curl_init();

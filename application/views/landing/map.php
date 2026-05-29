@@ -127,10 +127,8 @@
                 method: 'GET',
                 success: (response) => {
                     const nearby = response.data.nearby
-
-                    $('.global-place-list').remove()
-
                     let html = ''
+                    $('.global-place-list').remove()
 
                     nearby.forEach(place => {
                         const marker = L.marker([place.lat, place.lng]).addTo(map)
@@ -193,10 +191,7 @@
         navigator.permissions.query({ name: 'geolocation' }).then(permission => {
             if (permission.state === 'granted') {
                 navigator.geolocation.getCurrentPosition(position => {
-                    updateUserLocation(
-                        position.coords.latitude,
-                        position.coords.longitude
-                    )
+                    updateUserLocation(position.coords.latitude, position.coords.longitude)
                 })
             } else {
                 Swal.fire({
@@ -210,10 +205,7 @@
                 }).then(result => {
                     if (result.isConfirmed && navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(position => {
-                            updateUserLocation(
-                                position.coords.latitude,
-                                position.coords.longitude
-                            )
+                            updateUserLocation(position.coords.latitude, position.coords.longitude)
                         }, () => {
                             Swal.fire({
                                 icon: 'error',

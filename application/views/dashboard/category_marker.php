@@ -6,7 +6,14 @@
             </div>
             <div>
                 <div class="mini-label">Culinary Spots</div>
-                <div class="mini-val">153 Places</div>
+                <div class="mini-val">
+                <?php 
+                    $total = 0;
+                    foreach ($dt_get_pin_distribution_main_category as $dt) {
+                        if ($dt->main_category === "Culinary Spots") $total = $dt->total;
+                    }
+                    echo $total;
+                ?> Places</div>
             </div>
         </div>
     </div>
@@ -16,8 +23,15 @@
                 <i class="fa-solid fa-tree"></i>
             </div>
             <div>
-                <div class="mini-label">Entertainment</div>
-                <div class="mini-val">42 Places</div>
+                <div class="mini-label">Entertainments</div>
+                <div class="mini-val">
+                <?php 
+                    $total = 0;
+                    foreach ($dt_get_pin_distribution_main_category as $dt) {
+                        if ($dt->main_category === "Entertainments") $total = $dt->total;
+                    }
+                    echo $total;
+                ?> Places</div>
             </div>
         </div>
     </div>
@@ -28,7 +42,14 @@
             </div>
             <div>
                 <div class="mini-label">Others</div>
-                <div class="mini-val">85 Places</div>
+                <div class="mini-val">
+                <?php 
+                    $total = 0;
+                    foreach ($dt_get_pin_distribution_main_category as $dt) {
+                        if ($dt->main_category === "Others") $total = $dt->total;
+                    }
+                    echo $total;
+                ?> Places</div>
             </div>
         </div>
     </div>
