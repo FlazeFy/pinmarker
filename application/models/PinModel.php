@@ -148,37 +148,35 @@
 			}
 		}
 
-		public function get_all_pin($search, $category, $is_favorite, $is_visited, $limit, $start){
-			// del soon
-			$user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
-
+		public function get_all_pin($search, $category, $is_favorite, $is_visited, $limit, $start, $sorting, $user_id = null){
+			// Main query
 			$this->db->select("
-				pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, is_favorite, pin.created_at, dictionary_color as pin_color, 
+				pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, is_favorite, pin.created_at, dictionary_color as pin_color, pin_address, 
 				IFNULL(COUNT(visit.id), 0) as total_visit, MAX(visit.created_at) as last_visit
 			");
 			$this->db->join('dictionary','dictionary.dictionary_name = pin.pin_category','left');
 			$this->db->join('visit','visit.pin_id = pin.id','left');
 			$this->db->from($this->table);
 			$condition['pin.deleted_at'] = null;
-			$condition['pin.created_by'] = $user_id;
+			if ($user_id) $condition['pin.created_by'] = $user_id;
 			$this->db->where($condition);
 
+			// Filtering
 			if($search){
 				$this->db->like('pin_name', $search, 'both');
 			}
-
-			$this->db->group_by('pin.id');
-			$this->db->order_by('is_favorite','DESC');
-			$this->db->order_by('created_at','DESC');
-
-			if($category){
-				$category = str_replace("%20", " ", $category);
-				$this->db->where('pin_category',$category);
+			if ($category) {
+				$categories = array_map('trim', explode(',', urldecode($category)));
+			
+				if (count($categories) === 1) {
+					$this->db->where('pin_category', $categories[0]);
+				} else {
+					$this->db->where_in('pin_category', $categories);
+				}
 			}
 			if($is_favorite !== "all"){
 				$this->db->where('is_favorite',(int)$is_favorite);
 			}
-
 			if($is_visited !== "all"){
 				if ((int)$is_visited === 1) {
 					$this->db->where('visit.id IS NOT NULL', null, false);
@@ -187,15 +185,41 @@
 				}
 			}
 
+			$this->db->group_by('pin.id');
+			$this->db->order_by('is_favorite','DESC');
+
+			$sorting_split = explode('-', $sorting);
+			$target_sort = $sorting_split[0];
+			$value_sort = $sorting_split[1];
+			$this->db->order_by($target_sort,$value_sort);
+
+			// Pagination count
 			$db_count = clone $this->db;
 			$total_rows = $db_count->get()->num_rows();
 			$total_pages = ceil($total_rows / $limit);
+			$start_item = $total_rows > 0 ? $start + 1 : 0;
+			$end_item = min($start + $limit, $total_rows);
 
 			$this->db->limit($limit, $start);
 			$data['data'] = $this->db->get()->result();
 			$data['total_page'] = $total_pages;
-			
+			$data['total_item'] = $total_rows;
+			$data['start_item'] = $start_item;
+			$data['end_item'] = $end_item;
+
 			return $data;
+		}
+
+		public function get_pin_category($user_id = null) {
+			$this->db->select("pin_category, COUNT(1) as total");
+			$this->db->from($this->table);
+			$condition['deleted_at'] = null;
+			if ($user_id) $condition['created_by'] = $user_id;
+			$this->db->where($condition);
+			$this->db->group_by('pin_category');
+			$this->db->order_by('total','DESC');
+
+			return $this->db->get()->result();
 		}
 
 		public function get_total_all($is_mine = false) {

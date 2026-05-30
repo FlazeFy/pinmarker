@@ -73,13 +73,4 @@
         width: 60px;
         height: 24px;
     }
-
-    @keyframes skeleton-loading{
-        0%{
-            background-position:200% 0;
-        }
-        100%{
-            background-position:-200% 0;
-        }
-    }
 </style>
