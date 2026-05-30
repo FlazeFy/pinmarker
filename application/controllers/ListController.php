@@ -34,30 +34,9 @@ class ListController extends CI_Controller {
 			$data['is_mobile_device'] = is_mobile_device();
 			$user_id = $this->session->userdata('user_id');
 
-			if($data['is_mobile_device']){
-				$per_page = 8;
-			} else {
-				$per_page = 14;
-			}
-			$offset = 0;
-
 			$data['active_page']= 'list';
 			$data['is_signed'] = true;
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
-			if($this->session->userdata('is_catalog_view') == false || $this->session->userdata('open_pin_list_category')){
-				$category = null;
-				if($this->session->userdata('open_pin_list_category')){
-					$category = $this->session->userdata('open_pin_list_category');
-				}
-
-				if($this->session->userdata('page_pin')){
-					$offset = $this->session->userdata('page_pin') * $per_page;
-				}
-
-				$data['dt_my_pin']= $this->PinModel->get_all_my_pin('list', $category, $per_page,$offset);
-			} else {
-				$data['dt_my_pin']= $this->PinModel->get_pin_list_by_category($user_id);
-			}
 			$data['dt_my_category'] = $this->DictionaryModel->get_my_pin_category();
 			$data['dt_my_list'] = $this->GlobalListModel->get_global_list_name($user_id);
 			$data['dt_get_most_category'] = $this->PinModel->get_most_category(1);

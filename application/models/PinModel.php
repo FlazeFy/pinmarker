@@ -68,7 +68,10 @@
         }
 
 		// Query
-		public function get_all_my_pin($from,$category,$limit,$start){
+		public function get_all_my_pin($from, $category, $limit, $start){
+			// del soon
+			$user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
+
             $extra = "";
             if($from == 'list'){
                 $extra = ", pin_call, pin_email, pin_address, IFNULL(COUNT(visit.id), 0) as total_visit, MAX(visit.created_at) as last_visit";
@@ -92,7 +95,7 @@
 			if($this->role_key == 1){
 				$condition['pin.deleted_at'] = null;
 				if($this->role_key == 1){
-					$condition['pin.created_by'] = $this->session->userdata(self::SESSION_KEY);
+					$condition['pin.created_by'] = $user_id;
 				} 
 				
 				$this->db->where($condition);
@@ -143,6 +146,56 @@
 			} else {
 				return $data = $this->db->get()->result();
 			}
+		}
+
+		public function get_all_pin($search, $category, $is_favorite, $is_visited, $limit, $start){
+			// del soon
+			$user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
+
+			$this->db->select("
+				pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, is_favorite, pin.created_at, dictionary_color as pin_color, 
+				IFNULL(COUNT(visit.id), 0) as total_visit, MAX(visit.created_at) as last_visit
+			");
+			$this->db->join('dictionary','dictionary.dictionary_name = pin.pin_category','left');
+			$this->db->join('visit','visit.pin_id = pin.id','left');
+			$this->db->from($this->table);
+			$condition['pin.deleted_at'] = null;
+			$condition['pin.created_by'] = $user_id;
+			$this->db->where($condition);
+
+			if($search){
+				$this->db->like('pin_name', $search, 'both');
+			}
+
+			$this->db->group_by('pin.id');
+			$this->db->order_by('is_favorite','DESC');
+			$this->db->order_by('created_at','DESC');
+
+			if($category){
+				$category = str_replace("%20", " ", $category);
+				$this->db->where('pin_category',$category);
+			}
+			if($is_favorite !== "all"){
+				$this->db->where('is_favorite',(int)$is_favorite);
+			}
+
+			if($is_visited !== "all"){
+				if ((int)$is_visited === 1) {
+					$this->db->where('visit.id IS NOT NULL', null, false);
+				} else {
+					$this->db->where('visit.id IS NULL', null, false);
+				}
+			}
+
+			$db_count = clone $this->db;
+			$total_rows = $db_count->get()->num_rows();
+			$total_pages = ceil($total_rows / $limit);
+
+			$this->db->limit($limit, $start);
+			$data['data'] = $this->db->get()->result();
+			$data['total_page'] = $total_pages;
+			
+			return $data;
 		}
 
 		public function get_total_all($is_mine = false) {
