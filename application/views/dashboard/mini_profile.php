@@ -6,11 +6,7 @@
             <span style="font-size:var(--textSM); font-weight:700;">Today's Weather</span>
             <span style="font-size:var(--textSM)"><i class="fa-solid fa-location-dot"></i> South Jakarta</span>
         </div>
-        <div class="d-flex gap-1 mt-1" id="weather-holder">
-            <span class="tag bg-secondary py-2 px-3">🌤️ Cloudy</span>
-            <span class="tag bg-secondary py-2 px-3"><i class="fa-solid fa-temperature-high"></i> 32</span>
-            <span class="tag bg-secondary py-2 px-3"><i class="fa-solid fa-droplet"></i> 90%</span>
-        </div>
+        <div class="d-flex gap-1 mt-1" id="weather-holder"></div>
     </div>
     <div class="progress-block mt-3">
         <div class="d-flex justify-content-between mb-1">

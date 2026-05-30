@@ -35,6 +35,9 @@
             <div class="stats-val"><?= $dt_get_total_visit_current_month ?></div>
         </div>
     </div>
+    <div class="col-lg-3 col-md-6">
+        <?php $this->load->view("list/goal"); ?>
+    </div>
 </div>
 
 <style>

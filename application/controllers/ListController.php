@@ -65,6 +65,7 @@ class ListController extends CI_Controller {
 			$month_year = date('Y-m');
 			$data['dt_get_total_visit_current_month'] = $this->VisitModel->get_total_visit_by_month_year($month_year);
 			$data['dt_get_total_pin'] = $this->PinModel->get_total_all(true);
+			$data['dt_get_visited_pin_progress'] = $this->VisitModel->get_visited_pin_progress(true);
 
 			$data['title_page'] = 'PinMarker | My Marker';
 			$data['content'] = $this->load->view('list/index',$data,true);
