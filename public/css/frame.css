@@ -253,7 +253,7 @@
     text-overflow: ellipsis;
 }
 
-/* Hero Summary */
+/* Hero Summary - Dashboard Page */
 .hero-banner {
     background: linear-gradient(135deg, #635bff 0%, #493ee5 100%);
     border-radius: var(--roundedJumbo);
@@ -306,6 +306,35 @@
 .stat-meta { 
     font-size: 10px; 
     opacity: .7; 
+}
+
+/* Summary Non - Dashboard */
+.stats-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: var(--roundedMD);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--textXLG);
+}
+.stats-label {
+    font-size: var(--textXSM);
+    color: #777587;
+    font-weight: 600;
+    letter-spacing: .03em;
+}
+.stats-val {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--secondaryColor);
+    line-height: 1.1;
+    margin-top: var(--spaceMini);
+}
+.badge-muted {
+    font-size: var(--textSM);
+    font-weight: 700;
+    color: #777587;
 }
 
 /* Skeleton */

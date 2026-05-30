@@ -145,15 +145,35 @@
 			}
 		}
 
-		public function get_total_all(){
-			$this->db->select('COUNT(1) as total');
+		public function get_total_all($is_mine = false) {
+			$this->db->select("
+				COUNT(1) as total,
+				COUNT(CASE
+					WHEN created_at >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 2 MONTH), '%Y-%m-01')
+					AND created_at < DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+					THEN 1
+				END) AS previous_month_total,
+				COUNT(CASE
+					WHEN created_at >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+					AND created_at < DATE_FORMAT(CURDATE(), '%Y-%m-01')
+					THEN 1
+				END) AS last_month_total
+			", false);
 			$this->db->from($this->table);
-			$condition = [
-                'deleted_at' => null
-            ];
+
+			// Condition
+			$condition = ['deleted_at' => null];
+			if ($is_mine) $condition['created_by'] = $this->session->userdata(self::SESSION_KEY);
 			$this->db->where($condition);
 
-			return $data = $this->db->get()->result();
+			$data = $this->db->get()->row();
+
+			// Percentage calculation
+			$previous = (int)$data->previous_month_total;
+			$last = (int)$data->last_month_total;
+			$data->growth_percentage = $previous > 0 ? (int)round((($last - $previous) / $previous) * 100, 2) : 0;
+
+			return $data;
 		}
 
 		public function get_all_my_pin_name(){

@@ -12,6 +12,7 @@ class ListController extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model('PinModel');
+		$this->load->model('VisitModel');
 		$this->load->model('AuthModel');
 		$this->load->model('HistoryModel');
 		$this->load->model('DictionaryModel');
@@ -59,14 +60,21 @@ class ListController extends CI_Controller {
 			}
 			$data['dt_my_category'] = $this->DictionaryModel->get_my_pin_category();
 			$data['dt_my_list'] = $this->GlobalListModel->get_global_list_name($user_id);
+			$data['dt_get_most_category'] = $this->PinModel->get_most_category(1);
+			// Summary
+			$month_year = date('Y-m');
+			$data['dt_get_total_visit_current_month'] = $this->VisitModel->get_total_visit_by_month_year($month_year);
+			$data['dt_get_total_pin'] = $this->PinModel->get_total_all(true);
 
-			$this->load->view('list/index', $data);
+			$data['title_page'] = 'PinMarker | My Marker';
+			$data['content'] = $this->load->view('list/index',$data,true);
+			$this->load->view('others/layout', $data);
 		} else {
 			redirect('LoginController');
 		}
 	}
 
-	public function print_pin()
+	public function print_pin_doc()
 	{		
 		$user_id = $this->session->userdata('user_id');
 		$dt_all_pin = $this->PinModel->get_all_my_pin('list',null,null,null);

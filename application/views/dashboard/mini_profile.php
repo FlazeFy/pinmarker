@@ -36,8 +36,9 @@
             url: '/api/v1/location/weather?lat=-6.226341056289639&long=106.82254165458681',
             method: 'GET',
             success: (response) => {
-                const weather = response.data.weather
+                if (!response.data) $(holder).html('<span class="tag bg-danger py-2 px-3"><i class="fa-solid fa-triangle-exclamation"></i> Failed fetch weather</span>')
 
+                const weather = response.data.weather
                 const weatherEmoji = {
                     0: '☀️ Clear',
                     1: '🌤️ Cloudy',
@@ -64,11 +65,7 @@
                 `)
             },
             error: () => {
-                $(holder).html(`
-                    <span class="tag bg-danger py-2 px-3">
-                        Failed fetch weather
-                    </span>
-                `)
+                $(holder).html('<span class="tag bg-danger py-2 px-3"><i class="fa-solid fa-triangle-exclamation"></i> Failed fetch weather</span>')
             }
         })
     }

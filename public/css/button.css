@@ -1,5 +1,5 @@
 .btn {
-    border-radius: var(--roundedMD);
+    border-radius: var(--roundedJumbo);
     gap: var(--spaceSM);
     display: flex;
     border: none;
@@ -7,11 +7,10 @@
     font-size: var(--textXMD);
     font-weight: 700;
     text-decoration: none;
-    box-shadow: 0 6px 20px rgba(99,91,255,.25);
     transition: all .2s;
     align-items: center;
     justify-content: center;
-    padding: var(--spaceMD);
+    padding: var(--spaceMD) var(--spaceLG);
 }
 .btn:hover { 
     transform: scale(.98); 
@@ -82,6 +81,18 @@
     padding: 2px 8px;
     border-radius: var(--roundedJumbo);
     display: inline-block;
+}
+.tag.bg-danger {
+    color: var(--dangerBG);
+    background: var(--dangerLightBG) !important;
+}
+.tag.bg-success {
+    color: var(--successBG);
+    background: var(--successLightBG) !important;
+}
+.tag.bg-primary {
+    color: var(--primaryColor);
+    background: var(--primaryLightColor) !important;
 }
 
 /* Pagination */
