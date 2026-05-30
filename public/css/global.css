@@ -37,7 +37,7 @@
     --dangerLightBG : #ffe5dc;
     --infoBG: #00cbe6;
     --warningBG : #ff9f43;
-    --lightWarningBG: #ffddae;
+    --warningLightBG: #fff4e7;
 
     --primaryColor : #635bff;
     --primaryLightColor: #f6ebff;
@@ -45,6 +45,7 @@
     --primaryLightColor: #f0efff;
     --containerColor: #f8f9fd;
     --whiteColor : #f8f9fd;
+    --greyColor : #777587;
     --secondaryColor : #1e2124;
 }
 
@@ -202,6 +203,7 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
 .page-sub {
     font-weight: 400;
     font-size: var(--textMD);
+    color: var(--greyColor);
 }
   
 table thead {
