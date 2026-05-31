@@ -7,7 +7,7 @@
     </div>
     <div class="col">
         <div class="container-fluid text-center shadow">
-            <h1 class="mb-0"><?= $dt_total_pin[0]->total ?></h1>
+            <h1 class="mb-0"><?= $dt_total_pin->total ?></h1>
             <h5 class="text-secondary">Total Marker</h5>
         </div>
     </div>

@@ -32,18 +32,20 @@
 
     /* Color Pallete */
     --successBG : #00966b;
-    --successLightBG: #69baa5;
+    --successLightBG: #ccfbe5;
     --dangerBG : #ef0025;
-    --dangerLightBG : #ff5153;
+    --dangerLightBG : #ffe5dc;
     --infoBG: #00cbe6;
     --warningBG : #ff9f43;
-    --lightWarningBG: #ffddae;
+    --warningLightBG: #fff4e7;
 
     --primaryColor : #635bff;
+    --primaryLightColor: #f6ebff;
     --secondaryColor: #8b85ff;
     --primaryLightColor: #f0efff;
     --containerColor: #f8f9fd;
     --whiteColor : #f8f9fd;
+    --greyColor : #777587;
     --secondaryColor : #1e2124;
 }
 
@@ -61,6 +63,7 @@ body {
     margin-inline: auto;
     min-height: 75vh;
     padding: var(--spaceLG);
+    width: 100%;
 }
 
 a {
@@ -194,6 +197,27 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
 .text-primary { 
     color: var(--primaryColor) !important; 
 }
+.page-title {
+    font-weight: 700;
+}
+.page-sub {
+    font-weight: 400;
+    font-size: var(--textMD);
+    color: var(--greyColor);
+}
+.text-none {
+    font-size: var(--textSM);
+    font-style: italic;
+    color: var(--greyColor);
+}
+.companion-link {
+    color: var(--primaryColor);
+    font-weight: 500;
+    cursor: pointer;
+}
+.companion-link:hover {
+    text-decoration: underline;
+}
   
 table thead {
     background: var(--primaryLightColor);
@@ -215,8 +239,8 @@ table tbody {
 .swal2-cancel {
     background: var(--dangerBG);
 }
-.swal2-confirm, .swal2-cancel {
-    border-radius: var(--roundedJumbo);
+.swal2-actions button {
+    border-radius: var(--roundedJumbo) !important;
 }
 
 .nodata-icon {
@@ -275,7 +299,6 @@ table tbody {
 /* Mobile & Tablet style */
 @media screen and (max-width: 1023px) {
     .content {
-        width: 100%;
         padding: 0 var(--spaceSM) var(--spaceSM) var(--spaceSM);
     }
     .btn-main-page {
@@ -300,5 +323,14 @@ table tbody {
     }
     .container-fluid, .container {
         padding: var(--spaceLG);
+    }
+}
+
+@keyframes skeleton-loading{
+    0%{
+        background-position:200% 0;
+    }
+    100%{
+        background-position:-200% 0;
     }
 }

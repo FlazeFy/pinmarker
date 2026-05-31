@@ -311,3 +311,57 @@ const formValidation = () => {
     });
 }
 formValidation()
+
+const renderPagination = (currentPage, totalPage, startItem, endItem, totalItem, targetPaginationInfoHolder) => {
+    const holder = '#paginationButtonHolder'
+    let html = `
+        <button class="page-btn" ${currentPage <= 1 ? 'disabled' : ''} onclick="fetchPin(${currentPage - 1})">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+    `
+
+    let startPage = Math.max(1, currentPage - 2)
+    let endPage = Math.min(totalPage, currentPage + 2)
+
+    if (startPage > 1) {
+        html += `<button class="page-btn" onclick="fetchPin(1)">1</button>`
+
+        if (startPage > 2) html += `<span class="page-ellipsis">...</span>`
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        html += `
+            <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="fetchPin(${i})">
+                ${i}
+            </button>
+        `
+    }
+
+    if (endPage < totalPage) {
+        if (endPage < totalPage - 1) html += `<span class="page-ellipsis">...</span>`
+
+        html += `
+            <button class="page-btn" onclick="fetchPin(${totalPage})">
+                ${totalPage}
+            </button>
+        `
+    }
+    
+    html += `
+        <button class="page-btn" ${currentPage >= totalPage ? 'disabled' : ''} onclick="fetchPin(${currentPage + 1})">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+    `
+
+    $(targetPaginationInfoHolder).html(`Showing ${startItem}-${endItem} of ${totalItem} markers`)
+    $(holder).html(html)
+}
+
+const renderNoMessageBox = (target, context) => {
+    $(target).html(`
+        <div class="empty-state">
+            <img class='img img-fluid m-1' style='width:200px;' src='http://127.0.0.1:8080/public/images/empty_item.png'>
+            <p>- No ${context} found -</p>
+        </div>
+    `)
+}

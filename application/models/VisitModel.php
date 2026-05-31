@@ -354,6 +354,53 @@
 			return $result;
 		}
 
+		public function get_visit_withs($user_id) {
+			$person_query = "LOWER(visit_with)";
+
+			$this->db->select("$person_query AS context",false);
+			$this->db->from($this->table);
+			$condition = [
+				'visit.created_by' => $user_id,
+				'visit_with IS NOT NULL'
+			];
+			$this->db->where($condition);
+			$data = $this->db->get()->result();
+			
+			$name_data = [];			
+			foreach ($data as $row) {
+				if (!empty($row->context)) {
+					$names = preg_split('/, and |, /', $row->context);
+		
+					foreach ($names as $name) {
+						$name = trim(strtolower($name));
+						if (!empty($name)) {
+							if (!isset($name_data[$name])) {
+								$name_data[$name] = [
+									'total' => 0,
+								];
+							}
+		
+							$name_data[$name]['total']++;
+						}
+					}
+				}
+			}
+		
+			$result = [];
+			foreach ($name_data as $name => $data) {
+				$result[] = (object)[
+					'name' => $name,
+					'total' => $data['total']
+				];
+			}
+		
+			usort($result, function ($a, $b) {
+				return $b->total - $a->total;
+			});
+		
+			return $result;
+		}
+
 		public function get_visit_activity_by_date($date){
 			$user_id = $this->session->userdata(self::SESSION_KEY);
 			$date_query = "DATE_FORMAT(visit.created_at, '%Y-%m-%d') =";
@@ -437,30 +484,51 @@
 			return $res ? $res->total : 0;
 		}
 
-		public function get_visited_pin_progress() {
+		public function get_visited_pin_progress($is_all = false) {
 			$user_id = $this->session->userdata(self::SESSION_KEY);
 		
-			// Total pin
-			$this->db->select('COUNT(pin.id) as total_pin');
-			$this->db->from('pin');
-			$this->db->where('pin.created_by', $user_id);
-			$total_pin_res = $this->db->get()->row();
-			$total_pin = $total_pin_res ? (int) $total_pin_res->total_pin : 0;
-			if ($total_pin == 0) return 0;
-		
-			// Total visited pin
-			$this->db->select('COUNT(DISTINCT visit.pin_id) as total_visited');
-			$this->db->from($this->table);
-			$this->db->join('pin', 'pin.id = visit.pin_id', 'left');
-			$this->db->where('pin.created_by', $user_id);
-			$this->db->where('visit.id IS NOT NULL', null, false);
-			$visited_res = $this->db->get()->row();
-			$total_visited = $visited_res ? (int) $visited_res->total_visited : 0;
-		
-			// Percentage
-			$percentage = ($total_visited / $total_pin) * 100;
-		
-			return (int) round($percentage);
+			if (!$is_all) {
+				// Total pin
+				$this->db->select('COUNT(pin.id) as total_pin');
+				$this->db->from('pin');
+				$this->db->where('pin.created_by', $user_id);
+				$total_pin_res = $this->db->get()->row();
+				$total_pin = $total_pin_res ? (int) $total_pin_res->total_pin : 0;
+				if ($total_pin == 0) return 0;
+			
+				// Total visited pin
+				$this->db->select('COUNT(DISTINCT visit.pin_id) as total_visited');
+				$this->db->from($this->table);
+				$this->db->join('pin', 'pin.id = visit.pin_id', 'left');
+				$this->db->where('pin.created_by', $user_id);
+				$this->db->where('visit.id IS NOT NULL', null, false);
+				$visited_res = $this->db->get()->row();
+				$total_visited = $visited_res ? (int) $visited_res->total_visited : 0;
+			
+				// Percentage
+				$percentage = ($total_visited / $total_pin) * 100;
+			
+				return (int) round($percentage);
+			} else {
+				// Progress by category
+				$this->db->select("
+					pin_category,
+					COUNT(DISTINCT pin.id) as total_pin,
+					COUNT(DISTINCT visit.pin_id) as total_visited
+				");
+				$this->db->from('pin');
+				$this->db->join('visit', 'visit.pin_id = pin.id', 'left');
+				$this->db->where('pin.created_by', $user_id);
+				$this->db->group_by('pin_category');
+			
+				$rows = $this->db->get()->result();
+			
+				foreach ($rows as &$row) {
+					$row->percentage = $row->total_pin > 0 ? (int) round(($row->total_visited / $row->total_pin) * 100) : 0;
+				}
+			
+				return $rows;
+			}
 		}
 
 		public function get_total_appearance($name) {

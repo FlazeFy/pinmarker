@@ -6,11 +6,7 @@
             <span style="font-size:var(--textSM); font-weight:700;">Today's Weather</span>
             <span style="font-size:var(--textSM)"><i class="fa-solid fa-location-dot"></i> South Jakarta</span>
         </div>
-        <div class="d-flex gap-1 mt-1" id="weather-holder">
-            <span class="tag bg-secondary py-2 px-3">🌤️ Cloudy</span>
-            <span class="tag bg-secondary py-2 px-3"><i class="fa-solid fa-temperature-high"></i> 32</span>
-            <span class="tag bg-secondary py-2 px-3"><i class="fa-solid fa-droplet"></i> 90%</span>
-        </div>
+        <div class="d-flex gap-1 mt-1" id="weather-holder"></div>
     </div>
     <div class="progress-block mt-3">
         <div class="d-flex justify-content-between mb-1">
@@ -36,8 +32,9 @@
             url: '/api/v1/location/weather?lat=-6.226341056289639&long=106.82254165458681',
             method: 'GET',
             success: (response) => {
-                const weather = response.data.weather
+                if (!response.data) $(holder).html('<span class="tag bg-danger py-2 px-3"><i class="fa-solid fa-triangle-exclamation"></i> Failed fetch weather</span>')
 
+                const weather = response.data.weather
                 const weatherEmoji = {
                     0: '☀️ Clear',
                     1: '🌤️ Cloudy',
@@ -64,11 +61,7 @@
                 `)
             },
             error: () => {
-                $(holder).html(`
-                    <span class="tag bg-danger py-2 px-3">
-                        Failed fetch weather
-                    </span>
-                `)
+                $(holder).html('<span class="tag bg-danger py-2 px-3"><i class="fa-solid fa-triangle-exclamation"></i> Failed fetch weather</span>')
             }
         })
     }
@@ -79,14 +72,5 @@
     .skeleton-loading.weather-skeleton{
         width: 60px;
         height: 24px;
-    }
-
-    @keyframes skeleton-loading{
-        0%{
-            background-position:200% 0;
-        }
-        100%{
-            background-position:-200% 0;
-        }
     }
 </style>

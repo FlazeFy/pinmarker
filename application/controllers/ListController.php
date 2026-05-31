@@ -12,6 +12,7 @@ class ListController extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model('PinModel');
+		$this->load->model('VisitModel');
 		$this->load->model('AuthModel');
 		$this->load->model('HistoryModel');
 		$this->load->model('DictionaryModel');
@@ -33,40 +34,27 @@ class ListController extends CI_Controller {
 			$data['is_mobile_device'] = is_mobile_device();
 			$user_id = $this->session->userdata('user_id');
 
-			if($data['is_mobile_device']){
-				$per_page = 8;
-			} else {
-				$per_page = 14;
-			}
-			$offset = 0;
-
 			$data['active_page']= 'list';
 			$data['is_signed'] = true;
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
-			if($this->session->userdata('is_catalog_view') == false || $this->session->userdata('open_pin_list_category')){
-				$category = null;
-				if($this->session->userdata('open_pin_list_category')){
-					$category = $this->session->userdata('open_pin_list_category');
-				}
-
-				if($this->session->userdata('page_pin')){
-					$offset = $this->session->userdata('page_pin') * $per_page;
-				}
-
-				$data['dt_my_pin']= $this->PinModel->get_all_my_pin('list', $category, $per_page,$offset);
-			} else {
-				$data['dt_my_pin']= $this->PinModel->get_pin_list_by_category($user_id);
-			}
 			$data['dt_my_category'] = $this->DictionaryModel->get_my_pin_category();
 			$data['dt_my_list'] = $this->GlobalListModel->get_global_list_name($user_id);
+			$data['dt_get_most_category'] = $this->PinModel->get_most_category(1);
+			// Summary
+			$month_year = date('Y-m');
+			$data['dt_get_total_visit_current_month'] = $this->VisitModel->get_total_visit_by_month_year($month_year);
+			$data['dt_get_total_pin'] = $this->PinModel->get_total_all(true);
+			$data['dt_get_visited_pin_progress'] = $this->VisitModel->get_visited_pin_progress(true);
 
-			$this->load->view('list/index', $data);
+			$data['title_page'] = 'PinMarker | My Marker';
+			$data['content'] = $this->load->view('list/index',$data,true);
+			$this->load->view('others/layout', $data);
 		} else {
 			redirect('LoginController');
 		}
 	}
 
-	public function print_pin()
+	public function print_pin_doc()
 	{		
 		$user_id = $this->session->userdata('user_id');
 		$dt_all_pin = $this->PinModel->get_all_my_pin('list',null,null,null);

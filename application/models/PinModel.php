@@ -68,7 +68,10 @@
         }
 
 		// Query
-		public function get_all_my_pin($from,$category,$limit,$start){
+		public function get_all_my_pin($from, $category, $limit, $start){
+			// del soon
+			$user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
+
             $extra = "";
             if($from == 'list'){
                 $extra = ", pin_call, pin_email, pin_address, IFNULL(COUNT(visit.id), 0) as total_visit, MAX(visit.created_at) as last_visit";
@@ -92,7 +95,7 @@
 			if($this->role_key == 1){
 				$condition['pin.deleted_at'] = null;
 				if($this->role_key == 1){
-					$condition['pin.created_by'] = $this->session->userdata(self::SESSION_KEY);
+					$condition['pin.created_by'] = $user_id;
 				} 
 				
 				$this->db->where($condition);
@@ -145,15 +148,121 @@
 			}
 		}
 
-		public function get_total_all(){
-			$this->db->select('COUNT(1) as total');
+		public function get_all_pin($search, $category, $is_favorite, $with_companion, $visit_with, $is_visited, $limit, $start, $sorting, $user_id = null){
+			// Main query
+			$extra = "";
+			if($with_companion === "1"){
+				$extra .= ", visit_with";
+			}
+			$this->db->select("
+				pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, is_favorite, pin.created_at, dictionary_color as pin_color, pin_address, 
+				IFNULL(COUNT(visit.id), 0) as total_visit, MAX(visit.created_at) as last_visit$extra
+			");
+			$this->db->join('dictionary','dictionary.dictionary_name = pin.pin_category','left');
+			$this->db->join('visit','visit.pin_id = pin.id','left');
 			$this->db->from($this->table);
-			$condition = [
-                'deleted_at' => null
-            ];
+			$condition['pin.deleted_at'] = null;
+			if ($user_id) $condition['pin.created_by'] = $user_id;
 			$this->db->where($condition);
 
-			return $data = $this->db->get()->result();
+			// Filtering
+			if($search){
+				$this->db->like('pin_name', $search, 'both');
+			}
+			if ($category) {
+				$categories = array_map('trim', explode(',', urldecode($category)));
+			
+				if (count($categories) === 1) {
+					$this->db->where('pin_category', $categories[0]);
+				} else {
+					$this->db->where_in('pin_category', $categories);
+				}
+			}
+			if($is_favorite !== "all"){
+				$this->db->where('is_favorite',(int)$is_favorite);
+			}
+			if($is_visited !== "all"){
+				if ((int)$is_visited === 1) {
+					$this->db->where('visit.id IS NOT NULL', null, false);
+				} else {
+					$this->db->where('visit.id IS NULL', null, false);
+				}
+			}
+			if ($visit_with !== "all") {
+				$companions = array_map('trim', explode(',', urldecode($visit_with)));
+				$this->db->group_start();
+				foreach ($companions as $companion) {
+					$this->db->or_like('visit_with', $companion, 'both');
+				}
+				$this->db->group_end();
+			}
+
+			$this->db->group_by('pin.id');
+			$this->db->order_by('is_favorite','DESC');
+
+			$sorting_split = explode('-', $sorting);
+			$target_sort = $sorting_split[0];
+			$value_sort = $sorting_split[1];
+			$this->db->order_by($target_sort,$value_sort);
+
+			// Pagination count
+			$db_count = clone $this->db;
+			$total_rows = $db_count->get()->num_rows();
+			$total_pages = ceil($total_rows / $limit);
+			$start_item = $total_rows > 0 ? $start + 1 : 0;
+			$end_item = min($start + $limit, $total_rows);
+
+			$this->db->limit($limit, $start);
+			$data['data'] = $this->db->get()->result();
+			$data['total_page'] = $total_pages;
+			$data['total_item'] = $total_rows;
+			$data['start_item'] = $start_item;
+			$data['end_item'] = $end_item;
+
+			return $data;
+		}
+
+		public function get_pin_category($user_id = null) {
+			$this->db->select("pin_category, COUNT(1) as total");
+			$this->db->from($this->table);
+			$condition['deleted_at'] = null;
+			if ($user_id) $condition['created_by'] = $user_id;
+			$this->db->where($condition);
+			$this->db->group_by('pin_category');
+			$this->db->order_by('total','DESC');
+
+			return $this->db->get()->result();
+		}
+
+		public function get_total_all($is_mine = false) {
+			$this->db->select("
+				COUNT(1) as total,
+				COUNT(CASE
+					WHEN created_at >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 2 MONTH), '%Y-%m-01')
+					AND created_at < DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+					THEN 1
+				END) AS previous_month_total,
+				COUNT(CASE
+					WHEN created_at >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+					AND created_at < DATE_FORMAT(CURDATE(), '%Y-%m-01')
+					THEN 1
+				END) AS last_month_total
+			", false);
+			$this->db->from($this->table);
+
+			// Condition
+			$condition = ['deleted_at' => null];
+			if ($is_mine) $condition['created_by'] = $this->session->userdata(self::SESSION_KEY);
+			$this->db->where($condition);
+
+			$data = $this->db->get()->row();
+
+			// Percentage calculation
+			$previous = (int)$data->previous_month_total;
+			$last = (int)$data->last_month_total;
+			$data->growth_percentage = $previous > 0 ? (int)round((($last - $previous) / $previous) * 100, 2) : 0;
+
+			return $data;
 		}
 
 		public function get_all_my_pin_name(){

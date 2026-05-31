@@ -213,17 +213,24 @@
 }
 .fav-dot {
     position: absolute; 
-    top: 4px; 
-    right: 4px;
-    width: 18px; 
-    height: 18px;
+    top: var(--spaceMini); 
+    right: var(--spaceMini);
+    width: var(--spaceLG); 
+    height: var(--spaceLG);
     background: var(--dangerBG);
     border-radius: 50%;
     display: flex; 
     align-items: center; 
     justify-content: center;
     color: #fff;
-    font-size: 8px;
+    font-size: var(--textXSM);
+}
+.marker-card .fav-dot {
+    top: var(--spaceXSM); 
+    right: var(--spaceXSM);
+    width: var(--spaceXLG); 
+    height: var(--spaceXLG);
+    font-size: var(--textSM);
 }
 .activity-info { 
     flex: 1; 
@@ -253,7 +260,7 @@
     text-overflow: ellipsis;
 }
 
-/* Hero Summary */
+/* Hero Summary - Dashboard Page */
 .hero-banner {
     background: linear-gradient(135deg, #635bff 0%, #493ee5 100%);
     border-radius: var(--roundedJumbo);
@@ -308,6 +315,35 @@
     opacity: .7; 
 }
 
+/* Summary Non - Dashboard */
+.stats-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: var(--roundedMD);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--textXLG);
+}
+.stats-label {
+    font-size: var(--textXSM);
+    color: #777587;
+    font-weight: 600;
+    letter-spacing: .03em;
+}
+.stats-val {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--secondaryColor);
+    line-height: 1.1;
+    margin-top: var(--spaceMini);
+}
+.badge-muted {
+    font-size: var(--textSM);
+    font-weight: 700;
+    color: #777587;
+}
+
 /* Skeleton */
 .skeleton-loading {
     border-radius: var(--roundedJumbo);
@@ -323,4 +359,105 @@
     100%{
         background-position:-200% 0;
     }
+}
+
+/* Marker */
+.marker-card {
+    background: #fff;
+    border-radius: var(--roundedXLG);
+    border: 1.5px solid #e7e8ec;
+    display: flex;
+    align-items: center;
+    gap: var(--spaceMD);
+    padding: var(--spaceSM);
+    padding-inline: var(--spaceXLG);
+    overflow: hidden;
+    transition: border-color .2s;
+}
+.marker-card:hover {
+    border-color: rgba(99,91,255,.35);
+}
+.marker-thumb {
+    width: 180px;
+    min-width: 180px;
+    height: 120px;
+    border-radius: var(--roundedLG);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.marker-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .5s;
+}
+.marker-card:hover .marker-thumb img {
+    transform: scale(1.08);
+}
+.marker-info {
+    flex: 1;
+    min-width: 0;
+    padding: var(--spaceMD) 0;
+}
+.marker-name {
+    font-size: var(--textMD);
+    font-weight: 700;
+    color: var(--secondaryColor);
+    margin: 0;
+    line-height: 1.3;
+}
+.marker-card:hover .marker-name {
+    color: var(--primaryColor);
+}
+.marker-addr {
+    margin: var(--spaceMini) 0;
+}
+.marker-desc {
+    margin: var(--spaceSM) 0;
+}
+.marker-addr, .marker-desc {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.marker-meta-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+.meta-label {
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--greyColor);
+}
+.meta-val {
+    font-weight: 500;
+}
+.marker-addr, .marker-desc, .meta-val, .meta-label {
+    font-size: var(--textSM);
+}
+.meta-val--primary {
+    color: var(--primaryColor);
+    font-weight: 700;
+}
+.meta-val--warn {
+    color: #8a4b00;
+}
+.marker-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spaceSM);
+    flex-shrink: 0;
+}
+
+.empty-state {
+    padding: var(--spaceLG);
+    text-align: center;
+    width: 100%;
+    font-style: italic;
+    color: var(--greyColor) !important;
+    font-size: var(--textMD);
+    border-radius: var(--roundedLG);
+    background: var(--primaryLightColor);
 }

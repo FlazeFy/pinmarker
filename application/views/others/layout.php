@@ -68,11 +68,6 @@
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
     <?php endif; ?>
 
-    <?php if(preg_match('(GlobalController|ListController|LoginController)', $cleanedUrl)): ?>
-        <!-- Isotope JS -->
-        <script src="http://127.0.0.1:8080/public/js/isotope.js"></script>
-    <?php endif; ?>
-
     <?php if(preg_match('(LandingController|DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|DetailPersonController)', $cleanedUrl)): ?>
         <!-- Maps JS -->
         <script src="http://127.0.0.1:8080/public/js/maps.js"></script>
@@ -85,7 +80,6 @@
 
     <?php if(preg_match('(LoginController|ListController|GlobalListController|DetailGlobalController|MyProfileController)', $cleanedUrl)): ?>
         <!-- Isotope -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
         <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
     <?php endif; ?>
 

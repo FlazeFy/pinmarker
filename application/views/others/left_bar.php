@@ -1,3 +1,9 @@
+<?php 
+    $this->load->helper('url'); 
+    $full_url = current_url();
+    $cleanedUrl = str_replace("http://127.0.0.1:8080/", "", $full_url);    
+?>
+
 <aside class="sidebar">
     <div class="sidebar-brand">
         <div class="sidebar-logo">
@@ -13,7 +19,7 @@
             <i class="fa-solid fa-circle-plus"></i> Add New Visit
         </a>
         <div class="nav-group-label">Overview</div>
-        <a href="/DashboardController" class="nav-item active">
+        <a href="/DashboardController" class="nav-item <?= ($cleanedUrl === "DashboardController") ? "active" : ""; ?>">
             <i class="fa-solid fa-gauge-high"></i> Dashboard
         </a>
         <a href="/MapsController" class="nav-item">
@@ -22,8 +28,8 @@
         <a href="/GlobalListController" class="nav-item">
             <i class="fa-solid fa-folder-open"></i> Collections
         </a>
-        <a href="/ListController" class="nav-item">
-            <i class="fa-solid fa-list"></i> List
+        <a href="/ListController" class="nav-item <?= ($cleanedUrl === "ListController") ? "active" : ""; ?>">
+            <i class="fa-solid fa-list"></i> My Marker
         </a>
         <a href="/HistoryController" class="nav-item">
             <i class="fa-solid fa-clock-rotate-left"></i> History
