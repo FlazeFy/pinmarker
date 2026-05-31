@@ -8,7 +8,12 @@
 <script>
     const fetchPin = (page = 1) => {
         const holder = '#markerList'
+        const categoryHolder = '#categoryTag'
         const paginationHolder = '#paginationHolder'
+        const sorting = $('#sortSelect').val()
+        const per_page = $('#itemPerPageSelect').val()
+        let pin_category = getSelectedCategories()
+        pin_category = pin_category === '' ? null : pin_category
 
         $(holder).html(`
             <div class="skeleton-loading marker-skeleton"></div>
@@ -21,7 +26,9 @@
             method: 'GET',
             data: {
                 page,
-                per_page: 14
+                per_page,
+                sorting,
+                pin_category 
             },
             success: (response) => {
                 if (!response.data || !response.data.data) {
@@ -35,13 +42,13 @@
                 }
 
                 const pins = response.data.data
-                let html = ''
-                pins.forEach(pin => {
-                    html += `
+                let htmlItem = ''
+                pins.forEach(dt => {
+                    htmlItem += `
                         <div class="marker-card card-lift">
                             <div class="marker-thumb position-relative">
-                                <img src="https://placehold.co/300x220" alt="${pin.pin_name}">
-                                ${pin.is_favorite == 1 ? `
+                                <img src="https://placehold.co/300x220" alt="${dt.pin_name}">
+                                ${dt.is_favorite == 1 ? `
                                     <span class="fav-dot">
                                         <i class="fa-solid fa-heart"></i>
                                     </span>
@@ -49,52 +56,64 @@
                             </div>
                             <div class="marker-info">
                                 <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
-                                    <h4 class="marker-name">${pin.pin_name}</h4>
-                                    <span class="tag bg-${pin.pin_color || 'secondary'}">
-                                        ${pin.pin_category}
+                                    <h4 class="marker-name">${dt.pin_name}</h4>
+                                    <span class="tag bg-${dt.pin_color || 'secondary'}">
+                                        ${dt.pin_category}
                                     </span>
                                 </div>
                                 <div class="marker-addr">
                                     <i class="fa-solid fa-location-dot"></i>
-                                    ${pin.pin_address}
+                                    ${dt.pin_address}
                                 </div>
                                 <p class="marker-desc">
-                                    ${pin.pin_desc || '<span class="fst-italic text-secondary">- No description provided -</span>'}
+                                    ${dt.pin_desc || '<span class="text-none">- No description provided -</span>'}
                                 </p>
                                 <hr>
                                 <div class="d-flex gap-4 mt-2 flex-wrap">
                                     <div class="marker-meta-col">
                                         <span class="meta-label">Created At</span>
                                         <span class="meta-val">
-                                            ${pin.created_at}
+                                            ${dt.created_at}
                                         </span>
                                     </div>
                                     <div class="marker-meta-col">
                                         <span class="meta-label">Visits</span>
                                         <span class="meta-val meta-val--primary">
-                                            ${pin.total_visit} Visits
+                                            ${dt.total_visit} Visits
                                         </span>
                                     </div>
                                     <div class="marker-meta-col">
                                         <span class="meta-label">Last Visit</span>
                                         <span class="meta-val meta-val--warn">
-                                            ${pin.last_visit || '-'}
+                                            ${dt.last_visit || '-'}
                                         </span>
                                     </div>
                                 </div>
                             </div>
                             <div class="marker-actions">
-                                <a href="https://www.google.com/maps/dir/?api=1&destination=${pin.pin_lat},${pin.pin_long}" target="_blank" class="btn btn-outline" title="Directions">
+                                <a href="https://www.google.com/maps/dir/?api=1&destination=${dt.pin_lat},${dt.pin_long}" target="_blank" class="btn btn-outline" title="Directions">
                                     <i class="fa-solid fa-location-arrow"></i>
                                 </a>
-                                <a href="/DetailController/view/${pin.id}" class="btn btn-see-more">
-                                    See Details
+                                <a href="/DetailController/view/${dt.id}" class="btn btn-see-more">
+                                    See Detail
                                 </a>
                             </div>
                         </div>
                     `
                 })
-                $(holder).html(html)
+                $(holder).html(htmlItem)
+
+                const categories = response.data.category
+                if (categories && categories.length > 0) {
+                    $(categoryHolder).empty()
+                    const categoriesSelected = pin_category ? pin_category.split(',') : null
+                    categories.forEach(dt => {
+                        const cat = dt.pin_category
+                        $(categoryHolder).append(`<span class="filter-chip ${categoriesSelected && categoriesSelected.includes(cat) ? 'active' : ''}" data-filter="${cat}">(${dt.total}) ${cat}</span>`)  
+                    })
+                } else {
+                    $(categoryHolder).html(`<span class="text-none">- No markers available -</span>`)  
+                }
 
                 const totalItem = response.data.total_item
                 const totalPage = response.data.total_page
