@@ -33,25 +33,3 @@
         <div class="d-flex gap-2 flex-wrap" id="categoryTag"></div>
     </div>
 </div>
-
-<script>
-    let fetchPinDebounce = null
-    const getSelectedTag = (target) => {
-        return $(`.filter-chip.${target}.active`).map(function(){
-            return $(this).data('filter')
-        }).get().join(',')
-    }
-
-    $(document).on('change', '#sortSelect,#itemPerPageSelect,#withCompanionSelect', function(){
-        fetchPin(1)
-    })
-    $(document).on('change', '#withCompanionSelect', function(){
-        $('#filterCompanionSection').toggleClass('d-none')
-    })
-
-    $(document).on('click', '.filter-chip', function(){
-        $(this).toggleClass('active')
-        clearTimeout(fetchPinDebounce)
-        fetchPinDebounce = setTimeout(() => fetchPin(1), 2000)
-    })
-</script>
