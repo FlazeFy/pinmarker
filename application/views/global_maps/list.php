@@ -12,14 +12,6 @@
                             } else {
                                 echo "<p class='text-secondary fst-italic'>- No Description -</p>";
                             }
-                            if($dt->list_tag){
-                                $list_tag = json_decode($dt->list_tag);
-                                foreach($list_tag as $tag){
-                                    echo "<a class='pin-box-label me-2 mb-1 text-decoration-none search-global-by-tag-btn' href='http://127.0.0.1:8080/GlobalMapsController/view/$tag->tag_name'>#$tag->tag_name</a>";
-                                }
-                            } else {
-                                echo "<p class='text-secondary fst-italic'>- No Tag -</p>";
-                            }
                             echo "<hr>
                             <h5>List Marker</h5>
                             <p class='list-pin-desc'>"; 

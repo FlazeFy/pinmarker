@@ -57,3 +57,4 @@ $route['translate_uri_dashes'] = FALSE;
 $route['api/v1/location/weather'] = 'api/ExternalApiController/get_current_weather';
 $route['api/v1/location/reverse'] = 'api/ExternalApiController/get_nearby_places';
 $route['api/v1/pin'] = 'api/PinController/get_all_pin';
+$route['api/v1/global_list/my'] = 'api/GlobalListController/get_my_global_list';

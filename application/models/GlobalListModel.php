@@ -25,12 +25,7 @@
 					'label' => 'List Description',
 					'rules' => 'max_length[255]|min_length[2]',
 					'null' => TRUE
-				],
-				[
-					'field' => 'list_tag',
-					'label' => 'List Tag',
-					'null' => TRUE
-				],
+				]
 			];
         }
 
@@ -43,31 +38,79 @@
 			return $this->db->get()->result();
 		}
 
-		public function get_global_list($search) {
-			$this->db->select("$this->table.id, 
-				IFNULL(GROUP_CONCAT(COALESCE(pin.pin_name, null) ORDER BY pin.pin_name ASC SEPARATOR ', '), '') as pin_list, 
-				IFNULL(COUNT(pin.pin_name), 0) as total, 
-				list_name, list_desc, list_tag, $this->table.created_at, 
-				user.username as created_by");
+		public function get_my_global_list($search, $with_companion, $visit_with, $limit, $start, $sorting, $user_id) {
+			// Main query
+			$extra = "";
+			if($with_companion === "1"){
+				$extra .= ",
+					IFNULL(GROUP_CONCAT(DISTINCT visit.visit_with ORDER BY visit.visit_with ASC SEPARATOR ', '), '') as visit_with
+				";
+			}
+		
+			$this->db->select("
+				$this->table.id, list_name, list_desc, $this->table.created_at,
+				IFNULL(GROUP_CONCAT(DISTINCT pin.pin_name ORDER BY pin.pin_name ASC SEPARATOR ', '), '') as pin_list,
+				IFNULL(COUNT(DISTINCT pin.id), 0) as total
+				$extra
+			");
 			$this->db->from($this->table);
 			$this->db->join('global_list_pin_relation', "global_list_pin_relation.list_id = $this->table.id");
 			$this->db->join('pin', "pin.id = global_list_pin_relation.pin_id");
-			$this->db->join('user', "user.id = $this->table.created_by");
-			if (!empty($search)) {
+			$this->db->join('visit', 'visit.pin_id = pin.id', 'left');
+		
+			$condition = [
+				"$this->table.created_by" => $user_id
+			];
+			$this->db->where($condition);
+		
+			// Filtering
+			if ($search) {
 				$search = strtolower($search);
+		
+				$this->db->group_start();
 				$this->db->like('LOWER(list_name)', $search);
 				$this->db->or_like('LOWER(pin.pin_name)', $search);
-				$this->db->or_like('LOWER(user.username)', $search);
-				$this->db->or_like('LOWER(list_tag)', $search);
+				$this->db->group_end();
 			}
-			$this->db->order_by("$this->table.created_at", 'desc');
+		
+			if ($visit_with !== "all") {
+				$companions = array_map('trim', explode(',', urldecode($visit_with)));
+		
+				$this->db->group_start();
+				foreach ($companions as $companion) {
+					$this->db->or_like('visit.visit_with', $companion, 'both');
+				}
+				$this->db->group_end();
+			}
+		
 			$this->db->group_by("$this->table.id");
 		
-			return $this->db->get()->result();
+			// Sorting
+			$sorting_split = explode('-', $sorting);
+			$target_sort = $sorting_split[0];
+			$value_sort = $sorting_split[1];
+			$this->db->order_by($target_sort, $value_sort);
+		
+			// Pagination count
+			$db_count = clone $this->db;
+			$total_rows = $db_count->get()->num_rows();
+			$total_pages = ceil($total_rows / $limit);
+			$start_item = $total_rows > 0 ? $start + 1 : 0;
+			$end_item = min($start + $limit, $total_rows);
+		
+			$this->db->limit($limit, $start);
+		
+			$data['data'] = $this->db->get()->result();
+			$data['total_page'] = $total_pages;
+			$data['total_item'] = $total_rows;
+			$data['start_item'] = $start_item;
+			$data['end_item'] = $end_item;
+		
+			return $data;
 		}
 
 		public function get_detail_list_by_id($id){
-			$this->db->select("$this->table.id, list_name, list_desc, list_tag, $this->table.created_at, $this->table.updated_at, username as created_by");
+			$this->db->select("$this->table.id, list_name, list_desc, $this->table.created_at, $this->table.updated_at, username as created_by");
 			$this->db->from($this->table);
 			$this->db->join('user',"user.id = $this->table.created_by");
 			$condition = [
@@ -91,62 +134,6 @@
 			$this->db->where($condition);
 			$this->db->group_by("global_list_pin_relation.id");
 			$this->db->order_by("global_list_pin_relation.created_at",'desc');
-
-			return $data = $this->db->get()->result();
-		}
-
-		public function get_global_tag(){
-			$this->db->select("list_tag");
-			$this->db->from($this->table);
-			$data = $this->db->get()->result();
-			
-			$res = [];
-			$addedSlugs = [];
-
-			foreach($data as $dt){		
-				if($dt->list_tag){
-					$tags = json_decode($dt->list_tag);
-
-					foreach($tags as $tg){
-						if (!isset($addedSlugs[$tg->tag_name])) {
-							$addedSlugs[$tg->tag_name] = 1;
-			
-							array_push($res, (object)[
-								'tag_name' => $tg->tag_name,
-								'count' => 1
-							]);
-						} else {
-							$addedSlugs[$tg->tag_name]++;
-			
-							foreach ($res as $item) {
-								if ($item->tag_name == $tg->tag_name) {
-									$item->count = $addedSlugs[$tg->tag_name];
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-
-			usort($res, function($a, $b) {
-				return $b->count - $a->count;
-			});
-
-			return $res;
-		}
-
-		public function get_list_tag(){
-			$this->db->select("$this->table.id, IFNULL(GROUP_CONCAT(COALESCE(pin.pin_name, null) ORDER BY pin.pin_name ASC SEPARATOR ', '), '') as pin_list, 
-				IFNULL(COUNT(pin.pin_name), 0) as total, list_name, list_desc, list_tag, $this->table.created_at, user.username as created_by");
-			$this->db->from($this->table);
-			$this->db->join('global_list_pin_relation',"global_list_pin_relation.list_id = $this->table.id");
-			$this->db->join('pin',"pin.id = global_list_pin_relation.pin_id");
-			$this->db->join('user',"user.id = $this->table.created_by");
-			$this->db->like('list_name', $search);
-			$this->db->or_like('list_tag', $search);
-			$this->db->order_by("$this->table.created_at",'desc');
-			$this->db->group_by("$this->table.id");
 
 			return $data = $this->db->get()->result();
 		}

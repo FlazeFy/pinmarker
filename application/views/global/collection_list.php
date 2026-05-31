@@ -19,11 +19,11 @@
                     <span class="meta-text">2025-12-09 • @jalanjalan</span>
                 </div>
             </div>
-            <div class="col-footer">
-                <a href="/GlobalListController/detail/bolu" class="col-detail-btn">
-                    <i class="fa-regular fa-eye"></i> See Detail
+            <div class="col-actions">
+                <a href="/GlobalListController/detail/bolu" class="btn btn-see-more w-100">
+                    See Detail
                 </a>
-                <button class="col-share-btn"><i class="fa-solid fa-share-nodes"></i></button>
+                <button class="btn btn-outline"><i class="fa-solid fa-share-nodes"></i></button>
             </div>
         </div>
     </div>
@@ -146,31 +146,12 @@
         border-radius: 4px;
         display: inline-block;
     }
-    .col-footer {
+    .col-actions {
         display: flex;
         gap: var(--spaceMD);
         border-top: 1px solid #f2f3f7;
         padding-top: var(--spaceXMD);
         margin-top: auto;
-    }
-    .col-detail-btn {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        background: #e2e1f1;
-        color: #636371;
-        border-radius: var(--roundedMD);
-        padding: 10px;
-        font-size: var(--textXSM);
-        font-weight: 700;
-        text-decoration: none;
-        transition: all .2s;
-    }
-    .col-detail-btn:hover {
-        background: var(--primaryColor);
-        color: #fff;
     }
     .col-share-btn {
         width: 42px;

@@ -6,7 +6,6 @@ class GlobalListController extends CI_Controller {
 		parent::__construct();
 
 		$this->load->model('AuthModel');
-		$this->load->model('GlobalListModel');
 	}
 
 	public function index()
@@ -19,7 +18,6 @@ class GlobalListController extends CI_Controller {
 
 			$data['is_signed'] = true;
 			$data['active_page']= 'global_list';
-			$data['dt_global_list']= $this->GlobalListModel->get_global_list("");
 			$data['is_mobile_device'] = is_mobile_device();
 
 			$data['title_page'] = 'PinMarker | Global List';
