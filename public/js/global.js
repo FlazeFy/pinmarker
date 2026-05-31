@@ -312,7 +312,7 @@ const formValidation = () => {
 }
 formValidation()
 
-const renderPagination = (currentPage, totalPage) => {
+const renderPagination = (currentPage, totalPage, startItem, endItem, totalItem, targetPaginationInfoHolder) => {
     const holder = '#paginationButtonHolder'
     let html = `
         <button class="page-btn" ${currentPage <= 1 ? 'disabled' : ''} onclick="fetchPin(${currentPage - 1})">
@@ -353,5 +353,15 @@ const renderPagination = (currentPage, totalPage) => {
         </button>
     `
 
+    $(targetPaginationInfoHolder).html(`Showing ${startItem}-${endItem} of ${totalItem} markers`)
     $(holder).html(html)
+}
+
+const renderNoMessageBox = (target, context) => {
+    $(target).html(`
+        <div class="empty-state">
+            <img class='img img-fluid m-1' style='width:200px;' src='http://127.0.0.1:8080/public/images/empty_item.png'>
+            <p>- No ${context} found -</p>
+        </div>
+    `)
 }

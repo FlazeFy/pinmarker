@@ -1,7 +1,7 @@
 <div class="d-flex flex-column gap-3 mb-4" id="markerList"></div>
 
 <div class="d-flex justify-content-between align-items-center border-top pt-4 mt-2">
-    <span class="pagination-info" id="paginationInfo"></span>
+    <span class="pagination-info" id="paginationInfoHolder"></span>
     <div class="d-flex gap-2 align-items-center" id="paginationButtonHolder"></div>
 </div>
 
@@ -9,11 +9,16 @@
     const fetchPin = (page = 1) => {
         const holder = '#markerList'
         const categoryHolder = '#categoryTag'
+        const companionHolder = '#companionTag'
         const paginationHolder = '#paginationHolder'
+        const paginationInfoHolder = '#paginationInfoHolder'
         const sorting = $('#sortSelect').val()
         const per_page = $('#itemPerPageSelect').val()
-        let pin_category = getSelectedCategories()
+        const with_companion = $('#withCompanionSelect').val()
+        let pin_category = getSelectedTag('pin-category')
+        let visit_with = getSelectedTag('visit-with')
         pin_category = pin_category === '' ? null : pin_category
+        visit_with = visit_with === '' ? null : visit_with
 
         $(holder).html(`
             <div class="skeleton-loading marker-skeleton"></div>
@@ -28,20 +33,18 @@
                 page,
                 per_page,
                 sorting,
-                pin_category 
+                pin_category,
+                with_companion,
+                visit_with 
             },
             success: (response) => {
-                if (!response.data || !response.data.data) {
-                    $(holder).html(`
-                        <div class="empty-state">
-                            <i class="fa-solid fa-map-location-dot"></i>
-                            <span>No marker found</span>
-                        </div>
-                    `)
+                const pins = response.data.data
+                if (!pins || pins.length === 0) {
+                    renderPagination(1, 1, 0, 0, 0, paginationInfoHolder)
+                    renderNoMessageBox(holder, 'markers')
                     return
                 }
 
-                const pins = response.data.data
                 let htmlItem = ''
                 pins.forEach(dt => {
                     htmlItem += `
@@ -88,6 +91,16 @@
                                             ${dt.last_visit || '-'}
                                         </span>
                                     </div>
+                                    ${
+                                        with_companion === '1' ? `
+                                            <div class="marker-meta-col">
+                                                <span class="meta-label">Companion</span>
+                                                <span class="meta-val companion-link">
+                                                    ${dt.visit_with || '-'}
+                                                </span>
+                                            </div>`
+                                        : ''
+                                    }
                                 </div>
                             </div>
                             <div class="marker-actions">
@@ -109,18 +122,29 @@
                     const categoriesSelected = pin_category ? pin_category.split(',') : null
                     categories.forEach(dt => {
                         const cat = dt.pin_category
-                        $(categoryHolder).append(`<span class="filter-chip ${categoriesSelected && categoriesSelected.includes(cat) ? 'active' : ''}" data-filter="${cat}">(${dt.total}) ${cat}</span>`)  
+                        $(categoryHolder).append(`<span class="filter-chip pin-category ${categoriesSelected && categoriesSelected.includes(cat) ? 'active' : ''}" data-filter="${cat}">(${dt.total}) ${cat}</span>`)  
                     })
                 } else {
                     $(categoryHolder).html(`<span class="text-none">- No markers available -</span>`)  
+                }
+
+                const companions = response.data.visit_with
+                if (companions && companions.length > 0) {
+                    $(companionHolder).empty()
+                    const companionsSelected = visit_with ? visit_with.split(',') : null
+                    companions.forEach(dt => {
+                        const name = dt.name
+                        $(companionHolder).append(`<span class="filter-chip visit-with text-capitalize ${companionsSelected && companionsSelected.includes(name) ? 'active' : ''}" data-filter="${name}">(${dt.total}) ${name}</span>`)  
+                    })
+                } else {
+                    $(companionHolder).html(`<span class="text-none">- No companions available -</span>`)  
                 }
 
                 const totalItem = response.data.total_item
                 const totalPage = response.data.total_page
                 const startItem = response.data.start_item
                 const endItem = response.data.end_item
-                $('#paginationInfo').html(`Showing ${startItem}-${endItem} of ${totalItem} markers`)
-                renderPagination(page, totalPage)
+                renderPagination(page, totalPage, startItem, endItem, totalItem, paginationInfoHolder)
             },
             error: () => {
                 $(holder).html(`

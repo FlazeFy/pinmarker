@@ -22,20 +22,31 @@
             </select>
         </div>
         <div class="filter-divider"></div>
+        <div class="d-flex align-items-center gap-2">
+            <span class="filter-label">With Companion:</span>
+            <select class="sort-select" id="withCompanionSelect">
+                <option value="0" selected>Off</option>
+                <option value="1">On</option>
+            </select>
+        </div>
+        <div class="filter-divider"></div>
         <div class="d-flex gap-2 flex-wrap" id="categoryTag"></div>
     </div>
 </div>
 
 <script>
     let fetchPinDebounce = null
-    const getSelectedCategories = () => {
-        return $('.filter-chip.active').map(function(){
+    const getSelectedTag = (target) => {
+        return $(`.filter-chip.${target}.active`).map(function(){
             return $(this).data('filter')
         }).get().join(',')
     }
 
-    $(document).on('change', '#sortSelect,#itemPerPageSelect', function(){
+    $(document).on('change', '#sortSelect,#itemPerPageSelect,#withCompanionSelect', function(){
         fetchPin(1)
+    })
+    $(document).on('change', '#withCompanionSelect', function(){
+        $('#filterCompanionSection').toggleClass('d-none')
     })
 
     $(document).on('click', '.filter-chip', function(){

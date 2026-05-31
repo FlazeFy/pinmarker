@@ -148,11 +148,15 @@
 			}
 		}
 
-		public function get_all_pin($search, $category, $is_favorite, $is_visited, $limit, $start, $sorting, $user_id = null){
+		public function get_all_pin($search, $category, $is_favorite, $with_companion, $visit_with, $is_visited, $limit, $start, $sorting, $user_id = null){
 			// Main query
+			$extra = "";
+			if($with_companion === "1"){
+				$extra .= ", visit_with";
+			}
 			$this->db->select("
 				pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, is_favorite, pin.created_at, dictionary_color as pin_color, pin_address, 
-				IFNULL(COUNT(visit.id), 0) as total_visit, MAX(visit.created_at) as last_visit
+				IFNULL(COUNT(visit.id), 0) as total_visit, MAX(visit.created_at) as last_visit$extra
 			");
 			$this->db->join('dictionary','dictionary.dictionary_name = pin.pin_category','left');
 			$this->db->join('visit','visit.pin_id = pin.id','left');
@@ -183,6 +187,14 @@
 				} else {
 					$this->db->where('visit.id IS NULL', null, false);
 				}
+			}
+			if ($visit_with !== "all") {
+				$companions = array_map('trim', explode(',', urldecode($visit_with)));
+				$this->db->group_start();
+				foreach ($companions as $companion) {
+					$this->db->or_like('visit_with', $companion, 'both');
+				}
+				$this->db->group_end();
 			}
 
 			$this->db->group_by('pin.id');

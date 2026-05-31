@@ -210,6 +210,14 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
     font-style: italic;
     color: var(--greyColor);
 }
+.companion-link {
+    color: var(--primaryColor);
+    font-weight: 500;
+    cursor: pointer;
+}
+.companion-link:hover {
+    text-decoration: underline;
+}
   
 table thead {
     background: var(--primaryLightColor);

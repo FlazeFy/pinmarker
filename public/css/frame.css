@@ -450,3 +450,14 @@
     gap: var(--spaceSM);
     flex-shrink: 0;
 }
+
+.empty-state {
+    padding: var(--spaceLG);
+    text-align: center;
+    width: 100%;
+    font-style: italic;
+    color: var(--greyColor) !important;
+    font-size: var(--textMD);
+    border-radius: var(--roundedLG);
+    background: var(--primaryLightColor);
+}
