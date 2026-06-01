@@ -382,3 +382,62 @@ const getCookie = (key) => {
 
     return null
 }
+
+const datetimeText = (datetime, isSyncTime = false) => {
+    const visitTime = new Date(datetime)
+
+    // Current time
+    const now = isSyncTime ? new Date(new Date().toISOString()) : new Date()
+
+    const diffSeconds = Math.floor((now - visitTime) / 1000)
+    const diffHours = Math.floor(diffSeconds / 3600)
+    const visitDate = visitTime.toISOString().slice(0, 10)
+    const todayDate = now.toISOString().slice(0, 10)
+
+    // Same Day
+    if (visitDate === todayDate) {
+        if (diffHours < 2) return 'Recently'
+        return `${diffHours} hours ago`
+    }
+
+    // Yesterday
+    const yesterday = new Date(now)
+    yesterday.setDate(yesterday.getDate() - 1)
+
+    if (visitDate === yesterday.toISOString().slice(0, 10)) {
+        return `Yesterday at ${visitTime.toLocaleTimeString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        })}`
+    }
+
+    // Same Week
+    const getWeekNumber = date => {
+        const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7))
+        const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
+        return Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
+    }
+
+    if (getWeekNumber(visitTime) === getWeekNumber(now) && visitTime.getFullYear() === now.getFullYear()) {
+        return visitTime.toLocaleDateString('en-US', {
+            weekday: 'long'
+        }) + ' at ' + visitTime.toLocaleTimeString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        })
+    }
+
+    // Different Week
+    return visitTime.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: '2-digit'
+    }) + ' at ' + visitTime.toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    })
+}

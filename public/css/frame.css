@@ -402,7 +402,7 @@
     margin: 0;
     line-height: 1.3;
 }
-.marker-card:hover .marker-name {
+.marker-card:hover .marker-name, .cat-item.active .cat-name {
     color: var(--primaryColor);
 }
 .marker-addr {
@@ -451,7 +451,7 @@
     gap: var(--spaceSM);
     flex-shrink: 0;
 }
-.marker-card:hover, .cat-item:hover {
+.marker-card:hover, .cat-item:hover, .cat-item.active {
     border-color: rgba(99,91,255,.35);
 }
 

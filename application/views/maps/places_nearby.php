@@ -1,9 +1,9 @@
 <div class="analytics-card">
     <div class="position-relative" style="z-index:1;">
         <div class="analytics-eyebrow">
-            <i class="fa-solid fa-chart-line"></i> Total Places Nearby
+            <i class="fa-solid fa-chart-line"></i> Places Nearby Visit Goals
         </div>
-        <div class="analytics-num">305</div>
+        <div class="analytics-num">30%</div>
         <div class="analytics-badge">
             <i class="fa-solid fa-circle-info"></i> in 15 Km Radius
         </div>

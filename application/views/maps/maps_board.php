@@ -206,6 +206,8 @@
         // Fetch Nearby Pin
         const fetchNearbyPins = (page = 1) => {
             const max_distance = 15
+            if (!$('.cat-item.active').length) $('.cat-name').eq(0).closest('.cat-item').addClass('active')
+            const pin_category = $('.cat-item.active').find('.cat-name').data('val')
             markers.forEach(marker => map.removeLayer(marker))
             markers = []
 
@@ -213,6 +215,7 @@
             $.ajax({
                 url: `/api/v1/pin/maps`,
                 data: {
+                    pin_category,
                     page,
                     max_distance,
                     lat: userLat,
@@ -222,42 +225,68 @@
                 success: (response) => {
                     const pins = response.data.data
                     const bounds = [[userLat, userLng]]
+                    let listPinEl = ''
 
-                    pins.forEach(pin => {
-                        bounds.push([pin.pin_lat, pin.pin_long])
-                        const marker = L.marker([pin.pin_lat, pin.pin_long]).addTo(map)
+                    pins.forEach(dt => {
+                        bounds.push([dt.pin_lat, dt.pin_long])
+                        const marker = L.marker([dt.pin_lat, dt.pin_long]).addTo(map)
 
                         marker.bindPopup(`
                             <div class="place-popup">
-                                <h3>${pin.pin_name}</h3>
-                                <p class="popup-address">${pin.pin_address ?? '-'}</p>
+                                <h3>${dt.pin_name}</h3>
+                                <p class="popup-address">${dt.pin_address ?? '-'}</p>
                                 <hr>
                                 <div class="popup-info">
                                     <div>
                                         <span>Category</span>
-                                        <h5>${pin.pin_category}</h5>
+                                        <h5>${dt.pin_category}</h5>
                                     </div>
                                 </div>
                                 <div class="popup-info mt-2">
                                     <div>
                                         <span>Distance</span>
-                                        <h5>${pin.distance} km</h5>
+                                        <h5>${dt.distance} km</h5>
                                     </div>
                                 </div>
                                 <div class="popup-info mt-2">
                                     <div>
                                         <span>Total Visit</span>
-                                        <h5>${pin.total_visit}</h5>
+                                        <h5>${dt.total_visit}</h5>
                                     </div>
                                 </div>
                             </div>
                         `)
 
                         markers.push(marker)
+
+                        const pinAddressEl = dt.pin_address ? `<span class='tag bg-success'><i class='fa-solid fa-location-dot'></i> ${dt.pin_address}</span>` : ""
+                        const createdAtText = datetimeText(dt.created_at)
+                        const isFavoriteEl = dt.is_favorite == 1 ? "<span class='fav-dot'><i class='fa-solid fa-heart'></i></span>" : ""
+                        const distanceEl = dt.distance ? ` • <div class="tag bg-primary">${dt.distance} Km</div>` : ""
+
+                        listPinEl += `
+                            <div class='activity-item mb-0'>
+                                <div class='activity-thumb'>
+                                    <img src='https://lh3.googleusercontent.com/aida-public/AB6AXuB9TgxRWJZ1lxyBC2boJYHByBkeSaroy5x0M-AVvRCH_M7rWkJDFoVc1Lykvj4iQd7LMnmKIZdneHmRaXwFC9lv7_R60HRIGCVjEjIOXZfaa7J7VxkudxcVJ4rY3Rgs-ylDPPCviUANS--Z29u4nWUV66EasfeFSHxoNl_DXhJTkoVFcwXP083QKchtEh0pwmn4zKaOzhGVc1BczkDGjALzZe6T1f9_UaS1XcyhLg9yioAdJ4m4iYi-5GEJreWku7OO99GdpvvHlmjT' alt=''>
+                                    ${isFavoriteEl}
+                                </div>
+                                <div class='activity-info'>
+                                    <div class='activity-name'>${dt.pin_name}</div>
+                                    <div class='activity-meta'>${createdAtText}${distanceEl}</div>
+                                    <div class='activity-tags'>
+                                        ${pinAddressEl}
+                                    </div>
+                                </div>
+                            </div>
+                        `
                     })
 
                     if (bounds.length > 1) map.fitBounds(bounds, { padding: [50, 50]})
                     $('.region-desc').text(`${pins.length} places detected within 15 km radius.`)
+                    
+                    const $cat = $(`.cat-name[data-val="${pin_category}"]`).first().closest('.cat-item')
+                    $cat.addClass('active')
+                    $cat.find('.cat-body').html(`<div class="pt-2">${listPinEl}</div>`)
                 },
                 error: () => {
                     $('.region-desc').text('Failed fetch nearby pins.')
@@ -322,6 +351,13 @@
             }
 
             tileLayer.addTo(map)
+        })
+
+        $(document).on('click', '.cat-item', function(e) {
+            $('.cat-item').removeClass('active')
+            $('.cat-body').empty()
+            $(this).toggleClass('active')
+            fetchNearbyPins()
         })
 
         setTimeout(() => {

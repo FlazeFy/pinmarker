@@ -239,7 +239,7 @@
 			$this->db->join('visit','visit.pin_id = pin.id','left');
 			$this->db->from($this->table);
 			$condition['pin.deleted_at'] = null;
-			$pin_categor && $condition['pin_category'] = $pin_category;
+			$pin_category && $condition['pin_category'] = $pin_category;
 			if ($user_id) $condition['pin.created_by'] = $user_id;
 			$this->db->where($condition);
 

@@ -20,7 +20,7 @@
 <style>
     .maps-bento {
         display: grid;
-        grid-template-columns: 1fr 300px;
+        grid-template-columns: 1fr 375px;
         gap: var(--spaceXMD);
         height: 700px;
     }
