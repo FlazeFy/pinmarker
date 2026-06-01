@@ -2,6 +2,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MapsController extends CI_Controller {
+	const SESSION_KEY = 'user_id';
+
 	function __construct(){
 		parent::__construct();
 		$this->load->model('PinModel');
@@ -18,9 +20,8 @@ class MapsController extends CI_Controller {
 			$data = [];
 			$data['active_page']= 'maps';
 			$data['is_signed'] = true;
-			$data['dt_my_pin']= $this->PinModel->get_all_my_pin('maps',null,null,null);
-			$data['dt_my_pin_name']= $this->PinModel->get_all_my_pin_name();
-			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+			$data['dt_pin_category']= $this->PinModel->get_pin_category($user_id);
 			$data['is_mobile_device'] = is_mobile_device();
 
 			$data['title_page'] = 'PinMarker | Maps';

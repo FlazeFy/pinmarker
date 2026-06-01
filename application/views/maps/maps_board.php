@@ -128,9 +128,12 @@
 
 <script>
     $(document).ready(function () {
+        let userLat = -6.21462
+        let userLng = 106.84513
+
         let map = L.map('map-board', {
             zoomControl: false
-        }).setView([-6.21462, 106.84513], 11)
+        }).setView([userLat, userLng], 11)
 
         L.control.zoom({
             position: 'bottomright'
@@ -143,15 +146,65 @@
             }
         ).addTo(map)
 
+        // User Marker
+        let userMarker = L.circleMarker([userLat, userLng], {
+            radius: 10,
+            fillColor: '#635bff',
+            color: '#ffffff',
+            weight: 4,
+            opacity: 1,
+            fillOpacity: 1
+        }).addTo(map)
+
+        // 15 KM Radius
+        let userRadius = L.circle([userLat, userLng], {
+            radius: 15000,
+            color: '#635bff',
+            dashArray: '10, 10',
+            fillColor: '#8b85ff',
+            fillOpacity: 0.12,
+            weight: 3
+        }).addTo(map)
+
+        const updateUserLocation = (lat, lng) => {
+            userLat = lat
+            userLng = lng
+
+            map.removeLayer(userMarker)
+            map.removeLayer(userRadius)
+
+            userMarker = L.circleMarker([userLat, userLng], {
+                radius: 10,
+                fillColor: '#635bff',
+                color: '#ffffff',
+                weight: 4,
+                opacity: 1,
+                fillOpacity: 1
+            }).addTo(map)
+
+            userRadius = L.circle([userLat, userLng], {
+                radius: 15000,
+                color: '#635bff',
+                dashArray: '10, 10',
+                fillColor: '#8b85ff',
+                fillOpacity: 0.12,
+                weight: 3
+            }).addTo(map)
+
+            map.setView([userLat, userLng], 12)
+        }
+
         const pins = [
             {
                 name: 'Apollo Wu Artisan Roast',
                 lat: -6.2284,
                 lng: 106.8264
-            },
+            }
         ]
 
-        const bounds = []
+        const bounds = [
+            [userLat, userLng]
+        ]
 
         pins.forEach(pin => {
             bounds.push([pin.lat, pin.lng])
@@ -164,9 +217,28 @@
             `)
         })
 
-        if (bounds.length) map.fitBounds(bounds, { padding: [50, 50]})
+        if (bounds.length) {
+            map.fitBounds(bounds, {
+                padding: [50, 50]
+            })
+        }
 
         $('.region-desc').text(`${pins.length} active pins detected in this viewport.`)
+
+        // Get Browser Location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    updateUserLocation(
+                        position.coords.latitude,
+                        position.coords.longitude
+                    )
+                },
+                () => {
+                    console.log('Location access denied')
+                }
+            )
+        }
 
         $('.map-type').on('click', function () {
             $('.map-type').removeClass('active')

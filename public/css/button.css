@@ -79,19 +79,24 @@
     border-radius: var(--roundedJumbo);
     display: inline-block;
 }
-.tag.bg-danger {
+.cat-icon {
+    font-size: var(--textLG);
+    padding: var(--spaceSM) var(--spaceXMD); 
+    border-radius: var(--roundedSM);
+}
+.tag.bg-danger, .cat-icon.bg-danger {
     color: var(--dangerBG);
     background: var(--dangerLightBG) !important;
 }
-.tag.bg-success {
+.tag.bg-success, .cat-icon.bg-success {
     color: var(--successBG);
     background: var(--successLightBG) !important;
 }
-.tag.bg-primary {
+.tag.bg-primary, .cat-icon.bg-primary {
     color: var(--primaryColor);
     background: var(--primaryLightColor) !important;
 }
-.tag.bg-info {
+.tag.bg-info, .cat-icon.bg-info {
     color: var(--infoBG);
     background: var(--infoLightBG) !important;
 }
@@ -100,7 +105,7 @@
     background: var(--primaryColor) !important;
     transform: scale(1.075);
 }
-.tag.bg-warning {
+.tag.bg-warning, .cat-icon.bg-warning {
     color: var(--warningBG);
     background: var(--warningLightBG) !important;
 }

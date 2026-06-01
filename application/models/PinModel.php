@@ -231,10 +231,11 @@
 		}
 
 		public function get_pin_category($user_id = null) {
-			$this->db->select("pin_category, COUNT(1) as total");
+			$this->db->select("pin_category, COUNT(1) as total, dictionary_color, dictionary_icon");
 			$this->db->from($this->table);
+			$this->db->join('dictionary',"dictionary.dictionary_name = $this->table.pin_category","left");
 			$condition['deleted_at'] = null;
-			if ($user_id) $condition['created_by'] = $user_id;
+			if ($user_id) $condition["$this->table.created_by"] = $user_id;
 			$this->db->where($condition);
 			$this->db->group_by('pin_category');
 			$this->db->order_by('total','DESC');

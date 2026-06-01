@@ -64,7 +64,13 @@ class PinController extends CI_Controller {
         $offset = ($page - 1) * $per_page;
 
         $result = $this->PinModel->get_all_pin($search, $pin_category, $is_favorite, $with_companion, $visit_with, $is_visited, $per_page, $offset, $sorting, $user_id);
+        
         $categories = $this->PinModel->get_pin_category($user_id);
+        foreach ($categories as $dt) {
+            unset($dt->dictionary_icon);
+        }
+        unset($dt);
+
         $companions = $with_companion === "1" ? $this->VisitModel->get_visit_withs($user_id) : null;
 
         $message = !empty($result['data']) ? 'Pin fetched' : 'No pins found';
@@ -89,10 +95,11 @@ class PinController extends CI_Controller {
     }
 
     public function get_pin_category(){
-        $categories = $this->PinModel->get_pin_category($user_id);
-        $message = !empty($result['data']) ? 'Pin category fetched' : 'No pins category found';
+        $user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
+        $data = $this->PinModel->get_pin_category($user_id);
+        $message = !empty($data) ? 'Pin category fetched' : 'No pin category found';
 
         // Return API response
-        return api_response(200, 'success', $message, $categories);
+        return api_response(200, 'success', $message, $data);
     }
 }
