@@ -41,8 +41,8 @@
 
 <script>
     $(document).ready(function () {
-        let userLat = -6.21462
-        let userLng = 106.84513
+        let userLat = getCookie('lat')
+        let userLng = getCookie('long')
 
         // Initialize Map
         const map = L.map('map', {
@@ -81,6 +81,9 @@
         const updateUserLocation = (lat, lng) => {
             userLat = lat
             userLng = lng
+
+            storeCookie('lat', userLat)
+            storeCookie('long', userLng)
 
             // Remove default marker & radius
             map.removeLayer(userMarker)
@@ -126,6 +129,15 @@
                 url: `/api/v1/location/reverse?lat=${userLat}&long=${userLng}`,
                 method: 'GET',
                 success: (response) => {
+                    if (!response.data) {
+                        $('.global-place-list').html(`
+                            <div class="alert bg-danger map-item">
+                                <span>Failed fetch nearby place</span>
+                            </div>
+                        `)
+                        return
+                    }
+
                     const nearby = response.data.nearby
                     let html = ''
                     $('.global-place-list').remove()
@@ -190,9 +202,13 @@
         // Check Location Permission
         navigator.permissions.query({ name: 'geolocation' }).then(permission => {
             if (permission.state === 'granted') {
-                navigator.geolocation.getCurrentPosition(position => {
-                    updateUserLocation(position.coords.latitude, position.coords.longitude)
-                })
+                if (userLat === null && userLng === null) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                        updateUserLocation(position.coords.latitude, position.coords.longitude)
+                    })
+                } else {
+                    fetchNearbyPlaces()
+                }
             } else {
                 Swal.fire({
                     icon: 'question',

@@ -371,3 +371,14 @@ const getSelectedTag = (target) => {
         return $(this).data('filter')
     }).get().join(',')
 }
+
+const storeCookie = (key, val) => document.cookie = `${key}=${val}; path=/; max-age=${60 * 60 * 24 * 30}`
+
+const getCookie = (key) => {
+    const value = `; ${document.cookie}`
+    const parts = value.split(`; ${key}=`)
+
+    if (parts.length === 2) return parts.pop().split(';').shift()
+
+    return null
+}

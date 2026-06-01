@@ -128,54 +128,60 @@
 
 <script>
     $(document).ready(function () {
-        let userLat = -6.21462
-        let userLng = 106.84513
+        let userLat = getCookie('lat')
+        let userLng = getCookie('long')
 
-        let map = L.map('map-board', {
+        let markers = []
+
+        // Initialize Map
+        const map = L.map('map-board', {
             zoomControl: false
         }).setView([userLat, userLng], 11)
 
+        // Zoom Control
         L.control.zoom({
             position: 'bottomright'
         }).addTo(map)
 
+        // OpenStreet Tile
         let tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            {
-                attribution: '&copy; OpenStreetMap contributors'
-            }
+            { attribution: '&copy; OpenStreetMap contributors' }
         ).addTo(map)
 
-        // User Marker
         let userMarker = L.circleMarker([userLat, userLng], {
             radius: 10,
-            fillColor: '#635bff',
+            fillColor: 'var(--primaryColor)',
             color: '#ffffff',
             weight: 4,
             opacity: 1,
             fillOpacity: 1
         }).addTo(map)
 
-        // 15 KM Radius
         let userRadius = L.circle([userLat, userLng], {
             radius: 15000,
-            color: '#635bff',
+            color: 'var(--primaryColor)',
             dashArray: '10, 10',
             fillColor: '#8b85ff',
             fillOpacity: 0.12,
             weight: 3
         }).addTo(map)
 
+        // Update User Coordinate
         const updateUserLocation = (lat, lng) => {
             userLat = lat
             userLng = lng
 
+            storeCookie('lat', userLat)
+            storeCookie('long', userLng)
+
+            // Remove default marker & radius
             map.removeLayer(userMarker)
             map.removeLayer(userRadius)
 
             userMarker = L.circleMarker([userLat, userLng], {
                 radius: 10,
-                fillColor: '#635bff',
+                fillColor: 'var(--primaryColor)',
                 color: '#ffffff',
                 weight: 4,
                 opacity: 1,
@@ -184,90 +190,134 @@
 
             userRadius = L.circle([userLat, userLng], {
                 radius: 15000,
-                color: '#635bff',
+                color: 'var(--primaryColor)',
                 dashArray: '10, 10',
                 fillColor: '#8b85ff',
                 fillOpacity: 0.12,
                 weight: 3
             }).addTo(map)
 
+            // Move Camera
             map.setView([userLat, userLng], 12)
+
+            fetchNearbyPins()
         }
 
-        const pins = [
-            {
-                name: 'Apollo Wu Artisan Roast',
-                lat: -6.2284,
-                lng: 106.8264
-            }
-        ]
+        // Fetch Nearby Pin
+        const fetchNearbyPins = (page = 1) => {
+            const max_distance = 15
+            markers.forEach(marker => map.removeLayer(marker))
+            markers = []
 
-        const bounds = [
-            [userLat, userLng]
-        ]
+            $('.region-desc').text('Loading nearby pins...')
+            $.ajax({
+                url: `/api/v1/pin/maps`,
+                data: {
+                    page,
+                    max_distance,
+                    lat: userLat,
+                    long: userLng
+                },
+                method: 'GET',
+                success: (response) => {
+                    const pins = response.data.data
+                    const bounds = [[userLat, userLng]]
 
-        pins.forEach(pin => {
-            bounds.push([pin.lat, pin.lng])
+                    pins.forEach(pin => {
+                        bounds.push([pin.pin_lat, pin.pin_long])
+                        const marker = L.marker([pin.pin_lat, pin.pin_long]).addTo(map)
 
-            L.marker([pin.lat, pin.lng]).addTo(map).bindPopup(`
-                <div class="custom-popup">
-                    <h6>${pin.name}</h6>
-                    <p>Pinned Location</p>
-                </div>
-            `)
-        })
+                        marker.bindPopup(`
+                            <div class="place-popup">
+                                <h3>${pin.pin_name}</h3>
+                                <p class="popup-address">${pin.pin_address ?? '-'}</p>
+                                <hr>
+                                <div class="popup-info">
+                                    <div>
+                                        <span>Category</span>
+                                        <h5>${pin.pin_category}</h5>
+                                    </div>
+                                </div>
+                                <div class="popup-info mt-2">
+                                    <div>
+                                        <span>Distance</span>
+                                        <h5>${pin.distance} km</h5>
+                                    </div>
+                                </div>
+                                <div class="popup-info mt-2">
+                                    <div>
+                                        <span>Total Visit</span>
+                                        <h5>${pin.total_visit}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        `)
 
-        if (bounds.length) {
-            map.fitBounds(bounds, {
-                padding: [50, 50]
+                        markers.push(marker)
+                    })
+
+                    if (bounds.length > 1) map.fitBounds(bounds, { padding: [50, 50]})
+                    $('.region-desc').text(`${pins.length} places detected within 15 km radius.`)
+                },
+                error: () => {
+                    $('.region-desc').text('Failed fetch nearby pins.')
+                }
             })
         }
 
-        $('.region-desc').text(`${pins.length} active pins detected in this viewport.`)
-
-        // Get Browser Location
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    updateUserLocation(
-                        position.coords.latitude,
-                        position.coords.longitude
-                    )
-                },
-                () => {
-                    console.log('Location access denied')
+        // Check Location Permission
+        navigator.permissions.query({ name: 'geolocation' }).then(permission => {
+            if (permission.state === 'granted') {
+                if (userLat === null && userLng === null) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                        updateUserLocation(position.coords.latitude, position.coords.longitude)
+                    })
+                } else {
+                    fetchNearbyPins()
                 }
-            )
-        }
+            } else {
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Enable Location Access?',
+                    text: 'Allow location access to discover nearby markers.',
+                    showCancelButton: true,
+                    confirmButtonText: 'Allow',
+                    cancelButtonText: 'Later',
+                    confirmButtonColor: '#635bff'
+                }).then(result => {
+                    if (result.isConfirmed && navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(position => {
+                            updateUserLocation(position.coords.latitude, position.coords.longitude)
+                        }, () => {
+                            fetchNearbyPins()
+                        })
+                    } else {
+                        fetchNearbyPins()
+                    }
+                })
+            }
+        })
 
         $('.map-type').on('click', function () {
             $('.map-type').removeClass('active')
             $(this).addClass('active')
 
             map.removeLayer(tileLayer)
-
             const type = $(this).data('type')
-
             if (type === 'satellite') {
                 tileLayer = L.tileLayer(
                     'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                    {
-                        attribution: '&copy; Esri'
-                    }
+                    { attribution: '&copy; Esri' }
                 )
             } else if (type === 'terrain') {
                 tileLayer = L.tileLayer(
                     'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-                    {
-                        attribution: '&copy; OpenTopoMap'
-                    }
+                    { attribution: '&copy; OpenTopoMap' }
                 )
             } else {
                 tileLayer = L.tileLayer(
                     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    {
-                        attribution: '&copy; OpenStreetMap contributors'
-                    }
+                    { attribution: '&copy; OpenStreetMap contributors' }
                 )
             }
 
