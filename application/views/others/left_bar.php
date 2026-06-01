@@ -22,7 +22,7 @@
         <a href="/DashboardController" class="nav-item <?= ($cleanedUrl === "DashboardController") ? "active" : ""; ?>">
             <i class="fa-solid fa-gauge-high"></i> Dashboard
         </a>
-        <a href="/MapsController" class="nav-item">
+        <a href="/MapsController" class="nav-item <?= ($cleanedUrl === "MapsController") ? "active" : ""; ?>">
             <i class="fa-solid fa-map"></i> Maps
         </a>
         <a href="/GlobalListController" class="nav-item <?= ($cleanedUrl === "GlobalListController") ? "active" : ""; ?>">
@@ -38,6 +38,9 @@
             <i class="fa-solid fa-route"></i> Track
         </a>
         <div class="nav-group-label mt-3">Analytics</div>
+        <a href="/SuggestionController" class="nav-item">
+            <i class="fa-solid fa-robot"></i> Trip Suggestion
+        </a>
         <a href="/TrackController" class="nav-item">
             <i class="fa-solid fa-users"></i> Person
         </a>
