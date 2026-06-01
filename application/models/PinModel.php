@@ -230,6 +230,79 @@
 			return $data;
 		}
 
+		public function get_all_pin_maps_format($search, $pin_category, $lat, $long, $max_distance, $is_favorite, $is_visited, $per_page, $offset, $user_id = null){
+			// Main query
+			$this->db->select("
+				pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, is_favorite, pin.created_at, pin_address, 
+				IFNULL(COUNT(visit.id), 0) as total_visit 
+			");
+			$this->db->join('visit','visit.pin_id = pin.id','left');
+			$this->db->from($this->table);
+			$condition['pin.deleted_at'] = null;
+			$pin_categor && $condition['pin_category'] = $pin_category;
+			if ($user_id) $condition['pin.created_by'] = $user_id;
+			$this->db->where($condition);
+
+			// Filtering
+			if($search){
+				$this->db->like('pin_name', $search, 'both');
+			}
+			if($is_favorite !== "all"){
+				$this->db->where('is_favorite',(int)$is_favorite);
+			}
+			if($is_visited !== "all"){
+				if ((int)$is_visited === 1) {
+					$this->db->where('visit.id IS NOT NULL', null, false);
+				} else {
+					$this->db->where('visit.id IS NULL', null, false);
+				}
+			}
+			$this->db->group_by('pin.id');
+
+			// Get all data first
+			$rows = $this->db->get()->result();
+
+			// Distance filtering
+			$has_distance_filter = ($max_distance !== null && $lat !== null && $long !== null);
+			$filtered_rows = [];
+			foreach ($rows as $row) {
+				$row->is_favorite = (int)$row->is_favorite;
+				$row->total_visit = (int)$row->total_visit;
+				$row->pin_lat = (double)$row->pin_lat;
+				$row->pin_long = (double)$row->pin_long;
+
+				if ($has_distance_filter) {
+					$row->distance = calculate_distance($lat, $long, $row->pin_lat, $row->pin_long, 'km');
+					if ($row->distance <= (double)$max_distance) $filtered_rows[] = $row;
+				} else {
+					$row->distance = null;
+					$filtered_rows[] = $row;
+				}
+			}
+
+			// Sort nearest first
+			if ($has_distance_filter) {
+				usort($filtered_rows, function ($a, $b) {
+					return $a->distance <=> $b->distance;
+				});
+			}
+
+			// Pagination count
+			$total_rows = count($filtered_rows);
+			$total_pages = ceil($total_rows / $per_page);
+			$start_item = $total_rows > 0 ? $offset + 1 : 0;
+			$end_item = min($offset + $per_page, $total_rows);
+
+			// Pagination data
+			$data['data'] = array_slice($filtered_rows, $offset, $per_page);
+			$data['total_page'] = $total_pages;
+			$data['total_item'] = $total_rows;
+			$data['start_item'] = $start_item;
+			$data['end_item'] = $end_item;
+
+			return $data;
+		}
+
 		public function get_pin_category($user_id = null) {
 			$this->db->select("pin_category, COUNT(1) as total, dictionary_color, dictionary_icon");
 			$this->db->from($this->table);
