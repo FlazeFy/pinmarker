@@ -10,6 +10,7 @@ class PinController extends CI_Controller {
         parent::__construct();
         $this->load->model("PinModel");
         $this->load->model("VisitModel");
+        $this->load->helper('validator_helper');
         $this->allowed_target_sorting_pin = ['pin_name','total_visit','created_at'];
         $this->allowed_value_sorting_pin = ['desc','asc'];
         $this->allowed_value_condition_pin = [1,0];
@@ -50,6 +51,12 @@ class PinController extends CI_Controller {
         if ($is_visited !== 'all' && !in_array($is_visited, $this->allowed_value_condition_pin)) {
             return api_response(400, 'failed', 'is_visited not valid', null);
         }
+        if (!is_valid_positive_number($page)) {
+            return api_response(400, 'failed', 'page must be a positive number', null);
+        }
+        if (!is_valid_positive_number($per_page)) {
+            return api_response(400, 'failed', 'per_page must be a positive number', null);
+        }
 
         // Pagination calculation
         $page = max(1, $page);
@@ -60,7 +67,7 @@ class PinController extends CI_Controller {
         $categories = $this->PinModel->get_pin_category($user_id);
         $companions = $with_companion === "1" ? $this->VisitModel->get_visit_withs($user_id) : null;
 
-        $message = !empty($result['data']) ? 'Pin fetched successfully' : 'No pins found';
+        $message = !empty($result['data']) ? 'Pin fetched' : 'No pins found';
 
         // Return API response
         return api_response(
@@ -79,5 +86,13 @@ class PinController extends CI_Controller {
                 'visit_with' => $companions
             ]
         );
+    }
+
+    public function get_pin_category(){
+        $categories = $this->PinModel->get_pin_category($user_id);
+        $message = !empty($result['data']) ? 'Pin category fetched' : 'No pins category found';
+
+        // Return API response
+        return api_response(200, 'success', $message, $categories);
     }
 }

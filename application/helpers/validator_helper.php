@@ -8,3 +8,9 @@ if (!function_exists('check_uuid')) {
         return preg_match($uuidRegex, $str) === 1;
     }
 }
+
+if (!function_exists('is_valid_positive_number')) {
+    function is_valid_positive_number($value) {
+        return is_numeric($value) && (int)$value > 0;
+    }
+}

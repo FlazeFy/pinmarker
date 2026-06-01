@@ -102,12 +102,15 @@
 			$this->db->limit($limit, $start);
 		
 			$data['data'] = $this->db->get()->result();
-			// Tidy up the visit with
+			// Tidy up the visit with, and aggregate col
 			foreach ($data['data'] as &$row) {
 				if(empty($row->visit_with)){
 					$row->visit_with = null;
 					continue;
 				}
+
+				$row->total_pin = (int)$row->total_pin;
+				$row->total_visit = (int)$row->total_visit;
 			
 				$companions = [];
 				foreach (explode(',', $row->visit_with) as $name) {

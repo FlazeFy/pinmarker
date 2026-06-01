@@ -10,6 +10,7 @@ class GlobalListController extends CI_Controller {
         parent::__construct();
         $this->load->model("GlobalListModel");
         $this->load->model("VisitModel");
+        $this->load->helper('validator_helper');
         $this->allowed_target_sorting_pin = ['list_name','total_visit','created_at'];
         $this->allowed_value_sorting_pin = ['desc','asc'];
         $this->allowed_value_condition_pin = [1,0];
@@ -39,6 +40,12 @@ class GlobalListController extends CI_Controller {
         if (!in_array($with_companion, $this->allowed_value_condition_pin)) {
             return api_response(400, 'failed', 'with_companion not valid', null);
         }
+        if (!is_valid_positive_number($page)) {
+            return api_response(400, 'failed', 'page must be a positive number', null);
+        }
+        if (!is_valid_positive_number($per_page)) {
+            return api_response(400, 'failed', 'per_page must be a positive number', null);
+        }
 
         // Pagination calculation
         $page = max(1, $page);
@@ -48,7 +55,7 @@ class GlobalListController extends CI_Controller {
         $result = $this->GlobalListModel->get_my_global_list($search, $with_companion, $visit_with, $per_page, $offset, $sorting, $user_id);
         $companions = $with_companion === "1" ? $this->VisitModel->get_visit_withs($user_id) : null;
 
-        $message = !empty($result['data']) ? 'Global list fetched successfully' : 'No global list found';
+        $message = !empty($result['data']) ? 'Global list fetched' : 'No global list found';
 
         // Return API response
         return api_response(

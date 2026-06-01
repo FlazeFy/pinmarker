@@ -214,6 +214,14 @@
 
 			$this->db->limit($limit, $start);
 			$data['data'] = $this->db->get()->result();
+			// number safety
+			foreach ($data['data'] as $dt) {
+				$dt->is_favorite = (int)$dt->is_favorite;
+				$dt->total_visit = (int)$dt->total_visit;
+				$dt->pin_lat = (double)$dt->pin_lat;
+				$dt->pin_long = (double)$dt->pin_long;
+			}
+
 			$data['total_page'] = $total_pages;
 			$data['total_item'] = $total_rows;
 			$data['start_item'] = $start_item;
@@ -230,8 +238,14 @@
 			$this->db->where($condition);
 			$this->db->group_by('pin_category');
 			$this->db->order_by('total','DESC');
+			$data = $this->db->get()->result();
 
-			return $this->db->get()->result();
+			// number safety
+			foreach ($data as $dt) {
+				$dt->total = (int)$dt->total;
+			}
+
+			return $data;
 		}
 
 		public function get_total_all($is_mine = false) {
