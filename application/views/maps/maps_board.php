@@ -4,13 +4,7 @@
     <div class="map-img-wrap">
         <div id="map-board"></div>
     </div>
-    <div class="map-type-wrap">
-        <div class="map-type-group">
-            <button class="map-type active" data-type="default">Default</button>
-            <button class="map-type" data-type="satellite">Satellite</button>
-            <button class="map-type" data-type="terrain">Terrain</button>
-        </div>
-    </div>
+    <?php $this->load->view("maps/maps_toolbar") ?>
     <div class="region-bar">
         <div class="region-focus">
             <i class="fa-solid fa-compass" style="color:var(--primaryColor);"></i>
@@ -23,30 +17,45 @@
 </div>
 
 <style>
-    .map-area {
+    .map-area{
         position: relative;
-        height: 70vh; 
+        height: 70vh;
         border-radius: var(--roundedJumbo);
         overflow: hidden;
         border: 1.5px solid #e7e8ec;
         background: #1a1a2e;
         box-shadow: 0 8px 32px rgba(0,0,0,.08);
     }
-    .map-img-wrap {
+    .map-img-wrap{
         position: absolute;
         inset: 0;
     }
-    #map-board {
+    #map-board{
         width: 100%;
         height: 100%;
     }
-    .map-type-wrap {
+    .map-toolbar{
         position: absolute;
         top: 20px;
         right: 20px;
         z-index: 1000;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
     }
-    .map-type-group {
+    .map-type-wrap{
+        background: #fff;
+        padding: var(--spaceXSM);
+        border-radius: var(--roundedLG);
+        box-shadow: 0 4px 16px rgba(0,0,0,.1);
+    }
+    .map-type-wrap h6{
+        margin-left: var(--spaceMini);
+        font-size: var(--textSM);
+        font-weight: 600;
+        margin-bottom: var(--spaceMini);
+    }
+    .map-type-group{
         background: rgba(255,255,255,.9);
         backdrop-filter: blur(12px);
         border-radius: var(--roundedMD);
@@ -54,9 +63,8 @@
         display: flex;
         gap: 2px;
         border: 1px solid rgba(199,196,216,.3);
-        box-shadow: 0 4px 16px rgba(0,0,0,.1);
     }
-    .map-type {
+    .map-type{
         padding: 7px 16px;
         border: none;
         border-radius: var(--roundedSM);
@@ -67,23 +75,41 @@
         background: transparent;
         cursor: pointer;
         transition: all .2s;
+        white-space: nowrap;
     }
-    .map-type.active {
+    .map-type.active{
         background: var(--primaryColor);
         color: #fff;
         box-shadow: 0 3px 10px rgba(99,91,255,.3);
     }
-    .map-type:hover:not(.active) {
+    .map-type:hover:not(.active){
         background: #f2f3f7;
     }
-    .region-bar {
+    .map-range-select{
+        min-width: 120px;
+        padding: var(--spaceSM);
+        border: 1px solid rgba(199,196,216,.3);
+        border-radius: var(--roundedMD);
+        background: rgba(255,255,255,.9);
+        backdrop-filter: blur(12px);
+        font-size: var(--textXSM);
+        font-weight: 700;
+        margin-bottom: 0;
+        color: #464555;
+        outline: none;
+        cursor: pointer;
+    }
+    .map-range-select:focus{
+        border-color: var(--primaryColor);
+    }
+    .region-bar{
         position: absolute;
         bottom: 20px;
         left: 20px;
         right: 20px;
         z-index: 1000;
     }
-    .region-focus {
+    .region-focus{
         background: rgba(255,255,255,.9);
         backdrop-filter: blur(12px);
         border-radius: var(--roundedLG);
@@ -95,48 +121,77 @@
         box-shadow: 0 8px 24px rgba(0,0,0,.12);
         max-width: 420px;
     }
-    .region-label {
+    .region-label{
         font-size: var(--textXSM);
         font-weight: 700;
         color: var(--primaryColor);
         margin-bottom: 2px;
     }
-    .region-desc {
+    .region-desc{
         font-size: var(--textXSM);
         color: #464555;
         line-height: 1.5;
     }
-    .custom-popup h6 {
-        margin: 0;
-        font-weight: 700;
-    }
-    .custom-popup p {
-        margin: 4px 0 0;
-        color: #666;
-        font-size: 12px;
-    }
-    .leaflet-control-zoom {
-        border-radius: var(--roundedMD) !important;
+    .leaflet-control-zoom{
+        border-radius: var(--roundedMD)!important;
         overflow: hidden;
     }
-    .leaflet-popup-content-wrapper {
+    .leaflet-popup-content-wrapper{
         border-radius: var(--roundedMD);
+    }
+    @media(max-width: 768px){
+        .map-toolbar{
+            top: 12px;
+            right: 12px;
+            left: 12px;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .map-type-group{
+            overflow-x: auto;
+        }
+        .map-range-select{
+            width: 100%;
+        }
     }
 </style>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
-    $(document).ready(function () {
-        let userLat = getCookie('lat')
-        let userLng = getCookie('long')
+    let userLat = getCookie('lat')
+    let userLng = getCookie('long')
+    let userRadius = null
+    // Initialize Map
+    const map = L.map('map-board', {
+        zoomControl: false
+    }).setView([userLat, userLng], 11)
 
+    const renderRadius = () => {
+        const max_distance = $('#max-range-select').val()
+
+        if (userRadius) {
+            map.removeLayer(userRadius)
+            userRadius = null
+        }
+
+        if (max_distance !== 'all') {
+            userRadius = L.circle([userLat, userLng], {
+                radius: parseInt(max_distance) * 1000,
+                color: 'var(--primaryColor)',
+                dashArray: '10, 10',
+                fillColor: '#8b85ff',
+                fillOpacity: 0.12,
+                weight: 3
+            }).addTo(map)
+        }
+    }
+
+    $(document).ready(function () {
+        const max_distance = $('#max-range-select').val() !== "all" ? parseInt($('#max-range-select').val()) : "all"
         let markers = []
 
-        // Initialize Map
-        const map = L.map('map-board', {
-            zoomControl: false
-        }).setView([userLat, userLng], 11)
+        
 
         // Zoom Control
         L.control.zoom({
@@ -158,14 +213,9 @@
             fillOpacity: 1
         }).addTo(map)
 
-        let userRadius = L.circle([userLat, userLng], {
-            radius: 15000,
-            color: 'var(--primaryColor)',
-            dashArray: '10, 10',
-            fillColor: '#8b85ff',
-            fillOpacity: 0.12,
-            weight: 3
-        }).addTo(map)
+        if (max_distance !== "all") {
+            renderRadius()
+        }
 
         // Update User Coordinate
         const updateUserLocation = (lat, lng) => {
@@ -188,14 +238,7 @@
                 fillOpacity: 1
             }).addTo(map)
 
-            userRadius = L.circle([userLat, userLng], {
-                radius: 15000,
-                color: 'var(--primaryColor)',
-                dashArray: '10, 10',
-                fillColor: '#8b85ff',
-                fillOpacity: 0.12,
-                weight: 3
-            }).addTo(map)
+            renderRadius()
 
             // Move Camera
             map.setView([userLat, userLng], 12)
@@ -205,7 +248,7 @@
 
         // Fetch Nearby Pin
         const fetchNearbyPins = (page = 1) => {
-            const max_distance = 15
+            const max_distance = parseInt($('#max-range-select').val())
             if (!$('.cat-item.active').length) $('.cat-name').eq(0).closest('.cat-item').addClass('active')
             const pin_category = $('.cat-item.active').find('.cat-name').data('val')
             markers.forEach(marker => map.removeLayer(marker))
@@ -282,7 +325,8 @@
                     })
 
                     if (bounds.length > 1) map.fitBounds(bounds, { padding: [50, 50]})
-                    $('.region-desc').text(`${pins.length} places detected within 15 km radius.`)
+                    $('.region-desc').text(`${pins.length} places detected within ${max_distance} km radius.`)
+                    $('#place-nearby-radius-text').text(max_distance)
                     
                     const $cat = $(`.cat-name[data-val="${pin_category}"]`).first().closest('.cat-item')
                     $cat.addClass('active')
@@ -360,7 +404,13 @@
             fetchNearbyPins()
         })
 
+        $(document).on('click', '#max-range-select', function(e) {
+            renderRadius()
+            fetchNearbyPins()
+        })
+
         setTimeout(() => {
+            renderRadius()
             map.invalidateSize()
         }, 100)
     })

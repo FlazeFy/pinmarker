@@ -5,7 +5,7 @@
         </div>
         <div class="analytics-num">30%</div>
         <div class="analytics-badge">
-            <i class="fa-solid fa-circle-info"></i> in 15 Km Radius
+            <i class="fa-solid fa-circle-info"></i> in <span id="place-nearby-radius-text"></span> Km Radius
         </div>
     </div>
     <div class="analytics-blur-1"></div>
