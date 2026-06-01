@@ -361,7 +361,7 @@
     }
 }
 
-/* Marker */
+/* Marker & Collection */
 .marker-card {
     background: #fff;
     border-radius: var(--roundedXLG);
@@ -431,11 +431,16 @@
     text-transform: uppercase;
     color: var(--greyColor);
 }
+.meta-text {
+    font-size: var(--textSM);
+    color: var(--greyColor);
+}
 .meta-val {
+    color: var(--greyColor);
     font-weight: 500;
 }
 .marker-addr, .marker-desc, .meta-val, .meta-label {
-    font-size: var(--textSM);
+    font-size: var(--textSM) !important;
 }
 .meta-val--primary {
     color: var(--primaryColor);
@@ -460,4 +465,58 @@
     font-size: var(--textMD);
     border-radius: var(--roundedLG);
     background: var(--primaryLightColor);
+}
+
+/* Filter */
+.filter-bar {
+    background: #fff;
+    border: 1px solid #e7e8ec;
+    border-radius: var(--roundedXLG);
+    padding: 12px var(--spaceXMD);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spaceMD);
+    flex-wrap: wrap;
+}
+.filter-label {
+    font-size: var(--textXSM);
+    font-weight: 700;
+    color: #777587;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    white-space: nowrap;
+}
+.sort-select {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: var(--textXMD);
+    font-weight: 700;
+    color: var(--primaryColor);
+    font-family: inherit;
+    cursor: pointer;
+}
+.filter-divider {
+    width: 1px;
+    height: 20px;
+    background: #e1e2e6;
+    flex-shrink: 0;
+}
+.filter-chip {
+    padding: 4px 12px;
+    background: #f2f3f7;
+    border-radius: var(--roundedJumbo);
+    border: 1.5px solid transparent;
+    font-size: var(--textXSM);
+    font-weight: 600;
+    color: #464555;
+    cursor: pointer;
+    transition: all .2s;
+    user-select: none;
+}
+.filter-chip:hover, .filter-chip.active {
+    background: #e2dfff;
+    color: var(--primaryColor);
+    border-color: #c3c0ff;
 }

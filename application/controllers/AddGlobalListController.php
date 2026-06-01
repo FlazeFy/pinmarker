@@ -50,14 +50,10 @@ class AddGlobalListController extends CI_Controller {
 		} else {
 			$list_name = $this->input->post('list_name');
 			$list_code = null;
-			$list_tag = null;
 			$id = get_UUID();
 			
 			if($this->input->post('list_code') != ""){
 				$list_code = $this->input->post('list_code');
-			}
-			if($this->input->post('list_tag') != ""){
-				$list_tag = $this->input->post('list_tag');
 			}
 
 			$data = [
@@ -65,7 +61,6 @@ class AddGlobalListController extends CI_Controller {
 				'list_code' => $list_code,  
 				'list_name' => $list_name, 
 				'list_desc' => $this->input->post('list_desc'), 
-				'list_tag' => $list_tag,
 				'created_at' => date("Y-m-d H:i:s"), 
 				'created_by' => $this->session->userdata('user_id'),
 				'updated_at' => null, 

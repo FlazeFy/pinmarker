@@ -165,18 +165,6 @@
         })
         
         $(document).on('click', '#edit-list-detail-submit-btn', function() {      
-            if($('#selected-tag-holder').children().length > 0){
-                listTag = []
-                $('#selected-tag-holder a').each(function(idx, el) {
-                    listTag.push({
-                        tag_name: $(el).text().replace('#','')
-                    })
-                })
-
-                listTag = JSON.stringify(listTag)
-
-                $('#list_tag').val(listTag)
-            }       
             $('#edit-list-detail-form').submit()
         })
     })

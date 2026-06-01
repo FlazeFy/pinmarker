@@ -1,12 +1,15 @@
-<script>
-    $(document).ready(function() {
-        $('.grid').isotope({
-            itemSelector: '.grid-item',
-            layoutMode: 'masonry', 
-        });
-    })
-</script>
-<h2 class="text-center" style="font-weight:600;">Global List</h2><br>
-<a class="btn btn-success btn-menu-main" href="/AddGlobalListController" id='add-global-list-btn'><i class="fa-solid fa-plus"></i><?php if(!$is_mobile_device){ echo " Add Global List";} ?></a>
-<?php if(!$is_mobile_device){ echo "<br><br>"; } ?>
-<?php $this->load->view('global/global_list'); ?>
+<div class="d-flex" style="min-height:100vh; background:var(--containerColor);">
+    <?php $this->load->view("others/left_bar"); ?>
+    <div class="main-wrap">
+        <?php $this->load->view("others/top_bar"); ?>
+        <div class="content">
+            <?php $this->load->view("global/header"); ?>
+            <h3 class="mb-3">My Collection</h3>
+            <?php $this->load->view("global/filter"); ?>
+            <?php $this->load->view("others/filter_companion"); ?>
+            <?php $this->load->view("global/collection_list"); ?>
+            <hr class="my-5">
+            <h3 class="mb-3">Global Collection</h3>
+        </div>
+    </div>
+</div>

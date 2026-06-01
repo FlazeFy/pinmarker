@@ -7,8 +7,8 @@
                 <option value="created_at-asc">Date Created (Oldest)</option>
                 <option value="total_visit-desc">Most Visited</option>
                 <option value="total_visit-asc">Least Visited</option>
-                <option value="pin_name-asc">A-Z Alphabetical</option>
-                <option value="pin_name-desc">Z-A Alphabetical</option>
+                <option value="list_name-asc">A-Z Alphabetical</option>
+                <option value="list_name-desc">Z-A Alphabetical</option>
             </select>
         </div>
         <div class="filter-divider"></div>
@@ -35,10 +35,10 @@
 </div>
 
 <script>
-    let fetchPinDebounce = null
+    let fetchGlobalListDebounce = null
 
     $(document).on('change', '#sortSelect,#itemPerPageSelect,#withCompanionSelect', function(){
-        fetchPin(1)
+        fetchGlobalList(1)
     })
     $(document).on('change', '#withCompanionSelect', function(){
         $('#filterCompanionSection').toggleClass('d-none')
@@ -46,7 +46,7 @@
 
     $(document).on('click', '.filter-chip', function(){
         $(this).toggleClass('active')
-        clearTimeout(fetchPinDebounce)
-        fetchPinDebounce = setTimeout(() => fetchPin(1), 2000)
+        clearTimeout(fetchGlobalListDebounce)
+        fetchGlobalListDebounce = setTimeout(() => fetchGlobalList(1), 2000)
     })
 </script>

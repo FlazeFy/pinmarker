@@ -126,18 +126,6 @@
         $(document).on('click', '#submit-btn', function() {  
             let listTag = null
                 
-            if($('#selected-tag-holder').children().length > 0){
-                listTag = []
-                $('#selected-tag-holder .pin-tag').each(function(idx, el) {
-                    listTag.push({
-                        tag_name: $(el).text().replace('#','')
-                    })
-                })
-
-                listTag = JSON.stringify(listTag)
-
-                $('#list_tag').val(listTag)
-            } 
             if(selected_pin.length > 0){
                 let id = ''
                 let pins = ''

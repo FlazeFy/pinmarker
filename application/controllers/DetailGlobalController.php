@@ -136,11 +136,6 @@ class DetailGlobalController extends CI_Controller {
 				'updated_at' => date('Y-m-d H:i:s'), 
 			];
 
-			if($this->input->post('list_tag') != ""){
-				$list_tag = $this->input->post('list_tag');
-				$data['list_tag'] = $list_tag; 
-			}
-
 			if($this->GlobalListModel->update_list($id,$data)){
 				$owner = $this->GlobalListModel->get_owner_list($id);
 				if($owner){
@@ -162,47 +157,6 @@ class DetailGlobalController extends CI_Controller {
 	}
 
 	public function remove_tag($id){
-		$idx = $this->input->post('tag_selected_idx');
-		$list = $this->GlobalListModel->get_detail_list_by_id($id);
-
-		if($list){
-			$tags = json_decode($list->list_tag, true);
-
-			if (is_array($tags)) {
-				array_splice($tags, $idx, 1);
-				$tags = array_values($tags);
-
-				if(count($tags) > 0){
-					$tags = json_encode($tags);
-				} else {
-					$tags = null;
-				}
-				$data = [
-					'list_tag' => $tags,
-					'updated_at' => date('Y-m-d H:i:s'),
-				];
-		
-				if($this->GlobalListModel->update_list($id,$data)){
-					$owner = $this->GlobalListModel->get_owner_list($id);
-					if($owner){
-						$list_desc = $owner->list_desc ? "<b>($owner->list_desc)</b>" : "";
-						$this->telegram->sendMessage([
-							'chat_id' => $owner->telegram_user_id,
-							'text' => "Hello <b>$owner->username</b>, your list called $owner->list_name $list_desc has been updated on the tag",
-							'parse_mode' => 'HTML'
-						]);
-					}
-
-					$this->session->set_flashdata('message_success', generate_message(true,'update','list',null));
-				} else {
-					$this->session->set_flashdata('message_error', generate_message(false,'update','list',null));
-				}
-			} else {
-				$this->session->set_flashdata('message_error', generate_message(false,'update','list','tag dont exist'));
-			}
-			redirect("/DetailGlobalController/view/$id");
-		} else {
-			redirect("/ListController");
-		}			
+			
 	}
 }

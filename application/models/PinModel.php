@@ -188,7 +188,7 @@
 					$this->db->where('visit.id IS NULL', null, false);
 				}
 			}
-			if ($visit_with !== "all") {
+			if ($visit_with !== "-all-") {
 				$companions = array_map('trim', explode(',', urldecode($visit_with)));
 				$this->db->group_start();
 				foreach ($companions as $companion) {

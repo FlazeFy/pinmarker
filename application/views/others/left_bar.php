@@ -25,7 +25,7 @@
         <a href="/MapsController" class="nav-item">
             <i class="fa-solid fa-map"></i> Maps
         </a>
-        <a href="/GlobalListController" class="nav-item">
+        <a href="/GlobalListController" class="nav-item <?= ($cleanedUrl === "GlobalListController") ? "active" : ""; ?>">
             <i class="fa-solid fa-folder-open"></i> Collections
         </a>
         <a href="/ListController" class="nav-item <?= ($cleanedUrl === "ListController") ? "active" : ""; ?>">
