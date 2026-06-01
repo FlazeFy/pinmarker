@@ -361,7 +361,7 @@
     }
 }
 
-/* Marker */
+/* Marker & Collection */
 .marker-card {
     background: #fff;
     border-radius: var(--roundedXLG);
@@ -431,11 +431,16 @@
     text-transform: uppercase;
     color: var(--greyColor);
 }
+.meta-text {
+    font-size: var(--textSM);
+    color: var(--greyColor);
+}
 .meta-val {
+    color: var(--greyColor);
     font-weight: 500;
 }
 .marker-addr, .marker-desc, .meta-val, .meta-label {
-    font-size: var(--textSM);
+    font-size: var(--textSM) !important;
 }
 .meta-val--primary {
     color: var(--primaryColor);

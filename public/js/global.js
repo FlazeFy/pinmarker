@@ -315,7 +315,7 @@ formValidation()
 const renderPagination = (currentPage, totalPage, startItem, endItem, totalItem, targetPaginationInfoHolder) => {
     const holder = '#paginationButtonHolder'
     let html = `
-        <button class="page-btn" ${currentPage <= 1 ? 'disabled' : ''} onclick="fetchPin(${currentPage - 1})">
+        <button class="page-btn" ${currentPage <= 1 ? 'disabled' : ''} data-page="${currentPage - 1}">
             <i class="fa-solid fa-chevron-left"></i>
         </button>
     `
@@ -324,14 +324,14 @@ const renderPagination = (currentPage, totalPage, startItem, endItem, totalItem,
     let endPage = Math.min(totalPage, currentPage + 2)
 
     if (startPage > 1) {
-        html += `<button class="page-btn" onclick="fetchPin(1)">1</button>`
+        html += `<button class="page-btn" data-page="1">1</button>`
 
         if (startPage > 2) html += `<span class="page-ellipsis">...</span>`
     }
 
     for (let i = startPage; i <= endPage; i++) {
         html += `
-            <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="fetchPin(${i})">
+            <button class="page-btn ${i === currentPage ? 'active' : ''}" data-page="${i}">
                 ${i}
             </button>
         `
@@ -341,14 +341,14 @@ const renderPagination = (currentPage, totalPage, startItem, endItem, totalItem,
         if (endPage < totalPage - 1) html += `<span class="page-ellipsis">...</span>`
 
         html += `
-            <button class="page-btn" onclick="fetchPin(${totalPage})">
+            <button class="page-btn" data-page="${totalPage}">
                 ${totalPage}
             </button>
         `
     }
     
     html += `
-        <button class="page-btn" ${currentPage >= totalPage ? 'disabled' : ''} onclick="fetchPin(${currentPage + 1})">
+        <button class="page-btn" ${currentPage >= totalPage ? 'disabled' : ''} data-page="${currentPage + 1}">
             <i class="fa-solid fa-chevron-right"></i>
         </button>
     `
@@ -364,4 +364,10 @@ const renderNoMessageBox = (target, context) => {
             <p>- No ${context} found -</p>
         </div>
     `)
+}
+
+const getSelectedTag = (target) => {
+    return $(`.filter-chip.${target}.active`).map(function(){
+        return $(this).data('filter')
+    }).get().join(',')
 }

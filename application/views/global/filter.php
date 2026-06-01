@@ -7,8 +7,8 @@
                 <option value="created_at-asc">Date Created (Oldest)</option>
                 <option value="total_visit-desc">Most Visited</option>
                 <option value="total_visit-asc">Least Visited</option>
-                <option value="pin_name-asc">A-Z Alphabetical</option>
-                <option value="pin_name-desc">Z-A Alphabetical</option>
+                <option value="list_name-asc">A-Z Alphabetical</option>
+                <option value="list_name-desc">Z-A Alphabetical</option>
             </select>
         </div>
         <div class="filter-divider"></div>
@@ -33,3 +33,20 @@
         <div class="d-flex gap-2 flex-wrap" id="categoryTag"></div>
     </div>
 </div>
+
+<script>
+    let fetchGlobalListDebounce = null
+
+    $(document).on('change', '#sortSelect,#itemPerPageSelect,#withCompanionSelect', function(){
+        fetchGlobalList(1)
+    })
+    $(document).on('change', '#withCompanionSelect', function(){
+        $('#filterCompanionSection').toggleClass('d-none')
+    })
+
+    $(document).on('click', '.filter-chip', function(){
+        $(this).toggleClass('active')
+        clearTimeout(fetchGlobalListDebounce)
+        fetchGlobalListDebounce = setTimeout(() => fetchGlobalList(1), 2000)
+    })
+</script>

@@ -87,7 +87,7 @@
                                     </div>
                                     <div class="marker-meta-col">
                                         <span class="meta-label">Last Visit</span>
-                                        <span class="meta-val meta-val--warn">
+                                        <span class="meta-val">
                                             ${dt.last_visit || '-'}
                                         </span>
                                     </div>
@@ -158,6 +158,10 @@
     }
 
     $(document).ready(() => fetchPin())
+
+    $(document).on('click', '.page-btn', function(){
+        fetchPin($(this).data('page'))
+    })
 </script>
 
 <style>

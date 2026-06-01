@@ -35,7 +35,8 @@
     --successLightBG: #ccfbe5;
     --dangerBG : #ef0025;
     --dangerLightBG : #ffe5dc;
-    --infoBG: #00cbe6;
+    --infoBG: #008cff;
+    --infoLightBG: #e3f0ff;
     --warningBG : #ff9f43;
     --warningLightBG: #fff4e7;
 
@@ -125,10 +126,10 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
 
 /* Transition */
 .nav-item, .dropdown-item, .section-help, .fc-daygrid-event, .fc-timegrid-event, .fc-popover.fc-more-popover, .fc-popover-close, .autocomplete-items div, .btn-change-image
-, .reset-image-btn, .btn-account-attach, .pin-box, .gallery-btn, .progressBar li:before {
-    -webkit-transition: all 0.35s;
-    -o-transition: all 0.35s;
-    transition: all 0.35s;
+, .reset-image-btn, .btn-account-attach, .pin-box, .gallery-btn, .progressBar li:before, .tag, .card, .btn, .icon-btn, .page-btn {
+    -webkit-transition: all 0.25s;
+    -o-transition: all 0.25s;
+    transition: all 0.25s;
 }
 
 .shadow {
@@ -211,13 +212,16 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
     color: var(--greyColor);
 }
 .companion-link {
-    color: var(--primaryColor);
+    color: var(--primaryColor) !important;
     font-weight: 500;
     cursor: pointer;
 }
 .companion-link:hover {
     text-decoration: underline;
 }
+.text-sm {
+    font-size: var(--textSM);
+}   
   
 table thead {
     background: var(--primaryLightColor);

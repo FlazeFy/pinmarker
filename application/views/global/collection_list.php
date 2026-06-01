@@ -1,75 +1,162 @@
-<div class="row g-4" id="collectionsGrid">
-    <div class="col-xl-4 col-md-6">
-        <div class="col-card col-card--purple h-100">
-            <div class="d-flex justify-content-between align-items-start mb-3">
-                <span class="pin-badge pin-badge--purple">
-                    <i class="fa-solid fa-thumbtack"></i> 1 Marker
-                </span>
-                <button class="icon-btn-sm"><i class="fa-solid fa-ellipsis-vertical"></i></button>
-            </div>
-            <h3 class="col-title">bolu</h3>
-            <p class="col-desc fst-italic text-secondary">No Description available</p>
-            <div class="col-meta">
-                <div class="meta-row">
-                    <span class="meta-label"><i class="fa-solid fa-list"></i> List Marker</span>
-                    <span class="meta-text">Tji Laki 9</span>
-                </div>
-                <div class="meta-row">
-                    <span class="meta-label">Created At</span>
-                    <span class="meta-text">2025-12-09 • @jalanjalan</span>
-                </div>
-            </div>
-            <div class="col-actions">
-                <a href="/GlobalListController/detail/bolu" class="btn btn-see-more w-100">
-                    See Detail
-                </a>
-                <button class="btn btn-outline"><i class="fa-solid fa-share-nodes"></i></button>
-            </div>
-        </div>
-    </div>
+<div class="row g-4" id="globalList"></div>
+<div class="d-flex justify-content-between align-items-center border-top pt-4 mt-4">
+    <span class="pagination-info" id="paginationInfoHolder"></span>
+    <div class="d-flex gap-2 align-items-center" id="paginationButtonHolder"></div>
 </div>
 
-<style>
-    .col-card {
-        background: #fff;
-        border-radius: var(--roundedXLG);
-        border: 1.5px solid #e7e8ec;
-        padding: var(--spaceXLG);
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 4px 20px rgba(99,91,255,.04);
-        transition: transform .25s ease,
-                    box-shadow .25s ease,
-                    border-color .25s ease;
+<script>
+    const fetchGlobalList = (page = 1) => {
+        const holder = '#globalList'
+        const companionHolder = '#companionTag'
+        const paginationHolder = '#paginationHolder'
+        const paginationInfoHolder = '#paginationInfoHolder'
+        const sorting = $('#sortSelect').val()
+        const per_page = $('#itemPerPageSelect').val()
+        const with_companion = $('#withCompanionSelect').val()
+        let visit_with = getSelectedTag('visit-with')
+        visit_with = visit_with === '' ? null : visit_with
+
+        $(holder).html(`
+            <div class="col-xl-4 col-md-6">
+                <div class="skeleton-loading global-list-skeleton"></div>
+            </div>
+            <div class="col-xl-4 col-md-6">
+                <div class="skeleton-loading global-list-skeleton"></div>
+            </div>
+            <div class="col-xl-4 col-md-6">
+                <div class="skeleton-loading global-list-skeleton"></div>
+            </div>
+        `)
+
+        $.ajax({
+            url: '/api/v1/global_list/my',
+            method: 'GET',
+            data: {
+                page,
+                per_page,
+                sorting,
+                with_companion,
+                visit_with 
+            },
+            success: (response) => {
+                const data = response.data.data
+                if (!data || data.length === 0) {
+                    renderPagination(1, 1, 0, 0, 0, paginationInfoHolder)
+                    renderNoMessageBox(holder, 'global-lists')
+                    return
+                }
+
+                let htmlItem = ''
+                data.forEach(dt => {
+                    console.log(dt)
+                    const pinListElement = dt.pin_list ? 
+                        dt.pin_list.split(", ").map(dt => `<a class="tag bg-primary pin-name me-1 mb-1" data-value="${dt}">${dt}</a>`).join("") 
+                        : 
+                        '<span class="text-none">- No marker attached -</span>'
+                    const visitWithEl = dt.visit_with ? 
+                        dt.visit_with.split(", ").map(dt => `<a class="tag bg-primary pin-name me-1 mb-1" data-value="${dt}">${dt}</a>`).join("") 
+                        : 
+                        '<span class="text-none">- No companion found -</span>'
+
+                    htmlItem += `
+                        <div class="col-xl-4 col-md-6">
+                            <div class="card h-100">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="d-flex gap-2">
+                                        <span class="tag bg-success">
+                                            <i class="fa-solid fa-thumbtack"></i> ${dt.total_pin} Marker${dt.total_pin > 1 ? 's':''}
+                                        </span>
+                                        ${
+                                            dt.total_visit > 0 ? `<span class="tag bg-info">
+                                                <i class="fa-solid fa-location-dot"></i> ${dt.total_visit} Visit${dt.total_visit > 1 ? 's':''}
+                                            </span>` : ''
+                                        }
+                                    </div>
+                                    <button class="icon-btn-sm"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                                </div>
+                                <h5 class="col-title">${dt.list_name}</h5>
+                                <p class="text-secondary text-sm">${dt.list_desc || '<span class="text-none">- No description provided -</span>'}</p>
+                                <div class="d-flex flex-column gap-2 mb-3">
+                                    <div class="meta-row">
+                                        <span class="meta-label"><i class="fa-solid fa-list"></i> List Marker</span>
+                                        <span>${pinListElement}</span>
+                                    </div>
+                                    ${
+                                        with_companion === '1' ? `
+                                            <div class="meta-row">
+                                                <span class="meta-label"><i class="fa-solid fa-users"></i> Companion</span>
+                                                <span>${visitWithEl}</span>
+                                            </div>`
+                                        : ''
+                                    }
+                                    <div class="d-flex justify-content-between">
+                                        <div class="meta-row">
+                                            <span class="meta-label">Created At</span>
+                                            <span class="meta-text">${dt.created_at}</span>
+                                        </div>
+                                        ${
+                                            dt.updated_at ?
+                                                `<div class="meta-row">
+                                                    <span class="meta-label">Updated At</span>
+                                                    <span class="meta-text">${dt.updated_at}</span>
+                                                </div>`
+                                            : ''
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-actions">
+                                    <a href="/GlobalListController/detail/bolu" class="btn btn-see-more w-100">
+                                        See Detail
+                                    </a>
+                                    <button class="btn btn-outline"><i class="fa-solid fa-share-nodes"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                })
+                $(holder).html(htmlItem)
+
+                const companions = response.data.visit_with
+                if (companions && companions.length > 0) {
+                    $(companionHolder).empty()
+                    const companionsSelected = visit_with ? visit_with.split(',') : null
+                    companions.forEach(dt => {
+                        const name = dt.name
+                        $(companionHolder).append(`<span class="filter-chip visit-with text-capitalize ${companionsSelected && companionsSelected.includes(name) ? 'active' : ''}" data-filter="${name}">(${dt.total}) ${name}</span>`)  
+                    })
+                } else {
+                    $(companionHolder).html(`<span class="text-none">- No companions available -</span>`)  
+                }
+
+                const totalItem = response.data.total_item
+                const totalPage = response.data.total_page
+                const startItem = response.data.start_item
+                const endItem = response.data.end_item
+                renderPagination(page, totalPage, startItem, endItem, totalItem, paginationInfoHolder)
+            },
+            error: () => {
+                $(holder).html(`
+                    <div class="empty-state text-danger">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Failed fetch my collection</span>
+                    </div>
+                `)
+            }
+        })
     }
-    .col-card:hover {
+
+    $(document).ready(() => fetchGlobalList())
+
+    $(document).on('click', '.page-btn', function(){
+        fetchGlobalList($(this).data('page'))
+    })
+</script>
+
+<style>
+    .card:hover {
         transform: translateY(-5px);
         box-shadow: 0 20px 40px rgba(99,91,255,.1);
-    }
-    .col-card--purple:hover {
         border-color: rgba(99,91,255,.3);
-    }
-    .col-card--orange:hover {
-        border-color: rgba(138,75,0,.25);
-    }
-    .pin-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        padding: 4px 12px;
-        border-radius: var(--roundedJumbo);
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: .06em;
-        text-transform: uppercase;
-    }
-    .pin-badge--purple {
-        background: rgba(99,91,255,.07);
-        color: var(--primaryColor);
-    }
-    .pin-badge--orange {
-        background: rgba(138,75,0,.08);
-        color: #8a4b00;
     }
     .icon-btn-sm {
         background: none;
@@ -87,64 +174,16 @@
         color: var(--primaryColor);
     }
     .col-title {
-        font-size: var(--textXLG);
         font-weight: 800;
-        color: var(--secondaryColor);
-        margin-bottom: 6px;
-        transition: color .2s;
         text-transform: capitalize;
     }
-    .col-card:hover .col-title {
-        color: var(--primaryColor);
-    }
-    .col-desc {
-        font-size: var(--textXMD);
-        color: #777587;
-        margin-bottom: var(--spaceLG);
-        flex-grow: 0;
-        line-height: 1.5;
-    }
-    .col-meta {
-        display: flex;
-        flex-direction: column;
-        gap: var(--spaceMD);
-        margin-bottom: var(--spaceXLG);
-        flex: 1;
+    .card:hover .col-title {
+        color: var(--primaryColor) !important;
     }
     .meta-row {
         display: flex;
         flex-direction: column;
         gap: 4px;
-    }
-    .meta-label {
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: .05em;
-        text-transform: uppercase;
-        color: #777587;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-    .meta-text {
-        font-size: var(--textXMD);
-        color: var(--secondaryColor);
-        line-height: 1.5;
-    }
-    .clamp {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    .marker-chip {
-        background: #f2f3f7;
-        color: #464555;
-        font-size: 11px;
-        font-weight: 600;
-        padding: 2px 8px;
-        border-radius: 4px;
-        display: inline-block;
     }
     .col-actions {
         display: flex;
@@ -153,23 +192,9 @@
         padding-top: var(--spaceXMD);
         margin-top: auto;
     }
-    .col-share-btn {
-        width: 42px;
-        height: 42px;
-        flex-shrink: 0;
-        background: #e7e8ec;
-        color: #464555;
-        border: none;
-        border-radius: var(--roundedMD);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
-        cursor: pointer;
-        transition: all .2s;
-    }
-    .col-share-btn:hover {
-        background: var(--primaryColor);
-        color: #fff;
+    .skeleton-loading.global-list-skeleton{
+        width: 100%;
+        height: 360px;
+        border-radius: var(--roundedLG);
     }
 </style>

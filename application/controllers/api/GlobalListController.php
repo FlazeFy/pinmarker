@@ -9,6 +9,7 @@ class GlobalListController extends CI_Controller {
     function __construct(){
         parent::__construct();
         $this->load->model("GlobalListModel");
+        $this->load->model("VisitModel");
         $this->allowed_target_sorting_pin = ['list_name','total_visit','created_at'];
         $this->allowed_value_sorting_pin = ['desc','asc'];
         $this->allowed_value_condition_pin = [1,0];

@@ -48,9 +48,10 @@
 			}
 		
 			$this->db->select("
-				$this->table.id, list_name, list_desc, $this->table.created_at,
+				$this->table.id, list_name, list_desc, $this->table.created_at, $this->table.updated_at,
 				IFNULL(GROUP_CONCAT(DISTINCT pin.pin_name ORDER BY pin.pin_name ASC SEPARATOR ', '), '') as pin_list,
-				IFNULL(COUNT(DISTINCT pin.id), 0) as total
+				IFNULL(COUNT(DISTINCT pin.id), 0) as total_pin,
+				IFNULL(COUNT(DISTINCT visit.id), 0) as total_visit
 				$extra
 			");
 			$this->db->from($this->table);
@@ -73,7 +74,7 @@
 				$this->db->group_end();
 			}
 		
-			if ($visit_with !== "all") {
+			if ($visit_with !== "-all-") {
 				$companions = array_map('trim', explode(',', urldecode($visit_with)));
 		
 				$this->db->group_start();
@@ -101,6 +102,28 @@
 			$this->db->limit($limit, $start);
 		
 			$data['data'] = $this->db->get()->result();
+			// Tidy up the visit with
+			foreach ($data['data'] as &$row) {
+				if(empty($row->visit_with)){
+					$row->visit_with = null;
+					continue;
+				}
+			
+				$companions = [];
+				foreach (explode(',', $row->visit_with) as $name) {
+					$name = trim($name);
+			
+					if (stripos($name, 'and ') === 0) $name = trim(substr($name, 4));
+					if ($name !== '') $companions[] = $name;
+				}
+			
+				$companions = array_unique($companions);
+				sort($companions);
+			
+				$row->visit_with = count($companions) ? implode(', ', $companions) : null;
+			}
+			unset($row);
+
 			$data['total_page'] = $total_pages;
 			$data['total_item'] = $total_rows;
 			$data['start_item'] = $start_item;

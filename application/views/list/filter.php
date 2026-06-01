@@ -36,11 +36,6 @@
 
 <script>
     let fetchPinDebounce = null
-    const getSelectedTag = (target) => {
-        return $(`.filter-chip.${target}.active`).map(function(){
-            return $(this).data('filter')
-        }).get().join(',')
-    }
 
     $(document).on('change', '#sortSelect,#itemPerPageSelect,#withCompanionSelect', function(){
         fetchPin(1)
