@@ -107,17 +107,19 @@ class PinController extends CI_Controller {
         $per_page = $this->input->get('per_page');
         if ($per_page === null) {
             $per_page = 15;
-        } else if ($per_page !== "all") {
+        } else if ($per_page !== "all" && is_valid_positive_number($per_page)) {
             $per_page = (int)$per_page;
-        } else {
+        } else if ($per_page === "all") {
             $per_page = null;
+        } else {
+            return api_response(400, 'failed', 'per_page must be a positive number', null);
         }
 
         // Pagination param
         $page = $this->input->get('page') ? (int)$this->input->get('page') : 1;
 
-        // Max distance paran
-        $max_distance = $this->input->get('max_distance') ? (int)$this->input->get('max_distance') : null;
+        // Max distance param
+        $max_distance = $this->input->get('max_distance') ?? null;
         
         // boolean param safety
         $is_favorite = $this->input->get('is_favorite');
@@ -136,12 +138,17 @@ class PinController extends CI_Controller {
         if (!is_valid_positive_number($page)) {
             return api_response(400, 'failed', 'page must be a positive number', null);
         }
-        if ($per_page && !is_valid_positive_number($per_page)) {
-            return api_response(400, 'failed', 'per_page must be a positive number', null);
-        }
-        if ($max_distance && !is_valid_positive_number($max_distance)) {
+
+        // Max distance query param validator
+        if ($max_distance && !is_valid_positive_number($max_distance) && $max_distance !== "all") {
             return api_response(400, 'failed', 'max_distance must be a positive number', null);
-        }
+        } else if($max_distance){
+            if ($max_distance !== "all") {
+                $max_distance = (int)$max_distance;
+            } else {
+                $max_distance = null;
+            }
+        } 
 
         // Pagination calculation
         $page = max(1, $page);

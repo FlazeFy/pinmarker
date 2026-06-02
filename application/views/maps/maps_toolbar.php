@@ -44,9 +44,9 @@
 <style>
     .map-toolbar {
         position: absolute;
-        top: var(--spaceLG);
-        left: var(--spaceLG);
-        right: var(--spaceLG);
+        top: var(--spaceMD);
+        left: var(--spaceMD);
+        right: var(--spaceMD);
         z-index: 1000;
         display: flex;
         gap: var(--spaceMD);

@@ -35,11 +35,10 @@
 
 /* Card */
 .card {
-    background: #fff;
-    border-radius: var(--roundedXLG);
     border: 1px solid rgba(199,196,216,.35);
     padding: var(--spaceXLG);
     box-shadow: 0 20px 40px rgba(0,0,0,.04);
+    border-radius: var(--roundedXLG);
 }
 .card-title { 
     font-size: 22px; font-weight: 700; color: var(--secondaryColor); margin-bottom: 6px; 
@@ -57,6 +56,12 @@
 .card h3 {
     font-size: var(--textMD);
     font-weight: bold;
+}
+
+.card, .fc-daygrid-event, .fc-timegrid-event {
+    background: #fff;
+    border: 1px solid rgba(199,196,216,.35);
+    padding: var(--spaceXLG);
 }
 
 /* Container & Box */
