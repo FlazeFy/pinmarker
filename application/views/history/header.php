@@ -4,7 +4,7 @@
         <p class="page-sub">See your trip / visit history using interactive calendar.</p>
     </div>
     <div class="d-flex gap-2">
-        <a href="/AddVisit" class="btn btn-primary">
+        <a href="/AddVisitController" class="btn btn-primary">
             <i class="fa-solid fa-plus"></i> Add New Visit
         </a>
         <a class="btn btn-outline" id="btn-print">

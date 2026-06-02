@@ -126,7 +126,7 @@
     }
     .fc-popover.fc-more-popover .fc-popover-body{
         flex-direction: column;
-        height: 60vh;
+        height: 600px;
         z-index: 999;
         overflow-y: scroll;
     }
