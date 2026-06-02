@@ -294,64 +294,90 @@
 			return $result;
 		}
 
-		public function get_all_visit_with() {
-			$user_id = $this->session->userdata(self::SESSION_KEY);
+		public function get_all_visit_with($search, $per_page, $offset, $user_id) {
 			$person_query = "LOWER(visit_with)";
-
-			$this->db->select("$person_query AS context, CASE WHEN pin_name is null THEN SUBSTRING(visit_desc, LOCATE(' at ', visit_desc) + 4) ELSE pin_name END AS location, visit.created_at as visit_at",false);
+	
+			// Main query
+			$this->db->select("
+				$person_query AS context,
+				CASE 
+					WHEN pin_name IS NULL THEN SUBSTRING(visit_desc, LOCATE(' at ', visit_desc) + 4) 
+					ELSE pin_name 
+				END AS location,
+				visit.created_at AS visit_at
+			", false);
 			$this->db->from($this->table);
-			$this->db->join("pin","pin.id = visit.pin_id","left");
+			$this->db->join("pin", "pin.id = visit.pin_id", "left");
+	
 			$condition = [
 				'visit.created_by' => $user_id,
 				'visit_with IS NOT NULL'
 			];
 			$this->db->where($condition);
+	
 			$data = $this->db->get()->result();
-			
-			$name_data = [];			
+	
+			// Grouping data
+			$name_data = [];
 			foreach ($data as $row) {
 				if (!empty($row->context)) {
 					$names = preg_split('/, and |, /', $row->context);
-		
+	
 					foreach ($names as $name) {
 						$name = trim(strtolower($name));
 						if (!empty($name)) {
+							// Search filtering
+							if ($search && stripos($name, strtolower($search)) === false) continue;
+	
 							if (!isset($name_data[$name])) {
 								$name_data[$name] = [
-									'total' => 0,
-									'locations' => [],
-									'visit_at' => [],
+									'total_visit_with' => 0,
+									'last_visit' => null
 								];
 							}
-		
-							$name_data[$name]['total']++;
-		
-							if (!empty($row->location) && !in_array($row->location, $name_data[$name]['locations'])) {
-								$name_data[$name]['locations'][] = $row->location;
-							}
-							if (!empty($row->visit_at) && !in_array($row->visit_at, $name_data[$name]['visit_at'])) {
-								$name_data[$name]['visit_at'][] = $row->visit_at;
+							$name_data[$name]['total_visit_with']++;
+	
+							if ($row->visit_at &&
+								(
+									$name_data[$name]['last_visit'] === null ||
+									strtotime($row->visit_at) > strtotime($name_data[$name]['last_visit'])
+								)
+							) {
+								$name_data[$name]['last_visit'] = $row->visit_at;
 							}
 						}
 					}
 				}
 			}
-		
+	
+			// Formatting result
 			$result = [];
-			foreach ($name_data as $name => $data) {
+			foreach ($name_data as $name => $dt) {
 				$result[] = (object)[
 					'name' => $name,
-					'total' => $data['total'],
-					'locations' => implode(', ', $data['locations']), 
-					'visit_at' => implode(', ', $data['visit_at']) 
+					'total_visit_with' => $dt['total_visit_with'],
+					'last_visit' => $dt['last_visit']
 				];
 			}
-		
+	
+			// Sort most visit first
 			usort($result, function ($a, $b) {
-				return $b->total - $a->total;
+				return $b->total_visit_with - $a->total_visit_with;
 			});
-		
-			return $result;
+	
+			// Pagination
+			$total_rows = count($result);
+	
+			$total_pages = ceil($total_rows / $per_page);
+			$start_item = $total_rows > 0 ? $offset + 1 : 0;
+			$end_item = min($offset + $per_page, $total_rows);
+			$data['data'] = array_slice($result, $offset, $per_page);
+			$data['total_page'] = $total_pages;
+			$data['total_item'] = $total_rows;
+			$data['start_item'] = $start_item;
+			$data['end_item'] = $end_item;
+	
+			return $data;
 		}
 
 		public function get_visit_withs($user_id) {
