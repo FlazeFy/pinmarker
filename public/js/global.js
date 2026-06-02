@@ -383,11 +383,32 @@ const getCookie = (key) => {
     return null
 }
 
-const datetimeText = (datetime, isSyncTime = false) => {
-    const visitTime = new Date(datetime)
+const datetimeText = (datetime, isSyncTime = false, type = 'datetime') => {
+    let visitTime = new Date(datetime)
+
+    // Sync UTC Time
+    if (isSyncTime) visitTime = new Date(visitTime.toISOString())
 
     // Current time
     const now = isSyncTime ? new Date(new Date().toISOString()) : new Date()
+
+    // Date only
+    if (type === 'date') {
+        return visitTime.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: 'short',
+            year: '2-digit'
+        })
+    }
+
+    // Time only
+    if (type === 'time') {
+        return visitTime.toLocaleTimeString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        })
+    }
 
     const diffSeconds = Math.floor((now - visitTime) / 1000)
     const diffHours = Math.floor(diffSeconds / 3600)

@@ -34,74 +34,6 @@
         width: 100%;
         height: 100%;
     }
-    .map-toolbar{
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        z-index: 1000;
-        display: flex;
-        gap: 12px;
-        align-items: flex-start;
-    }
-    .map-type-wrap{
-        background: #fff;
-        padding: var(--spaceXSM);
-        border-radius: var(--roundedLG);
-        box-shadow: 0 4px 16px rgba(0,0,0,.1);
-    }
-    .map-type-wrap h6{
-        margin-left: var(--spaceMini);
-        font-size: var(--textSM);
-        font-weight: 600;
-        margin-bottom: var(--spaceMini);
-    }
-    .map-type-group{
-        background: rgba(255,255,255,.9);
-        backdrop-filter: blur(12px);
-        border-radius: var(--roundedMD);
-        padding: 4px;
-        display: flex;
-        gap: 2px;
-        border: 1px solid rgba(199,196,216,.3);
-    }
-    .map-type{
-        padding: 7px 16px;
-        border: none;
-        border-radius: var(--roundedSM);
-        font-size: var(--textXSM);
-        font-weight: 700;
-        font-family: inherit;
-        color: #464555;
-        background: transparent;
-        cursor: pointer;
-        transition: all .2s;
-        white-space: nowrap;
-    }
-    .map-type.active{
-        background: var(--primaryColor);
-        color: #fff;
-        box-shadow: 0 3px 10px rgba(99,91,255,.3);
-    }
-    .map-type:hover:not(.active){
-        background: #f2f3f7;
-    }
-    .map-range-select{
-        min-width: 120px;
-        padding: var(--spaceSM);
-        border: 1px solid rgba(199,196,216,.3);
-        border-radius: var(--roundedMD);
-        background: rgba(255,255,255,.9);
-        backdrop-filter: blur(12px);
-        font-size: var(--textXSM);
-        font-weight: 700;
-        margin-bottom: 0;
-        color: #464555;
-        outline: none;
-        cursor: pointer;
-    }
-    .map-range-select:focus{
-        border-color: var(--primaryColor);
-    }
     .region-bar{
         position: absolute;
         bottom: 20px;
@@ -139,21 +71,6 @@
     .leaflet-popup-content-wrapper{
         border-radius: var(--roundedMD);
     }
-    @media(max-width: 768px){
-        .map-toolbar{
-            top: 12px;
-            right: 12px;
-            left: 12px;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .map-type-group{
-            overflow-x: auto;
-        }
-        .map-range-select{
-            width: 100%;
-        }
-    }
 </style>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -162,6 +79,8 @@
     let userLat = getCookie('lat')
     let userLng = getCookie('long')
     let userRadius = null
+    let previousMarkerPerFetch = $('#marker-per-fetch-select').val()
+
     // Initialize Map
     const map = L.map('map-board', {
         zoomControl: false
@@ -190,8 +109,6 @@
     $(document).ready(function () {
         const max_distance = $('#max-range-select').val() !== "all" ? parseInt($('#max-range-select').val()) : "all"
         let markers = []
-
-        
 
         // Zoom Control
         L.control.zoom({
@@ -248,9 +165,14 @@
 
         // Fetch Nearby Pin
         const fetchNearbyPins = (page = 1) => {
-            const max_distance = parseInt($('#max-range-select').val())
+            const max_distance = $('#max-range-select').val() !== "all" ? parseInt($('#max-range-select').val()) : null
             if (!$('.cat-item.active').length) $('.cat-name').eq(0).closest('.cat-item').addClass('active')
             const pin_category = $('.cat-item.active').find('.cat-name').data('val')
+            const viewTypeSelect = $('#view-type-select').val()
+            const is_favorite = viewTypeSelect === "favorite" ? "1" : "all"
+            const is_visited = viewTypeSelect === "visited" ? "1" : viewTypeSelect === "unvisited" ? "0" : "all"
+            const per_page = $('#marker-per-fetch-select').val()
+
             markers.forEach(marker => map.removeLayer(marker))
             markers = []
 
@@ -260,13 +182,17 @@
                 data: {
                     pin_category,
                     page,
+                    per_page,
                     max_distance,
                     lat: userLat,
-                    long: userLng
+                    long: userLng,
+                    is_favorite, 
+                    is_visited,
                 },
                 method: 'GET',
                 success: (response) => {
-                    const pins = response.data.data
+                    const data = response.data
+                    const pins = data.data
                     const bounds = [[userLat, userLng]]
                     let listPinEl = ''
 
@@ -303,9 +229,9 @@
                         markers.push(marker)
 
                         const pinAddressEl = dt.pin_address ? `<span class='tag bg-success'><i class='fa-solid fa-location-dot'></i> ${dt.pin_address}</span>` : ""
-                        const createdAtText = datetimeText(dt.created_at)
+                        const visitAtText = dt.last_visit_at ? ` • Last visit at ${datetimeText(dt.last_visit_at, false, 'date')}` : ''
                         const isFavoriteEl = dt.is_favorite == 1 ? "<span class='fav-dot'><i class='fa-solid fa-heart'></i></span>" : ""
-                        const distanceEl = dt.distance ? ` • <div class="tag bg-primary">${dt.distance} Km</div>` : ""
+                        const distanceEl = dt.distance ? `<div class="tag bg-primary">${dt.distance} Km</div>` : ""
 
                         listPinEl += `
                             <div class='activity-item mb-0'>
@@ -315,7 +241,7 @@
                                 </div>
                                 <div class='activity-info'>
                                     <div class='activity-name'>${dt.pin_name}</div>
-                                    <div class='activity-meta'>${createdAtText}${distanceEl}</div>
+                                    <div class='activity-meta'>${distanceEl}${visitAtText}</div>
                                     <div class='activity-tags'>
                                         ${pinAddressEl}
                                     </div>
@@ -325,9 +251,20 @@
                     })
 
                     if (bounds.length > 1) map.fitBounds(bounds, { padding: [50, 50]})
-                    $('.region-desc').text(`${pins.length} places detected within ${max_distance} km radius.`)
-                    $('#place-nearby-radius-text').text(max_distance)
-                    
+                    $('.region-desc').text(`${pins.length} places detected${max_distance ? ` within ${max_distance} km radius.`:''}`)
+
+                    max_distance ? $('#place-nearby-radius-text').html(`<i class="fa-solid fa-circle-info"></i> in ${max_distance} Km Radius`) : $('#place-nearby-radius-text').empty()
+                    $('#visit-percentage-text').html(`
+                        <div class="d-flex align-items-end gap-2">${data.visited_percentage}%${
+                            max_distance ? `
+                                <div class="d-flex flex-column">
+                                    <span style="font-size: var(--textXMD);">${data.average_distance.toFixed(2)} Km</span>
+                                    <span style="font-size: var(--textSM); font-weight: 500;">Avg Distance</span>
+                                </div>
+                            `:''}
+                        </div>
+                    `)
+
                     const $cat = $(`.cat-name[data-val="${pin_category}"]`).first().closest('.cat-item')
                     $cat.addClass('active')
                     $cat.find('.cat-body').html(`<div class="pt-2">${listPinEl}</div>`)
@@ -397,16 +334,45 @@
             tileLayer.addTo(map)
         })
 
-        $(document).on('click', '.cat-item', function(e) {
+        $(document).on('click', '.cat-item', function() {
             $('.cat-item').removeClass('active')
             $('.cat-body').empty()
             $(this).toggleClass('active')
             fetchNearbyPins()
         })
 
-        $(document).on('click', '#max-range-select', function(e) {
+        $(document).on('change', '#max-range-select', function() {
             renderRadius()
             fetchNearbyPins()
+        })
+
+        $(document).on('change', '#view-type-select', function() {
+            fetchNearbyPins()
+        })
+
+        $(document).on('change', '#marker-per-fetch-select', function() {
+            const val = $(this).val()
+
+            if (val === "all") {
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Fetch all marker?',
+                    text: 'This may take a long time if you have thousands of markers.',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'Later',
+                    confirmButtonColor: '#635bff'
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        fetchNearbyPins()
+                    } else {
+                        $(this).val(previousMarkerPerFetch)
+                    }
+                })
+            } else {
+                fetchNearbyPins()
+                previousMarkerPerFetch = val
+            }
         })
 
         setTimeout(() => {

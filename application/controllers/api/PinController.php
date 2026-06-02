@@ -98,12 +98,28 @@ class PinController extends CI_Controller {
         // Query param
         $search = $this->input->get('search') ? $this->input->get('search') : null;
         $pin_category = $this->input->get('pin_category') ? $this->input->get('pin_category') : null;
+        
+        // Coordinate param
         $lat = $this->input->get('lat') ? $this->input->get('lat') : null;
         $long = $this->input->get('long') ? $this->input->get('long') : null;
-        $per_page = $this->input->get('per_page') ? (int)$this->input->get('per_page') : 50;
+        
+        // Total item per page param
+        $per_page = $this->input->get('per_page');
+        if ($per_page === null) {
+            $per_page = 15;
+        } else if ($per_page !== "all") {
+            $per_page = (int)$per_page;
+        } else {
+            $per_page = null;
+        }
+
+        // Pagination param
         $page = $this->input->get('page') ? (int)$this->input->get('page') : 1;
+
+        // Max distance paran
         $max_distance = $this->input->get('max_distance') ? (int)$this->input->get('max_distance') : null;
-        // dont use ternery, 0 count as false
+        
+        // boolean param safety
         $is_favorite = $this->input->get('is_favorite');
         if ($is_favorite === null) $is_favorite = 'all'; 
         $is_visited = $this->input->get('is_visited');
@@ -120,7 +136,7 @@ class PinController extends CI_Controller {
         if (!is_valid_positive_number($page)) {
             return api_response(400, 'failed', 'page must be a positive number', null);
         }
-        if (!is_valid_positive_number($per_page)) {
+        if ($per_page && !is_valid_positive_number($per_page)) {
             return api_response(400, 'failed', 'per_page must be a positive number', null);
         }
         if ($max_distance && !is_valid_positive_number($max_distance)) {
@@ -129,8 +145,12 @@ class PinController extends CI_Controller {
 
         // Pagination calculation
         $page = max(1, $page);
-        $per_page = max(1, $per_page);
-        $offset = ($page - 1) * $per_page;
+        if ($per_page !== null) {
+            $per_page = max(1, (int)$per_page);
+            $offset = ($page - 1) * $per_page;
+        } else {
+            $offset = 0;
+        }
 
         $result = $this->PinModel->get_all_pin_maps_format($search, $pin_category, $lat, $long, $max_distance, $is_favorite, $is_visited, $per_page, $offset, $user_id);
 
@@ -147,6 +167,8 @@ class PinController extends CI_Controller {
                 'total_page' => $result['total_page'],
                 'total_item' => $result['total_item'],
                 'start_item' => $result['start_item'],
+                'visited_percentage' => $result['visited_percentage'],
+                'average_distance' => $result['average_distance'],
                 'end_item' => $result['end_item'],
                 'data' => $result['data'],
             ]

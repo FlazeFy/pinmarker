@@ -3,10 +3,8 @@
         <div class="analytics-eyebrow">
             <i class="fa-solid fa-chart-line"></i> Places Nearby Visit Goals
         </div>
-        <div class="analytics-num">30%</div>
-        <div class="analytics-badge">
-            <i class="fa-solid fa-circle-info"></i> in <span id="place-nearby-radius-text"></span> Km Radius
-        </div>
+        <div class="analytics-num" id="visit-percentage-text">-%</div>
+        <div class="analytics-badge" id="place-nearby-radius-text"></div>
     </div>
     <div class="analytics-blur-1"></div>
     <div class="analytics-blur-2"></div>

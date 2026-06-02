@@ -234,7 +234,7 @@
 			// Main query
 			$this->db->select("
 				pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, is_favorite, pin.created_at, pin_address, 
-				IFNULL(COUNT(visit.id), 0) as total_visit 
+				IFNULL(COUNT(visit.id), 0) as total_visit, MAX(visit.created_at) as last_visit_at 
 			");
 			$this->db->join('visit','visit.pin_id = pin.id','left');
 			$this->db->from($this->table);
@@ -265,18 +265,20 @@
 			// Distance filtering
 			$has_distance_filter = ($max_distance !== null && $lat !== null && $long !== null);
 			$filtered_rows = [];
-			foreach ($rows as $row) {
-				$row->is_favorite = (int)$row->is_favorite;
-				$row->total_visit = (int)$row->total_visit;
-				$row->pin_lat = (double)$row->pin_lat;
-				$row->pin_long = (double)$row->pin_long;
+			foreach ($rows as $dt) {
+				// Data type safety
+				$dt->is_favorite = (int)$dt->is_favorite;
+				$dt->total_visit = (int)$dt->total_visit;
+				$dt->pin_lat = (double)$dt->pin_lat;
+				$dt->pin_long = (double)$dt->pin_long;
 
+				// Distance filtering
 				if ($has_distance_filter) {
-					$row->distance = calculate_distance($lat, $long, $row->pin_lat, $row->pin_long, 'km');
-					if ($row->distance <= (double)$max_distance) $filtered_rows[] = $row;
+					$dt->distance = calculate_distance($lat, $long, $dt->pin_lat, $dt->pin_long, 'km');
+					if ($dt->distance <= (double)$max_distance) $filtered_rows[] = $dt;
 				} else {
-					$row->distance = null;
-					$filtered_rows[] = $row;
+					$dt->distance = null;
+					$filtered_rows[] = $dt;
 				}
 			}
 
@@ -289,16 +291,43 @@
 
 			// Pagination count
 			$total_rows = count($filtered_rows);
-			$total_pages = ceil($total_rows / $per_page);
-			$start_item = $total_rows > 0 ? $offset + 1 : 0;
-			$end_item = min($offset + $per_page, $total_rows);
+			
+			if ($per_page === null) {
+				$total_pages = $total_rows > 0 ? 1 : 0;
+				$start_item = $total_rows > 0 ? 1 : 0;
+				$end_item = $total_rows;
+			
+				$data['data'] = $filtered_rows;
+			} else {
+				$total_pages = ceil($total_rows / $per_page);
+				$start_item = $total_rows > 0 ? $offset + 1 : 0;
+				$end_item = min($offset + $per_page, $total_rows);
+			
+				$data['data'] = array_slice($filtered_rows, $offset, $per_page);
+			}
 
-			// Pagination data
-			$data['data'] = array_slice($filtered_rows, $offset, $per_page);
+			// Average distance
+			$total_visit = 0;
+			$total_distance = 0;
+			$average_distance = null;
+			$total_pin_this_page = count($data['data']);
+			if ($has_distance_filter && $total_pin_this_page > 0) {
+				$total_distance = 0;
+
+				foreach ($data['data'] as $dt) {
+					$total_distance += $dt->distance;
+					if ($dt->last_visit_at) $total_visit++;
+				}
+
+				$average_distance = round($total_distance / $total_pin_this_page, 2);
+			}
+
 			$data['total_page'] = $total_pages;
 			$data['total_item'] = $total_rows;
 			$data['start_item'] = $start_item;
 			$data['end_item'] = $end_item;
+			$data['visited_percentage'] = (int)(($total_visit / $total_pin_this_page) * 100);
+			$data['average_distance'] = $average_distance;
 
 			return $data;
 		}
