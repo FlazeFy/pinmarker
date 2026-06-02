@@ -11,11 +11,11 @@
         }
 
         // Query
-        public function get_my_activity($limit,$start){
+        public function get_my_activity($limit, $start, $user_id){
 			$this->db->select('id, history_type, history_context, created_at');
 			$this->db->from($this->table);
 			$condition = [
-				'created_by' => $this->session->userdata(self::SESSION_KEY)
+				'created_by' => $user_id
             ];
 			$this->db->where($condition);
             $this->db->order_by('created_at','desc');
@@ -27,6 +27,7 @@
             $this->db->limit($limit, $start);
             $data['data'] = $this->db->get()->result();
             $data['total_page'] = $total_pages;
+            
             return $data;
 		}
 

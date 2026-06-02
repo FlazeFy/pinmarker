@@ -11,9 +11,9 @@ class HistoryController extends CI_Controller {
 
 	function __construct(){
 		parent::__construct();
-		$this->load->model('VisitModel');
 		$this->load->model('AuthModel');
 		$this->load->model('HistoryModel');
+		$this->load->model('VisitModel');
 		$this->load->model('TokenModel');
 
 		$this->load->library('form_validation');
@@ -27,23 +27,10 @@ class HistoryController extends CI_Controller {
 	{
 		if($this->AuthModel->current_user()){
 			$data = [];
-			$data['is_mobile_device'] = is_mobile_device();
-
-			if($data['is_mobile_device']){
-				$per_page = 8;
-			} else {
-				$per_page = 14;
-			}
-			$offset = 0;
-
-			if($this->session->userdata('page_activity')){
-				$offset = $this->session->userdata('page_activity') * $per_page;
-			}
 
 			$data['active_page']= 'history';
 			$data['is_signed'] = true;
 			$data['dt_all_my_visit_header']= $this->VisitModel->get_all_my_visit_header();
-			$data['dt_my_activity']= $this->HistoryModel->get_my_activity($per_page, $offset);
 
 			$data['title_page'] = 'PinMarker | History';
 			$data['content'] = $this->load->view('history/index',$data,true);
