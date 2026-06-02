@@ -326,7 +326,7 @@
 			$data['total_item'] = $total_rows;
 			$data['start_item'] = $start_item;
 			$data['end_item'] = $end_item;
-			$data['visited_percentage'] = (int)(($total_visit / $total_pin_this_page) * 100);
+			$data['visited_percentage'] = $total_pin_this_page > 0 ? (int)(($total_visit / $total_pin_this_page) * 100) : 0;
 			$data['average_distance'] = $average_distance;
 
 			return $data;

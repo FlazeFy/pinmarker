@@ -31,7 +31,7 @@
         <a href="/ListController" class="nav-item <?= ($cleanedUrl === "ListController") ? "active" : ""; ?>">
             <i class="fa-solid fa-list"></i> My Marker
         </a>
-        <a href="/HistoryController" class="nav-item">
+        <a href="/HistoryController" class="nav-item <?= ($cleanedUrl === "HistoryController") ? "active" : ""; ?>">
             <i class="fa-solid fa-clock-rotate-left"></i> History
         </a>
         <a href="/TrackController" class="nav-item">
