@@ -47,6 +47,6 @@
     $(document).on('click', '.filter-chip', function(){
         $(this).toggleClass('active')
         clearTimeout(fetchPinDebounce)
-        fetchPinDebounce = setTimeout(() => fetchPin(1), 2000)
+        fetchPinDebounce = setTimeout(() => fetchPin(1), debouncerTime)
     })
 </script>

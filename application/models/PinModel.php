@@ -214,6 +214,14 @@
 
 			$this->db->limit($limit, $start);
 			$data['data'] = $this->db->get()->result();
+			// number safety
+			foreach ($data['data'] as $dt) {
+				$dt->is_favorite = (int)$dt->is_favorite;
+				$dt->total_visit = (int)$dt->total_visit;
+				$dt->pin_lat = (double)$dt->pin_lat;
+				$dt->pin_long = (double)$dt->pin_long;
+			}
+
 			$data['total_page'] = $total_pages;
 			$data['total_item'] = $total_rows;
 			$data['start_item'] = $start_item;
@@ -222,16 +230,125 @@
 			return $data;
 		}
 
-		public function get_pin_category($user_id = null) {
-			$this->db->select("pin_category, COUNT(1) as total");
+		public function get_all_pin_maps_format($search, $pin_category, $lat, $long, $max_distance, $is_favorite, $is_visited, $per_page, $offset, $user_id = null){
+			// Main query
+			$this->db->select("
+				pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, is_favorite, pin.created_at, pin_address, 
+				IFNULL(COUNT(visit.id), 0) as total_visit, MAX(visit.created_at) as last_visit_at 
+			");
+			$this->db->join('visit','visit.pin_id = pin.id','left');
 			$this->db->from($this->table);
+			$condition['pin.deleted_at'] = null;
+			$pin_category && $condition['pin_category'] = $pin_category;
+			if ($user_id) $condition['pin.created_by'] = $user_id;
+			$this->db->where($condition);
+
+			// Filtering
+			if($search){
+				$this->db->like('pin_name', $search, 'both');
+			}
+			if($is_favorite !== "all"){
+				$this->db->where('is_favorite',(int)$is_favorite);
+			}
+			if($is_visited !== "all"){
+				if ((int)$is_visited === 1) {
+					$this->db->where('visit.id IS NOT NULL', null, false);
+				} else {
+					$this->db->where('visit.id IS NULL', null, false);
+				}
+			}
+			$this->db->group_by('pin.id');
+
+			// Get all data first
+			$rows = $this->db->get()->result();
+
+			// Distance filtering
+			$has_distance_filter = ($max_distance !== null && $lat !== null && $long !== null);
+			$filtered_rows = [];
+			foreach ($rows as $dt) {
+				// Data type safety
+				$dt->is_favorite = (int)$dt->is_favorite;
+				$dt->total_visit = (int)$dt->total_visit;
+				$dt->pin_lat = (double)$dt->pin_lat;
+				$dt->pin_long = (double)$dt->pin_long;
+
+				// Distance filtering
+				if ($has_distance_filter) {
+					$dt->distance = calculate_distance($lat, $long, $dt->pin_lat, $dt->pin_long, 'km');
+					if ($dt->distance <= (double)$max_distance) $filtered_rows[] = $dt;
+				} else {
+					$dt->distance = null;
+					$filtered_rows[] = $dt;
+				}
+			}
+
+			// Sort nearest first
+			if ($has_distance_filter) {
+				usort($filtered_rows, function ($a, $b) {
+					return $a->distance <=> $b->distance;
+				});
+			}
+
+			// Pagination count
+			$total_rows = count($filtered_rows);
+			
+			if ($per_page === null) {
+				$total_pages = $total_rows > 0 ? 1 : 0;
+				$start_item = $total_rows > 0 ? 1 : 0;
+				$end_item = $total_rows;
+			
+				$data['data'] = $filtered_rows;
+			} else {
+				$total_pages = ceil($total_rows / $per_page);
+				$start_item = $total_rows > 0 ? $offset + 1 : 0;
+				$end_item = min($offset + $per_page, $total_rows);
+			
+				$data['data'] = array_slice($filtered_rows, $offset, $per_page);
+			}
+
+			// Average distance
+			$total_visit = 0;
+			$total_distance = 0;
+			$average_distance = null;
+			$total_pin_this_page = count($data['data']);
+			if ($has_distance_filter && $total_pin_this_page > 0) {
+				$total_distance = 0;
+
+				foreach ($data['data'] as $dt) {
+					$total_distance += $dt->distance;
+					if ($dt->last_visit_at) $total_visit++;
+				}
+
+				$average_distance = round($total_distance / $total_pin_this_page, 2);
+			}
+
+			$data['total_page'] = $total_pages;
+			$data['total_item'] = $total_rows;
+			$data['start_item'] = $start_item;
+			$data['end_item'] = $end_item;
+			$data['visited_percentage'] = (int)(($total_visit / $total_pin_this_page) * 100);
+			$data['average_distance'] = $average_distance;
+
+			return $data;
+		}
+
+		public function get_pin_category($user_id = null) {
+			$this->db->select("pin_category, COUNT(1) as total, dictionary_color, dictionary_icon");
+			$this->db->from($this->table);
+			$this->db->join('dictionary',"dictionary.dictionary_name = $this->table.pin_category","left");
 			$condition['deleted_at'] = null;
-			if ($user_id) $condition['created_by'] = $user_id;
+			if ($user_id) $condition["$this->table.created_by"] = $user_id;
 			$this->db->where($condition);
 			$this->db->group_by('pin_category');
 			$this->db->order_by('total','DESC');
+			$data = $this->db->get()->result();
 
-			return $this->db->get()->result();
+			// number safety
+			foreach ($data as $dt) {
+				$dt->total = (int)$dt->total;
+			}
+
+			return $data;
 		}
 
 		public function get_total_all($is_mine = false) {

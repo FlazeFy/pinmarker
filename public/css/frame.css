@@ -365,7 +365,6 @@
 .marker-card {
     background: #fff;
     border-radius: var(--roundedXLG);
-    border: 1.5px solid #e7e8ec;
     display: flex;
     align-items: center;
     gap: var(--spaceMD);
@@ -373,9 +372,6 @@
     padding-inline: var(--spaceXLG);
     overflow: hidden;
     transition: border-color .2s;
-}
-.marker-card:hover {
-    border-color: rgba(99,91,255,.35);
 }
 .marker-thumb {
     width: 180px;
@@ -406,7 +402,7 @@
     margin: 0;
     line-height: 1.3;
 }
-.marker-card:hover .marker-name {
+.marker-card:hover .marker-name, .cat-item.active .cat-name {
     color: var(--primaryColor);
 }
 .marker-addr {
@@ -454,6 +450,22 @@
     align-items: center;
     gap: var(--spaceSM);
     flex-shrink: 0;
+}
+.marker-card:hover, .cat-item:hover, .cat-item.active {
+    border-color: rgba(99,91,255,.35);
+}
+
+/* Category */
+.cat-item, .marker-card {
+    border: 1.5px solid #e7e8ec;
+}
+.cat-name {
+    font-size: var(--textXMD);
+    font-weight: 700;
+}
+.cat-count {
+    font-size: 10px;
+    color: #777587;
 }
 
 .empty-state {

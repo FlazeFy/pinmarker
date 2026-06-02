@@ -47,6 +47,6 @@
     $(document).on('click', '.filter-chip', function(){
         $(this).toggleClass('active')
         clearTimeout(fetchGlobalListDebounce)
-        fetchGlobalListDebounce = setTimeout(() => fetchGlobalList(1), 2000)
+        fetchGlobalListDebounce = setTimeout(() => fetchGlobalList(1), debouncerTime)
     })
 </script>
