@@ -110,12 +110,7 @@
         const max_distance = $('#max-range-select').val() !== "all" ? parseInt($('#max-range-select').val()) : "all"
         let markers = []
 
-        // Zoom Control
-        L.control.zoom({
-            position: 'bottomright'
-        }).addTo(map)
-
-        // OpenStreet Tile
+        L.control.zoom({ position: 'bottomright' }).addTo(map)
         let tileLayer = L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             { attribution: '&copy; OpenStreetMap contributors' }
@@ -130,22 +125,16 @@
             fillOpacity: 1
         }).addTo(map)
 
-        if (max_distance !== "all") {
-            renderRadius()
-        }
+        if (max_distance !== "all") renderRadius()
 
-        // Update User Coordinate
         const updateUserLocation = (lat, lng) => {
             userLat = lat
             userLng = lng
-
             storeCookie('lat', userLat)
             storeCookie('long', userLng)
 
-            // Remove default marker & radius
             map.removeLayer(userMarker)
             map.removeLayer(userRadius)
-
             userMarker = L.circleMarker([userLat, userLng], {
                 radius: 10,
                 fillColor: 'var(--primaryColor)',
@@ -156,19 +145,17 @@
             }).addTo(map)
 
             renderRadius()
-
-            // Move Camera
             map.setView([userLat, userLng], 12)
 
             fetchNearbyPins()
         }
 
-        // Fetch Nearby Pin
         const fetchNearbyPins = (page = 1) => {
             const max_distance = $('#max-range-select').val() !== "all" ? parseInt($('#max-range-select').val()) : null
             if (!$('.cat-item.active').length) $('.cat-name').eq(0).closest('.cat-item').addClass('active')
             const pin_category = $('.cat-item.active').find('.cat-name').data('val')
             const viewTypeSelect = $('#view-type-select').val()
+            const search = $('#pin-name-search').val().trim()
             const is_favorite = viewTypeSelect === "favorite" ? "1" : "all"
             const is_visited = viewTypeSelect === "visited" ? "1" : viewTypeSelect === "unvisited" ? "0" : "all"
             const per_page = $('#marker-per-fetch-select').val()
@@ -180,6 +167,7 @@
             $.ajax({
                 url: `/api/v1/pin/maps`,
                 data: {
+                    search,
                     pin_category,
                     page,
                     per_page,
@@ -234,7 +222,7 @@
                         const distanceEl = dt.distance ? `<div class="tag bg-primary">${dt.distance} Km</div>` : ""
 
                         listPinEl += `
-                            <div class='activity-item mb-0'>
+                            <div class='activity-item mb-0' data-lat='${dt.pin_lat}' data-long='${dt.pin_long}'>
                                 <div class='activity-thumb'>
                                     <img src='https://lh3.googleusercontent.com/aida-public/AB6AXuB9TgxRWJZ1lxyBC2boJYHByBkeSaroy5x0M-AVvRCH_M7rWkJDFoVc1Lykvj4iQd7LMnmKIZdneHmRaXwFC9lv7_R60HRIGCVjEjIOXZfaa7J7VxkudxcVJ4rY3Rgs-ylDPPCviUANS--Z29u4nWUV66EasfeFSHxoNl_DXhJTkoVFcwXP083QKchtEh0pwmn4zKaOzhGVc1BczkDGjALzZe6T1f9_UaS1XcyhLg9yioAdJ4m4iYi-5GEJreWku7OO99GdpvvHlmjT' alt=''>
                                     ${isFavoriteEl}
@@ -268,6 +256,11 @@
                     const $cat = $(`.cat-name[data-val="${pin_category}"]`).first().closest('.cat-item')
                     $cat.addClass('active')
                     $cat.find('.cat-body').html(`<div class="pt-2">${listPinEl}</div>`)
+
+                    const isSearchNameActive = search !== ""
+                    if (isSearchNameActive) {
+                        map.setView([pins[0].pin_lat, pins[0].pin_long], zoomValueFocusMarker)
+                    }
                 },
                 error: () => {
                     $('.region-desc').text('Failed fetch nearby pins.')
@@ -275,7 +268,6 @@
             })
         }
 
-        // Check Location Permission
         navigator.permissions.query({ name: 'geolocation' }).then(permission => {
             if (permission.state === 'granted') {
                 if (userLat === null && userLng === null) {
@@ -334,7 +326,7 @@
             tileLayer.addTo(map)
         })
 
-        $(document).on('click', '.cat-item', function() {
+        $(document).on('click', '.cat-item:not(.active)', function() {
             $('.cat-item').removeClass('active')
             $('.cat-body').empty()
             $(this).toggleClass('active')
@@ -350,6 +342,18 @@
             fetchNearbyPins()
         })
 
+        $(document).on('click', '.activity-item', function() {
+            const lat = $(this).data('lat')
+            const long = $(this).data('long')
+            map.setView([lat, long], zoomValueFocusMarker)
+        })
+
+        let pinSearchDebounce = null
+        $(document).on('input', '#pin-name-search', function() {
+            clearTimeout(pinSearchDebounce)
+            pinSearchDebounce = setTimeout(() => fetchNearbyPins(), debouncerTime)
+        })
+
         $(document).on('change', '#marker-per-fetch-select', function() {
             const val = $(this).val()
 
@@ -363,11 +367,7 @@
                     cancelButtonText: 'Later',
                     confirmButtonColor: '#635bff'
                 }).then(result => {
-                    if (result.isConfirmed) {
-                        fetchNearbyPins()
-                    } else {
-                        $(this).val(previousMarkerPerFetch)
-                    }
+                    result.isConfirmed ? fetchNearbyPins() : $(this).val(previousMarkerPerFetch)
                 })
             } else {
                 fetchNearbyPins()
