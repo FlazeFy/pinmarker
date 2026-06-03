@@ -1,13 +1,6 @@
-<div class="text-center">
-    <?php 
-        if(1 != 0){
-            echo "<h4>7 Top Person Journey</h4>
-            <div id='MultiLine_TopPersonJourney'></div>";
-        } else {
-            echo "<img src='' class='img nodata-icon'>
-            <h6 class='text-center'>No Data</h6>";
-        }
-    ?>
+<div class="card mb-4">
+    <h3>7 Top Person Journey</h3>
+    <div id='MultiLine_TopPersonJourney'></div>
 </div>
 
 <script type="text/javascript">

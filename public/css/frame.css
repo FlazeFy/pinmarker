@@ -22,6 +22,9 @@
     color: #fff; 
     background: var(--primaryColor); 
 }
+.accordion-btn:not(.collapsed) .text-muted { 
+    color: #fff !important; 
+}
 .accordion-btn::after { 
     filter: none; 
 }
@@ -40,9 +43,6 @@
     box-shadow: 0 20px 40px rgba(0,0,0,.04);
     border-radius: var(--roundedXLG);
 }
-.card-title { 
-    font-size: 22px; font-weight: 700; color: var(--secondaryColor); margin-bottom: 6px; 
-}
 .card-sub { 
     font-size: var(--textSM); 
     color: #464555; margin: 0; 
@@ -53,8 +53,8 @@
     text-align: center;
     margin-top: var(--spaceXMD);
 }
-.card h3 {
-    font-size: var(--textMD);
+.card h3, .card-title {
+    font-size: var(--textXLG);
     font-weight: bold;
 }
 
@@ -196,7 +196,10 @@
     transition: opacity .2s;
     border-radius: var(--roundedLG);
 }
-.activity-item:hover, .map-item:hover { 
+.activity-item b {
+    font-weight: 600;
+}
+.activity-item:hover, .map-item:hover, .activity-item.active { 
     background: rgba(99,91,255,.08);
     cursor: pointer;
 }
@@ -242,8 +245,11 @@
     min-width: 0;
 }
 .activity-name {
-    font-size: var(--textXMD); font-weight: 700;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    font-size: var(--textXMD); 
+    font-weight: 600;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
     transition: color .2s;
 }
 .activity-meta { 

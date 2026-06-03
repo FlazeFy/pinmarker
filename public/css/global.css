@@ -48,6 +48,13 @@
     --whiteColor : #f8f9fd;
     --greyColor : #777587;
     --secondaryColor : #1e2124;
+
+    --goldenColor: #f4b400;
+    --goldenLightColor: #fff7db;
+    --silverColor: #aeb7c2;
+    --silverLightColor: #f2f4f7;
+    --bronzeColor: #c67c47;
+    --bronzeLightColor: #fff1e7;
 }
 
 body {
@@ -190,6 +197,39 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
     backdrop-filter: blur(8px) !important;
     color: var(--darkColor) !important;
 }
+.bg-golden, .bg-silver, .bg-bronze{
+    animation: floatingGlow 3s ease-in-out infinite;
+    position: relative;
+}
+.bg-golden{
+    background: var(--goldenColor)!important;
+    color: #fff!important;
+    box-shadow:
+        0 4px 14px rgba(244,180,0,.35),
+        0 0 18px rgba(244,180,0,.25);
+}
+.bg-silver{
+    background: var(--silverColor)!important;
+    color: #fff!important;
+    box-shadow: 0 4px 14px rgba(174,183,194,.35), 0 0 18px rgba(174,183,194,.25);
+}
+.bg-bronze{
+    background: var(--bronzeColor)!important;
+    color: #fff!important;
+    box-shadow: 0 4px 14px rgba(198,124,71,.35), 0 0 18px rgba(198,124,71,.25);
+}
+@keyframes floatingGlow{
+    0%{
+        transform: translateY(0);
+    }
+    50%{
+        transform: translateY(-4px);
+    }
+    100%{
+        transform: translateY(0);
+    }
+}
+
 .container-fluid .bg-light-primary {
     border: none;
 }

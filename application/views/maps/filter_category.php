@@ -1,5 +1,5 @@
 <div class="panel-card flex-grow-1">
-    <h3 class="panel-title">Category Breakdown</h3>
+    <h3 class="card-title">Category Breakdown</h3>
     <div class="d-flex flex-column gap-1 mt-3">
         <?php
             foreach ($dt_pin_category as $dt) {

@@ -41,7 +41,7 @@
         <a href="/SuggestionController" class="nav-item">
             <i class="fa-solid fa-robot"></i> Trip Suggestion
         </a>
-        <a href="/TrackController" class="nav-item">
+        <a href="/PersonController" class="nav-item <?= ($cleanedUrl === "PersonController") ? "active" : ""; ?>">
             <i class="fa-solid fa-users"></i> Person
         </a>
         <a href="/TrackController" class="nav-item">
