@@ -1,4 +1,5 @@
 const renderVerticalBarChart = (holder, categories, data, label, hideYAxis = false, height = 350, color = '#635bff') => {
+    $(holder).empty()
     const options = {
         chart: {
             type: 'bar',
@@ -46,12 +47,14 @@ const renderVerticalBarChart = (holder, categories, data, label, hideYAxis = fal
     )
     chart.render()
 
-    $(holder).before(`<h3>${label}</h3>`)
+    $(holder).prev('.chart-title').remove()
+    $(holder).before(`<h3 class="chart-title">${label}</h3>`)
 
     return chart
 }
 
 const renderDonutChart = (holder, labels, data, label, height = 350, colors = ['#635bff', '#8b85ff', '#ff9f43', '#00966b', '#ef0025']) => {
+    $(holder).empty()
     const options = {
         chart: {
             type: 'donut',
@@ -94,7 +97,8 @@ const renderDonutChart = (holder, labels, data, label, height = 350, colors = ['
     )
     chart.render()
 
-    $(holder).before(`<h3>${label}</h3>`)
+    $(holder).prev('.chart-title').remove()
+    $(holder).before(`<h3 class="chart-title">${label}</h3>`)
 
     return chart
 }

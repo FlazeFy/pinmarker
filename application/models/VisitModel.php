@@ -585,7 +585,7 @@
 			$user_id = $this->session->userdata(self::SESSION_KEY);
 			$name = str_replace("%20"," ",$name);
 
-			$this->db->select("visit.id, visit_desc, visit_with, visit_with, visit.created_at, pin_name");
+			$this->db->select("visit.id, pin_category, pin_address, is_favorite, visit_with, visit.created_at as visit_at, pin_name");
 			$this->db->from($this->table);
 			$this->db->join('pin','pin.id = visit.pin_id');
 			$this->db->like('visit_with', $name);
@@ -635,6 +635,7 @@
 			} else{
 				$res = [];
 				foreach ($data as $dt) {
+					if ($type === "hour") $dt->context = (int)$dt->context;
 					$dt->total = (int)$dt->total;
 					$res[] = $dt;
 				}
@@ -675,6 +676,10 @@
 
 			$res = $this->db->get()->result();
 
+			foreach ($res as $dt) {
+				$dt->total = (int)$dt->total;
+			}
+		
 			return $res;
 		}
 
@@ -688,6 +693,10 @@
 			$this->db->order_by('total','DESC');
 
 			$res = $this->db->get()->result();
+
+			foreach ($res as $dt) {
+				$dt->total = (int)$dt->total;
+			}
 
 			return $res;
 		}

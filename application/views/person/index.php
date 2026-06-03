@@ -12,7 +12,7 @@
                     <div id="all-person-section">
                         <?php $this->load->view("person/top_person_journey"); ?>
                     </div>
-                    <div id="single-person-section">
+                    <div id="single-person-section" class="d-none">
                         <?php $this->load->view("person/person_profile"); ?>
                         <div class="row mb-4">
                             <div class="col-xl-7">

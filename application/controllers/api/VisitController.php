@@ -56,10 +56,12 @@ class VisitController extends CI_Controller {
 
     public function get_person_analyze($name){
         $user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
+        $name = str_replace("%20"," ",$name);
 
         // Query param
         $per_page_visit_history = $this->input->get('per_page_visit_history') ?? 14;
         $page_visit_history = $this->input->get('page_visit_history') ?? 1;
+        $year_monthly_chart = $this->input->get('year_monthly_chart') ?? 2026;
 
         if (!is_valid_positive_number($page_visit_history)) {
             return api_response(400, 'failed', 'page_visit_history must be a positive number', null);
@@ -84,7 +86,7 @@ class VisitController extends CI_Controller {
 
         // Stats
         $data['visit_pertime_hour'] = $this->VisitModel->get_visit_pertime_by_person($name,'hour', null, $user_id);
-        $data['visit_pertime_year'] = $this->VisitModel->get_visit_pertime_by_person($name,'month', $year, $user_id);
+        $data['visit_pertime_year'] = $this->VisitModel->get_visit_pertime_by_person($name,'month', $year_monthly_chart, $user_id);
         $data['visit_pertime_dayname'] = $this->VisitModel->get_visit_pertime_by_person($name,'dayname',null, $user_id);
         $data['visit_location'] = $this->VisitModel->get_visit_location_by_person($name,true, $user_id);
         $data['visit_location_category'] = $this->VisitModel->get_visit_location_category_by_person($name, $user_id);

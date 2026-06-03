@@ -70,7 +70,7 @@
                     let bg = window.personRank === 1 ? 'bg-golden' : window.personRank === 2 ? 'bg-silver' : window.personRank === 3 ? 'bg-bronze' : 'bg-secondary'
 
                     html += `
-                        <div class='activity-item mb-0'>
+                        <div class='activity-item mb-0' data-name="${dt.name}" data-rank="${window.personRank}">
                             <div class='cat-icon ${bg}'>
                                 #${window.personRank}
                             </div>

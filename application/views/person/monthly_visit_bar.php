@@ -3,11 +3,13 @@
 </div>
 
 <script>
-    renderVerticalBarChart(
-        '#vertical-bar-chart',
-        ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-        [85, 85, 36, 24, 18],
-        'Total Monthly Visit',
-        true
-    )
+    const getMonthlyVisitBar = (data, year) => {
+        renderVerticalBarChart(
+            '#vertical-bar-chart',
+            data.map(dt => dt.context),
+            data.map(dt => dt.total),
+            `Total Monthly Visit ${year}`,
+            true
+        )
+    }
 </script>
