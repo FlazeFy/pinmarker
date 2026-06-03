@@ -76,6 +76,7 @@
     <?php if(preg_match('(DashboardController|MyProfileController|DetailController|DetailPersonController|PersonController|EmbedController)', $cleanedUrl)): ?>
         <!--Apex Chart-->
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="http://127.0.0.1:8080/public/js/chart.js"></script>
     <?php endif; ?>
 
     <?php if(preg_match('(LoginController|ListController|GlobalListController|DetailGlobalController|MyProfileController)', $cleanedUrl)): ?>

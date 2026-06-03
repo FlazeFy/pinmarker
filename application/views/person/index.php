@@ -14,6 +14,22 @@
                     </div>
                     <div id="single-person-section">
                         <?php $this->load->view("person/person_profile"); ?>
+                        <div class="row mb-4">
+                            <div class="col-xl-7">
+                                <?php $this->load->view("person/monthly_visit_bar"); ?>
+                            </div>
+                            <div class="col-xl-5">
+                                <?php $this->load->view("person/recent_activity"); ?>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-5">
+                                <?php $this->load->view("person/visit_pin_category"); ?>
+                            </div>
+                            <div class="col-xl-7">
+                                <?php $this->load->view("person/hourly_visit"); ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

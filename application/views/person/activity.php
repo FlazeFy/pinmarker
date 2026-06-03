@@ -1,4 +1,4 @@
-<div class="card mb-4">
+<div class="card mb-4 position-sticky" style="top: 120px;">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="card-title">All Person</h3>
         <a id="see-all-button" class="card-sub">See All</a>
