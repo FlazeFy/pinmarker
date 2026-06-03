@@ -1,4 +1,4 @@
-<div class="text-center">
+<div class="card mb-4 text-center">
     <?php 
         if(1 != 0){
             echo "<h4>7 Top Person Journey</h4>

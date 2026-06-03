@@ -356,7 +356,7 @@
 				$result[] = (object)[
 					'name' => $name,
 					'total_visit_with' => $dt['total_visit_with'],
-					'last_visit' => $dt['last_visit']
+					'last_visit_at' => $dt['last_visit']
 				];
 			}
 	

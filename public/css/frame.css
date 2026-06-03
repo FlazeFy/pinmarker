@@ -196,6 +196,9 @@
     transition: opacity .2s;
     border-radius: var(--roundedLG);
 }
+.activity-item b {
+    font-weight: 600;
+}
 .activity-item:hover, .map-item:hover { 
     background: rgba(99,91,255,.08);
     cursor: pointer;
@@ -242,8 +245,11 @@
     min-width: 0;
 }
 .activity-name {
-    font-size: var(--textXMD); font-weight: 700;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    font-size: var(--textXMD); 
+    font-weight: 600;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
     transition: color .2s;
 }
 .activity-meta { 
