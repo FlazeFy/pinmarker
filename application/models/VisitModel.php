@@ -557,8 +557,7 @@
 			}
 		}
 
-		public function get_total_appearance($name) {
-			$user_id = $this->session->userdata(self::SESSION_KEY);
+		public function get_total_appearance($name, $user_id) {
 			$name = str_replace("%20"," ",$name);
 
 			// Found on visit with
@@ -593,22 +592,21 @@
     		$this->db->where('visit.created_by', $user_id); 
 			$this->db->order_by('visit.created_at','DESC');
 
-			if($limit > 0 && $start >= 0){
-				$db_count = clone $this->db;
-				$total_rows = $db_count->get()->num_rows();
-				$total_pages = ceil($total_rows / $limit);
-
-				$this->db->limit($limit, $start);
-				$data['data'] = $this->db->get()->result();
-				$data['total_page'] = $total_pages;
-				return $data;
-			} else {
-				return $data = $this->db->get()->result();
-			}
+			// Pagination count
+			$db_count = clone $this->db;
+			$total_rows = $db_count->get()->num_rows();
+			$total_pages = ceil($total_rows / $limit);
+		
+			// Pagination data
+			$this->db->limit($limit, $start);
+		
+			$data['data'] = $this->db->get()->result();
+			$data['total_page'] = $total_pages;
+		
+			return $data;
 		}
 
-		public function get_visit_pertime_by_person($name,$type,$year = null) {
-			$user_id = $this->session->userdata(self::SESSION_KEY);
+		public function get_visit_pertime_by_person($name, $type, $year = null, $user_id) {
 			$name = str_replace("%20"," ",$name);
 			$ctx = $type == "month" ? "DATE_FORMAT(visit.created_at, '%M')" : "$type(visit.created_at)";
 
@@ -632,43 +630,40 @@
 			
 				$res = [];
 				foreach ($result as $month => $total) {
-					$res[] = (object) ['context' => $month, 'total' => $total];
+					$res[] = (object) ['context' => $month, 'total' => (int)$total];
 				}
 			} else{
-				$res = $data;
+				$res = [];
+				foreach ($data as $dt) {
+					$dt->total = (int)$dt->total;
+					$res[] = $dt;
+				}
 			}
 
 			return $res;
 		}
 
-		public function get_visit_location_by_person($name,$is_group) {
-			$user_id = $this->session->userdata(self::SESSION_KEY);
-			$name = str_replace("%20"," ",$name);
-			$ext = "";
-
-			if($is_group){
-				$ext = ",COUNT(1) as total_visit";
-			}
-			$this->db->select("pin.id, pin_name, pin_lat, pin_long, pin_category, pin_desc, dictionary_color as pin_color, is_favorite, visit_by, visit_with, visit.created_at as visit_at$ext");
+		public function get_visit_location_by_person($name, $is_group, $user_id) {
+			$this->db->select("pin.id, pin_name, pin_lat, pin_long, pin_category, visit_with, max(visit.created_at) as last_visit_at, COUNT(1) as total_visit");
 			$this->db->from($this->table);
 			$this->db->join('pin','pin.id = visit.pin_id');
-			$this->db->join('dictionary','dictionary.dictionary_name = pin.pin_category');
 			$this->db->like('visit_with', $name);
     		$this->db->where('visit.created_by', $user_id); 
-			if($is_group){
-				$this->db->group_by('pin.id');
-			}
+			$this->db->group_by('pin.id');
 			$this->db->order_by('visit.created_at','DESC');
 
 			$res = $this->db->get()->result();
 
+			foreach ($res as $dt) {
+				$dt->total_visit = (int)$dt->total_visit;
+				$dt->pin_lat = (double)$dt->pin_lat;
+				$dt->pin_long = (double)$dt->pin_long;
+			}
+			
 			return $res;
 		}
 
-		public function get_visit_location_category_by_person($name) {
-			$user_id = $this->session->userdata(self::SESSION_KEY);
-			$name = str_replace("%20"," ",$name);
-
+		public function get_visit_location_category_by_person($name, $user_id) {
 			$this->db->select("pin_category as context, COUNT(1) as total");
 			$this->db->from($this->table);
 			$this->db->join('pin','pin.id = visit.pin_id');
@@ -683,10 +678,7 @@
 			return $res;
 		}
 
-		public function get_visit_location_favorite_by_person($name) {
-			$user_id = $this->session->userdata(self::SESSION_KEY);
-			$name = str_replace("%20"," ",$name);
-
+		public function get_visit_location_favorite_by_person($name, $user_id) {
 			$this->db->select("CASE WHEN pin.is_favorite = 1 THEN 'Favorited' ELSE 'Normal' END as context, COUNT(1) as total");
 			$this->db->from($this->table);
 			$this->db->join('pin','pin.id = visit.pin_id');
@@ -700,10 +692,7 @@
 			return $res;
 		}
 
-		public function get_visit_daily_hour_by_person($name) {
-			$user_id = $this->session->userdata(self::SESSION_KEY);
-			$name = str_replace("%20"," ",$name);
-
+		public function get_visit_daily_hour_by_person($name, $user_id) {
 			$this->db->select("COUNT(1) as total, HOUR(visit.created_at) as hour, DAYNAME(visit.created_at) as day_name");
 			$this->db->from($this->table);
 			$this->db->join('pin', 'pin.id = visit.pin_id');
@@ -750,27 +739,44 @@
 			return $final_res;
 		}
 
-		public function get_visit_person_summary($name){
-			$user_id = $this->session->userdata(self::SESSION_KEY);
-			$name = str_replace("%20"," ",$name);
-
-			$this->db->select("MAX(visit.created_at) as last_trip, MIN(visit.created_at) as first_trip, MAX(pin_category) as most_visited_category");
+		public function get_visit_person_summary($name, $user_id){
+			// Main query
+			$this->db->select("
+				MAX(visit.created_at) as last_trip,
+				MIN(visit.created_at) as first_trip,
+				COUNT(visit.id) as total_trip
+			");
 			$this->db->from($this->table);
 			$this->db->join('pin', 'pin.id = visit.pin_id');
 			$this->db->like('visit_with', $name);
 			$this->db->where('visit.created_by', $user_id);
+		
 			$res = $this->db->get()->row();
-
-			$res->ranking = $this->get_ranking_visit($name);
-			$res->favorite_hour_context = $this->get_favorite_hour($name)->context;
-			$res->favorite_hour_total = $this->get_favorite_hour($name)->total;
-
+		
+			// Most visited category
+			$this->db->select('pin_category as context, COUNT(pin.id) as total');
+			$this->db->from($this->table);
+			$this->db->join('pin', 'pin.id = visit.pin_id');
+			$this->db->like('visit_with', $name);
+			$this->db->where('visit.created_by', $user_id);
+			$this->db->group_by('pin_category');
+			$this->db->order_by('total', 'DESC');
+			$this->db->limit(1);
+		
+			$favorite_category = $this->db->get()->row();
+		
+			// Additional summary
+			$favorite_hour = $this->get_favorite_hour($name);
+		
+			$res->total_trip = (int)$res->total_trip;
+			$res->most_visited_category = $favorite_category ? $favorite_category->context : null;
+			$res->favorite_hour_context = $favorite_hour ? (int)$favorite_hour->context : null;
+			$res->favorite_hour_total = $favorite_hour ? (int)$favorite_hour->total : 0;
+		
 			return $res;
 		}
 
-		public function get_visit_trends($name){
-			$user_id = $this->session->userdata(self::SESSION_KEY);
-			$name = str_replace("%20"," ",$name);
+		public function get_visit_trends($name, $user_id){
 			$last_month = date('m Y', strtotime("first day of -1 month"));
 			$last2_month = date('m Y', strtotime("first day of -2 month"));
 		
@@ -885,64 +891,6 @@
 			});
 		
 			return $filtered_result;
-		}
-						
-
-		public function get_ranking_visit($find_name) {
-			$user_id = $this->session->userdata(self::SESSION_KEY);
-			$find_name = str_replace("%20"," ",$find_name);
-			$person_query = "LOWER(visit_with)";
-
-			$this->db->select("$person_query AS context",false);
-			$this->db->from($this->table);
-			$condition = [
-				'visit.created_by' => $user_id,
-				'visit_with IS NOT NULL'
-			];
-			$this->db->where($condition);
-			$data = $this->db->get()->result();
-			
-			$name_data = [];			
-			foreach ($data as $row) {
-				if (!empty($row->context)) {
-					$names = preg_split('/, and |, /', $row->context);
-		
-					foreach ($names as $name) {
-						$name = trim(strtolower($name));
-						if (!empty($name)) {
-							if (!isset($name_data[$name])) {
-								$name_data[$name] = [
-									'total' => 0,
-								];
-							}
-		
-							$name_data[$name]['total']++;
-						}
-					}
-				}
-			}
-		
-			$result = [];
-			foreach ($name_data as $name => $data) {
-				$result[] = (object)[
-					'name' => $name,
-					'total' => $data['total'],
-				];
-			}
-		
-			usort($result, function ($a, $b) {
-				return $b->total - $a->total;
-			});
-
-			$ranking = null;
-			foreach ($result as $idx => $res) {
-				if($res->name == $find_name){
-					$ranking = $idx+1;
-					break;
-				}
-			}
-		
-			return $ranking;
 		}
 
 		public function get_favorite_hour($name) {
