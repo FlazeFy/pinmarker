@@ -40,9 +40,6 @@
     box-shadow: 0 20px 40px rgba(0,0,0,.04);
     border-radius: var(--roundedXLG);
 }
-.card-title { 
-    font-size: 22px; font-weight: 700; color: var(--secondaryColor); margin-bottom: 6px; 
-}
 .card-sub { 
     font-size: var(--textSM); 
     color: #464555; margin: 0; 
@@ -53,8 +50,8 @@
     text-align: center;
     margin-top: var(--spaceXMD);
 }
-.card h3 {
-    font-size: var(--textMD);
+.card h3, .card-title {
+    font-size: var(--textXLG);
     font-weight: bold;
 }
 
@@ -199,7 +196,7 @@
 .activity-item b {
     font-weight: 600;
 }
-.activity-item:hover, .map-item:hover { 
+.activity-item:hover, .map-item:hover, .activity-item.active { 
     background: rgba(99,91,255,.08);
     cursor: pointer;
 }

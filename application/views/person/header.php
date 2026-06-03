@@ -7,5 +7,8 @@
         <a class="btn btn-outline" id="btn-print">
             <i class="fa-solid fa-print"></i> Print
         </a>
+        <a class="btn btn-outline" id="btn-share">
+            <i class="fa-solid fa-paper-plane"></i> Share
+        </a>
     </div>
 </div>

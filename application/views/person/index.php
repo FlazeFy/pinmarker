@@ -9,7 +9,12 @@
                     <?php $this->load->view("person/activity"); ?>
                 </div>
                 <div class="col-xl-9">
-                    <?php $this->load->view("person/top_person_journey"); ?>
+                    <div id="all-person-section">
+                        <?php $this->load->view("person/top_person_journey"); ?>
+                    </div>
+                    <div id="single-person-section">
+                        <?php $this->load->view("person/person_profile"); ?>
+                    </div>
                 </div>
             </div>
         </div>

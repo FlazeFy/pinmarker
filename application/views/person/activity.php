@@ -1,5 +1,8 @@
 <div class="card mb-4">
-    <span class="card-title">All Person</span>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="card-title">All Person</h3>
+        <a id="see-all-button" class="card-sub">See All</a>
+    </div>
     <div class="person-scroll">
         <div class="d-flex flex-column gap-1" id="person-holder"></div>
     </div>
@@ -114,6 +117,19 @@
     $(document).on('click', '#person-see-more', function() {
         page++
         fetchPerson(true)
+    })
+
+    $(document).on('click', '.activity-item', function() {
+        $('.activity-item').removeClass('active')
+        $(this).toggleClass('active')
+        $('#all-person-section').addClass('d-none')
+        $('#single-person-section').removeClass('d-none')
+    })
+
+    $(document).on('click', '#see-all-button', function() {
+        $('.activity-item').removeClass('active')
+        $('#all-person-section').removeClass('d-none')
+        $('#single-person-section').addClass('d-none')
     })
 
     $(document).ready(() => {
