@@ -22,7 +22,7 @@
                                 <?php $this->load->view("person/recent_activity"); ?>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-4">
                             <div class="col-xl-5">
                                 <?php $this->load->view("person/visit_pin_category"); ?>
                             </div>
@@ -30,6 +30,7 @@
                                 <?php $this->load->view("person/hourly_visit"); ?>
                             </div>
                         </div>
+                        <?php $this->load->view("person/maps"); ?>
                     </div>
                 </div>
             </div>

@@ -88,6 +88,7 @@
                 getVisitCategoryDonut(data.visit_location_category, data.visit_location_favorite)
                 getRecentVisit(data.visit_by_person)
                 getHourlyVisit(data.visit_pertime_hour)
+                renderVisitedPin(data.visit_location)            
             },
             error: () => {
                 Swal.fire({
@@ -110,6 +111,11 @@
 
         $('#analyze-name-text').text(name)
         $('#analyze-rank-text').text(rank)
+
+        setTimeout(() => {
+            map.invalidateSize()
+        }, 200)
+
         fetchPersonAnalyze(name)
     })
 </script>

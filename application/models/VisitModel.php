@@ -599,8 +599,14 @@
 		
 			// Pagination data
 			$this->db->limit($limit, $start);
+			$res = $this->db->get()->result();
+
+			// Cast is_favorite to int
+			foreach ($res as $dt) {
+				$dt->is_favorite = (int)$dt->is_favorite;
+			}
 		
-			$data['data'] = $this->db->get()->result();
+			$data['data'] = $res;
 			$data['total_page'] = $total_pages;
 		
 			return $data;
@@ -645,7 +651,7 @@
 		}
 
 		public function get_visit_location_by_person($name, $is_group, $user_id) {
-			$this->db->select("pin.id, pin_name, pin_lat, pin_long, pin_category, visit_with, max(visit.created_at) as last_visit_at, COUNT(1) as total_visit");
+			$this->db->select("pin.id, pin_name, pin_lat, pin_long, pin_category, visit_with, max(visit.created_at) as last_visit_at, COUNT(1) as total_visit, is_favorite");
 			$this->db->from($this->table);
 			$this->db->join('pin','pin.id = visit.pin_id');
 			$this->db->like('visit_with', $name);
