@@ -1,4 +1,4 @@
-<div class="hero-banner mb-4">
+<div class="hero-banner">
     <div class="position-relative" style="z-index:1;">
         <div>
             <h3 class="text-white mb-0 text-capitalize" id="analyze-name-text">Jhon</h3>
@@ -88,7 +88,8 @@
                 getVisitCategoryDonut(data.visit_location_category, data.visit_location_favorite)
                 getRecentVisit(data.visit_by_person)
                 getHourlyVisit(data.visit_pertime_hour)
-                renderVisitedPin(data.visit_location)            
+                renderVisitedPin(data.visit_location)    
+                getVisitDailyHourHeatmap(data.visit_daily_hour_by_person)        
             },
             error: () => {
                 Swal.fire({
@@ -97,7 +98,7 @@
                     icon: 'error'
                 })
                 $('#all-person-section').removeClass('d-none')
-                $('#single-person-section').addClass('d-none')
+                $('#single-person-section').removeClass('d-none').addClass('d-flex')
             },
             complete: () => {
                 isLoading = false
