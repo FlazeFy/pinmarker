@@ -62,6 +62,8 @@ class VisitController extends CI_Controller {
         // Query param
         $per_page_visit_history = $this->input->get('per_page_visit_history') ?? 14;
         $page_visit_history = $this->input->get('page_visit_history') ?? 1;
+        $per_page_review = $this->input->get('per_page_review') ?? 14;
+        $page_review = $this->input->get('page_review') ?? 1;
         $year_monthly_chart = $this->input->get('year_monthly_chart') ?? 2026;
 
         // Coordinate param
@@ -78,11 +80,25 @@ class VisitController extends CI_Controller {
         } else {
             $per_page_visit_history = (int)$per_page_visit_history;
         }
+        if (!is_valid_positive_number($page_review)) {
+            return api_response(400, 'failed', 'page_review must be a positive number', null);
+        } else {
+            $page_review = (int)$page_review;
+        }
+        if (!is_valid_positive_number($per_page_review)) {
+            return api_response(400, 'failed', 'per_page_review must be a positive number', null);
+        } else {
+            $per_page_review = (int)$per_page_review;
+        }
 
         // Pagination calculation
         $page_visit_history = max(1, $page_visit_history);
         $per_page_visit_history = max(1, $per_page_visit_history);
         $offset_visit_history = ($page_visit_history - 1) * $per_page_visit_history;
+
+        $page_review = max(1, $page_review);
+        $per_page_review = max(1, $per_page_review);
+        $offset_review = ($page_review - 1) * $per_page_review;
 
         $total_appearance = $this->VisitModel->get_total_appearance($name, $user_id);
 
@@ -122,6 +138,7 @@ class VisitController extends CI_Controller {
         }
 
         // Pagination model
+        $data['reviews'] = $this->ReviewModel->get_review_by_context($per_page_review, $offset_review, $name, "person", $user_id);
         $data['visit_by_person'] = $this->VisitModel->get_visit_by_person($name, $per_page_visit_history, $offset_visit_history, $user_id);
         
         // Return API response

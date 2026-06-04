@@ -98,7 +98,8 @@
                 getRecentVisit(data.visit_by_person)
                 getHourlyVisit(data.visit_pertime_hour)
                 renderVisitedPin(data.visit_location)    
-                getVisitDailyHourHeatmap(data.visit_daily_hour_by_person)        
+                getVisitDailyHourHeatmap(data.visit_daily_hour_by_person)  
+                getReviews(data.reviews)      
             },
             error: () => {
                 Swal.fire({

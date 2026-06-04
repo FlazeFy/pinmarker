@@ -32,6 +32,14 @@
                             </div>
                         </div>
                         <?php $this->load->view("person/maps"); ?>
+                        <div class="row">
+                            <div class="col-xl-7">
+                                
+                            </div>
+                            <div class="col-xl-5">
+                                <?php $this->load->view("person/review"); ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
