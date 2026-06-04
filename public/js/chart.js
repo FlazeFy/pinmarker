@@ -102,3 +102,82 @@ const renderDonutChart = (holder, labels, data, label, height = 350, colors = ['
 
     return chart
 }
+
+const renderHeatMapChart = (holder, rawData, label, height = 350, color = '#635bff') => {
+    $(holder).empty()
+
+    const grouped = {}
+    rawData.forEach(dt => {
+        if (!grouped[dt.day]) grouped[dt.day] = []
+
+        grouped[dt.day].push({
+            x: dt.hour,
+            y: parseInt(dt.total)
+        })
+    })
+
+    const series = Object.keys(grouped).map(day => ({
+        name: day,
+        data: grouped[day]
+    }))
+
+    const options = {
+        chart: {
+            type: 'heatmap',
+            height,
+            toolbar: {
+                show: false
+            }
+        },
+        series,
+        dataLabels: {
+            enabled: false
+        },
+        colors: [color],
+        legend: {
+            show: false
+        },
+        plotOptions: {
+            heatmap: {
+                radius: 6,
+                shadeIntensity: 0.5,
+                colorScale: {
+                    ranges: [
+                        {
+                            from: 0,
+                            to: 0,
+                            color: '#ececf5',
+                            name: 'Empty'
+                        }
+                    ]
+                }
+            }
+        },
+        stroke: {
+            width: 2,
+            colors: ['#ffffff']
+        },
+        grid: {
+            borderColor: '#ececf5'
+        },
+        tooltip: {
+            theme: 'light'
+        },
+        xaxis: {
+            labels: {
+                rotate: -45
+            }
+        }
+    }
+
+    const chart = new ApexCharts(
+        document.querySelector(holder),
+        options
+    )
+
+    chart.render()
+    $(holder).prev('.chart-title').remove()
+    $(holder).before(`<h3 class="chart-title">${label}</h3>`)
+
+    return chart
+}

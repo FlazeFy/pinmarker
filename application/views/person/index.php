@@ -12,9 +12,10 @@
                     <div id="all-person-section">
                         <?php $this->load->view("person/top_person_journey"); ?>
                     </div>
-                    <div id="single-person-section" class="d-none">
+                    <div id="single-person-section" class="d-none flex-column gap-4">
                         <?php $this->load->view("person/person_profile"); ?>
-                        <div class="row mb-4">
+                        <?php $this->load->view("person/daily_hour_visit"); ?>
+                        <div class="row">
                             <div class="col-xl-7">
                                 <?php $this->load->view("person/monthly_visit_bar"); ?>
                             </div>
@@ -28,6 +29,15 @@
                             </div>
                             <div class="col-xl-7">
                                 <?php $this->load->view("person/hourly_visit"); ?>
+                            </div>
+                        </div>
+                        <?php $this->load->view("person/maps"); ?>
+                        <div class="row">
+                            <div class="col-xl-7">
+                                <?php $this->load->view("person/favorite_tag"); ?>
+                            </div>
+                            <div class="col-xl-5">
+                                <?php $this->load->view("person/review"); ?>
                             </div>
                         </div>
                     </div>

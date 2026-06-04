@@ -465,3 +465,12 @@ const datetimeText = (datetime, isSyncTime = false, type = 'datetime') => {
         hour12: false
     })
 }
+
+const generateNoData = (holder, message) => {
+    $(holder).html(`
+        <div class='text-center my-3'>
+            <img src='http://127.0.0.1:8080/public/images/empty_item.png' class='img nodata-icon'>
+            <p class='mb-0 text-sm fst-italic'>- ${message} -</p>
+        </div>
+    `)
+}

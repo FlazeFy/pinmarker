@@ -57,13 +57,17 @@
                         dt.visit_with.split(", ").map(dt => `<a class="tag bg-primary pin-name me-1 mb-1" data-value="${dt}">${dt}</a>`).join("") 
                         : 
                         '<span class="text-none">- No companion found -</span>'
+                    const tagListElement = dt.tag_list ? 
+                        dt.tag_list.split(", ").map(dt => `<a class="tag bg-success tag-name me-1 mb-1" data-value="${dt}">#${dt}</a>`).join("") 
+                        :
+                        '<span class="text-none">- No tags attached -</span>'
 
                     htmlItem += `
                         <div class="col-xl-4 col-md-6">
                             <div class="card h-100">
                                 <div class="d-flex justify-content-between align-items-start mb-3">
                                     <div class="d-flex gap-2">
-                                        <span class="tag bg-success">
+                                        <span class="tag bg-info">
                                             <i class="fa-solid fa-thumbtack"></i> ${dt.total_pin} Marker${dt.total_pin > 1 ? 's':''}
                                         </span>
                                         ${
@@ -77,6 +81,10 @@
                                 <h5 class="col-title">${dt.list_name}</h5>
                                 <p class="text-secondary text-sm">${dt.list_desc || '<span class="text-none">- No description provided -</span>'}</p>
                                 <div class="d-flex flex-column gap-2 mb-3">
+                                    <div class="meta-row">
+                                        <span class="meta-label"><i class="fa-solid fa-hashtag"></i> Tags</span>
+                                        <span>${tagListElement}</span>
+                                    </div>
                                     <div class="meta-row">
                                         <span class="meta-label"><i class="fa-solid fa-list"></i> List Marker</span>
                                         <span>${pinListElement}</span>
@@ -92,13 +100,13 @@
                                     <div class="d-flex justify-content-between">
                                         <div class="meta-row">
                                             <span class="meta-label">Created At</span>
-                                            <span class="meta-text">${dt.created_at}</span>
+                                            <span class="meta-text">${datetimeText(dt.created_at, true)}</span>
                                         </div>
                                         ${
                                             dt.updated_at ?
                                                 `<div class="meta-row">
                                                     <span class="meta-label">Updated At</span>
-                                                    <span class="meta-text">${dt.updated_at}</span>
+                                                    <span class="meta-text">${datetimeText(dt.updated_at, true)}</span>
                                                 </div>`
                                             : ''
                                         }

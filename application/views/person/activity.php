@@ -123,13 +123,13 @@
         $('.activity-item').removeClass('active')
         $(this).toggleClass('active')
         $('#all-person-section').addClass('d-none')
-        $('#single-person-section').removeClass('d-none')
+        $('#single-person-section').removeClass('d-none').addClass('d-flex')
     })
 
     $(document).on('click', '#see-all-button', function() {
         $('.activity-item').removeClass('active')
         $('#all-person-section').removeClass('d-none')
-        $('#single-person-section').addClass('d-none')
+        $('#single-person-section').removeClass('d-flex').addClass('d-none')
     })
 
     $(document).ready(() => {

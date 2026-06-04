@@ -50,12 +50,14 @@
 			$this->db->select("
 				$this->table.id, list_name, list_desc, $this->table.created_at, $this->table.updated_at,
 				IFNULL(GROUP_CONCAT(DISTINCT pin.pin_name ORDER BY pin.pin_name ASC SEPARATOR ', '), '') as pin_list,
+				IFNULL(GROUP_CONCAT(DISTINCT global_list_tag_relation.tag_name ORDER BY global_list_tag_relation.tag_name ASC SEPARATOR ', '), '') as tag_list,
 				IFNULL(COUNT(DISTINCT pin.id), 0) as total_pin,
 				IFNULL(COUNT(DISTINCT visit.id), 0) as total_visit
 				$extra
 			");
 			$this->db->from($this->table);
 			$this->db->join('global_list_pin_relation', "global_list_pin_relation.list_id = $this->table.id");
+			$this->db->join('global_list_tag_relation', "global_list_tag_relation.list_id = $this->table.id");
 			$this->db->join('pin', "pin.id = global_list_pin_relation.pin_id");
 			$this->db->join('visit', 'visit.pin_id = pin.id', 'left');
 		
