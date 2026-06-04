@@ -765,7 +765,6 @@
 			$this->db->join('pin', 'pin.id = visit.pin_id');
 			$this->db->like('visit_with', $name);
 			$this->db->where('visit.created_by', $user_id);
-		
 			$res = $this->db->get()->row();
 		
 			// Most visited category
@@ -777,16 +776,30 @@
 			$this->db->group_by('pin_category');
 			$this->db->order_by('total', 'DESC');
 			$this->db->limit(1);
-		
 			$favorite_category = $this->db->get()->row();
 		
+			// Last visit location
+			$this->db->select('pin_name');
+			$this->db->from($this->table);
+			$this->db->join('pin', 'pin.id = visit.pin_id');
+			$this->db->like('visit_with', $name);
+			$this->db->where('visit.created_by', $user_id);
+			$this->db->order_by('visit.created_at', 'DESC');
+			$this->db->limit(1);
+			$last_visit = $this->db->get()->row();
+		
 			// Additional summary
-			$favorite_hour = $this->get_favorite_hour($name);
+			$favorite_hour = $this->get_favorite_hour($name, $user_id);
+			$favorite_day = $this->get_favorite_day($name, $user_id);
 		
 			$res->total_trip = (int)$res->total_trip;
-			$res->most_visited_category = $favorite_category ? $favorite_category->context : null;
+			$res->most_visited_category_context = $favorite_category ? $favorite_category->context : null;
+			$res->most_visited_category_total = $favorite_category ? (int)$favorite_category->total : null;
 			$res->favorite_hour_context = $favorite_hour ? (int)$favorite_hour->context : null;
 			$res->favorite_hour_total = $favorite_hour ? (int)$favorite_hour->total : 0;
+			$res->favorite_day_context = $favorite_day ? $favorite_day->context : null;
+			$res->favorite_day_total = $favorite_day ? (int)$favorite_day->total : 0;
+			$res->last_visit_pin_name = $last_visit ? $last_visit->pin_name : null;
 		
 			return $res;
 		}
@@ -908,8 +921,7 @@
 			return $filtered_result;
 		}
 
-		public function get_favorite_hour($name) {
-			$user_id = $this->session->userdata(self::SESSION_KEY);
+		public function get_favorite_hour($name, $user_id) {
 			$name = str_replace("%20"," ",$name);
 
 			$this->db->select("HOUR(visit.created_at) as context, COUNT(1) as total");
@@ -921,6 +933,21 @@
 			$this->db->limit(1);
 			$res = $this->db->get()->row();
 
+			return $res;
+		}
+
+		public function get_favorite_day($name, $user_id) {
+			$name = str_replace("%20"," ",$name);
+		
+			$this->db->select("DAYNAME(visit.created_at) as context, COUNT(1) as total");
+			$this->db->from($this->table);
+			$this->db->like('visit_with', $name);
+			$this->db->where('visit.created_by', $user_id); 
+			$this->db->group_by("DAYNAME(visit.created_at)");
+			$this->db->order_by("total", "DESC");
+			$this->db->limit(1);
+			$res = $this->db->get()->row();
+		
 			return $res;
 		}
 

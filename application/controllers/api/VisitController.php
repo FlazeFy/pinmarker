@@ -8,6 +8,7 @@ class VisitController extends CI_Controller {
         $this->load->model("PinModel");
         $this->load->model("ReviewModel");
         $this->load->helper('validator_helper');
+        $this->load->helper('generator_helper');
     }
 
     public function get_all_visit_with(){
@@ -63,6 +64,10 @@ class VisitController extends CI_Controller {
         $page_visit_history = $this->input->get('page_visit_history') ?? 1;
         $year_monthly_chart = $this->input->get('year_monthly_chart') ?? 2026;
 
+        // Coordinate param
+        $lat = $this->input->get('lat') ? $this->input->get('lat') : null;
+        $long = $this->input->get('long') ? $this->input->get('long') : null;
+
         if (!is_valid_positive_number($page_visit_history)) {
             return api_response(400, 'failed', 'page_visit_history must be a positive number', null);
         } else {
@@ -88,12 +93,33 @@ class VisitController extends CI_Controller {
         $data['visit_pertime_hour'] = $this->VisitModel->get_visit_pertime_by_person($name,'hour', null, $user_id);
         $data['visit_pertime_year'] = $this->VisitModel->get_visit_pertime_by_person($name,'month', $year_monthly_chart, $user_id);
         $data['visit_pertime_dayname'] = $this->VisitModel->get_visit_pertime_by_person($name,'dayname',null, $user_id);
-        $data['visit_location'] = $this->VisitModel->get_visit_location_by_person($name,true, $user_id);
+        $visit_location = $this->VisitModel->get_visit_location_by_person($name, true, $user_id);
+        $data['visit_location'] = $visit_location;
         $data['visit_location_category'] = $this->VisitModel->get_visit_location_category_by_person($name, $user_id);
         $data['visit_location_favorite'] = $this->VisitModel->get_visit_location_favorite_by_person($name, $user_id);
         $data['visit_daily_hour_by_person'] = $this->VisitModel->get_visit_daily_hour_by_person($name, $user_id);
-        $data['visit_person_summary'] = $this->VisitModel->get_visit_person_summary($name, $user_id);
         $data['visit_trends'] = $this->VisitModel->get_visit_trends($name, $user_id);
+        $data['visit_person_summary'] = $this->VisitModel->get_visit_person_summary($name, $user_id);
+
+        // Count avg days / visit 
+        $first_trip_date = new DateTime($data['visit_person_summary']->first_trip);
+        $now = new DateTime();
+        $days_passed = $first_trip_date->diff($now)->days;
+        if ($days_passed > 0) $avg_day_visit = (int)($days_passed / $total_appearance);
+        $data['visit_person_summary']->avg_day_visit = $avg_day_visit;
+
+        // Count average distance
+        $data['visit_person_summary']->avg_distance = null;
+        if ($lat && $long) {
+            $total_distance = 0;
+
+            foreach($visit_location as $dt) {
+                $distance = calculate_distance($dt->pin_lat, $dt->pin_long, $lat, $long);
+                $total_distance += $distance;
+            }
+
+            $data['visit_person_summary']->avg_distance = round($total_distance / $total_appearance, 1);
+        }
 
         // Pagination model
         $data['visit_by_person'] = $this->VisitModel->get_visit_by_person($name, $per_page_visit_history, $offset_visit_history, $user_id);
