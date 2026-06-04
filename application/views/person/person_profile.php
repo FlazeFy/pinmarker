@@ -100,6 +100,7 @@
                 renderVisitedPin(data.visit_location)    
                 getVisitDailyHourHeatmap(data.visit_daily_hour_by_person)  
                 getReviews(data.reviews)      
+                getFavoriteTag(data.favorite_tag)
             },
             error: () => {
                 Swal.fire({

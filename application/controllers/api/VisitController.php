@@ -7,6 +7,7 @@ class VisitController extends CI_Controller {
         $this->load->model("VisitModel");
         $this->load->model("PinModel");
         $this->load->model("ReviewModel");
+        $this->load->model("GlobalListTagRelationModel");
         $this->load->helper('validator_helper');
         $this->load->helper('generator_helper');
     }
@@ -116,7 +117,7 @@ class VisitController extends CI_Controller {
         $data['visit_daily_hour_by_person'] = $this->VisitModel->get_visit_daily_hour_by_person($name, $user_id);
         $data['visit_trends'] = $this->VisitModel->get_visit_trends($name, $user_id);
         $data['visit_person_summary'] = $this->VisitModel->get_visit_person_summary($name, $user_id);
-
+        $data['favorite_tag'] = $this->GlobalListTagRelationModel->get_favorite_tag_by_person($name, $user_id);
         // Count avg days / visit 
         $first_trip_date = new DateTime($data['visit_person_summary']->first_trip);
         $now = new DateTime();
