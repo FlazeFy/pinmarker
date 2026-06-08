@@ -13,8 +13,11 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-8">
-                    
+                <div class="col-lg-4">
+                    <?php $this->load->view("detail/comparison_visit_by"); ?>
+                </div>
+                <div class="col-lg-4">
+                    <?php $this->load->view("detail/comparison_visit_day"); ?>
                 </div>
                 <div class="col-lg-4">
                     <?php $this->load->view("detail/visit_history"); ?>

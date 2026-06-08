@@ -41,6 +41,7 @@
         stroke: {
             curve: 'smooth'
         },
+        colors: ['var(--primaryColor)'],
         xaxis: {
             categories: [<?php 
                 foreach($data as $c){

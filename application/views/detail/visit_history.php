@@ -1,6 +1,6 @@
 <div class="card h-100">
     <h3 class="card-title">Visit History</h3>
-    <div class="d-flex flex-column gap-1 pe-1" id="visit-holder" style='overflow-y:auto; max-height: 400px;'></div>
+    <div class="d-flex flex-column gap-1 pe-1" id="visit-holder" style='overflow-y:auto; max-height: 350px;'></div>
     <button class="btn-see-more mt-auto w-100" id="visit-see-more">See More</button>
 </div>
 

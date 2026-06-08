@@ -1003,6 +1003,23 @@
 		
 			return $res;
 		}
+
+		public function get_total_visit_per_day_by_pin_id($pin_id) {
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+		
+			$this->db->select("DAYNAME(visit.created_at) as context, count(1) as total", false);
+			$this->db->from($this->table);
+			$condition = [
+				'pin_id' => $pin_id, 
+				'visit.created_by' => $user_id
+			];
+			$this->db->where($condition);
+			$this->db->group_by('DAYNAME(visit.created_at)');
+			$this->db->order_by('total', 'desc');
+			$res = $this->db->get()->result();
+		
+			return $res;
+		}
 		
 		// Command
 		public function insert_visit($data){
