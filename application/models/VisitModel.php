@@ -203,7 +203,7 @@
 				'visit.created_by' => $user_id
             ];
 			$this->db->where($condition);
-			
+
 			if ($search) {
 				$this->db->group_start();
 				$this->db->like('visit_desc', $search);
@@ -219,7 +219,6 @@
 
             $this->db->limit($per_page, $start);
             $data['data'] = $this->db->get()->result();
-			
             $data['total_page'] = $total_pages;
 			$data['total_item'] = $total_rows;
 			$data['start_item'] = $start_item;

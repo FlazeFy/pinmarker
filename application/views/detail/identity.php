@@ -54,9 +54,9 @@
     <p class="mb-0">Description</p>
     <?php
         if($dt_detail_pin->pin_desc != null){ 
-            echo "<p class='mb-0 fw-bold'>$dt_detail_pin->pin_desc</p>";
+            echo "<p class='mb-0 text-sm'>$dt_detail_pin->pin_desc</p>";
         } else {
-            echo "<p class='mb-0 text-none'>- Not provided -</p>";
+            echo "<p class='mb-0 text-none text-sm'>- Not provided -</p>";
         }
     ?>
 </div>
