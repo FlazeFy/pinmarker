@@ -1,0 +1,125 @@
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<div class="map-area">
+    <div class="map-img-wrap">
+        <div id="map-board"></div>
+    </div>
+    <?php $this->load->view("detail/maps_toolbar") ?>
+</div>
+
+<style>
+    .map-area{
+        position: relative;
+        height: 100%;
+        border-radius: var(--roundedJumbo);
+        overflow: hidden;
+        border: 1.5px solid #e7e8ec;
+        background: #1a1a2e;
+        box-shadow: 0 8px 32px rgba(0,0,0,.08);
+    }
+    .map-img-wrap{
+        position: absolute;
+        inset: 0;
+    }
+    #map-board{
+        width: 100%;
+        height: 100%;
+    }
+    .leaflet-control-zoom{
+        border-radius: var(--roundedMD)!important;
+        overflow: hidden;
+    }
+    .leaflet-popup-content-wrapper{
+        border-radius: var(--roundedMD);
+    }
+</style>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    const LOCATION_COORDS = {
+        lat: <?= $dt_detail_pin->pin_lat ?>,
+        lng: <?= $dt_detail_pin->pin_long ?>,
+        name: "Main Location",
+        category: "Default Category"
+    }
+
+    const map = L.map('map-board', {
+        zoomControl: false
+    })
+
+    L.control.zoom({ position: 'bottomright' }).addTo(map)
+
+    let tileLayer = L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        { attribution: '&copy; OpenStreetMap contributors' }
+    ).addTo(map)
+
+    let marker = null
+
+    const renderLocation = () => {
+        if (marker) {
+            map.removeLayer(marker)
+        }
+
+        marker = L.marker([
+            LOCATION_COORDS.lat,
+            LOCATION_COORDS.lng
+        ]).addTo(map)
+
+        marker.bindPopup(`
+            <div class="place-popup">
+                <h3>${LOCATION_COORDS.name}</h3>
+                <hr>
+                <div class="popup-info">
+                    <div>
+                        <span>Category</span>
+                        <h5>${LOCATION_COORDS.category}</h5>
+                    </div>
+                </div>
+            </div>
+        `)
+
+        map.setView([LOCATION_COORDS.lat, LOCATION_COORDS.lng], 13)
+    }
+
+    const initMap = () => {
+        renderLocation()
+
+        setTimeout(() => {
+            map.invalidateSize()
+        }, 300)
+    }
+
+    initMap()
+
+    $('.map-type').on('click', function () {
+        $('.map-type').removeClass('active')
+        $(this).addClass('active')
+
+        map.removeLayer(tileLayer)
+
+        const type = $(this).data('type')
+
+        if (type === 'satellite') {
+            tileLayer = L.tileLayer(
+                'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                { attribution: '&copy; Esri' }
+            )
+        } else if (type === 'terrain') {
+            tileLayer = L.tileLayer(
+                'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+                { attribution: '&copy; OpenTopoMap' }
+            )
+        } else {
+            tileLayer = L.tileLayer(
+                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                { attribution: '&copy; OpenStreetMap contributors' }
+            )
+        }
+
+        tileLayer.addTo(map)
+
+        renderLocation()
+    })
+</script>

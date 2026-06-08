@@ -1,0 +1,30 @@
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+a:hover, a {
+    color: var(--primaryColor);
+}
+h1, h2, h3, h4, h5, h6, p, a, b, input, label {
+    color: var(--secondaryColor);
+}
+h2 {
+    font-size: var(--textXJumbo);
+}
+
+.text-primary { 
+    color: var(--primaryColor) !important; 
+}
+.page-title {
+    font-weight: 700;
+}
+.page-sub {
+    font-weight: 400;
+    font-size: var(--textMD);
+    color: var(--greyColor);
+}
+.text-none {
+    font-size: var(--textSM);
+    font-style: italic;
+    color: var(--greyColor);
+}

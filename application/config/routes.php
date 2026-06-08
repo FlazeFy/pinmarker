@@ -65,5 +65,8 @@ $route['api/v1/global_list/my'] = 'api/GlobalListController/get_my_global_list';
 
 $route['api/v1/history'] = 'api/HistoryController/get_my_activity';
 
+$route['api/v1/visit/by_pin/(:any)'] = 'api/VisitController/get_visit_by_pin_id/$1';
 $route['api/v1/visit/visit_with'] = 'api/VisitController/get_all_visit_with';
 $route['api/v1/visit/visit_with/analyze/(:any)'] = 'api/VisitController/get_person_analyze/$1';
+
+$route['api/v1/review/(:any)'] = 'api/ReviewController/get_review_by_pin_id/$1';

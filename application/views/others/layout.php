@@ -50,6 +50,7 @@
         <link href="http://127.0.0.1:8080/public/css/register.css" rel="stylesheet"/>
     <?php endif; ?>
 
+    <link href="http://127.0.0.1:8080/public/css/typography.css" rel="stylesheet"/>
     <link href="http://127.0.0.1:8080/public/css/button.css" rel="stylesheet"/>
     <link href="http://127.0.0.1:8080/public/css/form.css" rel="stylesheet"/>
     <link href="http://127.0.0.1:8080/public/css/navbar.css" rel="stylesheet"/>

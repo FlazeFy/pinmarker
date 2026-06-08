@@ -1,7 +1,9 @@
 <?php 
     $this->load->helper('url'); 
     $full_url = current_url();
-    $cleanedUrl = str_replace("http://127.0.0.1:8080/", "", $full_url);    
+    $path = parse_url($full_url, PHP_URL_PATH);
+    $segments = explode('/', trim($path, '/'));
+    $cleanedUrl = $segments[0] ?? null;   
 ?>
 
 <aside class="sidebar">
@@ -28,7 +30,7 @@
         <a href="/GlobalListController" class="nav-item <?= ($cleanedUrl === "GlobalListController") ? "active" : ""; ?>">
             <i class="fa-solid fa-folder-open"></i> Collections
         </a>
-        <a href="/ListController" class="nav-item <?= ($cleanedUrl === "ListController") ? "active" : ""; ?>">
+        <a href="/ListController" class="nav-item <?= ($cleanedUrl === "ListController" || $cleanedUrl === "DetailController") ? "active" : ""; ?>">
             <i class="fa-solid fa-list"></i> My Marker
         </a>
         <a href="/HistoryController" class="nav-item <?= ($cleanedUrl === "HistoryController") ? "active" : ""; ?>">

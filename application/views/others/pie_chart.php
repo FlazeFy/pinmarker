@@ -33,7 +33,7 @@
                 }
             ?>
         ],
-        // colors: ['#000','#2A272A','#4B4A54','#677381','#82A0AA','#B9B9B9'],
+        colors: ['var(--primaryColor)','var(--infoBG)','var(--successBG)','var(--warningBG)','var(--dangerBG)','var(--secondaryColor)'],
         legend: {
             position: 'bottom'
         },
