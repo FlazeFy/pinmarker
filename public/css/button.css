@@ -2,7 +2,7 @@
     border-radius: var(--roundedJumbo);
     gap: var(--spaceSM);
     display: flex;
-    border: none;
+    border: 1.5px solid transparent;
     color: #fff;
     font-size: var(--textXMD);
     font-weight: 700;
@@ -22,8 +22,13 @@
     background: var(--primaryColor);
     color: var(--whiteColor);
 }
-.btn-danger {
+.btn-danger, .btn-outline-danger:hover {
     background: var(--dangerBG) !important;
+    color: var(--whiteColor) !important;
+}
+.btn-outline-danger {
+    color: var(--dangerBG) !important;
+    border: 1.5px solid var(--dangerBG) !important;
 }
 .btn-dark {
     background: var(--secondaryColor) !important;

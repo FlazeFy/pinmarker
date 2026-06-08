@@ -1,9 +1,12 @@
 <div class="card">
     <div class="d-flex justify-content-between">
         <h2><i class="fa-solid fa-circle-info"></i> Location Identity</h2>
-        <span class="align-self-center py-2 px-4 tag text-md bg-<?= $dt_detail_pin->pin_color ?? 'secondary'?>">
-            <?= $dt_detail_pin->pin_category ?>
-        </span>
+        <div class="d-flex gap-2 align-items-center">
+            <?php $this->load->view("detail/favorite_toggle"); ?>
+            <span class="align-self-center py-2 px-4 tag text-md bg-<?= $dt_detail_pin->pin_color ?? 'secondary'?>">
+                <?= $dt_detail_pin->pin_category ?>
+            </span>
+        </div>
     </div>
     <div class="row mt-4 text-start">
         <div class="col-lg-4 pb-2">

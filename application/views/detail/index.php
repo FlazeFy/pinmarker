@@ -12,7 +12,7 @@
                     <?php $this->load->view("detail/maps"); ?>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mb-4">
                 <div class="col-lg-4">
                     <?php $this->load->view("detail/comparison_visit_by"); ?>
                 </div>
@@ -21,6 +21,14 @@
                 </div>
                 <div class="col-lg-4">
                     <?php $this->load->view("detail/visit_history"); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    
+                </div>
+                <div class="col-lg-4">
+                    <?php $this->load->view("detail/review"); ?>
                 </div>
             </div>
         </div>

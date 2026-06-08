@@ -24,7 +24,7 @@
         }
 
 		// Query
-		public function get_review_by_context($limit, $start, $target, $type, $user_id){
+		public function get_review_by_context($per_page, $offset, $target, $type, $user_id){
 			$ext = "";
 			if($type == "person"){
 				$ext = ", pin_name, pin.id as pin_id, pin_category";
@@ -53,19 +53,23 @@
 			// Pagination count
 			$db_count = clone $this->db;
 			$total_rows = $db_count->get()->num_rows();
-			$total_pages = ceil($total_rows / $limit);
+			$total_pages = ceil($total_rows / $per_page);
 		
 			// Pagination data
-			$this->db->limit($limit, $start);
+			$this->db->limit($per_page, $offset);
 			$res = $this->db->get()->result();
-
-			// Integer safety
+			$start_item = $total_rows > 0 ? $offset + 1 : 0;
+			$end_item = min($offset + $per_page, $total_rows);
+		
 			foreach ($res as $dt) {
 				$dt->review_rate = (int)$dt->review_rate;
 			}
-
+		
 			$data['data'] = $res;
 			$data['total_page'] = $total_pages;
+			$data['total_item'] = $total_rows;
+			$data['start_item'] = $start_item;
+			$data['end_item'] = $end_item;
 		
 			return $data;
 		}
