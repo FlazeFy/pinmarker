@@ -193,6 +193,41 @@
 			return $data;
 		}
 
+		public function get_visit_by_pin_id($search, $pin_id, $per_page, $offset, $user_id) {
+			$this->db->select('visit_by, visit_desc, visit.created_at, visit_with');
+			$this->db->from('pin');
+            $this->db->join('visit','visit.pin_id = pin.id');
+			$condition = [
+				'visit.pin_id' => $pin_id,
+                'deleted_at' => null,
+				'visit.created_by' => $user_id
+            ];
+			$this->db->where($condition);
+			
+			if ($search) {
+				$this->db->group_start();
+				$this->db->like('visit_desc', $search);
+				$this->db->or_like('visit_with', $search);
+				$this->db->group_end();
+			}
+
+			$db_count = clone $this->db;
+            $total_rows = $db_count->get()->num_rows();
+            $total_pages = ceil($total_rows / $per_page);
+			$start_item = $total_rows > 0 ? $offset + 1 : 0;
+			$end_item = min($offset + $per_page, $total_rows);
+
+            $this->db->limit($per_page, $start);
+            $data['data'] = $this->db->get()->result();
+			
+            $data['total_page'] = $total_pages;
+			$data['total_item'] = $total_rows;
+			$data['start_item'] = $start_item;
+			$data['end_item'] = $end_item;
+
+            return $data;
+		}
+
         public function get_last_visit(){
 			$this->db->select('pin_name, visit_desc');
 			$this->db->from('visit');
