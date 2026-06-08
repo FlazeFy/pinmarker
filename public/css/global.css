@@ -84,6 +84,9 @@ a:hover, a {
 h1, h2, h3, h4, h5, h6, p, a, b, input, label {
     color: var(--secondaryColor);
 }
+h2 {
+    font-size: var(--textXJumbo);
+}
 
 .pointer {
     cursor: pointer;
@@ -261,6 +264,9 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
 }
 .text-sm {
     font-size: var(--textSM);
+}   
+.text-md {
+    font-size: var(--textMD) !important;
 }   
   
 table thead {

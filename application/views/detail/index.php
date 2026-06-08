@@ -1,18 +1,17 @@
-<style>
-    .gallery-btn {
-        border: 2px solid black; border-radius: 15px;
-        padding: var(--spaceMD);
-        text-align: left;
-        background: var(--whiteColor);
-    }
-    .gallery-btn:hover {
-        transform: scale(1.05);
-    }
-</style>
-<?php $is_edit = $this->session->userdata('is_edit_mode'); ?>
-<?php $this->load->view('detail/detail'); ?>
-
-<?php if (!$is_edit): ?>
-    <hr>
-    <?php $this->load->view('detail/props'); ?>
-<?php endif; ?>
+<div class="d-flex" style="min-height:100vh; background:var(--containerColor);">
+    <?php $this->load->view("others/left_bar"); ?>
+    <div class="main-wrap">
+        <?php $this->load->view("others/top_bar"); ?>
+        <div class="content">
+            <?php $this->load->view("detail/header"); ?>
+           <div class="row">
+                <div class="col-lg-8">
+                    <?php $this->load->view("detail/identity"); ?>
+                </div>
+                <div class="col-lg-4">
+                    <?php $this->load->view("detail/maps"); ?>
+                </div>
+           </div>
+        </div>
+    </div>
+</div>
