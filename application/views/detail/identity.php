@@ -10,19 +10,19 @@
     </div>
     <div class="row mt-4 text-start">
         <div class="col-lg-4 pb-2">
-            <p class="mb-0">Latitude</p>
+            <label class="mb-0">Latitude</label>
             <p class="mb-0 fw-bold"><?= $dt_detail_pin->pin_lat ?></p>
         </div>
         <div class="col-lg-4 pb-2">
-            <p class="mb-0">Longitude</p>
+            <label class="mb-0">Longitude</label>
             <p class="mb-0 fw-bold"><?= $dt_detail_pin->pin_long ?></p>
         </div>
         <div class="col-lg-4 pb-2">
-            <p class="mb-0">Address</p>
+            <label class="mb-0">Address</label>
             <p class="mb-0 fw-bold"><?= $dt_detail_pin->pin_address ?></p>
         </div>
         <div class="col-lg-4 pb-2">
-            <p class="mb-0">Person in Touch</p>
+            <label class="mb-0">Person in Touch</label>
             <?php
                 if($dt_detail_pin->pin_person != null){ 
                     echo "<p class='mb-0 fw-bold'>$dt_detail_pin->pin_person</p>";
@@ -32,7 +32,7 @@
             ?>
         </div>
         <div class="col-lg-4 pb-2">
-            <p class="mb-0">Email</p>
+            <label class="mb-0">Email</label>
             <?php
                 if($dt_detail_pin->pin_email != null){ 
                     echo "<p class='mb-0 fw-bold'>$dt_detail_pin->pin_email</p>";
@@ -43,7 +43,7 @@
             <p class="mb-0 fw-bold"><?= $dt_detail_pin->pin_email ?></p>
         </div>
         <div class="col-lg-4 pb-2">
-            <p class="mb-0">Phone Number</p>
+            <label class="mb-0">Phone Number</label>
             <?php
                 if($dt_detail_pin->pin_call != null){ 
                     echo "<p class='mb-0 fw-bold'>$dt_detail_pin->pin_call</p>";
@@ -54,7 +54,7 @@
         </div>
     </div>
     <hr>
-    <p class="mb-0">Description</p>
+    <label class="mb-0">Description</label>
     <?php
         if($dt_detail_pin->pin_desc != null){ 
             echo "<p class='mb-0 text-sm'>$dt_detail_pin->pin_desc</p>";

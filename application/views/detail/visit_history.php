@@ -4,7 +4,7 @@
         <span class="py-2 px-4 tag text-md bg-primary" id="total-visit-text"></span>
     </div>
     <div class="d-flex flex-column gap-1 pe-1" id="visit-holder" style='overflow-y:auto; max-height: 350px;'></div>
-    <button class="btn-see-more mt-auto w-100" id="visit-see-more">See More</button>
+    <button class="btn-see-more mt-auto w-100" id="visit-see-more-button">See More</button>
 </div>
 
 <script>
@@ -43,7 +43,7 @@
             `)
         }
 
-        $('#visit-see-more').prop('disabled', true).text('Loading...')
+        $('#visit-see-more-button').prop('disabled', true).text('Loading...')
 
         const id = "<?= $dt_detail_pin->id ?>"
         $.ajax({
@@ -54,6 +54,12 @@
                 const rows = response.data.data || []
                 totalPage = response.data.total_page || 1
                 $('#total-visit-text').text(`${response.data.total_item} Visit`)
+
+                if (rows.length !== 0) {
+                    $(holder).html(`<span class='text-none text-center'>- No visit history on this marker -</span>`)
+                    $('#visit-see-more-button').hide()
+                    return
+                }
 
                 let html = ''
                 rows.forEach(dt => {
@@ -85,9 +91,9 @@
                 }
 
                 if (page >= totalPage) {
-                    $('#visit-see-more').hide()
+                    $('#visit-see-more-button').hide()
                 } else {
-                    $('#visit-see-more').show().prop('disabled', false).text('See More')
+                    $('#visit-see-more-button').show().prop('disabled', false).text('See More')
                 }
             },
             error: () => {
@@ -101,7 +107,7 @@
                     `)
                 }
 
-                $('#visit-see-more').prop('disabled', false).text('See More')
+                $('#visit-see-more-button').prop('disabled', false).text('See More')
             },
             complete: () => {
                 isLoading = false
@@ -109,7 +115,7 @@
         })
     }
 
-    $(document).on('click', '#visit-see-more', function() {
+    $(document).on('click', '#visit-see-more-button', function() {
         page++
         fetchVisit(true)
     })

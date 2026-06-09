@@ -15,6 +15,7 @@ class DetailController extends CI_Controller {
 		$this->load->model('DictionaryModel');
 		$this->load->model('GalleryModel');
 		$this->load->model('HistoryModel');
+		$this->load->model('GlobalListModel');
 		$this->load->model('MultiModel');
 		$this->load->model('TokenModel');
 		$this->load->model('ReviewModel');
@@ -53,6 +54,7 @@ class DetailController extends CI_Controller {
 			$data['dt_all_gallery_by_pin']= $this->GalleryModel->get_all_gallery_by_pin($id);
 			$data['dt_total_visit_by_by_pin']= $this->VisitModel->get_total_visit_by_by_pin_id($id); 
 			$data['dt_total_visit_by_day']= $this->VisitModel->get_total_visit_per_day_by_pin_id($id); 
+			$data['dt_global_list_pin']= $this->GlobalListModel->get_global_list_pin_by_pin_id($id);
 
 			$data['title_page'] = "List | Detail | ".$data['dt_detail_pin']->pin_name;
 			$data['content'] = $this->load->view('detail/index',$data,true);

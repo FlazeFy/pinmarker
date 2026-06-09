@@ -55,6 +55,12 @@
                 totalPage = response.data.total_page || 1
                 $('#total-review-text').text(`${response.data.total_item} Review`)
 
+                if (rows.length === 0) {
+                    $(holder).html(`<span class='text-none text-center'>- No review on this marker -</span>`)
+                    $('#review-see-more-button').hide()
+                    return
+                }
+
                 let html = ''
                 rows.forEach(dt => {
                     const rate = dt.review_rate

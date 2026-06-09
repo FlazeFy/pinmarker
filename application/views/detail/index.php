@@ -24,8 +24,11 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-8">
-                    
+                <div class="col-lg-4">
+                    <?php $this->load->view("detail/global_list_and_tag"); ?>
+                </div>
+                <div class="col-lg-4">
+                    <?php $this->load->view("detail/count_distance"); ?>
                 </div>
                 <div class="col-lg-4">
                     <?php $this->load->view("detail/review"); ?>

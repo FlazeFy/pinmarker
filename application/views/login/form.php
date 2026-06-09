@@ -3,7 +3,7 @@
         <h1 class="text-primary fw-bold">PinMarker</h1>
         <p class="text-secondary">Marks Your World</p>
     </div>
-    <div class="card">
+    <div class="card" id="form-login">
         <h2 class="card-title">Welcome Back</h2>
         <p class="card-sub">Sign in to your account to continue exploring.</p>
         <hr>
@@ -45,7 +45,7 @@
                     "; 
                 }
             ?>
-            <button type="submit" class="btn-primary btn-lg w-100">Sign In</button>
+            <button type="submit" class="btn-primary btn-lg w-100 btn-submit">Sign In</button>
         </form>
         <div class="divider">
             <span>Or Continue With</span>

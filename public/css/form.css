@@ -1,11 +1,10 @@
 /* Label */
-.form-label {
+.form-label, label {
     display: block;
-    font-size: var(--textXSM);
+    font-size: var(--textSM);
     font-weight: 700;
     letter-spacing: .04em;
     color: #464555;
-    margin-bottom: 6px;
     text-transform: uppercase;
 }
 
@@ -16,13 +15,13 @@ input, select, textarea {
     margin-bottom: var(--spaceSM);
 }
 .form-control, .form-select, .form-check-input{
-    border: 1.5px solid black;
+    border: 1.5px solid var(--silverColor);
+    background: var(--whiteColor);
+    color: var(--secondaryColor);
+    font-size: var(--textMD);
 }
 .form-check-label {
     font-weight: 500;
-}
-.form-select {
-    background: transparent;
 }
 .form-select-custom {
     border: none;
