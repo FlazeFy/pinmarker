@@ -182,6 +182,23 @@
 			return $data = $this->db->get()->result();
 		}
 
+		public function get_global_list_tag_by_pin_id($pin_id) {
+			$this->db->select("tag_name");
+			$this->db->from($this->table);
+			$this->db->join($this->table_rel,"$this->table.id = $this->table_rel.list_id");
+			$this->db->join("global_list_tag_relation","global_list_tag_relation.list_id = $this->table_rel.list_id");
+			$this->db->join('pin',"$this->table_rel.pin_id = pin.id");
+			$condition = [
+				'pin_id' => $pin_id,
+				'pin.created_by' => $this->session->userdata(self::SESSION_KEY)
+            ];
+			$this->db->where($condition);
+			$this->db->group_by("tag_name");
+			$this->db->order_by("tag_name",'desc');
+
+			return $data = $this->db->get()->result();
+		}
+
 		public function check_pin_edit_mode($id, $user_id){
 			$this->db->select("1");
 			$this->db->from($this->table);
