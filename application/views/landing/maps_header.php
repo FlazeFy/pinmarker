@@ -4,15 +4,6 @@
         <input class="map-search-field" id="pin-name-search" type="text" placeholder="Search by name..."/>
     </div>
     <div class="map-type-wrap">
-        <h6>View Type</h6>
-        <select class="map-range-select" id="view-type-select">
-            <option value="all" selected>All Marker</option>
-            <option value="favorite">Favorited</option>
-            <option value="visited">Visited</option>
-            <option value="unvisited">Unvisited</option>
-        </select>
-    </div>
-    <div class="map-type-wrap">
         <h6>Markers to Show</h6>
         <select class="map-range-select" id="marker-per-fetch-select">
             <option value="20">20 Places</option>
@@ -24,6 +15,7 @@
     <div class="map-type-wrap">
         <h6>Max Range</h6>
         <select class="map-range-select" id="max-range-select">
+            <option value="3">3 Km</option>
             <option value="5" selected>5 Km</option>
             <option value="15">15 Km</option>
             <option value="30">30 Km</option>

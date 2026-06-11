@@ -2,7 +2,7 @@
     <div class="map-footer-group">
         <div class="map-footer-box">
             <span class="footer-box-label">Speed</span>
-            <span class="footer-box-value">10 km/h</span>
+            <span class="footer-box-value speed-value text-dark">0 km/h</span>
         </div>
         <div class="map-footer-box">
             <span class="footer-box-label">Time</span>
@@ -11,10 +11,10 @@
         <button class="btn btn-primary px-4 py-2 fw-bold" id="btn-explorer-mode" style="border-radius:var(--roundedJumbo); font-size:var(--textSM);">
             <i class="fa-solid fa-location-crosshairs me-2"></i>Start Explorer Mode
         </button>
-        <button class="map-footer-icon-btn" id="btn-focus-me" title="Toggle Fullscreen">
+        <button class="map-footer-icon-btn" id="btn-focus-me" title="Focus on Me">
             <i class="fa-solid fa-location-crosshairs"></i>
         </button>
-        <button class="map-footer-icon-btn" id="btn-toggle-track" title="Toggle Fullscreen">
+        <button class="map-footer-icon-btn" id="btn-toggle-track" title="Toggle Track">
             <i class="fa-solid fa-shoe-prints"></i>
         </button>
         <button class="map-footer-icon-btn" id="btn-fullscreen" title="Toggle Fullscreen">
@@ -105,6 +105,12 @@
 </style>
 
 <script>
+    let explorerInterval = null
+    let timerInterval = null
+    let explorerSeconds = 0
+    let prevLat = null
+    let prevLng = null
+
     $(document).ready(function () {
         const updateClock = () => {
             const now = new Date()
@@ -176,5 +182,118 @@
             }
         })
 
+        const startExplorerMode = () => {
+            explorerSeconds = 0
+            $('#btn-explorer-mode').removeClass('btn-primary').addClass('btn-danger')
+
+            // Timer tick
+            timerInterval = setInterval(() => {
+                explorerSeconds++
+                const mm = String(Math.floor(explorerSeconds / 60)).padStart(2, '0')
+                const ss = String(explorerSeconds % 60).padStart(2, '0')
+                $('#btn-explorer-mode').html(
+                    `<i class="fa-solid fa-location-crosshairs me-2"></i>Stop Explorer Mode (${mm}:${ss})`
+                )
+            }, 1000)
+
+            // Location + speed fetch 
+            explorerInterval = setInterval(() => {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const lat = position.coords.latitude
+                    const lng = position.coords.longitude
+
+                    // Calculate speed 
+                    if (prevLat !== null && prevLng !== null) {
+                        const distanceM = calculateDistance(`${prevLat},${prevLng}`,`${lat},${lng}`)
+                        const speedKmh = (distanceM / 1000) / (5 / 3600)
+
+                        let speedClass = 'text-dark'
+                        if (speedKmh >= 81) speedClass = 'text-danger'
+                        else if (speedKmh >= 31) speedClass = 'text-warning'
+                        else if (speedKmh >= 6) speedClass = 'text-success'
+
+                        $('.footer-box-value.speed-value').text(`${Math.round(speedKmh)} km/h`).removeClass('text-dark text-success text-warning text-danger').addClass(speedClass)
+                    }
+
+                    prevLat = lat
+                    prevLng = lng
+                    localStorage.setItem('trackLat', lat)
+                    localStorage.setItem('trackLng', lng)
+                })
+            }, 5000)
+        }
+
+        const stopExplorerMode = () => {
+            clearInterval(explorerInterval)
+            clearInterval(timerInterval)
+            explorerInterval = null
+            timerInterval = null
+            explorerSeconds = 0
+            prevLat = null
+            prevLng = null
+
+            $('#btn-explorer-mode').removeClass('btn-danger').addClass('btn-primary').html(`<i class="fa-solid fa-location-crosshairs me-2"></i>Start Explorer Mode`)
+            $('.footer-box-value.speed-value').text('0 km/h').removeClass('text-success text-warning text-danger').addClass('text-dark')
+        }
+
+        $('#btn-explorer-mode').on('click', function () {
+            // Stop if already active
+            if (explorerInterval !== null) {
+                stopExplorerMode()
+                return
+            }
+
+            navigator.permissions.query({ name: 'geolocation' }).then(permission => {
+                if (permission.state === 'denied') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Location Disabled',
+                        text: 'Please enable location access in your browser settings to use Explorer Mode.',
+                        confirmButtonColor: '#635bff'
+                    })
+                    return
+                }
+
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Enable Explorer Mode?',
+                    text: 'Your location will be updated automatically every 5 seconds. This may reduce battery life and consume extra data.',
+                    showCancelButton: true,
+                    confirmButtonText: 'Enable',
+                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#635bff'
+                }).then(result => {
+                    if (!result.isConfirmed) return
+
+                    navigator.geolocation.getCurrentPosition(
+                        position => {
+                            prevLat = position.coords.latitude
+                            prevLng = position.coords.longitude
+                            localStorage.setItem('trackLat', prevLat)
+                            localStorage.setItem('trackLng', prevLng)
+
+                            startExplorerMode()
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Explorer Mode Active',
+                                text: 'Your location is now being tracked.',
+                                confirmButtonColor: '#635bff',
+                                timer: 2000,
+                                showConfirmButton: false
+                            })
+                        },
+                        () => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Permission Denied',
+                                text: 'Unable to access your location.',
+                                confirmButtonColor: '#635bff'
+                            })
+                        }
+                    )
+                })
+            })
+        })
     })
 </script>

@@ -179,6 +179,19 @@
             map.setView([lat, lng], 16)
         })
 
+        $('#btn-focus-me').on('click', function () {
+            if (userLat && userLng) {
+                map.setView([userLat, userLng], 15)
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Location Not Available',
+                    text: 'Your current location has not been set yet.',
+                    confirmButtonColor: '#635bff'
+                })
+            }
+        })
+
         // Check Location Permission
         navigator.permissions.query({ name: 'geolocation' }).then(permission => {
             if (permission.state === 'granted') {
