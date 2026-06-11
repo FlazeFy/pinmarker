@@ -62,4 +62,15 @@
             echo "<p class='mb-0 text-none text-sm'>- Not provided -</p>";
         }
     ?>
+    <hr>
+    <div class="d-flex justify-content-between">
+        <div>
+            <label class="mb-0">Created At</label>
+            <p class='mb-0 text-sm'><?= $dt_detail_pin->created_at ?></p>
+        </div>
+        <div class="text-end">
+            <label class="mb-0">Last Update</label>
+            <p class='mb-0 text-sm'><?= $dt_detail_pin->updated_at ?? "-" ?></p>
+        </div>
+    </div>
 </div>

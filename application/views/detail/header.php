@@ -5,7 +5,7 @@
         </a>
         <div>
             <h1 class="page-title"><?= $dt_detail_pin->pin_name ?></h1>
-            <p class="page-sub mb-0"><?= $dt_detail_pin->pin_address ?></p>
+            <p class="page-sub mb-0"><i class="fa-solid fa-location-dot"></i> <?= $dt_detail_pin->pin_address ?></p>
         </div>
     </div>
     <div class="d-flex flex-wrap gap-2">
