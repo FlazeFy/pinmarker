@@ -1,6 +1,6 @@
 <div class="card mb-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3 class="card-title">Recent Visit</h3>
+        <h3 class="card-title mb-0">Recent Visit</h3>
         <a href="/HistoryController" class="card-sub">See All</a>
     </div>
     <div class="d-flex flex-column gap-1">

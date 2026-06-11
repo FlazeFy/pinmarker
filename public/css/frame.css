@@ -287,6 +287,7 @@
     text-transform: uppercase;
     opacity: .8;
     margin-bottom: 6px;
+    color: white;
 }
 .hero-title { 
     font-size: clamp(18px, 2.5vw, 24px); 

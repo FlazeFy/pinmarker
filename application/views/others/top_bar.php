@@ -1,4 +1,4 @@
-<header class="topnav">
+<header class="topnav" id="top-nav-bar">
     <div class="search-wrap">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
         <input type="text" class="search-input" placeholder="Search your markers...">
@@ -14,7 +14,7 @@
         <div class="topnav-divider"></div>
         <div class="d-flex align-items-center gap-2">
             <div class="text-end">
-                <div class="fw-bold">jalanjalan</div>
+                <div class="fw-bold" id="username-top-bar-text">jalanjalan</div>
                 <div class="page-sub">Explorer Level 5</div>
             </div>
             <img src="http://127.0.0.1:8080/public/images/avatar.png" alt="avatar" class="avatar-sm">

@@ -1,6 +1,6 @@
 <div class="card h-100">
     <div class="d-flex justify-content-between align-items-center">
-        <h3 class="card-title">Visit History</h3>
+        <h3 class="card-title mb-0">Visit History</h3>
         <span class="py-2 px-4 tag text-md bg-primary" id="total-visit-text"></span>
     </div>
     <div class="d-flex flex-column gap-1 pe-1" id="visit-holder" style='overflow-y:auto; max-height: 350px;'></div>

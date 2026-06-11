@@ -1,6 +1,6 @@
 <div class="card h-100">
     <div class="d-flex justify-content-between align-items-center">
-        <h3 class="card-title">Reviews</h3>
+        <h3 class="card-title mb-0">Reviews</h3>
         <span class="py-2 px-4 tag text-md bg-primary" id="total-review-text"></span>
     </div>
     <div class="d-flex flex-column gap-1 pe-1" id="review-holder" style='overflow-y:auto; max-height: 320px;'></div>
