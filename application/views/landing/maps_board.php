@@ -35,7 +35,7 @@
         }).addTo(map)
 
         // OpenStreet Tile
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        let tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map)
 
@@ -192,6 +192,63 @@
             }
         })
 
+        $('#btn-fullscreen').on('click', function () {
+            const mapEl = $('#map-section')
+            const isFullscreen = $('#btn-fullscreen').hasClass('active')
+
+            if (!isFullscreen) {
+                // Enter fullscreen
+                $('section').not('#map-section').addClass('d-none')
+                $('.map-placeholder').css({
+                    width: '100vw',
+                    height: '100vh',
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    zIndex: 9999,
+                    borderRadius: 0,
+                    transition: 'all 0.3s ease'
+                }).removeClass('mt-4')
+                map.invalidateSize()
+
+                $('.content').css({
+                    maxWidth: 'none !important',
+                    marginInline: 0,
+                    padding: 0
+                })
+                $('#btn-fullscreen').addClass('active bg-danger text-white')
+                $('#fullscreen-icon').removeClass('fa-expand').addClass('fa-xmark')
+                $(this).addClass('.active')
+            } else {
+                // Exit fullscreen
+                $('section').removeClass('d-none')
+                $('.map-placeholder').css({
+                    width: '',
+                    height: '',
+                    position: '',
+                    top: '',
+                    left: '',
+                    zIndex: '',
+                    borderRadius: '',
+                    transition: 'all 0.3s ease'
+                }).addClass('mt-4')
+                map.invalidateSize()
+
+                $('.content').css({
+                    maxWidth: '1400px',
+                    marginInline: 'auto',
+                    padding: 'var(--spaceLG)'
+                })
+                $('#btn-fullscreen').removeClass('active bg-danger text-white')
+                $('#fullscreen-icon').removeClass('fa-xmark').addClass('fa-expand')
+                $(this).removeClass('.active')
+            }
+        })
+
+        document.addEventListener('fullscreenchange', function () {
+            if (!document.fullscreenElement) $('#fullscreen-icon').removeClass('fa-compress').addClass('fa-expand')
+        })
+
         // Check Location Permission
         navigator.permissions.query({ name: 'geolocation' }).then(permission => {
             if (permission.state === 'granted') {
@@ -227,6 +284,32 @@
                     }
                 })
             }
+        })
+
+        $('.map-type').on('click', function () {
+            $('.map-type').removeClass('active')
+            $(this).addClass('active')
+
+            map.removeLayer(tileLayer)
+            const type = $(this).data('type')
+            if (type === 'satellite') {
+                tileLayer = L.tileLayer(
+                    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                    { attribution: '&copy; Esri' }
+                )
+            } else if (type === 'terrain') {
+                tileLayer = L.tileLayer(
+                    'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+                    { attribution: '&copy; OpenTopoMap' }
+                )
+            } else {
+                tileLayer = L.tileLayer(
+                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    { attribution: '&copy; OpenStreetMap contributors' }
+                )
+            }
+
+            tileLayer.addTo(map)
         })
     })
 </script>

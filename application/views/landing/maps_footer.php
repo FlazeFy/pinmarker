@@ -1,6 +1,10 @@
 <div class="map-footer">
     <div class="map-footer-group">
         <div class="map-footer-box">
+            <span class="footer-box-label">Network</span>
+            <span class="footer-box-value network-value text-dark">No Internet</span>
+        </div>
+        <div class="map-footer-box">
             <span class="footer-box-label">Speed</span>
             <span class="footer-box-value speed-value text-dark">0 km/h</span>
         </div>
@@ -118,10 +122,45 @@
             const minutes = String(now.getMinutes()).padStart(2, '0')
             const ampm = hours >= 12 ? 'PM' : 'AM'
             hours = hours % 12 || 12
+
             $('#footer-clock').text(`${hours}:${minutes} ${ampm}`)
         }
-        updateClock()
-        setInterval(updateClock, 1000)
+
+        const updateNetworkSpeed = () => {
+            const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
+
+            if (!connection) {
+                $('.network-value').text('N/A')
+                return
+            }
+
+            const downlink = connection.downlink
+            let status = 'Fast'
+            let colorClass = 'text-success'
+
+            if (downlink < 1) {
+                status = 'Slow'
+                colorClass = 'text-danger'
+            } else if (downlink < 5) {
+                status = 'Normal'
+                colorClass = 'text-warning'
+            }
+
+            $('.network-value').text(status).removeClass('text-dark text-success text-warning text-danger').addClass(colorClass)
+        }
+
+        const updateFooterInfo = () => {
+            updateClock()
+            updateNetworkSpeed()
+        }
+
+        updateFooterInfo()
+        setInterval(updateFooterInfo, 1000)
+
+        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
+        if (connection) {
+            connection.addEventListener('change', updateNetworkSpeed)
+        }
 
         $('#btn-explorer-mode').on('click', function () {
             navigator.permissions.query({ name: 'geolocation' }).then(permission => {
@@ -168,18 +207,6 @@
                     )
                 })
             })
-        })
-
-        $('#btn-fullscreen').on('click', function () {
-            const mapEl = document.getElementById('map')
-
-            
-        })
-
-        document.addEventListener('fullscreenchange', function () {
-            if (!document.fullscreenElement) {
-                $('#fullscreen-icon').removeClass('fa-compress').addClass('fa-expand')
-            }
         })
 
         const startExplorerMode = () => {
