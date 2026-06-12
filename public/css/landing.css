@@ -179,6 +179,51 @@
     width: 280px;
     box-shadow: 0 4px 20px rgba(0,0,0,.12);
     border: 1px solid rgba(255,255,255,.5);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+#map-card-accordion {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+.map-accordion-item {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+.map-accordion-item:last-child {
+    flex: 1;
+    min-height: 0;
+}
+.map-accordion-item:last-child .accordion-collapse.show {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+.map-place-holder {
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    min-height: 0;
+}
+.accordion-button::after {
+    filter: none;
+}
+.accordion-button:not(.collapsed) {
+    color: var(--primaryColor) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+.accordion-item {
+    border: none !important;
+}
+.accordion-button:focus {
+    box-shadow: none !important;
 }
 
 .map-item {

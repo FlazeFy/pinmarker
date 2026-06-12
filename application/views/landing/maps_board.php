@@ -91,6 +91,7 @@
             map.setView([userLat, userLng], 12)
 
             fetchNearbyPlaces()
+            fetchNearbyPins()
         }
 
         // Fetch Nearby Place
@@ -169,6 +170,81 @@
                     `)
                 }
             })
+        }
+
+        const fetchNearbyPins = (page = 1) => {
+            const max_distance = $('#max-range-select').val() !== "all" ? parseInt($('#max-range-select').val()) : null
+            const viewTypeSelect = $('#view-type-select').val()
+            const search = $('#pin-name-search').val().trim()
+            const per_page = $('#marker-per-fetch-select').val()
+
+            // markers.forEach(marker => map.removeLayer(marker))
+            // markers = []
+
+            $.ajax({
+                url: `/api/v1/pin/maps`,
+                data: {
+                    search,
+                    page,
+                    per_page,
+                    max_distance,
+                    lat: userLat,
+                    long: userLng
+                },
+                method: 'GET',
+                success: (response) => {
+                    const data = response.data
+                    const pins = data.data
+                    
+                    let html = ''
+                    pins.forEach(dt => {
+                        const marker = L.marker([dt.pin_lat, dt.pin_long]).addTo(map)
+
+                        marker.bindPopup(`
+                            <div class="place-popup">
+                                <h3>${dt.pin_name}</h3>
+                                <p class="popup-address">${dt.pin_address}</p>
+                                <hr>
+                                <div class="popup-info">
+                                    <div class="popup-icon green">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div>
+                                        <span>Distance</span>
+                                        <h5>${dt.distance} m</h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex flex-column gap-2 mt-4">
+                                    <button class="btn btn-primary">See Detail</button>
+                                    <button class="btn btn-success btn-direction" data-lat="${dt.pin_lat}" data-long="${dt.pin_long}">
+                                        Set Direction
+                                    </button>
+                                </div>
+                            </div>
+                        `)
+
+                        html += `
+                            <div class="map-item" data-lat="${dt.pin_lat}" data-lng="${dt.pin_long}">
+                                <div class="d-flex flex-column align-items-start">
+                                    <b>${dt.pin_name}</b>
+                                    <a class="tag bg-primary mt-1">${dt.pin_category}</a>
+                                </div>
+                                <span class="distance-badge">${dt.distance}m</span>
+                            </div>
+                        `
+                    })
+
+                    $('#pinmarker-place-holder').prepend(html)
+                },
+                error: () => {
+                    $('.region-desc').text('Failed fetch nearby pins.')
+                }
+            })
+        }
+
+        if (userLat && userLng) {
+            fetchNearbyPlaces()
+            fetchNearbyPins()
         }
 
         // Focus Marker
