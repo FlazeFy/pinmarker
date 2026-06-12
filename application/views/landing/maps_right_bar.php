@@ -1,26 +1,32 @@
 <div class="map-card">
-    <div class="accordion accordion-flush h-100 d-flex flex-column" id="map-card-accordion">
-        <div class="accordion-item map-accordion-item border-0 bg-transparent">
-            <div class="accordion-header">
-                <button class="accordion-button py-2 px-0 bg-transparent shadow-none fw-bold collapsed"
-                    style="font-size:var(--textMD); color:#464555;" type="button" data-bs-toggle="collapse" data-bs-target="#global-place-collapse" aria-expanded="false">
-                    Global Place
-                </button>
-            </div>
-            <div id="global-place-collapse" class="accordion-collapse collapse" data-bs-parent="#map-card-accordion">
-                <div id="global-place-holder" class="map-place-holder"></div>
-            </div>
-        </div>
-        <div class="accordion-item map-accordion-item border-0 bg-transparent flex-1 min-h-0 d-flex flex-column">
-            <div class="accordion-header">
-                <button class="accordion-button py-2 px-0 bg-transparent shadow-none fw-bold"
-                    style="font-size:var(--textMD); color:#464555;" type="button" data-bs-toggle="collapse" data-bs-target="#pinmarker-place-collapse" aria-expanded="true">
-                    Pinmarker Place
-                </button>
-            </div>
-            <div id="pinmarker-place-collapse" class="accordion-collapse collapse show flex-1 min-h-0 d-flex flex-column" data-bs-parent="#map-card-accordion">
-                <div id="pinmarker-place-holder" class="map-place-holder"></div>
-            </div>
-        </div>
+    <div class="map-section-header" data-target="global-place-holder">
+        <span style="font-weight:700; font-size:var(--textMD);">
+            <span class="text-primary fw-bold" id="total-other-location-text"></span> Global Place
+        </span>
+        <i class="fa-solid fa-angle-down map-section-chevron"></i>
     </div>
+    <div id="global-place-holder" class="map-place-holder"></div>
+    <div class="map-section-header mt-2" data-target="pinmarker-place-holder">
+        <span style="font-weight:700; font-size:var(--textMD);">
+            <span class="text-primary fw-bold" id="total-pinmarker-text"></span> Pinmarker Place
+        </span>
+        <i class="fa-solid fa-angle-down map-section-chevron"></i>
+    </div>
+    <div id="pinmarker-place-holder" class="map-place-holder"></div>
 </div>
+
+<script>
+    $(document).on('click', '.map-section-header', function () {
+        const targetId = $(this).data('target')
+        const $target = $('#' + targetId)
+        const isOpen = $target.hasClass('open')
+
+        $('.map-place-holder').removeClass('open').css('max-height', '0')
+        $('.map-section-chevron').removeClass('rotated')
+
+        if (!isOpen) {
+            $target.addClass('open').css('max-height', '40vh')
+            $(this).find('.map-section-chevron').addClass('rotated')
+        }
+    })
+</script>

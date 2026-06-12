@@ -111,9 +111,9 @@
                 method: 'GET',
                 success: (response) => {
                     if (!response.data) {
-                        $('.global-place-list').html(`
-                            <div class="alert bg-danger map-item">
-                                <span>Failed fetch nearby place</span>
+                        $('#global-place-holder').html(`
+                            <div class="text-none text-start">
+                                <i class="fa-solid fa-triangle-exclamation"></i> Failed fetch nearby place
                             </div>
                         `)
                         return
@@ -121,7 +121,7 @@
 
                     const nearby = response.data.nearby
                     let html = ''
-                    $('.global-place-list').remove()
+                    $('#global-place-holder').empty()
 
                     nearby.forEach(place => {
                         const marker = L.marker([place.lat, place.lng]).addTo(map)
@@ -161,11 +161,12 @@
                     })
 
                     $('#global-place-holder').prepend(html)
+                    $('#total-other-location-text').text(`(${nearby.length})`)
                 },
                 error: () => {
-                    $('.global-place-list').html(`
-                        <div class="map-item">
-                            <span>Failed fetch nearby place</span>
+                    $('#global-place-holder').html(`
+                        <div class="text-none text-start">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Failed fetch nearby place
                         </div>
                     `)
                 }
@@ -177,9 +178,6 @@
             const viewTypeSelect = $('#view-type-select').val()
             const search = $('#pin-name-search').val().trim()
             const per_page = $('#marker-per-fetch-select').val()
-
-            // markers.forEach(marker => map.removeLayer(marker))
-            // markers = []
 
             $.ajax({
                 url: `/api/v1/pin/maps`,
@@ -235,6 +233,7 @@
                     })
 
                     $('#pinmarker-place-holder').prepend(html)
+                    $('#total-pinmarker-text').text(`(${data.per_page})`)
                 },
                 error: () => {
                     $('.region-desc').text('Failed fetch nearby pins.')
