@@ -74,6 +74,9 @@
         })
 
         $('#view-category-select').html(optionEl)
+        
+        // Select category in maps toolbar after repopulate option
+        if (category) $('#view-category-select').val(category)
     }
 
     const renderVisitedLocation = () => {
@@ -173,39 +176,16 @@
     }
 
     $('.map-type').on('click', function () {
-        $('.map-type').removeClass('active')
-        $(this).addClass('active')
-
-        map.removeLayer(tileLayer)
-
         const type = $(this).data('type')
-
-        if (type === 'satellite') {
-            tileLayer = L.tileLayer(
-                'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                { attribution: '&copy; Esri' }
-            )
-        } else if (type === 'terrain') {
-            tileLayer = L.tileLayer(
-                'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-                { attribution: '&copy; OpenTopoMap' }
-            )
-        } else {
-            tileLayer = L.tileLayer(
-                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                { attribution: '&copy; OpenStreetMap contributors' }
-            )
-        }
-
-        tileLayer.addTo(map)
+        switchMapType(type, map, tileLayer)
+        addUrlParam('map_type', type)
     })
 
-    $(document).on('change', '#view-type-select', function() {
+    $(document).on('change', '#view-type-select, #view-category-select', function() {
         renderVisitedLocation()
-    })
+        addUrlParam($(this).attr('id') === 'view-type-select' ? 'view_type' : 'category', $(this).val())
 
-    $(document).on('change', '#view-category-select', function() {
-        renderVisitedLocation()
+        if ($(this).attr('id') === 'view-category-select') category = $(this).val()
     })
 
     $(document).on('input', '#pin-name-search', function() {
@@ -213,6 +193,18 @@
 
         pinSearchDebounce = setTimeout(() => {
             renderVisitedLocation()
+            addUrlParam('search', $(this).val())
         }, debouncerTime)
+    })
+
+    // Validate query param
+    const validateParams = () => {
+        if (search !== "") $('#pin-name-search').val(search)
+        !['favorite','all'].includes(view_type) ? removeUrlParam('view_type') : $('#view-type-select').val(view_type)
+        !['default','satellite','terrain'].includes(map_type) ? removeUrlParam('map_type') : switchMapType(map_type, map, tileLayer)
+    }
+    
+    $(document).ready(function () {
+        validateParams()
     })
 </script>

@@ -1,3 +1,11 @@
+<script>
+    const urlParams = new URLSearchParams(window.location.search)
+    const search = urlParams.get('search')
+    const map_type = urlParams.get('map_type')
+    const view_type = urlParams.get('view_type')
+    let category = urlParams.get('category')
+</script>
+
 <div class="d-flex" style="min-height:100vh; background:var(--containerColor);">
     <?php $this->load->view("others/left_bar"); ?>
     <div class="main-wrap">

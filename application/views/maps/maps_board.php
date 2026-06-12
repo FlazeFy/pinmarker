@@ -263,29 +263,9 @@
         })
 
         $('.map-type').on('click', function () {
-            $('.map-type').removeClass('active')
-            $(this).addClass('active')
-
-            map.removeLayer(tileLayer)
             const type = $(this).data('type')
-            if (type === 'satellite') {
-                tileLayer = L.tileLayer(
-                    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                    { attribution: '&copy; Esri' }
-                )
-            } else if (type === 'terrain') {
-                tileLayer = L.tileLayer(
-                    'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
-                    { attribution: '&copy; OpenTopoMap' }
-                )
-            } else {
-                tileLayer = L.tileLayer(
-                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    { attribution: '&copy; OpenStreetMap contributors' }
-                )
-            }
-
-            tileLayer.addTo(map)
+            switchMapType(type, map, tileLayer)
+            addUrlParam('map_type', type)
         })
 
         $(document).on('click', '.cat-item:not(.active)', function() {
@@ -297,11 +277,11 @@
 
         $(document).on('change', '#max-range-select', function() {
             renderRadius()
-            fetchNearbyPins()
         })
 
-        $(document).on('change', '#view-type-select', function() {
+        $(document).on('change', '#max-range-select, #view-type-select', function() {
             fetchNearbyPins()
+            addUrlParam($(this).attr('id') === 'max-range-select' ? 'max_distance' : 'view_type', $(this).val())
         })
 
         $(document).on('click', '.activity-item', function() {
@@ -313,7 +293,10 @@
         let pinSearchDebounce = null
         $(document).on('input', '#pin-name-search', function() {
             clearTimeout(pinSearchDebounce)
-            pinSearchDebounce = setTimeout(() => fetchNearbyPins(), debouncerTime)
+            pinSearchDebounce = setTimeout(() => {
+                fetchNearbyPins()
+                addUrlParam('search', $(this).val())
+            }, debouncerTime)
         })
 
         $(document).on('change', '#marker-per-fetch-select', function() {
@@ -329,10 +312,16 @@
                     cancelButtonText: 'Later',
                     confirmButtonColor: '#635bff'
                 }).then(result => {
-                    result.isConfirmed ? fetchNearbyPins() : $(this).val(previousMarkerPerFetch)
+                    if (result.isConfirmed) {
+                        fetchNearbyPins()
+                        addUrlParam('limit', val)
+                    } else {
+                        $(this).val(previousMarkerPerFetch)
+                    }
                 })
             } else {
                 fetchNearbyPins()
+                addUrlParam('limit', val)
                 previousMarkerPerFetch = val
             }
         })
@@ -341,5 +330,18 @@
             renderRadius()
             map.invalidateSize()
         }, 100)
+
+        // Validate query param
+        const validateParams = () => {
+            if (search !== "") $('#pin-name-search').val(search)
+            !['20','50','150','all'].includes(limit) ? removeUrlParam('limit') : $('#marker-per-fetch-select').val(limit)
+            !['favorite','visited','unvisited','all'].includes(view_type) ? removeUrlParam('view_type') : $('#view-type-select').val(view_type)
+            !['default','satellite','terrain'].includes(map_type) ? removeUrlParam('map_type') : switchMapType(map_type, map, tileLayer)
+            !['5','15','30','100','all'].includes(max_distance) ? removeUrlParam('max_distance') : $('#max-range-select').val(max_distance)
+        }
+        
+        $(document).ready(function () {
+            validateParams()
+        })
     })
 </script>
