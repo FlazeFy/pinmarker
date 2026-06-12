@@ -474,3 +474,15 @@ const generateNoData = (holder, message) => {
         </div>
     `)
 }
+
+const removeUrlParam = (key) => {
+    const url = new URL(window.location.href)
+    url.searchParams.delete(key)
+    history.replaceState(null, '', url)
+}
+
+const addUrlParam = (key, value) => {
+    const url = new URL(window.location.href)
+    url.searchParams.set(key, value)
+    history.replaceState(null, '', url)
+}

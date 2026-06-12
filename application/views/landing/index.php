@@ -1,3 +1,12 @@
+<script>
+    const urlParams = new URLSearchParams(window.location.search)
+    const isExplorer = urlParams.get('explorer') === 'true'
+    const search = urlParams.get('search')
+    const map_type = urlParams.get('map_type')
+    const max_distance = urlParams.get('max_distance')
+    const limit = urlParams.get('limit')
+</script>
+
 <section class="section" id="welcome-section">
     <?php $this->load->view("landing/welcome"); ?>
 </section>

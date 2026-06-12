@@ -158,56 +158,7 @@
         setInterval(updateFooterInfo, 1000)
 
         const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
-        if (connection) {
-            connection.addEventListener('change', updateNetworkSpeed)
-        }
-
-        $('#btn-explorer-mode').on('click', function () {
-            navigator.permissions.query({ name: 'geolocation' }).then(permission => {
-                if (permission.state === 'denied') {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Location Disabled',
-                        text: 'Please enable location access in your browser settings to use Explorer Mode.',
-                        confirmButtonColor: '#635bff'
-                    })
-                    return
-                }
-
-                Swal.fire({
-                    icon: 'question',
-                    title: 'Enable Explorer Mode?',
-                    text: 'Your location will be updated automatically every 3–7 seconds. This may reduce battery life and consume extra data.',
-                    showCancelButton: true,
-                    confirmButtonText: 'Enable',
-                    cancelButtonText: 'Cancel',
-                    confirmButtonColor: '#635bff'
-                }).then(result => {
-                    if (!result.isConfirmed) return
-
-                    navigator.geolocation.getCurrentPosition(
-                        () => {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Explorer Mode Active',
-                                text: 'Your location is now being tracked.',
-                                confirmButtonColor: '#635bff',
-                                timer: 2000,
-                                showConfirmButton: false
-                            })
-                        },
-                        () => {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Permission Denied',
-                                text: 'Unable to access your location.',
-                                confirmButtonColor: '#635bff'
-                            })
-                        }
-                    )
-                })
-            })
-        })
+        if (connection) connection.addEventListener('change', updateNetworkSpeed)
 
         const startExplorerMode = () => {
             explorerSeconds = 0
@@ -263,7 +214,7 @@
             $('.footer-box-value.speed-value').text('0 km/h').removeClass('text-success text-warning text-danger').addClass('text-dark')
         }
 
-        $('#btn-explorer-mode').on('click', function () {
+        const askPermissionExplorer = () => {
             // Stop if already active
             if (explorerInterval !== null) {
                 stopExplorerMode()
@@ -290,7 +241,10 @@
                     cancelButtonText: 'Cancel',
                     confirmButtonColor: '#635bff'
                 }).then(result => {
-                    if (!result.isConfirmed) return
+                    if (!result.isConfirmed) {
+                        removeUrlParam('explorer')
+                        return
+                    }
 
                     navigator.geolocation.getCurrentPosition(
                         position => {
@@ -321,6 +275,14 @@
                     )
                 })
             })
+        }
+
+        $('#btn-explorer-mode').on('click', function () {
+            askPermissionExplorer()
         })
+
+        if (isExplorer) {
+            askPermissionExplorer()
+        }
     })
 </script>

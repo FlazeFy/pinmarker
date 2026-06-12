@@ -6,6 +6,7 @@
     <div class="map-type-wrap">
         <h6>Markers to Show</h6>
         <select class="map-range-select" id="marker-per-fetch-select">
+            <option value="10">10 Places</option>
             <option value="20">20 Places</option>
             <option value="50" selected>50 Places</option>
             <option value="150">150 Places</option>
@@ -133,3 +134,20 @@
         }
     }
 </style>
+
+<script>
+    let searchDebounce = null
+
+    $(document).on('input', '#pin-name-search', function () {
+        clearTimeout(searchDebounce)
+        const val = $(this).val().trim()
+
+        searchDebounce = setTimeout(() => {
+            val ? addUrlParam('search', val) : removeUrlParam('search')
+        }, debouncerTime)
+    })
+
+    $(document).on('change', '#max-range-select, #marker-per-fetch-select', function () {
+        addUrlParam($(this).attr('id') === 'max-range-select' ? 'max_distance' : 'limit', $(this).val())
+    })
+</script>
