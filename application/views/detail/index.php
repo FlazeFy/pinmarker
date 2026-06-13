@@ -1,3 +1,8 @@
+<script>
+    const urlParams = new URLSearchParams(window.location.search)
+    const map_type = urlParams.get('map_type')
+</script>
+
 <div class="d-flex" style="min-height:100vh; background:var(--containerColor);">
     <?php $this->load->view("others/left_bar"); ?>
     <div class="main-wrap">
@@ -23,12 +28,20 @@
                     <?php $this->load->view("detail/visit_history"); ?>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-8">
-                    
+            <div class="row mb-4">
+                <div class="col-lg-4">
+                    <?php $this->load->view("detail/global_list_and_tag"); ?>
+                </div>
+                <div class="col-lg-4">
+                    <?php $this->load->view("detail/count_distance"); ?>
                 </div>
                 <div class="col-lg-4">
                     <?php $this->load->view("detail/review"); ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    <?php $this->load->view("detail/other_nearest_marker"); ?>
                 </div>
             </div>
         </div>

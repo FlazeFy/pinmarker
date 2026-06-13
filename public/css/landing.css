@@ -169,8 +169,8 @@
 /* Left Floating Card */
 .map-card {
     position: absolute;
-    top: 24px;
-    left: 24px;
+    top: calc(var(--spaceMD) * 9);
+    right: var(--spaceMD);
     background: rgba(255,255,255,.82);
     backdrop-filter: blur(14px);
     border-radius: var(--roundedLG);
@@ -179,9 +179,37 @@
     box-shadow: 0 4px 20px rgba(0,0,0,.12);
     border: 1px solid rgba(255,255,255,.5);
 }
-
+.map-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 6px 0;
+    user-select: none;
+}
+.map-section-header:hover span {
+    color: var(--primaryColor);
+}
+.map-section-chevron {
+    font-size: var(--textSM);
+    color: #9997b0;
+    transition: transform 0.25s ease;
+}
+.map-section-chevron.rotated {
+    transform: rotate(180deg);
+}
+.map-place-holder {
+    max-height: 0;
+    overflow: hidden;
+    overflow-y: auto;
+    transition: max-height 0.3s ease;
+}
+.map-place-holder.open {
+    max-height: 40vh;
+}
 .map-item {
     display: flex;
+    text-align: start;
     justify-content: space-between;
     align-items: center;
     padding: 10px var(--spaceSM);
@@ -199,33 +227,6 @@
     font-weight: 700;
     padding: 4px 8px;
     border-radius: 999px;
-}
-
-/* Search Bar */
-.map-search {
-    position: absolute;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--whiteColor);
-    border-radius: var(--roundedJumbo);
-    padding: 8px 8px 8px 16px;
-    display: flex;
-    align-items: center;
-    gap: var(--spaceSM);
-    width: 90%;
-    max-width: 440px;
-    box-shadow: 0 8px 32px rgba(0,0,0,.18);
-    border: 1px solid rgba(199,196,216,.3);
-}
-
-.map-search-input {
-    flex: 1;
-    border: none;
-    outline: none;
-    font-size: var(--textMD);
-    font-family: inherit;
-    background: transparent;
 }
 
 /* Feature */

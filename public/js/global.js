@@ -1,5 +1,6 @@
 const debouncerTime = 2000 
 const zoomValueFocusMarker = 17
+const weatherFetchInterval = 300000
 
 const getUUID = () => {
     return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
@@ -473,4 +474,16 @@ const generateNoData = (holder, message) => {
             <p class='mb-0 text-sm fst-italic'>- ${message} -</p>
         </div>
     `)
+}
+
+const removeUrlParam = (key) => {
+    const url = new URL(window.location.href)
+    url.searchParams.delete(key)
+    history.replaceState(null, '', url)
+}
+
+const addUrlParam = (key, value) => {
+    const url = new URL(window.location.href)
+    url.searchParams.set(key, value)
+    history.replaceState(null, '', url)
 }

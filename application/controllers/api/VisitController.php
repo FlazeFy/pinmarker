@@ -59,6 +59,9 @@ class VisitController extends CI_Controller {
     public function get_visit_by_pin_id($pin_id){
         $user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
 
+        // Validate path param
+        if (!check_uuid($pin_id)) return api_response(400, 'failed', 'pin_id must be valid uuid', null);
+
         // Query param
         $search = $this->input->get('search') ? $this->input->get('search') : null;
         $per_page = $this->input->get('per_page') ?? 14;

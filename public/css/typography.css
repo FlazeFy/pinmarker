@@ -27,4 +27,8 @@ h2 {
     font-size: var(--textSM);
     font-style: italic;
     color: var(--greyColor);
+    margin: 0;
+}
+.text-none.text-center {
+    padding: var(--spaceMD);
 }

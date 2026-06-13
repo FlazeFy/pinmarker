@@ -6,7 +6,9 @@
             <div class="row g-4">
                 <div class="col-xl-8 col-lg-7">
                     <?php $this->load->view("dashboard/summary"); ?>
-                    <?php $this->load->view("dashboard/category_marker"); ?>
+                    <div id="main-category-section">
+                        <?php $this->load->view("dashboard/category_marker"); ?>
+                    </div>
                     <?php $this->load->view("dashboard/comparison_stats"); ?>
                     <?php $this->load->view("dashboard/total_visit_monthly"); ?>
                 </div>

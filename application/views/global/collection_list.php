@@ -86,7 +86,7 @@
                                         <span>${tagListElement}</span>
                                     </div>
                                     <div class="meta-row">
-                                        <span class="meta-label"><i class="fa-solid fa-list"></i> List Marker</span>
+                                        <span class="meta-label"><i class="fa-solid fa-list"></i> Markers</span>
                                         <span>${pinListElement}</span>
                                     </div>
                                     ${

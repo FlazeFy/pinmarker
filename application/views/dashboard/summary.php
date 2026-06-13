@@ -1,6 +1,6 @@
-<div class="hero-banner mb-4">
+<div class="hero-banner mb-4" id="summary-section">
     <div class="position-relative" style="z-index:1;">
-        <div class="hero-eyebrow">Summary</div>
+        <h2 class="hero-eyebrow">Summary</h2>
         <div class="row g-3 mt-1">
             <div class="col-6 col-sm-3">
                 <div class="stat-chip">
