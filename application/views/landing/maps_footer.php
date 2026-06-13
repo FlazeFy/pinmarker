@@ -1,12 +1,24 @@
 <div class="map-footer">
     <div class="map-footer-group">
+        <div class="map-footer-box" id="box-temperature">
+            <span class="footer-box-label">Temperature</span>
+            <span class="footer-box-value text-dark">-- <span>(--)</span></span>
+        </div>
+        <div class="map-footer-box" id="box-humidity">
+            <span class="footer-box-label">Humidity</span>
+            <span class="footer-box-value text-dark">-- <span>(--)</span></span>
+        </div>
+        <div class="map-footer-box" id="box-wind">
+            <span class="footer-box-label">Wind Speed</span>
+            <span class="footer-box-value text-dark">-- <span>(--)</span></span>
+        </div>
+        <div class="map-footer-box" id="box-air">
+            <span class="footer-box-label">Air Quality</span>
+            <span class="footer-box-value text-dark">-- <span>(--)</span></span>
+        </div>
         <div class="map-footer-box">
             <span class="footer-box-label">Network</span>
             <span class="footer-box-value network-value text-dark">No Internet</span>
-        </div>
-        <div class="map-footer-box">
-            <span class="footer-box-label">Speed</span>
-            <span class="footer-box-value speed-value text-dark">0 km/h</span>
         </div>
         <div class="map-footer-box">
             <span class="footer-box-label">Time</span>
@@ -156,6 +168,72 @@
 
         updateFooterInfo()
         setInterval(updateFooterInfo, 1000)
+
+        const fetchWeather = () => {
+            const lat = localStorage.getItem('trackLat') || getCookie('lat')
+            const lng = localStorage.getItem('trackLng') || getCookie('long')
+
+            if (!lat || !lng) {
+                $('#box-temperature, #box-humidity, #box-wind, #box-air').hide()
+                return
+            }
+
+            $.ajax({
+                url: `/api/v1/location/weather?lat=${lat}&long=${lng}`,
+                method: 'GET',
+                success: (response) => {
+                    if (!response.data) {
+                        $('#box-temperature, #box-humidity, #box-wind, #box-air').hide()
+                        return
+                    }
+
+                    const w = response.data.weather
+                    const a = response.data.air
+
+                    // Temperature
+                    let tempLabel = 'Warm'
+                    let tempClass = 'text-success'
+                    if (w.temperature <= 15) { tempLabel = 'Cold'; tempClass = 'text-primary' }
+                    else if (w.temperature <= 25) { tempLabel = 'Cool'; tempClass = 'text-info' }
+                    else if (w.temperature <= 32) { tempLabel = 'Warm'; tempClass = 'text-success' }
+                    else { tempLabel = 'Hot'; tempClass = 'text-danger' }
+                    $('#box-temperature .footer-box-value').html(`${w.temperature}${w.unit} <span class="${tempClass}">(${tempLabel})</span>`)
+
+                    // Humidity
+                    let humLabel = 'Normal'
+                    let humClass = 'text-success'
+                    if (w.humidity < 30) { humLabel = 'Dry'; humClass = 'text-warning' }
+                    else if (w.humidity <= 60) { humLabel = 'Normal'; humClass = 'text-success' }
+                    else { humLabel = 'Humid'; humClass = 'text-info' }
+                    $('#box-humidity .footer-box-value').html(`${w.humidity}% <span class="${humClass}">(${humLabel})</span>`)
+
+                    // Wind Speed
+                    let windLabel = 'Calm'
+                    let windClass = 'text-success'
+                    if (w.wind_speed <= 5) { windLabel = 'Calm'; windClass = 'text-success' }
+                    else if (w.wind_speed <= 20) { windLabel = 'Breezy'; windClass = 'text-warning' }
+                    else { windLabel = 'Danger'; windClass = 'text-danger' }
+                    $('#box-wind .footer-box-value').html(`${w.wind_speed} km/h <span class="${windClass}">(${windLabel})</span>`)
+
+                    // Air Quality
+                    let aqiLabel = 'Good'
+                    let aqiClass = 'text-success'
+                    if (a.aqi <= 50) { aqiLabel = 'Good'; aqiClass = 'text-success' }
+                    else if (a.aqi <= 100) { aqiLabel = 'Moderate'; aqiClass = 'text-warning' }
+                    else if (a.aqi <= 150) { aqiLabel = 'Unhealthy'; aqiClass = 'text-danger' }
+                    else { aqiLabel = 'Bad'; aqiClass = 'text-danger' }
+                    $('#box-air .footer-box-value').html(`AQI ${a.aqi} <span class="${aqiClass}">(${aqiLabel})</span>`)
+
+                    $('#box-temperature, #box-humidity, #box-wind, #box-air').show()
+                },
+                error: () => {
+                    $('#box-temperature, #box-humidity, #box-wind, #box-air').hide()
+                }
+            })
+        }
+
+        fetchWeather()
+        setInterval(fetchWeather, weatherFetchInterval)
 
         const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection
         if (connection) connection.addEventListener('change', updateNetworkSpeed)

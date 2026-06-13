@@ -27,6 +27,14 @@
     <?php $this->load->view("landing/faq"); ?>
 </section>
 
+<style>
+    .skeleton-loading.map-item-skeleton{
+        width: 100%;
+        margin-bottom: var(--spaceSM);
+        height: 45px;
+    }
+</style>
+
 <script>
     $(document).ready(function () {
         const pmObserver = new IntersectionObserver((entries) => {

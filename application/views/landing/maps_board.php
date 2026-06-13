@@ -27,7 +27,7 @@
         // Initialize Map
         const map = L.map('map', {
             zoomControl: false
-        }).setView([userLat, userLng], 11)
+        }).setView([userLat, userLng], getZoomFromRange($('#max-range-select').val()))
 
         // Zoom Control
         L.control.zoom({
@@ -39,6 +39,8 @@
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map)
 
+        let placesMarkers = []
+        let pinsMarkers = []
         let userMarker = L.circleMarker([userLat, userLng], {
             radius: 10,
             fillColor: 'var(--primaryColor)',
@@ -48,14 +50,26 @@
             fillOpacity: 1
         }).addTo(map)
 
-        let userRadius = L.circle([userLat, userLng], {
-            radius: 15000,
-            color: 'var(--primaryColor)',
-            dashArray: '10, 10',
-            fillColor: '#8b85ff',
-            fillOpacity: 0.12,
-            weight: 3
-        }).addTo(map)
+        let userRadius = null
+        const updateUserRadius = () => {
+            const val = $('#max-range-select').val()
+
+            if (userRadius) {
+                map.removeLayer(userRadius)
+                userRadius = null
+            }
+
+            if (val === 'all') return
+
+            userRadius = L.circle([userLat, userLng], {
+                radius: parseInt(val) * 1000,
+                color: 'var(--primaryColor)',
+                dashArray: '10, 10',
+                fillColor: '#8b85ff',
+                fillOpacity: 0.12,
+                weight: 3
+            }).addTo(map)
+        }
 
         // Update User Coordinate
         const updateUserLocation = (lat, lng) => {
@@ -92,26 +106,35 @@
 
             fetchNearbyPlaces()
             fetchNearbyPins()
+            updateUserRadius()
+        }
+
+        const loadingMapItem = (holder) => {
+            Swal.fire({
+                title: 'Fetching nearby marker...',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => Swal.showLoading()
+            })
+            $(holder).append(`
+                <div class="skeleton-loading map-item-skeleton"></div>
+                <div class="skeleton-loading map-item-skeleton"></div>
+                <div class="skeleton-loading map-item-skeleton"></div>
+            `) 
         }
 
         // Fetch Nearby Place
         const fetchNearbyPlaces = () => {
-            $('.map-card').find('.global-place-list').remove()
+            const holder = '#global-place-holder'
 
-            $('.map-card').prepend(`
-                <div class="global-place-list">
-                    <div class="map-item-skeleton"></div>
-                    <div class="map-item-skeleton"></div>
-                    <div class="map-item-skeleton"></div>
-                </div>
-            `)
-
+            loadingMapItem(holder)
             $.ajax({
                 url: `/api/v1/location/reverse?lat=${userLat}&long=${userLng}`,
                 method: 'GET',
                 success: (response) => {
+                    Swal.close()
                     if (!response.data) {
-                        $('#global-place-holder').html(`
+                        $(holder).html(`
                             <div class="text-none text-start">
                                 <i class="fa-solid fa-triangle-exclamation"></i> Failed fetch nearby place
                             </div>
@@ -119,12 +142,16 @@
                         return
                     }
 
+                    // Clean old marker
+                    $(holder).empty()
+                    placesMarkers.forEach(m => map.removeLayer(m))
+                    placesMarkers = []
+
                     const nearby = response.data.nearby
                     let html = ''
-                    $('#global-place-holder').empty()
-
                     nearby.forEach(place => {
                         const marker = L.marker([place.lat, place.lng]).addTo(map)
+                        placesMarkers.push(marker)
 
                         marker.bindPopup(`
                             <div class="place-popup">
@@ -160,11 +187,12 @@
                         `
                     })
 
-                    $('#global-place-holder').prepend(html)
+                    $(holder).prepend(html)
                     $('#total-other-location-text').text(`(${nearby.length})`)
                 },
                 error: () => {
-                    $('#global-place-holder').html(`
+                    Swal.close()
+                    $(holder).html(`
                         <div class="text-none text-start">
                             <i class="fa-solid fa-triangle-exclamation"></i> Failed fetch nearby place
                         </div>
@@ -178,7 +206,9 @@
             const viewTypeSelect = $('#view-type-select').val()
             const search = $('#pin-name-search').val().trim()
             const per_page = $('#marker-per-fetch-select').val()
+            const holder = '#pinmarker-place-holder'
 
+            loadingMapItem(holder)
             $.ajax({
                 url: `/api/v1/pin/maps`,
                 data: {
@@ -191,12 +221,27 @@
                 },
                 method: 'GET',
                 success: (response) => {
+                    Swal.close()
+                    if (!response.data) {
+                        $(holder).html(`
+                            <div class="text-none text-start">
+                                <i class="fa-solid fa-triangle-exclamation"></i> Failed fetch nearby pins
+                            </div>
+                        `)
+                        return
+                    }
+
+                    // Clean old marker
+                    $(holder).empty()
+                    pinsMarkers.forEach(m => map.removeLayer(m))
+                    pinsMarkers = []
+
                     const data = response.data
                     const pins = data.data
-                    
                     let html = ''
                     pins.forEach(dt => {
                         const marker = L.marker([dt.pin_lat, dt.pin_long]).addTo(map)
+                        pinsMarkers.push(marker)
 
                         marker.bindPopup(`
                             <div class="place-popup">
@@ -232,16 +277,26 @@
                         `
                     })
 
-                    $('#pinmarker-place-holder').prepend(html)
+                    $(holder).prepend(html)
                     $('#total-pinmarker-text').text(`(${data.per_page})`)
+                    
+                    if (pins.length > 0) {
+                        $(holder).addClass('open').css('max-height', '40vh')
+                        $('#pinmarker-section-header').find('.map-section-chevron').addClass('rotated')
+                    }
                 },
                 error: () => {
-                    $('.region-desc').text('Failed fetch nearby pins.')
+                    Swal.close()
+                    $(holder).html(`
+                        <div class="text-none text-start">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Failed fetch nearby marker
+                        </div>
+                    `)
                 }
             })
         }
 
-        if (userLat && userLng) {
+        const fetchPlace = () => {
             fetchNearbyPlaces()
             fetchNearbyPins()
         }
@@ -367,10 +422,32 @@
             }
         })
 
+        // Handle toolbar action
         $('.map-type').on('click', function () {
             const type = $(this).data('type')
             switchMapType(type, map, tileLayer)
             addUrlParam('map_type', type)
+        })
+
+        $(document).on('change', '#max-range-select', function () {
+            updateUserRadius()
+            fetchPlace()
+            map.setView([userLat, userLng], getZoomFromRange($(this).val()))
+        })
+
+        $(document).on('change', '#marker-per-fetch-select', function () {
+            fetchNearbyPins()
+        })
+
+        let searchDebounce = null
+        $(document).on('input', '#pin-name-search', function () {
+            clearTimeout(searchDebounce)
+            const val = $(this).val().trim()
+
+            searchDebounce = setTimeout(() => {
+                val ? addUrlParam('search', val) : removeUrlParam('search')
+                fetchNearbyPins()
+            }, debouncerTime)
         })
 
         // Validate query param
@@ -382,12 +459,14 @@
         }
         
         $(document).ready(function () {
-            if (isExplorer || search !== "") {
+            if (isExplorer || (search !== "" && search)) {
                 openFullscreen()
                 $(this).addClass('.active')
             }
 
             validateParams()
+            updateUserRadius()
+            if (userLat && userLng) fetchPlace()
         })
     })
 </script>

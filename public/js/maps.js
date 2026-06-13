@@ -39,3 +39,22 @@ const switchMapType = (type, map, tileLayer) => {
     $('.map-type').removeClass('active')
     $(`.map-type[data-type="${type}"]`).addClass('active')
 }
+
+const getZoomFromRange = (val) => {
+    switch (val) {
+        case '3':   
+            return 14
+        case '5':   
+            return 13
+        case '15':  
+            return 12
+        case '30':  
+            return 11
+        case '100': 
+            return 10
+        case 'all': 
+            return 9
+        default:    
+            return 11
+    }
+}
