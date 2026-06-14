@@ -8,14 +8,15 @@
             <button type="button" class="btn btn-primary map-filter-btn" data-bs-toggle="modal" data-bs-target="#mapFiltersModal">
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <button type="button" class="btn btn-outline-primary map-filter-btn" id="map-places-toggle-btn">
+            <button type="button" class="btn btn-outline-primary map-filter-btn position-relative" id="map-places-toggle-btn">
                 <i class="fa-solid fa-building"></i>
+                <div class="total-marker-hint">-</div>
             </button>
         </div>
     </div>
     <div class="map-type-wrap d-none d-md-block">
         <h6>Markers to Show</h6>
-        <select class="map-range-select" id="marker-per-fetch-select">
+        <select class="map-range-select marker-limit-select">
             <option value="10">10 Places</option>
             <option value="20">20 Places</option>
             <option value="50" selected>50 Places</option>
@@ -25,7 +26,7 @@
     </div>
     <div class="map-type-wrap d-none d-md-block">
         <h6>Max Range</h6>
-        <select class="map-range-select" id="max-range-select">
+        <select class="map-range-select marker-range-select">
             <option value="3">3 Km</option>
             <option value="5" selected>5 Km</option>
             <option value="15">15 Km</option>
@@ -157,6 +158,19 @@
         font-size: var(--textXSM);
         font-weight: 600;
     }
+    .total-marker-hint, .danger-weather-hint {
+        position: absolute;
+        top: -7.5px;
+        right: -7.5px;
+        background: var(--dangerBG);
+        color: var(--whiteColor);
+        font-size: var(--textSM);
+        font-weight: 500;
+        padding: 2px;
+        border-radius: 100%;
+        height: 20px;
+        width: 20px;
+    }
     .map-range-select:focus {
         border-color: var(--primaryColor);
     }
@@ -180,7 +194,7 @@
 </style>
 
 <script>
-    $(document).on('change', '#max-range-select, #marker-per-fetch-select', function () {
-        addUrlParam($(this).attr('id') === 'max-range-select' ? 'max_distance' : 'limit', $(this).val())
+    $(document).on('change', '.marker-limit-select, .marker-range-select', function () {
+        addUrlParam($(this).attr('id') === 'marker-range-select' ? 'max_distance' : 'limit', $(this).val())
     })
 </script>

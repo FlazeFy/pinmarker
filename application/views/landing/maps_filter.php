@@ -9,7 +9,7 @@
                 <div class="row mb-3">
                     <div class="col-6">
                         <label class="map-modal-label">Markers to Show</label>
-                        <select class="map-range-select w-100" id="marker-per-fetch-select-modal">
+                        <select class="map-range-select w-100 marker-limit-select">
                             <option value="10">10 Places</option>
                             <option value="20">20 Places</option>
                             <option value="50" selected>50 Places</option>
@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-6">
                         <label class="map-modal-label">Max Range</label>
-                        <select class="map-range-select w-100" id="max-range-select-modal">
+                        <select class="map-range-select w-100 marker-range-select">
                             <option value="3">3 Km</option>
                             <option value="5" selected>5 Km</option>
                             <option value="15">15 Km</option>

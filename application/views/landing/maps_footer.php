@@ -1,18 +1,18 @@
 <div class="map-footer">
     <div class="map-footer-group">
-        <div class="map-footer-box d-none d-xl-flex" id="box-temperature">
+        <div class="map-footer-box d-none d-xl-flex box-temperature">
             <span class="footer-box-label">Temperature</span>
             <span class="footer-box-value text-dark">-- <span>(--)</span></span>
         </div>
-        <div class="map-footer-box d-none d-xl-flex" id="box-humidity">
+        <div class="map-footer-box d-none d-xl-flex box-humidity">
             <span class="footer-box-label">Humidity</span>
             <span class="footer-box-value text-dark">-- <span>(--)</span></span>
         </div>
-        <div class="map-footer-box d-none d-xl-flex" id="box-wind">
+        <div class="map-footer-box d-none d-xl-flex box-wind">
             <span class="footer-box-label">Wind Speed</span>
             <span class="footer-box-value text-dark">-- <span>(--)</span></span>
         </div>
-        <div class="map-footer-box d-none d-xl-flex" id="box-air">
+        <div class="map-footer-box d-none d-xl-flex box-air">
             <span class="footer-box-label">Air Quality</span>
             <span class="footer-box-value text-dark">-- <span>(--)</span></span>
         </div>
@@ -42,6 +42,12 @@
             <i class="fa-solid fa-expand" id="fullscreen-icon"></i>
         </button>
     </div>
+    <button type="button" class="btn btn-primary d-block d-xl-none map-weather-btn" data-bs-toggle="modal" data-bs-target="#mapWeathersModal">
+        <i class="fa-solid fa-cloud"></i>
+        <div class="position-relative">
+            <div class="danger-weather-hint">-</div>
+        </div>
+    </button>
 </div>
 
 <style>
@@ -55,7 +61,6 @@
         justify-content: center;
         pointer-events: none;
     }
-
     .map-footer-group {
         display: flex;
         align-items: center;
@@ -66,9 +71,7 @@
         padding: 8px 12px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
         border: 1px solid rgba(199, 196, 216, 0.3);
-        pointer-events: all;
     }
-
     .map-footer-box {
         display: flex;
         flex-direction: column;
@@ -78,7 +81,6 @@
         background: #f2f3f7;
         min-width: 80px;
     }
-
     .footer-box-label {
         font-size: 10px;
         font-weight: 600;
@@ -86,13 +88,11 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
-
     .footer-box-value {
         font-size: var(--textSM);
         font-weight: 700;
         color: #464555;
     }
-
     .map-footer-icon-btn {
         width: 38px;
         height: 38px;
@@ -107,9 +107,32 @@
         font-size: var(--textMD);
         transition: background 0.2s;
     }
-
     .map-footer-icon-btn:hover {
         background: #e4e3f0;
+    }
+
+    .map-weather-btn {
+        position: absolute;
+        left: var(--spaceMD);
+        height: 50px;
+        width: 50px;
+        padding: 0;
+    }
+    .map-weather-btn, .map-footer-group {
+        pointer-events: all;
+    }
+    /* Mobile */
+    @media (max-width: 575.98px) { 
+        .map-weather-btn {
+            bottom: 60px;
+        }
+    }
+
+    /* Tablet */
+    @media (min-width: 576px) and (max-width: 1200px) { 
+        .map-weather-btn {
+            bottom: 0;
+        }
     }
 
     @media (max-width: 768px) {
@@ -181,7 +204,7 @@
             const lng = localStorage.getItem('trackLng') || getCookie('long')
 
             if (!lat || !lng) {
-                $('#box-temperature, #box-humidity, #box-wind, #box-air').hide()
+                $('.box-temperature, .box-humidity, .box-wind, .box-air').hide()
                 return
             }
 
@@ -190,7 +213,7 @@
                 method: 'GET',
                 success: (response) => {
                     if (!response.data) {
-                        $('#box-temperature, #box-humidity, #box-wind, #box-air').hide()
+                        $('.box-temperature, .box-humidity, .box-wind, .box-air').hide()
                         return
                     }
 
@@ -204,7 +227,7 @@
                     else if (w.temperature <= 25) { tempLabel = 'Cool'; tempClass = 'text-info' }
                     else if (w.temperature <= 32) { tempLabel = 'Warm'; tempClass = 'text-success' }
                     else { tempLabel = 'Hot'; tempClass = 'text-danger' }
-                    $('#box-temperature .footer-box-value').html(`${w.temperature}${w.unit} <span class="${tempClass}">(${tempLabel})</span>`)
+                    $('.box-temperature .footer-box-value').html(`${w.temperature}${w.unit} <span class="${tempClass}">(${tempLabel})</span>`)
 
                     // Humidity
                     let humLabel = 'Normal'
@@ -212,7 +235,7 @@
                     if (w.humidity < 30) { humLabel = 'Dry'; humClass = 'text-warning' }
                     else if (w.humidity <= 60) { humLabel = 'Normal'; humClass = 'text-success' }
                     else { humLabel = 'Humid'; humClass = 'text-info' }
-                    $('#box-humidity .footer-box-value').html(`${w.humidity}% <span class="${humClass}">(${humLabel})</span>`)
+                    $('.box-humidity .footer-box-value').html(`${w.humidity}% <span class="${humClass}">(${humLabel})</span>`)
 
                     // Wind Speed
                     let windLabel = 'Calm'
@@ -220,7 +243,7 @@
                     if (w.wind_speed <= 5) { windLabel = 'Calm'; windClass = 'text-success' }
                     else if (w.wind_speed <= 20) { windLabel = 'Breezy'; windClass = 'text-warning' }
                     else { windLabel = 'Danger'; windClass = 'text-danger' }
-                    $('#box-wind .footer-box-value').html(`${w.wind_speed} km/h <span class="${windClass}">(${windLabel})</span>`)
+                    $('.box-wind .footer-box-value').html(`${w.wind_speed} km/h <span class="${windClass}">(${windLabel})</span>`)
 
                     // Air Quality
                     let aqiLabel = 'Good'
@@ -229,12 +252,17 @@
                     else if (a.aqi <= 100) { aqiLabel = 'Moderate'; aqiClass = 'text-warning' }
                     else if (a.aqi <= 150) { aqiLabel = 'Unhealthy'; aqiClass = 'text-danger' }
                     else { aqiLabel = 'Bad'; aqiClass = 'text-danger' }
-                    $('#box-air .footer-box-value').html(`AQI ${a.aqi} <span class="${aqiClass}">(${aqiLabel})</span>`)
+                    $('.box-air .footer-box-value').html(`AQI ${a.aqi} <span class="${aqiClass}">(${aqiLabel})</span>`)
 
-                    $('#box-temperature, #box-humidity, #box-wind, #box-air').show()
+                    $('.box-temperature, .box-humidity, .box-wind, .box-air').show()
+                    if (tempLabel === 'Hot' || windLabel === 'Danger' || aqiLabel === 'Unhealthy') {
+                        $('.danger-weather-hint').html(`<i class="fa-solid fa-triangle-exclamation"></i>`)
+                    } else {
+                        $('.danger-weather-hint').hide()
+                    }
                 },
                 error: () => {
-                    $('#box-temperature, #box-humidity, #box-wind, #box-air').hide()
+                    $('.box-temperature, .box-humidity, .box-wind, .box-air').hide()
                 }
             })
         }
