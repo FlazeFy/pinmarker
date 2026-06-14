@@ -74,4 +74,32 @@ class GlobalListController extends CI_Controller {
             ]
         );
     }
+
+    public function get_recommended_tag_address(){
+        $limit_pin_address = $this->input->get('limit_pin_address') ? (int)$this->input->get('limit_pin_address') : 6;
+        $limit_tag = $this->input->get('limit_tag') ? (int)$this->input->get('limit_tag') : 12;
+
+        if (!is_valid_positive_number($limit_pin_address)) {
+            return api_response(400, 'failed', 'limit_pin_address must be a positive number', null);
+        }
+        if (!is_valid_positive_number($limit_tag)) {
+            return api_response(400, 'failed', 'limit_tag must be a positive number', null);
+        }
+
+        $res_pin_address = $this->GlobalListModel->get_recommended_pin_address($limit_pin_address);
+        $res_tags = $this->GlobalListModel->get_recommended_tag($limit_tag);
+
+        $message = !empty($res_pin_address) || !empty($res_tags) ? 'Global list fetched' : 'No global list found';
+
+        // Return API response
+        return api_response(
+            200,
+            'success',
+            $message,
+            [
+                'pin_address' => $res_pin_address,
+                'tags' => $res_tags
+            ]
+        );
+    }
 }
