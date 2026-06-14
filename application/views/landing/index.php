@@ -11,6 +11,8 @@
     <?php $this->load->view("landing/welcome"); ?>
 </section>
 
+<?php $this->load->view("landing/maps_filter"); ?>
+<?php $this->load->view("landing/maps_weather"); ?>
 <section class="section-sm text-center pt-0" id="map-section">
     <?php $this->load->view("landing/maps_board"); ?>
 </section>

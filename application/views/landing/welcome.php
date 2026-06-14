@@ -19,20 +19,7 @@
             </div>
         </div>
         <div class="col-lg-6 position-relative">
-            <div class="hero-card-wrap">
-                <div class="hero-card">
-                    ...
-                </div>
-                <div class="float-badge">
-                    <div class="float-icon">
-                        <i class="fa-solid fa-compass"></i>
-                    </div>
-                    <div>
-                        <div class="float-label">Let's Visit</div>
-                        <div class="float-value">Kyoto, Japan</div>
-                    </div>
-                </div>
-            </div>
+            <?php $this->load->view("landing/recommended_tag_address"); ?>
         </div>
     </div>
 </div>

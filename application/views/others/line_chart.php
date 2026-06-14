@@ -1,8 +1,11 @@
 <div class="text-center">
     <?php 
+        // Remove year
+        $ctx = substr($ctx, 0, -5);
+
         if(count($data) != 0){
-            echo "<h3>"; echo ucwords(str_replace('_',' ',$ctx)); echo"</h3>
-            <div id='Line_$ctx'></div>";
+            echo "<h2>"; echo ucwords(str_replace('_',' ',$ctx)); echo"</h2>
+            <div id='line_$ctx'></div>";
         } else {
             echo "<img src='' class='img nodata-icon'>
             <h6 class='text-center'>No Data</h6>";
@@ -51,6 +54,6 @@
         },
     };
 
-    var chart = new ApexCharts(document.querySelector("#Line_<?= $ctx ?>"), options)
+    var chart = new ApexCharts(document.querySelector("#line_<?= $ctx ?>"), options)
     chart.render()
 </script>

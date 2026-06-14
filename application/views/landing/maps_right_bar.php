@@ -1,4 +1,4 @@
-<div class="map-card">
+<div class="map-card d-none d-md-block" id="map-places-card">
     <div class="map-section-header" data-target="global-place-holder">
         <span style="font-weight:700; font-size:var(--textMD);">
             <span class="text-primary fw-bold" id="total-other-location-text"></span> Global Place
@@ -27,6 +27,19 @@
         if (!isOpen) {
             $target.addClass('open').css('max-height', '40vh')
             $(this).find('.map-section-chevron').addClass('rotated')
+        }
+    })
+
+    $(document).on('click', '#map-places-toggle-btn', function () {
+        const $card = $('#map-places-card')
+        const isHidden = $card.hasClass('d-none')
+
+        if (isHidden) {
+            $card.removeClass('d-none')
+            $(this).removeClass('btn-outline-primary').addClass('btn-primary')
+        } else {
+            $card.addClass('d-none')
+            $(this).removeClass('btn-primary').addClass('btn-outline-primary')
         }
     })
 </script>

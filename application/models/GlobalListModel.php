@@ -227,6 +227,38 @@
 			return $query->row();
 		}
 
+		public function get_recommended_pin_address($limit = 6) {
+			$this->db->select("pin_address");
+			$this->db->from($this->table);
+			$this->db->join("global_list_pin_relation","$this->table.id = global_list_pin_relation.list_id");
+			$this->db->join("pin","pin.id = global_list_pin_relation.pin_id");
+
+			// Delete soon!
+			$this->db->where("pin_address IS NOT NULL");
+			$this->db->where("pin_address !=", "");
+
+			$this->db->group_by("$this->table.id");
+			$this->db->order_by('RAND()');
+			$this->db->limit($limit);
+			$query = $this->db->get();
+
+    		return $query->result();
+		}
+
+		public function get_recommended_tag($limit = 12) {
+			$this->db->select("tag_name");
+			$this->db->from($this->table);
+			$this->db->join("global_list_pin_relation","$this->table.id = global_list_pin_relation.list_id");
+			$this->db->join("global_list_tag_relation","$this->table.id = global_list_tag_relation.list_id");
+			$this->db->join("pin","pin.id = global_list_pin_relation.pin_id");
+			$this->db->group_by("$this->table.id");
+			$this->db->order_by('RAND()');
+			$this->db->limit($limit);
+			$query = $this->db->get();
+
+    		return $query->result();
+		}
+
 		// Command
 		public function insert($data){
 			return $this->db->insert($this->table,$data);	

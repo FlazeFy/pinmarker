@@ -10,6 +10,10 @@ h1, h2, h3, h4, h5, h6, p, a, b, input, label {
 }
 h2 {
     font-size: var(--textXJumbo);
+    font-weight: 700;
+}
+.card h2 {
+    font-size: var(--textJumbo);
 }
 
 .text-primary { 

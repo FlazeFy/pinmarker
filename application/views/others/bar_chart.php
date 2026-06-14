@@ -1,7 +1,7 @@
 <div class="text-center">
     <?php 
         if(count($data) != 0){
-            echo "<h3>"; echo ucwords(str_replace('_',' ',$ctx)); echo"</h3>
+            echo "<h2>"; echo ucwords(str_replace('_',' ',$ctx)); echo"</h2>
             <div id='Bar_$ctx'></div>";
         } else {
             echo "

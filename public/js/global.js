@@ -114,16 +114,6 @@ const getDateToContext = (datetime, type) => {
     }
 }
 
-const getMonthName = (idx, is_full_name) => {
-    const months = ['January', 'February', 'March', 'April', 'May', 'June','July', 'August', 'September', 'October', 'November', 'December'];
-
-    if (idx < 0 || idx > 11) {
-        return 'Invalid month'
-    }
-
-    return is_full_name ? months[idx] : months[idx].slice(0, 3)
-}
-
 const getUTCHourOffset = () => {
     const offsetMi = new Date().getTimezoneOffset();
     const offsetHr = -offsetMi / 60;

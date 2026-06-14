@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     
-<div class="d-flex justify-content-between position-sticky container p-2" style="top: 10px; z-index: 997;">
+<div class="d-flex justify-content-between p-2 text-start">
     <div>
         <h2 class="section-title">Nearest Markers</h2>
         <p class="section-sub mb-0">Discover what's around you</p>
@@ -27,7 +27,7 @@
         // Initialize Map
         const map = L.map('map', {
             zoomControl: false
-        }).setView([userLat, userLng], getZoomFromRange($('#max-range-select').val()))
+        }).setView([userLat, userLng], getZoomFromRange($('.marker-range-select').val()))
 
         // Zoom Control
         L.control.zoom({
@@ -52,7 +52,7 @@
 
         let userRadius = null
         const updateUserRadius = () => {
-            const val = $('#max-range-select').val()
+            const val = $('.marker-range-select').val()
 
             if (userRadius) {
                 map.removeLayer(userRadius)
@@ -202,10 +202,10 @@
         }
 
         const fetchNearbyPins = (page = 1) => {
-            const max_distance = $('#max-range-select').val() !== "all" ? parseInt($('#max-range-select').val()) : null
+            const max_distance = $('.marker-range-select').val() !== "all" ? parseInt($('.marker-range-select').val()) : null
             const viewTypeSelect = $('#view-type-select').val()
             const search = $('#pin-name-search').val().trim()
-            const per_page = $('#marker-per-fetch-select').val()
+            const per_page = $('.marker-limit-select').val()
             const holder = '#pinmarker-place-holder'
 
             loadingMapItem(holder)
@@ -279,6 +279,7 @@
 
                     $(holder).prepend(html)
                     $('#total-pinmarker-text').text(`(${data.per_page})`)
+                    $('.total-marker-hint').text(data.per_page)
                     
                     if (pins.length > 0) {
                         $(holder).addClass('open').css('max-height', '40vh')
@@ -429,13 +430,13 @@
             addUrlParam('map_type', type)
         })
 
-        $(document).on('change', '#max-range-select', function () {
+        $(document).on('change', '.marker-range-select', function () {
             updateUserRadius()
             fetchPlace()
             map.setView([userLat, userLng], getZoomFromRange($(this).val()))
         })
 
-        $(document).on('change', '#marker-per-fetch-select', function () {
+        $(document).on('change', '.marker-limit-select', function () {
             fetchNearbyPins()
         })
 
@@ -453,9 +454,9 @@
         // Validate query param
         const validateParams = () => {
             if (search !== "") $('#pin-name-search').val(search)
-            !['10','20','50','150','all'].includes(limit) ? removeUrlParam('limit') : $('#marker-per-fetch-select').val(limit)
+            !['10','20','50','150','all'].includes(limit) ? removeUrlParam('limit') : $('.marker-limit-select').val(limit)
             !['default','satellite','terrain'].includes(map_type) ? removeUrlParam('map_type') : switchMapType(map_type, map, tileLayer)
-            !['3','5','15','30','100','all'].includes(max_distance) ? removeUrlParam('max_distance') : $('#max-range-select').val(max_distance)
+            !['3','5','15','30','100','all'].includes(max_distance) ? removeUrlParam('max_distance') : $('.marker-range-select').val(max_distance)
         }
         
         $(document).ready(function () {
