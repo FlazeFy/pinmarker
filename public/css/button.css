@@ -22,6 +22,11 @@
     background: var(--primaryColor);
     color: var(--whiteColor);
 }
+.btn-outline-primary {
+    background: var(--whiteColor);
+    border: 1.5px solid var(--primaryColor);
+    color: var(--primaryColor);
+}
 .btn-danger, .btn-outline-danger:hover {
     background: var(--dangerBG) !important;
     color: var(--whiteColor) !important;

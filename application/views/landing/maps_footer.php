@@ -1,36 +1,41 @@
 <div class="map-footer">
     <div class="map-footer-group">
-        <div class="map-footer-box" id="box-temperature">
+        <div class="map-footer-box d-none d-xl-flex" id="box-temperature">
             <span class="footer-box-label">Temperature</span>
             <span class="footer-box-value text-dark">-- <span>(--)</span></span>
         </div>
-        <div class="map-footer-box" id="box-humidity">
+        <div class="map-footer-box d-none d-xl-flex" id="box-humidity">
             <span class="footer-box-label">Humidity</span>
             <span class="footer-box-value text-dark">-- <span>(--)</span></span>
         </div>
-        <div class="map-footer-box" id="box-wind">
+        <div class="map-footer-box d-none d-xl-flex" id="box-wind">
             <span class="footer-box-label">Wind Speed</span>
             <span class="footer-box-value text-dark">-- <span>(--)</span></span>
         </div>
-        <div class="map-footer-box" id="box-air">
+        <div class="map-footer-box d-none d-xl-flex" id="box-air">
             <span class="footer-box-label">Air Quality</span>
             <span class="footer-box-value text-dark">-- <span>(--)</span></span>
         </div>
         <div class="map-footer-box">
-            <span class="footer-box-label">Network</span>
-            <span class="footer-box-value network-value text-dark">No Internet</span>
+            <div class="d-none d-xl-block">
+                <span class="footer-box-label d-xl-flex">Network</span>
+                <span class="footer-box-value network-value text-dark">No Internet</span>
+            </div>
+            <div class="d-flex d-xl-none py-2">
+                <i class="fa-solid fa-wifi network-icon text-secondary"></i>
+            </div>
         </div>
         <div class="map-footer-box">
             <span class="footer-box-label">Time</span>
             <span class="footer-box-value" id="footer-clock">--:-- --</span>
         </div>
         <button class="btn btn-primary px-4 py-2 fw-bold" id="btn-explorer-mode" style="border-radius:var(--roundedJumbo); font-size:var(--textSM);">
-            <i class="fa-solid fa-location-crosshairs me-2"></i>Start Explorer Mode
+            <i class="fa-solid fa-location-crosshairs me-2 d-none d-md-block"></i>Start <span class="d-none d-md-block">Explorer Mode</span>
         </button>
         <button class="map-footer-icon-btn" id="btn-focus-me" title="Focus on Me">
             <i class="fa-solid fa-location-crosshairs"></i>
         </button>
-        <button class="map-footer-icon-btn" id="btn-toggle-track" title="Toggle Track">
+        <button class="map-footer-icon-btn d-none d-md-block" id="btn-toggle-track" title="Toggle Track">
             <i class="fa-solid fa-shoe-prints"></i>
         </button>
         <button class="map-footer-icon-btn" id="btn-fullscreen" title="Toggle Fullscreen">
@@ -158,7 +163,9 @@
                 colorClass = 'text-warning'
             }
 
-            $('.network-value').text(status).removeClass('text-dark text-success text-warning text-danger').addClass(colorClass)
+            const allColor = 'text-dark text-success text-warning text-danger'
+            $('.network-icon').removeClass(allColor).addClass(colorClass)
+            $('.network-value').text(status).removeClass(allColor).addClass(colorClass)
         }
 
         const updateFooterInfo = () => {
