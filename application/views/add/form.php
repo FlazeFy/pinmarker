@@ -1,105 +1,101 @@
-<form action="/AddController/add_marker/single" method="POST">
-    <input hidden id="is_with_dir" name="is_with_dir" value="false">
-    <?php 
-        if($this->session->flashdata('validation_error')){
-            echo "
-                <div class='alert alert-danger' role='alert'>
-                    <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
-                    ".$this->session->flashdata('validation_error')."
-                </div>
-            "; 
-        }
-    ?>
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-12">
-            <input name="pin_name" id="pin_name" type="text" class="form-control form-validated" maxlength="75" required/>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12">
-            <label>Pin Category</label>
-            <select name="pin_category" class="form-select" id="pin_category" onchange="select_color_marker(this.value)">
-                <?php 
-                    foreach($dt_dct_pin_category as $dt){
-                        echo "<option value='$dt->dictionary_name-$dt->dictionary_color'>$dt->dictionary_name</option>";
-                    }
-                ?>
-            </select>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12">
-            <label>Maps</label>
-            <?php $this->load->view('add/maps_select'); ?>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12">
-            <div class="row">
-                <div class="col-6">
-                    <input name="pin_lat" id="pin_lat" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" onblur="check_nearest_pin()" required/>
-                </div>
-                <div class="col-6">
-                    <input name="pin_long" id="pin_long" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" onblur="check_nearest_pin()" required/>
+<div class="card">
+    <form action="/AddController/add_marker/single" method="POST">
+        <input hidden id="is_with_dir" name="is_with_dir" value="false">
+        <?php 
+            if($this->session->flashdata('validation_error')){
+                echo "
+                    <div class='alert alert-danger' role='alert'>
+                        <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
+                        ".$this->session->flashdata('validation_error')."
+                    </div>
+                "; 
+            }
+        ?>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <input name="pin_name" id="pin_name" type="text" class="form-control form-validated" maxlength="75" required/>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Pin Category</label>
+                <select name="pin_category" class="form-select" id="pin_category">
+                    <?php 
+                        foreach($dt_dct_pin_category as $dt){
+                            echo "<option value='$dt->dictionary_name-$dt->dictionary_color'>$dt->dictionary_name</option>";
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <input name="pin_person" id="pin_person" maxlength="75" type="text" class="form-control form-validated"/>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="row">
+                    <div class="col-6">
+                        <input name="pin_lat" id="pin_lat" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" onblur="check_nearest_pin()" required/>
+                    </div>
+                    <div class="col-6">
+                        <input name="pin_long" id="pin_long" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" onblur="check_nearest_pin()" required/>
+                    </div>
                 </div>
             </div>
-
-            <textarea name="pin_desc" id="pin_desc" maxlength="500" rows="5" class="form-control form-validated"></textarea>
-            <textarea name="pin_address" id="pin_address" maxlength="500" rows="5" class="form-control form-validated"></textarea>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12">
-            <input name="pin_person" id="pin_person" maxlength="75" type="text" class="form-control form-validated"/>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12">
-            <input name="pin_call" id="pin_call" maxlength="16" type="phone" class="form-control form-validated"/>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <input name="pin_email" id="pin_email" maxlength="255" type="email" class="form-control form-validated"/>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="is_favorite">
-                <label class="form-check-label" for="is_favorite">Add To My Favorite</label>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <textarea name="pin_desc" id="pin_desc" maxlength="500" rows="5" class="form-control form-validated"></textarea>
+                <input name="pin_email" id="pin_email" maxlength="255" type="email" class="form-control form-validated"/>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <textarea name="pin_address" id="pin_address" maxlength="500" rows="5" class="form-control form-validated"></textarea>
+                <input name="pin_call" id="pin_call" maxlength="16" type="phone" class="form-control form-validated"/>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="is_favorite">
+                    <label class="form-check-label" for="is_favorite">Add To My Favorite</label>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col-lg-6 col-md-6 col-sm-12">
-            <a class="btn btn-light w-100 py-3 mb-2" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</a>
+        <div class="row mt-4">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <a class="btn btn-outline-primary w-100 py-3 mb-2" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</a>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <button class="btn btn-success w-100 py-3" id="submit-btn" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Marker</button>
+            </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-12">
-            <button class="btn btn-success w-100 py-3" id="submit-btn" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Marker</button>
-        </div>
-    </div>
-</form>
-
-<div id="add_multiple_pin" style="display:none;">
-    <form action="/AddController/add_marker/multiple" method="POST">
-        <table class="table table-bordered" id="tb_imported_pin">
-            <thead>
-                <tr class="text-center">
-                    <th scope="col">Pin Name</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Coordinate</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Delete</th>
-                </tr>
-            </thead>
-            <tbody style="font-size: var(--textSM);"></tbody>
-        </table>
-        <button class="btn btn-success w-100 py-2 px-3" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Save All Marker</button>
     </form>
-</div>
+    <div id="add_multiple_pin" style="display:none;">
+        <form action="/AddController/add_marker/multiple" method="POST">
+            <table class="table table-bordered" id="tb_imported_pin">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col">Pin Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Coordinate</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody style="font-size: var(--textSM);"></tbody>
+            </table>
+            <button class="btn btn-success w-100 py-2 px-3" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Save All Marker</button>
+        </form>
+    </div>
 
-<div class="modal fade" id="importMarker" tabindex="-1" aria-labelledby="addGalleriesLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addGalleriesLabel">Import Marker</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-import-marker-modal-btn'></button>
-            </div>
-            <div class="modal-body">
-                <a class="btn btn-dark w-100 py-2 px-3 mb-2" id="download-template-btn"><i class="fa-solid fa-download"></i> Download Template</a>
-                <hr>
-                <div class="mb-3">
-                    <label for="formFile" class="form-label">Only Accept CSV file <b>(Max : 20 mb)</b></label>
-                    <input class="form-control" type="file" id="pin-data"  accept=".csv">
+    <div class="modal fade" id="importMarker" tabindex="-1" aria-labelledby="addGalleriesLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addGalleriesLabel">Import Marker</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-import-marker-modal-btn'></button>
                 </div>
-                <a class="btn btn-success w-100 py-2 px-3" id="generate-form-btn" onclick="generate_form()"><i class="fa-solid fa-plus"></i> Generate Form</a>
+                <div class="modal-body">
+                    <a class="btn btn-dark w-100 py-2 px-3 mb-2" id="download-template-btn"><i class="fa-solid fa-download"></i> Download Template</a>
+                    <hr>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Only Accept CSV file <b>(Max : 20 mb)</b></label>
+                        <input class="form-control" type="file" id="pin-data"  accept=".csv">
+                    </div>
+                    <a class="btn btn-success w-100 py-2 px-3" id="generate-form-btn" onclick="generate_form()"><i class="fa-solid fa-plus"></i> Generate Form</a>
+                </div>
             </div>
         </div>
     </div>
