@@ -5,6 +5,7 @@ class PinController extends CI_Controller {
     private $allowed_target_sorting_pin;
     private $allowed_value_sorting_pin;
     private $allowed_value_condition_pin;
+    private $flazenHandBaseUrl;
 
     function __construct(){
         parent::__construct();
@@ -14,6 +15,7 @@ class PinController extends CI_Controller {
         $this->allowed_target_sorting_pin = ['pin_name','total_visit','created_at'];
         $this->allowed_value_sorting_pin = ['desc','asc'];
         $this->allowed_value_condition_pin = [1,0];
+        $this->flazenHandBaseUrl = "http://127.0.0.1:8000/api/v1";
     }
 
     public function get_all_pin(){
@@ -179,6 +181,69 @@ class PinController extends CI_Controller {
                 'end_item' => $result['end_item'],
                 'data' => $result['data'],
             ]
+        );
+    }
+
+    public function get_validate_new_marker(){
+        // Coordinate param
+        $lat = $this->input->get('lat');
+        $long = $this->input->get('long');
+        $user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
+
+        // Validate coordinate
+        if (!is_valid_coordinate($lat,$long)) return api_response(400, 'failed', 'coordinate is not valid', null);
+
+        // API Endpoint
+        $url = "{$this->flazenHandBaseUrl}/locations/reverse?lat=$lat&long=$long";
+
+        // CURL request
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTPGET => true
+        ]);
+
+        $response = curl_exec($curl);
+        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        curl_close($curl);
+
+        // Decode response
+        $response_decode = json_decode($response, true);
+
+        // Nearest marker
+        $max_distance = 0.5;
+        $max_item = 10;
+        $result = $this->PinModel->get_all_pin_maps_format(null, null, $lat, $long, $max_distance, null, null, $max_item, 1, $user_id);
+        $existing = count($result['data']) > 0 ? $result['data'] : null;
+
+        if ($existing) {
+            $existing = array_map(function($pin) {
+                return [
+                    'pin_name' => $pin->pin_name,
+                    'pin_lat' => $pin->pin_lat,
+                    'pin_long' => $pin->pin_long,
+                    'pin_category' => $pin->pin_category,
+                    'distance' => $pin->distance
+                ];
+            }, $existing);
+        }
+
+        $data = [
+            'detail' => $response_decode['data']['detail'],
+            'existing' => $existing,
+            'recommended' => $response_decode['data']['nearby'],
+        ];
+
+        // Return API response
+        return api_response(
+            $http_code,
+            $http_code === 200 ? 'success' : 'failed',
+            'pin fetched',
+            $data
         );
     }
 
