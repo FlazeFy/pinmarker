@@ -95,6 +95,18 @@
         map.setView([userLat, userLng], 13)
     })
 
+    $(document).on('click','.recommended-marker-btn', function(){
+        const pinName = $(this).data('pin-name')
+        const pinLat = $(this).data('pin-lat')
+        const pinLong = $(this).data('pin-long')
+
+        $('#pin_name').val(pinName)
+        $('#pin_lat').val(pinLat)
+        $('#pin_long').val(pinLong)
+        
+        placeMarker({ lat: pinLat, lng: pinLong})
+    })
+
     $(document).ready(function () {
         initMap()
 

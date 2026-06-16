@@ -369,6 +369,8 @@
     const check_nearest_pin = () => {
         const lat = $('#pin_lat').val().trim()
         const long = $('#pin_long').val().trim()
+        let pin_name = $('#pin_name').val().trim()
+        if (pin_name === "") pin_name = null
 
         if (!lat || !long) return unknownErrorSwal()
 
@@ -376,19 +378,34 @@
 
         $.ajax({
             url: `/api/v1/pin/validate_new`,
-            data: { lat, long },
+            data: { lat, long, pin_name },
             dataType: 'json',
             contentType: 'application/json',
         })
         .done(function (response) {
             Swal.hideLoading()
             const detail = response.data.detail
+            const recommended = response.data.recommended
 
             $('#pin_address').val(detail.address)
             $('#pin_city').val(detail.city)
             $('#pin_village').val(detail.village)
             $('#pin_suburb').val(detail.suburb)
             $('#pin_country').val(detail.country)
+
+            $('#recommended-marker-holder').empty()
+            if (recommended && recommended.length > 0) {
+                $('#recommended-section').toggleClass('d-none d-block')
+
+                recommended.forEach(dt => {
+                    $('#recommended-marker-holder').append(`
+                        <a class="tag bg-primary recommended-marker-btn" data-pin-name="${dt.name}" data-pin-lat="${dt.lat}" data-pin-long="${dt.lng}">${dt.name} <span title="Distance">(${dt.distance} m)</span></a>
+                    `)
+                })
+            } else {
+                $('#pin_name').val('')
+                $('#recommended-section').toggleClass('d-block d-none')
+            }
 
             if (!response.is_found_near) {
                 Swal.fire({

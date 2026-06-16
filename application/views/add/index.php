@@ -6,6 +6,7 @@
             <?php $this->load->view("add/header"); ?>
             <div class="row">
                 <div class="col-lg-8">
+                    <?php $this->load->view('add/recommended'); ?>
                     <?php $this->load->view('add/form'); ?>
                 </div>
                 <div class="col-lg-4">
