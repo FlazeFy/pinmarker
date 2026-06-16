@@ -21,11 +21,13 @@ h2 {
 }
 .page-title {
     font-weight: 700;
+    font-size: calc(var(--textJumbo) * 1.5);
 }
 .page-sub {
     font-weight: 400;
     font-size: var(--textMD);
     color: var(--greyColor);
+    margin-bottom: 0;
 }
 .text-none {
     font-size: var(--textSM);

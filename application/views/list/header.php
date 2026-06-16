@@ -1,6 +1,6 @@
 <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
     <div>
-        <h2 class="page-title">My Markers</h2>
+        <h1 class="page-title">My Markers</h1>
         <p class="page-sub">Manage your saved travel locations and analytics.</p>
     </div>
     <div class="d-flex flex-wrap gap-2">

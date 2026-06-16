@@ -1,7 +1,6 @@
 const addContentCoor = (coor, targetLatId, targetLongId) => {
-    coor = coor.toJSON()
-    $(`#${targetLatId}`).val(coor['lat'])
-    $(`#${targetLongId}`).val(coor['lng'])
+    $(`#${targetLatId}`).val(coor.lat)
+    $(`#${targetLongId}`).val(coor.lng)
 }
 
 $(document).on('click', '.btn-direction', function () {

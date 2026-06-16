@@ -1,5 +1,5 @@
 <div class="card h-100">
-    <h3 class="card-title">Reviews</h3>
+    <h2 class="card-title">Reviews</h2>
     <div class="d-flex flex-column gap-1 pe-1" id="reviews-holder" style='overflow-y:auto; max-height: 320px;'></div>
     <button class="btn-see-more mt-auto w-100" id="reviews-see-more-button">See More</button>
 </div>

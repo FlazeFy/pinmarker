@@ -1,5 +1,5 @@
 <div class="card">
-    <h3 class="card-title">Count Distance</h3>
+    <h2 class="card-title">Count Distance</h2>
     <label>Other Marker</label>
     <select class="form-select" id="pin_name_distance_count">
         <option value="">-</option>

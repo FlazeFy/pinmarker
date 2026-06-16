@@ -1,5 +1,5 @@
 <div class="card">
-    <h3 class="card-title">Global List & Tags</h3>
+    <h2 class="card-title">Global List & Tags</h2>
     <label>List that attached this marker</label>
     <div class="d=flex mb-2">
         <?php

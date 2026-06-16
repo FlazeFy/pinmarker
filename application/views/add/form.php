@@ -1,4 +1,5 @@
-<form action="/AddController/add_marker/single" method="POST">
+<div class="card">
+    <h2 class="card-title">Marker Detail</h2>
     <input hidden id="is_with_dir" name="is_with_dir" value="false">
     <?php 
         if($this->session->flashdata('validation_error')){
@@ -16,7 +17,7 @@
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
             <label>Pin Category</label>
-            <select name="pin_category" class="form-select" id="pin_category" onchange="select_color_marker(this.value)">
+            <select name="pin_category" class="form-select" id="pin_category">
                 <?php 
                     foreach($dt_dct_pin_category as $dt){
                         echo "<option value='$dt->dictionary_name-$dt->dictionary_color'>$dt->dictionary_name</option>";
@@ -25,30 +26,37 @@
             </select>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
-            <label>Maps</label>
-            <?php $this->load->view('add/maps_select'); ?>
+            <input name="pin_person" id="pin_person" maxlength="75" type="text" class="form-control form-validated"/>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="row">
                 <div class="col-6">
-                    <input name="pin_lat" id="pin_lat" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" onblur="check_nearest_pin()" required/>
+                    <input name="pin_lat" id="pin_lat" type="text" maxlength="144" class="form-control form-validated" onblur="check_nearest_pin()" required/>
                 </div>
                 <div class="col-6">
-                    <input name="pin_long" id="pin_long" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" onblur="check_nearest_pin()" required/>
+                    <input name="pin_long" id="pin_long" type="text" maxlength="144" class="form-control form-validated" onblur="check_nearest_pin()" required/>
                 </div>
             </div>
-
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <input name="pin_village" id="pin_village" maxlength="75" class="form-control form-validated"/>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <input name="pin_suburb" id="pin_suburb" maxlength="75" class="form-control form-validated"/>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <input name="pin_city" id="pin_city" maxlength="75" class="form-control form-validated"/>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <input name="pin_country" id="pin_country" maxlength="75" class="form-control form-validated"/>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
             <textarea name="pin_desc" id="pin_desc" maxlength="500" rows="5" class="form-control form-validated"></textarea>
-            <textarea name="pin_address" id="pin_address" maxlength="500" rows="5" class="form-control form-validated"></textarea>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12">
-            <input name="pin_person" id="pin_person" maxlength="75" type="text" class="form-control form-validated"/>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-12">
-            <input name="pin_call" id="pin_call" maxlength="16" type="phone" class="form-control form-validated"/>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12">
             <input name="pin_email" id="pin_email" maxlength="255" type="email" class="form-control form-validated"/>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <textarea name="pin_address" id="pin_address" maxlength="500" rows="5" class="form-control form-validated"></textarea>
+            <input name="pin_call" id="pin_call" maxlength="16" type="phone" class="form-control form-validated"/>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="form-check">
@@ -59,47 +67,46 @@
     </div>
     <div class="row mt-4">
         <div class="col-lg-6 col-md-6 col-sm-12">
-            <a class="btn btn-light w-100 py-3 mb-2" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</a>
+            <button class="btn btn-outline-primary w-100 py-3 mb-2" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</button>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
             <button class="btn btn-success w-100 py-3" id="submit-btn" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Marker</button>
         </div>
     </div>
-</form>
+    <div id="add_multiple_pin" style="display:none;">
+        <form action="/AddController/add_marker/multiple" method="POST">
+            <table class="table table-bordered" id="tb_imported_pin">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col">Pin Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Coordinate</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                <tbody style="font-size: var(--textSM);"></tbody>
+            </table>
+            <button class="btn btn-success w-100 py-2 px-3" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Save All Marker</button>
+        </form>
+    </div>
 
-<div id="add_multiple_pin" style="display:none;">
-    <form action="/AddController/add_marker/multiple" method="POST">
-        <table class="table table-bordered" id="tb_imported_pin">
-            <thead>
-                <tr class="text-center">
-                    <th scope="col">Pin Name</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Coordinate</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Delete</th>
-                </tr>
-            </thead>
-            <tbody style="font-size: var(--textSM);"></tbody>
-        </table>
-        <button class="btn btn-success w-100 py-2 px-3" id="submit-btn"><i class="fa-solid fa-floppy-disk"></i> Save All Marker</button>
-    </form>
-</div>
-
-<div class="modal fade" id="importMarker" tabindex="-1" aria-labelledby="addGalleriesLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addGalleriesLabel">Import Marker</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-import-marker-modal-btn'></button>
-            </div>
-            <div class="modal-body">
-                <a class="btn btn-dark w-100 py-2 px-3 mb-2" id="download-template-btn"><i class="fa-solid fa-download"></i> Download Template</a>
-                <hr>
-                <div class="mb-3">
-                    <label for="formFile" class="form-label">Only Accept CSV file <b>(Max : 20 mb)</b></label>
-                    <input class="form-control" type="file" id="pin-data"  accept=".csv">
+    <div class="modal fade" id="importMarker" tabindex="-1" aria-labelledby="addGalleriesLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addGalleriesLabel">Import Marker</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-import-marker-modal-btn'></button>
                 </div>
-                <a class="btn btn-success w-100 py-2 px-3" id="generate-form-btn" onclick="generate_form()"><i class="fa-solid fa-plus"></i> Generate Form</a>
+                <div class="modal-body">
+                    <a class="btn btn-dark w-100 py-2 px-3 mb-2" id="download-template-btn"><i class="fa-solid fa-download"></i> Download Template</a>
+                    <hr>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Only Accept CSV file <b>(Max : 20 mb)</b></label>
+                        <input class="form-control" type="file" id="pin-data"  accept=".csv">
+                    </div>
+                    <a class="btn btn-success w-100 py-2 px-3" id="generate-form-btn" onclick="generate_form()"><i class="fa-solid fa-plus"></i> Generate Form</a>
+                </div>
             </div>
         </div>
     </div>
@@ -358,54 +365,118 @@
     };
 
     const check_nearest_pin = () => {
-        if($('#pin_lat').val() && $('#pin_long').val() && $('#pin_lat').val().trim() != "" && $('#pin_long').val().trim() != ""){
-            Swal.showLoading()
-            $.ajax({
-                url: `http://127.0.0.1:8000/api/v1/pin/nearest/${$('#pin_lat').val()}/${$('#pin_long').val()}`,
-                dataType: 'json',
-                contentType: 'application/json',
-                type: "POST",
-                data: JSON.stringify({
-                    id: "<?= $this->session->userdata('user_id'); ?>",
-                    max_distance: 1000
-                }),
-                beforeSend: function (xhr) {
-                    // You can add any pre-request logic here
-                }
-            })
-            .done(function (response) {         
-                let data = response.data
-                
-                Swal.hideLoading()
-                if (response.is_found_near == false) {
-                    Swal.fire({ 
-                        title: 'Success!', 
-                        text: 'No other pin detected near this coordinate. You are free to create.', 
-                        icon: 'success' 
-                    });
-                } else {
-                    let listNear = '';
+        const lat = $('#pin_lat').val().trim()
+        const long = $('#pin_long').val().trim()
+        let pin_name = $('#pin_name').val().trim()
+        if (pin_name === "") pin_name = null
 
-                    data.forEach(el => {
-                        listNear += `<li>${el.pin_name} at <b>${el.distance.toFixed(2)} m</b></li>`
-                    });
+        if (!lat || !long) return 
 
-                    Swal.fire({ 
-                        title: 'Warning!', 
-                        html: `There's a pin located near this coordinate.<br><br>
-                            <h5>Here's the list:</h5><div class='text-start'>${listNear}</div>`, 
-                        icon: 'warning' 
-                    });
-                }
-            })
-            .fail(function (response, jqXHR, textStatus, errorThrown) {
-                Swal.hideLoading()
-                response.status != 404 && unknownErrorSwal()
-            });
-        } else {
-            unknownErrorSwal()
-        }
+        Swal.showLoading()
+
+        $.ajax({
+            url: `/api/v1/pin/validate_new`,
+            data: { lat, long, pin_name },
+            dataType: 'json',
+            contentType: 'application/json',
+        })
+        .done(function (response) {
+            Swal.hideLoading()
+            const detail = response.data.detail
+            const recommended = response.data.recommended
+
+            $('#pin_address').val(detail.address)
+            $('#pin_city').val(detail.city)
+            $('#pin_village').val(detail.village)
+            $('#pin_suburb').val(detail.suburb)
+            $('#pin_country').val(detail.country)
+
+            $('#recommended-marker-holder').empty()
+            if (recommended && recommended.length > 0) {
+                $('#recommended-section').toggleClass('d-none d-block')
+
+                recommended.forEach(dt => {
+                    $('#recommended-marker-holder').append(`
+                        <a class="tag bg-primary recommended-marker-btn" data-pin-name="${dt.name}" data-pin-lat="${dt.lat}" data-pin-long="${dt.lng}">${dt.name} <span title="Distance">(${dt.distance} m)</span></a>
+                    `)
+                })
+            } else {
+                $('#pin_name').val('')
+                $('#recommended-section').toggleClass('d-block d-none')
+            }
+
+            if (!response.is_found_near) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'No other pin detected near this coordinate. You are free to create.',
+                    icon: 'success'
+                })
+            } else {
+                Swal.fire({
+                    title: 'Warning!',
+                    html: response.body.message,
+                    icon: 'info'
+                })
+            }
+        })
+        .fail(function (response) {
+            Swal.hideLoading()
+
+            const statusCode = response.status             
+            if (statusCode === 400 || statusCode === 409) {
+                const message = response.responseJSON?.message ?? 'Something went wrong.'
+
+                Swal.fire({
+                    title: 'Failed',
+                    html: statusCode === 409 ? 'There is another marker who have same name. Make a unique one' : message,
+                    icon: 'warning'
+                })
+            } else if (response.status !== 404) {
+                unknownErrorSwal()
+            }
+        })
     }
+
+    const set_disabled_submit = (val) => {
+        $('#submit-visit-wdir-btn').prop('disabled', val)
+        $('#submit-btn').prop('disabled', val)
+        $('#pin_name').prev('label').addClass('d-inline-block')
+        $('#pin_name').prevAll('.pin-name-status').remove()
+        $('#pin_name').before(!val ? `<span class="pin-name-status tag bg-success ms-2">Valid</span>` : `<span class="pin-name-status tag bg-danger ms-2">Duplicated!</span>`)
+    }
+ 
+    const check_pin_name_availability = (pin_name) => {
+        Swal.showLoading()
+        $.ajax({
+            url: `/api/v1/pin/validate_new`,
+            data: { pin_name },
+            dataType: 'json',
+            contentType: 'application/json',
+        })
+        .done(function (response) {
+            Swal.close()
+            set_disabled_submit(false)
+        })
+        .fail(function (response) {
+            Swal.close()
+            
+            if (response.status === 409) {
+                set_disabled_submit(true)
+                Swal.fire({
+                    title: 'Failed!',
+                    text: 'There is another marker who have same name. Make a unique one',
+                    icon: 'error'
+                })
+            } else {
+                unknownErrorSwal()
+            }
+        })
+    }
+
+    $('#pin_name').on('blur', function () {
+        const pinName = $(this).val().trim()
+        pinName !== "" ? check_pin_name_availability(pinName) : $('#pin_name_validation_status').empty()
+    })
 
     const delete_imported_pin = (idx) => {
         $(`#pin_section_${idx}`).remove()

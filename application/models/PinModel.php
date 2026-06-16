@@ -609,28 +609,23 @@
 			return $data = $this->db->get()->result();
 		}
 
-		public function get_pin_availability($pin_name, $id, $type){
+		public function get_pin_availability($pin_name, $user_id, $exception_id){
 			$this->db->select('pin_name');
 			$this->db->from($this->table);
+			$this->db->where('LOWER(pin_name)', strtolower($pin_name));
+    		$this->db->where('created_by', $user_id);
 
-			$condition = [
-				'pin_name' => $pin_name,
-				'created_by' => $this->session->userdata(self::SESSION_KEY)
-			];
-
-			$this->db->where($condition);
-
-			if($type == 'update'){
-				$this->db->where('id !=', $id);
+			if($exception_id){
+				$this->db->where('id !=', $exception_id);
 			}
 
             $this->db->limit(1);
 			$query = $this->db->get();
 
 			if ($query->num_rows() > 0) {
-				return false; 
+				return true; 
 			} else {
-				return true;
+				return false;
 			}
 		}
 

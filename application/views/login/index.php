@@ -36,8 +36,10 @@
     .link-primary:hover { 
         text-decoration: underline; 
     }
+    .form-control {
+        padding: 12px 14px 12px 40px;
+    }
 
-    /* Util footer */
     .util-footer {
         display: flex;
         flex-direction: column;

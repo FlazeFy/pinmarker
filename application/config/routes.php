@@ -60,6 +60,7 @@ $route['api/v1/location/reverse'] = 'api/ExternalApiController/get_nearby_places
 $route['api/v1/pin'] = 'api/PinController/get_all_pin';
 $route['api/v1/pin/maps'] = 'api/PinController/get_all_pin_maps';
 $route['api/v1/pin/pin_category'] = 'api/PinController/get_pin_category';
+$route['api/v1/pin/validate_new'] = 'api/PinController/get_validate_new_marker';
 
 $route['api/v1/global_list/my'] = 'api/GlobalListController/get_my_global_list';
 $route['api/v1/global_list/recommended/tag_address'] = 'api/GlobalListController/get_recommended_tag_address';
@@ -71,3 +72,5 @@ $route['api/v1/visit/visit_with'] = 'api/VisitController/get_all_visit_with';
 $route['api/v1/visit/visit_with/analyze/(:any)'] = 'api/VisitController/get_person_analyze/$1';
 
 $route['api/v1/review/(:any)'] = 'api/ReviewController/get_review_by_pin_id/$1';
+
+$route['api/v1/news/(:any)'] = 'api/NewsController/get_news_by_pin_id/$1';

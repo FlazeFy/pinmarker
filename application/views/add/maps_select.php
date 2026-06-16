@@ -1,77 +1,157 @@
-<style>
-    #map-board {
-        height:50vh;
-        border-radius: 20px;
-        margin-bottom: 6px;
-        border: 5px solid black;
-    }
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
-    /* Maps Dialog */
-    .gm-ui-hover-effect {
-        background: black !important;
-        border-radius: 100%;
-        position: absolute !important;
-        right: 6px !important;
-        top: 6px !important;
+<div class="map-area">
+    <div class="map-img-wrap">
+        <div id="map-board"></div>
+    </div>
+    <?php $this->load->view("add/maps_toolbar") ?>
+</div>
+
+<style>
+    .map-area{
+        position: relative;
+        height: 100%;
+        border-radius: var(--roundedJumbo);
+        overflow: hidden;
+        border: 1.5px solid #e7e8ec;
+        background: #1a1a2e;
+        box-shadow: 0 8px 32px rgba(0,0,0,.08);
     }
-    .gm-ui-hover-effect span {
-        color: white !important;
+    .map-img-wrap{
+        position: absolute;
+        inset: 0;
     }
-    .gm-control-active {
-        background: black !important;
-        border: 1.75px solid white !important;
-        border-radius: 10px !important;
-        margin-bottom: 10px !important;
+    #map-board{
+        width: 100%;
+        height: 100%;
     }
-    .gmnoprint div{
-        background: transparent !important;
-        box-shadow: none !important;
+    .leaflet-control-zoom{
+        border-radius: var(--roundedMD)!important;
+        overflow: hidden;
     }
-    .gm-control-active span {
-        background: white !important;
+    .leaflet-popup-content-wrapper{
+        border-radius: var(--roundedMD);
     }
 </style>
 
-<div class="position-relative">
-    <div id="map-board"></div>
-</div>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-<script type="text/javascript">
-    let map
-    let selected_color = ''
+<script>
+    let userLat = getCookie('lat')
+    let userLng = getCookie('long')
 
-    function initMap() {
-        map = new google.maps.Map(document.getElementById("map-board"), {
-            center: { lat: -6.226838579766097, lng: 106.82157923228753},
-            zoom: 12,
-        });
+    const map = L.map('map-board', {
+        zoomControl: false
+    }).setView([userLat ?? -2.5, userLng ?? 118], userLat ? 13 : 5)
 
-        map.addListener("click", (e) => {
-            initMap()
-            placeMarkerAndPanTo(e.latLng, map)
-            addContentCoor(e.latLng, 'pin_lat', 'pin_long')
-            check_nearest_pin()
-        });
-    }
+    L.control.zoom({ position: 'bottomright' }).addTo(map)
 
-    function placeMarkerAndPanTo(latLng, map) {
-        if(selected_color == ''){
-            const val = document.getElementById("pin_category").value
-            const split_val = val.split('-')
-            const color = split_val[1]
-            selected_color = color
+    let tileLayer = L.tileLayer(
+        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        { attribution: '&copy; OpenStreetMap contributors' }
+    ).addTo(map)
+
+    let marker = null
+    let userMarker = null
+
+    const placeMarker = (latLng) => {
+        if (marker) {
+            map.removeLayer(marker)
         }
 
-        new google.maps.Marker({
-            position: latLng,
-            map: map,
-            icon: {
-                url: 'https://maps.google.com/mapfiles/ms/icons/'+selected_color+'-dot.png',
-                scaledSize: new google.maps.Size(40, 40),
-            }
-        });
-        map.panTo(latLng)
+        marker = L.marker([latLng.lat, latLng.lng]).addTo(map)
     }
 
-    window.initMap = initMap;
+    const placeUserMarker = (lat, lng) => {
+        if (userMarker) {
+            map.removeLayer(userMarker)
+        }
+
+        userMarker = L.circleMarker([lat, lng], {
+            radius: 10,
+            fillColor: 'var(--primaryColor)',
+            color: '#ffffff',
+            weight: 4,
+            opacity: 1,
+            fillOpacity: 1
+        }).addTo(map)
+    }
+
+    const onMapClick = (e) => {
+        placeMarker(e.latlng)
+        addContentCoor(e.latlng, 'pin_lat', 'pin_long')
+        check_nearest_pin()
+    }
+
+    const initMap = () => {
+        map.on('click', onMapClick)
+
+        setTimeout(() => {
+            map.invalidateSize()
+        }, 300)
+    }
+
+    $(document).on('click', '#focus-map-button', function () {
+        map.setView([userLat, userLng], 13)
+    })
+
+    $(document).on('click','.recommended-marker-btn', function(){
+        const pinName = $(this).data('pin-name')
+        const pinLat = $(this).data('pin-lat')
+        const pinLong = $(this).data('pin-long')
+
+        $('#pin_name').val(pinName)
+        $('#pin_lat').val(pinLat)
+        $('#pin_long').val(pinLong)
+        
+        placeMarker({ lat: pinLat, lng: pinLong})
+        check_pin_name_availability(pinName)
+    })
+
+    $(document).ready(function () {
+        initMap()
+
+        navigator.permissions.query({ name: 'geolocation' }).then(permission => {
+            if (permission.state === 'granted') {
+                if (userLat === null && userLng === null) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                        userLat = position.coords.latitude
+                        userLng = position.coords.longitude
+                        storeCookie('lat', userLat)
+                        storeCookie('long', userLng)
+                        placeUserMarker(userLat, userLng)
+                        map.setView([userLat, userLng], 13)
+                    })
+                } else {
+                    placeUserMarker(userLat, userLng)
+                }
+            } else {
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Enable Location Access?',
+                    text: 'Allow location access to show your current position on the map.',
+                    showCancelButton: true,
+                    confirmButtonText: 'Allow',
+                    cancelButtonText: 'Later',
+                    confirmButtonColor: '#635bff'
+                }).then(result => {
+                    if (result.isConfirmed && navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(position => {
+                            userLat = position.coords.latitude
+                            userLng = position.coords.longitude
+                            storeCookie('lat', userLat)
+                            storeCookie('long', userLng)
+                            placeUserMarker(userLat, userLng)
+                            map.setView([userLat, userLng], 13)
+                        })
+                    }
+                })
+            }
+        })
+
+        $('.map-type').on('click', function () {
+            const type = $(this).data('type')
+            switchMapType(type, map, tileLayer)
+        })
+    })
 </script>
