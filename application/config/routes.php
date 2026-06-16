@@ -54,6 +54,8 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 // API Routes
+$route['api/v1/auth/login'] = 'api/AuthController/post_login';
+
 $route['api/v1/location/weather'] = 'api/ExternalApiController/get_current_weather';
 $route['api/v1/location/reverse'] = 'api/ExternalApiController/get_nearby_places';
 
