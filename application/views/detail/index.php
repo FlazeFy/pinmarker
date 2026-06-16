@@ -43,6 +43,9 @@
                 <div class="col-lg-8">
                     <?php $this->load->view("detail/other_nearest_marker"); ?>
                 </div>
+                <div class="col-lg-4">
+                    <?php $this->load->view("detail/news"); ?>
+                </div>
             </div>
         </div>
     </div>

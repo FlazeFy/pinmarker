@@ -248,8 +248,10 @@
 .activity-name {
     font-size: var(--textXMD); 
     font-weight: 600;
-    white-space: nowrap; 
-    overflow: hidden; 
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     text-overflow: ellipsis;
     transition: color .2s;
 }
