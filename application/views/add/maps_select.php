@@ -105,6 +105,7 @@
         $('#pin_long').val(pinLong)
         
         placeMarker({ lat: pinLat, lng: pinLong})
+        check_pin_name_availability(pinName)
     })
 
     $(document).ready(function () {

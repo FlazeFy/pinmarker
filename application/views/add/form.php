@@ -1,80 +1,78 @@
 <div class="card">
     <h2 class="card-title">Marker Detail</h2>
-    <form action="/AddController/add_marker/single" method="POST">
-        <input hidden id="is_with_dir" name="is_with_dir" value="false">
-        <?php 
-            if($this->session->flashdata('validation_error')){
-                echo "
-                    <div class='alert alert-danger' role='alert'>
-                        <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
-                        ".$this->session->flashdata('validation_error')."
-                    </div>
-                "; 
-            }
-        ?>
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <input name="pin_name" id="pin_name" type="text" class="form-control form-validated" maxlength="75" required/>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <label>Pin Category</label>
-                <select name="pin_category" class="form-select" id="pin_category">
-                    <?php 
-                        foreach($dt_dct_pin_category as $dt){
-                            echo "<option value='$dt->dictionary_name-$dt->dictionary_color'>$dt->dictionary_name</option>";
-                        }
-                    ?>
-                </select>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <input name="pin_person" id="pin_person" maxlength="75" type="text" class="form-control form-validated"/>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="row">
-                    <div class="col-6">
-                        <input name="pin_lat" id="pin_lat" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" onblur="check_nearest_pin()" required/>
-                    </div>
-                    <div class="col-6">
-                        <input name="pin_long" id="pin_long" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" onblur="check_nearest_pin()" required/>
-                    </div>
+    <input hidden id="is_with_dir" name="is_with_dir" value="false">
+    <?php 
+        if($this->session->flashdata('validation_error')){
+            echo "
+                <div class='alert alert-danger' role='alert'>
+                    <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
+                    ".$this->session->flashdata('validation_error')."
                 </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <input name="pin_village" id="pin_village" maxlength="75" class="form-control form-validated"/>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <input name="pin_suburb" id="pin_suburb" maxlength="75" class="form-control form-validated"/>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <input name="pin_city" id="pin_city" maxlength="75" class="form-control form-validated"/>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <input name="pin_country" id="pin_country" maxlength="75" class="form-control form-validated"/>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <textarea name="pin_desc" id="pin_desc" maxlength="500" rows="5" class="form-control form-validated"></textarea>
-                <input name="pin_email" id="pin_email" maxlength="255" type="email" class="form-control form-validated"/>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <textarea name="pin_address" id="pin_address" maxlength="500" rows="5" class="form-control form-validated"></textarea>
-                <input name="pin_call" id="pin_call" maxlength="16" type="phone" class="form-control form-validated"/>
-            </div>
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="is_favorite">
-                    <label class="form-check-label" for="is_favorite">Add To My Favorite</label>
+            "; 
+        }
+    ?>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <input name="pin_name" id="pin_name" type="text" class="form-control form-validated" maxlength="75" required/>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <label>Pin Category</label>
+            <select name="pin_category" class="form-select" id="pin_category">
+                <?php 
+                    foreach($dt_dct_pin_category as $dt){
+                        echo "<option value='$dt->dictionary_name-$dt->dictionary_color'>$dt->dictionary_name</option>";
+                    }
+                ?>
+            </select>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <input name="pin_person" id="pin_person" maxlength="75" type="text" class="form-control form-validated"/>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="row">
+                <div class="col-6">
+                    <input name="pin_lat" id="pin_lat" type="text" maxlength="144" class="form-control form-validated" onblur="check_nearest_pin()" required/>
+                </div>
+                <div class="col-6">
+                    <input name="pin_long" id="pin_long" type="text" maxlength="144" class="form-control form-validated" onblur="check_nearest_pin()" required/>
                 </div>
             </div>
         </div>
-        <div class="row mt-4">
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <a class="btn btn-outline-primary w-100 py-3 mb-2" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</a>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <button class="btn btn-success w-100 py-3" id="submit-btn" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Marker</button>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <input name="pin_village" id="pin_village" maxlength="75" class="form-control form-validated"/>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <input name="pin_suburb" id="pin_suburb" maxlength="75" class="form-control form-validated"/>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <input name="pin_city" id="pin_city" maxlength="75" class="form-control form-validated"/>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <input name="pin_country" id="pin_country" maxlength="75" class="form-control form-validated"/>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <textarea name="pin_desc" id="pin_desc" maxlength="500" rows="5" class="form-control form-validated"></textarea>
+            <input name="pin_email" id="pin_email" maxlength="255" type="email" class="form-control form-validated"/>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <textarea name="pin_address" id="pin_address" maxlength="500" rows="5" class="form-control form-validated"></textarea>
+            <input name="pin_call" id="pin_call" maxlength="16" type="phone" class="form-control form-validated"/>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="is_favorite">
+                <label class="form-check-label" for="is_favorite">Add To My Favorite</label>
             </div>
         </div>
-    </form>
+    </div>
+    <div class="row mt-4">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <button class="btn btn-outline-primary w-100 py-3 mb-2" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Marker & Set Direction</button>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <button class="btn btn-success w-100 py-3" id="submit-btn" type="Submit"><i class="fa-solid fa-floppy-disk"></i> Save Marker</button>
+        </div>
+    </div>
     <div id="add_multiple_pin" style="display:none;">
         <form action="/AddController/add_marker/multiple" method="POST">
             <table class="table table-bordered" id="tb_imported_pin">
@@ -372,7 +370,7 @@
         let pin_name = $('#pin_name').val().trim()
         if (pin_name === "") pin_name = null
 
-        if (!lat || !long) return unknownErrorSwal()
+        if (!lat || !long) return 
 
         Swal.showLoading()
 
@@ -424,13 +422,13 @@
         .fail(function (response) {
             Swal.hideLoading()
 
-            const message = response.responseJSON?.message ?? 'Something went wrong.'
-            console.log(response)
+            const statusCode = response.status             
+            if (statusCode === 400 || statusCode === 409) {
+                const message = response.responseJSON?.message ?? 'Something went wrong.'
 
-            if (response.status === 400) {
                 Swal.fire({
                     title: 'Failed',
-                    html: message,
+                    html: statusCode === 409 ? 'There is another marker who have same name. Make a unique one' : message,
                     icon: 'warning'
                 })
             } else if (response.status !== 404) {
@@ -438,6 +436,47 @@
             }
         })
     }
+
+    const set_disabled_submit = (val) => {
+        $('#submit-visit-wdir-btn').prop('disabled', val)
+        $('#submit-btn').prop('disabled', val)
+        $('#pin_name').prev('label').addClass('d-inline-block')
+        $('#pin_name').prevAll('.pin-name-status').remove()
+        $('#pin_name').before(!val ? `<span class="pin-name-status tag bg-success ms-2">Valid</span>` : `<span class="pin-name-status tag bg-danger ms-2">Duplicated!</span>`)
+    }
+ 
+    const check_pin_name_availability = (pin_name) => {
+        Swal.showLoading()
+        $.ajax({
+            url: `/api/v1/pin/validate_new`,
+            data: { pin_name },
+            dataType: 'json',
+            contentType: 'application/json',
+        })
+        .done(function (response) {
+            Swal.close()
+            set_disabled_submit(false)
+        })
+        .fail(function (response) {
+            Swal.close()
+            
+            if (response.status === 409) {
+                set_disabled_submit(true)
+                Swal.fire({
+                    title: 'Failed!',
+                    text: 'There is another marker who have same name. Make a unique one',
+                    icon: 'error'
+                })
+            } else {
+                unknownErrorSwal()
+            }
+        })
+    }
+
+    $('#pin_name').on('blur', function () {
+        const pinName = $(this).val().trim()
+        pinName !== "" ? check_pin_name_availability(pinName) : $('#pin_name_validation_status').empty()
+    })
 
     const delete_imported_pin = (idx) => {
         $(`#pin_section_${idx}`).remove()

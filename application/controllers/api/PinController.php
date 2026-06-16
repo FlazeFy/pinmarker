@@ -98,7 +98,8 @@ class PinController extends CI_Controller {
 
     public function get_all_pin_maps(){
         // Query param
-        $search = $this->input->get('search') ? $this->input->get('search') : null;
+        $search = $this->input->get('search') ?? null;
+        if ($search) $search = urldecode($search);
         $pin_category = $this->input->get('pin_category') ? $this->input->get('pin_category') : null;
         
         // Coordinate param
@@ -186,39 +187,55 @@ class PinController extends CI_Controller {
 
     public function get_validate_new_marker(){
         // Coordinate param
-        $lat = $this->input->get('lat');
-        $long = $this->input->get('long');
+        $lat = $this->input->get('lat') ?? null;
+        $long = $this->input->get('long') ?? null;
+        $pin_name = $this->input->get('pin_name') ?? null;
+        if ($pin_name) $pin_name = urldecode($pin_name);
+
         $user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
 
-        // Validate coordinate
-        if (!is_valid_coordinate($lat,$long)) return api_response(400, 'failed', 'coordinate is not valid', null);
-
-        // API Endpoint
-        $url = "{$this->flazenHandBaseUrl}/locations/reverse?lat=$lat&long=$long";
-
-        // CURL request
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => $url,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTPGET => true
-        ]);
-
-        $response = curl_exec($curl);
-        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-        curl_close($curl);
-
-        // Decode response
-        $response_decode = json_decode($response, true);
-
         // Nearest marker
-        $max_distance = 0.5;
-        $max_item = 10;
-        $result = $this->PinModel->get_all_pin_maps_format(null, null, $lat, $long, $max_distance, null, null, $max_item, 1, $user_id);
-        $existing = count($result['data']) > 0 ? $result['data'] : null;
+        if ($lat && $long) {
+            // Validate coordinate
+            if (!is_valid_coordinate($lat,$long)) return api_response(400, 'failed', 'coordinate is not valid', null);
+
+            // API Endpoint
+            $url = "{$this->flazenHandBaseUrl}/locations/reverse?lat=$lat&long=$long";
+
+            // CURL request
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTPGET => true
+            ]);
+
+            $response = curl_exec($curl);
+            $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            curl_close($curl);
+
+            // Decode response
+            $response_decode = json_decode($response, true);
+
+            $reverse_detail = $response_decode['data']['detail'];
+            $reverse_recommended = $response_decode['data']['nearby'];
+            
+            // Existing marker
+            $max_distance = 0.5;
+            $max_item = 10;
+            $result = $this->PinModel->get_all_pin_maps_format(null, null, $lat, $long, $max_distance, null, null, $max_item, 1, $user_id);
+            $existing = count($result['data']) > 0 ? $result['data'] : null;
+        } else {
+            $reverse_detail = null;
+            $reverse_recommended = null;
+            $existing = null;
+        }
+
+        // Pin name availability
+        $is_used = $pin_name ? $this->PinModel->get_pin_availability($pin_name, $user_id, null) : false;
 
         if ($existing) {
             $existing = array_map(function($pin) {
@@ -233,15 +250,16 @@ class PinController extends CI_Controller {
         }
 
         $data = [
-            'detail' => $response_decode['data']['detail'],
+            'detail' => $reverse_detail,
             'existing' => $existing,
-            'recommended' => $response_decode['data']['nearby'],
+            'pin_name_used' => $is_used,
+            'recommended' => $reverse_recommended,
         ];
 
         // Return API response
         return api_response(
-            $http_code,
-            $http_code === 200 ? 'success' : 'failed',
+            !$is_used ? 200 : 409,
+            !$is_used ? 'success' : 'failed',
             'pin fetched',
             $data
         );
