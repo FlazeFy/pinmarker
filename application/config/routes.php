@@ -72,3 +72,5 @@ $route['api/v1/visit/visit_with'] = 'api/VisitController/get_all_visit_with';
 $route['api/v1/visit/visit_with/analyze/(:any)'] = 'api/VisitController/get_person_analyze/$1';
 
 $route['api/v1/review/(:any)'] = 'api/ReviewController/get_review_by_pin_id/$1';
+
+$route['api/v1/news/(:any)'] = 'api/NewsController/get_news_by_pin_id/$1';
