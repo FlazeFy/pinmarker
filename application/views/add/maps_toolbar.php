@@ -7,6 +7,9 @@
             <button class="map-type" data-type="terrain">Terrain</button>
         </div>
     </div>
+    <div class="map-type-wrap">
+        <button class="btn btn-primary" id="focus-map-button"><i class="fa-solid fa-location-crosshairs"></i></button>
+    </div>
 </div>
 
 <style>
@@ -17,6 +20,9 @@
         right: var(--spaceMD);
         z-index: 1000;
         display: flex;
+        gap: var(--spaceSM);
+        justify-content: space-between;
+        align-items: center;
     }
     .map-type-wrap:not(.map-search-wrap){
         flex-shrink: 0;

@@ -1,4 +1,5 @@
 <div class="card">
+    <h2 class="card-title">Marker Detail</h2>
     <form action="/AddController/add_marker/single" method="POST">
         <input hidden id="is_with_dir" name="is_with_dir" value="false">
         <?php 
@@ -37,6 +38,18 @@
                         <input name="pin_long" id="pin_long" type="text" maxlength="144" class="form-control form-validated" onchange="select_map()" onblur="check_nearest_pin()" required/>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <input name="pin_village" id="pin_village" maxlength="75" class="form-control form-validated"/>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <input name="pin_suburb" id="pin_suburb" maxlength="75" class="form-control form-validated"/>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <input name="pin_city" id="pin_city" maxlength="75" class="form-control form-validated"/>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <input name="pin_country" id="pin_country" maxlength="75" class="form-control form-validated"/>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <textarea name="pin_desc" id="pin_desc" maxlength="500" rows="5" class="form-control form-validated"></textarea>
@@ -354,53 +367,59 @@
     };
 
     const check_nearest_pin = () => {
-        if($('#pin_lat').val() && $('#pin_long').val() && $('#pin_lat').val().trim() != "" && $('#pin_long').val().trim() != ""){
-            Swal.showLoading()
-            $.ajax({
-                url: `http://127.0.0.1:8000/api/v1/pin/nearest/${$('#pin_lat').val()}/${$('#pin_long').val()}`,
-                dataType: 'json',
-                contentType: 'application/json',
-                type: "POST",
-                data: JSON.stringify({
-                    id: "<?= $this->session->userdata('user_id'); ?>",
-                    max_distance: 1000
-                }),
-                beforeSend: function (xhr) {
-                    // You can add any pre-request logic here
-                }
-            })
-            .done(function (response) {         
-                let data = response.data
-                
-                Swal.hideLoading()
-                if (response.is_found_near == false) {
-                    Swal.fire({ 
-                        title: 'Success!', 
-                        text: 'No other pin detected near this coordinate. You are free to create.', 
-                        icon: 'success' 
-                    });
-                } else {
-                    let listNear = '';
+        const lat = $('#pin_lat').val().trim()
+        const long = $('#pin_long').val().trim()
 
-                    data.forEach(el => {
-                        listNear += `<li>${el.pin_name} at <b>${el.distance.toFixed(2)} m</b></li>`
-                    });
+        if (!lat || !long) return unknownErrorSwal()
 
-                    Swal.fire({ 
-                        title: 'Warning!', 
-                        html: `There's a pin located near this coordinate.<br><br>
-                            <h5>Here's the list:</h5><div class='text-start'>${listNear}</div>`, 
-                        icon: 'warning' 
-                    });
-                }
-            })
-            .fail(function (response, jqXHR, textStatus, errorThrown) {
-                Swal.hideLoading()
-                response.status != 404 && unknownErrorSwal()
-            });
-        } else {
-            unknownErrorSwal()
-        }
+        Swal.showLoading()
+
+        $.ajax({
+            url: `/api/v1/pin/validate_new`,
+            data: { lat, long },
+            dataType: 'json',
+            contentType: 'application/json',
+        })
+        .done(function (response) {
+            Swal.hideLoading()
+            const detail = response.data.detail
+
+            $('#pin_address').val(detail.address)
+            $('#pin_city').val(detail.city)
+            $('#pin_village').val(detail.village)
+            $('#pin_suburb').val(detail.suburb)
+            $('#pin_country').val(detail.country)
+
+            if (!response.is_found_near) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'No other pin detected near this coordinate. You are free to create.',
+                    icon: 'success'
+                })
+            } else {
+                Swal.fire({
+                    title: 'Warning!',
+                    html: response.body.message,
+                    icon: 'info'
+                })
+            }
+        })
+        .fail(function (response) {
+            Swal.hideLoading()
+
+            const message = response.responseJSON?.message ?? 'Something went wrong.'
+            console.log(response)
+
+            if (response.status === 400) {
+                Swal.fire({
+                    title: 'Failed',
+                    html: message,
+                    icon: 'warning'
+                })
+            } else if (response.status !== 404) {
+                unknownErrorSwal()
+            }
+        })
     }
 
     const delete_imported_pin = (idx) => {

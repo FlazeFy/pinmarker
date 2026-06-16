@@ -53,9 +53,10 @@
     text-align: center;
     margin-top: var(--spaceXMD);
 }
-.card h3, .card-title {
+.card h2, .card-title {
     font-size: var(--textXLG);
     font-weight: bold;
+    margin-bottom: var(--spaceMD);
 }
 
 .card, .fc-daygrid-event, .fc-timegrid-event {

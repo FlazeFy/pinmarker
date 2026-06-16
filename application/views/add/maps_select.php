@@ -91,6 +91,10 @@
         }, 300)
     }
 
+    $(document).on('click', '#focus-map-button', function () {
+        map.setView([userLat, userLng], 13)
+    })
+
     $(document).ready(function () {
         initMap()
 

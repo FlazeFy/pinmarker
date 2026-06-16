@@ -1,6 +1,6 @@
 <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4">
     <div>
-        <h2 class="page-title">Collections</h2>
+        <h1 class="page-title">Collections</h1>
         <p class="page-sub">Browse and group all your travel pin boards across the globe.</p>
     </div>
     <div class="d-flex flex-wrap gap-2">

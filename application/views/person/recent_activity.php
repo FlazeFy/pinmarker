@@ -1,5 +1,5 @@
 <div class="card h-100">
-    <h3 class="card-title">Recent Visit</h3>
+    <h2 class="card-title">Recent Visit</h2>
     <div class="d-flex flex-column gap-1 pe-1" id="recent-visit-holder" style='overflow-y:auto; max-height: 320px;'></div>
     <button class="btn-see-more mt-auto w-100">See More</button>
 </div>

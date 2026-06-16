@@ -3,7 +3,10 @@
         <a class="btn btn-danger align-self-center" href="/ListController">
             <i class="fa-solid fa-arrow-left"></i> Back
         </a>
-        <h1 class="page-title">Add Marker</h1>
+        <div>
+            <h1 class="page-title">Add Marker</h1>
+            <p class="page-sub">Add your favorite place or a place to visit someday.</p>
+        </div>
     </div>
     <div class="d-flex flex-wrap gap-2">
         <a class="btn btn-outline" id="btn-print">
