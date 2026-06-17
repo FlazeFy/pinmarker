@@ -22,7 +22,7 @@ class AuthController extends CI_Controller {
         // Authenticate user
         $user = $this->AuthModel->api_login($username, $password);
 
-        if (!$user) return api_response(401, 'failed', 'Wrong username or password', null);
+        if (!$user) return api_response(401, 'failed', 'wrong username or password', null);
 
         // Generate token
         $token = $this->AuthModel->create_token($user['id'], $user['role']);

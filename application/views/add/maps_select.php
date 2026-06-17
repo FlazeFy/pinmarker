@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
-<div class="map-area">
+<div class="map-area mb-4">
     <div class="map-img-wrap">
         <div id="map-board"></div>
     </div>
@@ -10,7 +10,7 @@
 <style>
     .map-area{
         position: relative;
-        height: 100%;
+        height: 50vh;
         border-radius: var(--roundedJumbo);
         overflow: hidden;
         border: 1.5px solid #e7e8ec;
