@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once(APPPATH . 'controllers/api/BaseApiController.php');
 
-class PinController extends CI_Controller {    
+class PinController extends BaseApiController {    
     private $allowed_target_sorting_pin;
     private $allowed_value_sorting_pin;
     private $allowed_value_condition_pin;
@@ -19,6 +20,9 @@ class PinController extends CI_Controller {
     }
 
     public function get_all_pin(){
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
         // Query param
         $search = $this->input->get('search') ? $this->input->get('search') : null;
         $pin_category = $this->input->get('pin_category') ? $this->input->get('pin_category') : null;
@@ -35,7 +39,6 @@ class PinController extends CI_Controller {
         $visit_with = $this->input->get('visit_with');
         if ($visit_with === null) $visit_with = '-all-'; 
         if ($sorting === null) $sorting = 'created_at-desc'; 
-        $user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
 
         // Query param validator
         $sorting_split = explode('-', $sorting);
@@ -97,6 +100,9 @@ class PinController extends CI_Controller {
     }
 
     public function get_all_pin_maps(){
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
         // Query param
         $search = $this->input->get('search') ?? null;
         if ($search) $search = urldecode($search);
@@ -129,7 +135,6 @@ class PinController extends CI_Controller {
         if ($is_favorite === null) $is_favorite = 'all'; 
         $is_visited = $this->input->get('is_visited');
         if ($is_visited === null) $is_visited = 'all'; 
-        $user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
 
         // Query param validator
         if ($is_favorite !== 'all' && !in_array($is_favorite, $this->allowed_value_condition_pin)) {
@@ -186,13 +191,14 @@ class PinController extends CI_Controller {
     }
 
     public function get_validate_new_marker(){
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
         // Coordinate param
         $lat = $this->input->get('lat') ?? null;
         $long = $this->input->get('long') ?? null;
         $pin_name = $this->input->get('pin_name') ?? null;
         if ($pin_name) $pin_name = urldecode($pin_name);
-
-        $user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
 
         // Nearest marker
         if ($lat && $long) {
@@ -266,7 +272,9 @@ class PinController extends CI_Controller {
     }
 
     public function get_pin_category(){
-        $user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
         $data = $this->PinModel->get_pin_category($user_id);
         $message = !empty($data) ? 'Pin category fetched' : 'No pin category found';
 

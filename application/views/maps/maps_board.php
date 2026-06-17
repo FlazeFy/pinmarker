@@ -139,6 +139,9 @@
                     is_favorite, 
                     is_visited,
                 },
+                headers: {
+                    'Authorization': `Bearer ${tokenKey}`
+                },
                 method: 'GET',
                 success: (response) => {
                     const data = response.data

@@ -38,6 +38,9 @@
                 with_companion,
                 visit_with 
             },
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
             success: (response) => {
                 const data = response.data.data
                 if (!data || data.length === 0) {

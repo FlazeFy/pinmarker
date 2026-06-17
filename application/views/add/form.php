@@ -379,6 +379,9 @@
             data: { lat, long, pin_name },
             dataType: 'json',
             contentType: 'application/json',
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
         })
         .done(function (response) {
             Swal.hideLoading()
@@ -452,6 +455,9 @@
             data: { pin_name },
             dataType: 'json',
             contentType: 'application/json',
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
         })
         .done(function (response) {
             Swal.close()
