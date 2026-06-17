@@ -50,6 +50,9 @@
             url: `/api/v1/review/${id}`,
             method: 'GET',
             data: { page, per_page: 10 },
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
             success: (response) => {
                 const rows = response.data.data || []
                 totalPage = response.data.total_page || 1
@@ -107,7 +110,7 @@
                     `)
                 }
 
-                $('#review-see-more-button').prop('disabled', false).text('See More')
+                $('#review-see-more-button, #total-review-text').hide()
             },
             complete: () => {
                 isLoading = false

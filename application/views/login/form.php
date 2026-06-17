@@ -45,7 +45,7 @@
                     "; 
                 }
             ?>
-            <button type="submit" class="btn-primary btn-lg w-100 btn-submit">Sign In</button>
+            <a class="btn-primary btn-lg w-100 btn-submit">Sign In</a>
         </form>
         <div class="divider">
             <span>Or Continue With</span>
@@ -66,3 +66,49 @@
         </div>
     </div>
 </div>
+
+<script>
+    const postLogin = () => {
+        const username = $('#username').val().trim()
+        const password = $('#password').val().trim()
+
+        if (!username || !password) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Failed!',
+                text: 'username and password cannot be empty'
+            })
+            return
+        }
+
+        Swal.showLoading()
+
+        $.ajax({
+            url: '/api/v1/auth/login',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ username, password }),
+            success: (response) => {
+                localStorage.setItem('auth_token', response.data.token)
+                $('form').off('submit').submit()
+            },
+            error: (response) => {
+                Swal.hideLoading()
+
+                const message = response.responseJSON?.message ?? 'Wrong username or password'
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Failed!',
+                    text: message
+                })
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        $(document).on('click', '.btn-submit', function (e) {
+            postLogin()
+        })
+    })
+</script>

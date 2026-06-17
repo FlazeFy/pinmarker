@@ -4,7 +4,8 @@
     {
         private $table_user = "user";
         private $table_admin = "admin";
-
+        private $table_token = "user_token";
+        
         const SESSION_KEY = 'user_id';
 
         public function rules()
@@ -173,6 +174,62 @@
         public function insert_user($data)
         {
             return $this->db->insert($this->table_user, $data);
+        }
+
+        public function api_login($uname, $pass) {
+            $role    = 1;
+            $img_url = null;
+
+            $user = $this->find_user($uname, $this->table_user);
+            if (!$user) {
+                $role = 0;
+                $user = $this->find_user($uname, $this->table_admin);
+            } else {
+                $img_url = $user->img_url;
+            }
+
+            if (!$user) return FALSE;
+
+            if (!password_verify($pass, $user->password)) return FALSE;
+
+            if ($role == 1) $this->update_last_login($user->id);
+
+            return [
+                'id'      => $user->id,
+                'role'    => $role,
+                'img_url' => $img_url
+            ];
+        }
+
+        public function create_token($user_id, $role) {
+            // Revoke existing token
+            $this->revoke_token_by_user($user_id);
+
+            $token = bin2hex(random_bytes(40));
+
+            $data = [
+                'id' => get_UUID(),
+                'user_id' => $user_id,
+                'token' => $token,
+                'role' => $role,
+                'expired_at' => date('Y-m-d H:i:s', strtotime('+30 days')),
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+
+            $this->db->insert($this->table_token, $data);
+
+            return $token;
+        }
+
+        public function find_valid_token($token) {
+            $this->db->where('token', $token);
+            $this->db->where('expired_at >', date('Y-m-d H:i:s'));
+
+            return $this->db->get($this->table_token)->row();
+        }
+
+        private function revoke_token_by_user($user_id) {
+            return $this->db->delete($this->table_token, ['user_id' => $user_id]);
         }
     }
 ?>

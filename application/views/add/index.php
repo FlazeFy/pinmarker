@@ -4,13 +4,14 @@
         <?php $this->load->view("others/top_bar"); ?>
         <div class="content">
             <?php $this->load->view("add/header"); ?>
-            <div class="row">
+            <div class="row mb-4">
                 <div class="col-lg-8">
                     <?php $this->load->view('add/recommended'); ?>
                     <?php $this->load->view('add/form'); ?>
                 </div>
                 <div class="col-lg-4">
                     <?php $this->load->view('add/maps_select'); ?>
+                    <?php $this->load->view('add/schedule'); ?>
                 </div>
             </div>
         </div>

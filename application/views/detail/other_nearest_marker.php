@@ -55,6 +55,9 @@
                 lat,
                 long
             },
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
             method: 'GET',
             success: (response) => {
                 const rows = response.data.data || []

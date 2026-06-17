@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once(APPPATH . 'controllers/api/BaseApiController.php');
 
-class HistoryController extends CI_Controller {    
+class HistoryController extends BaseApiController {    
     function __construct(){
         parent::__construct();
         $this->load->model("HistoryModel");
@@ -9,7 +10,8 @@ class HistoryController extends CI_Controller {
     }
 
     public function get_my_activity(){
-        $user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
 
         // Query param
         $per_page = $this->input->get('per_page') ?? 14;

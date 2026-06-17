@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once(APPPATH . 'controllers/api/BaseApiController.php');
 
-class ReviewController extends CI_Controller {    
+class ReviewController extends BaseApiController {    
     function __construct(){
         parent::__construct();
         $this->load->model("ReviewModel");
@@ -10,7 +11,8 @@ class ReviewController extends CI_Controller {
     }
 
     public function get_review_by_pin_id($pin_id){
-        $user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
 
         // Validate path param
         if (!check_uuid($pin_id)) return api_response(400, 'failed', 'pin_id must be valid uuid', null);

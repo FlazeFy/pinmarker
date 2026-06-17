@@ -75,6 +75,9 @@
         $.ajax({
             url: `/api/v1/visit/visit_with/analyze/${name}?year_monthly_chart=${year}&lat=${userLat}&long=${userLng}`,
             method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
             success: (response) => {
                 const data = response.data
                 

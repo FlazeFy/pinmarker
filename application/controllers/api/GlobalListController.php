@@ -1,7 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once(APPPATH . 'controllers/api/BaseApiController.php');
 
-class GlobalListController extends CI_Controller {    
+class GlobalListController extends BaseApiController {    
     private $allowed_target_sorting_pin;
     private $allowed_value_sorting_pin;
     private $allowed_value_condition_pin;
@@ -17,6 +18,9 @@ class GlobalListController extends CI_Controller {
     }
 
     public function get_my_global_list(){
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
         // Query param
         $search = $this->input->get('search') ? $this->input->get('search') : null;
         $per_page = $this->input->get('per_page') ? (int)$this->input->get('per_page') : 14;
@@ -28,7 +32,6 @@ class GlobalListController extends CI_Controller {
         $visit_with = $this->input->get('visit_with');
         if ($visit_with === null) $visit_with = '-all-'; 
         if ($sorting === null) $sorting = 'created_at-desc'; 
-        $user_id = 'fcd3f23e-e5aa-11ee-811a-3216422910e9';
 
         // Query param validator
         $sorting_split = explode('-', $sorting);

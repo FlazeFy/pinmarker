@@ -51,6 +51,9 @@
             url: '/api/v1/visit/visit_with',
             method: 'GET',
             data: { page, per_page: 10 },
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
             success: (response) => {
                 const rows = response.data.data || []
                 totalPage = response.data.total_page || 1

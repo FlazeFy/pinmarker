@@ -8,6 +8,7 @@
 
 		public function __construct() {
 			parent::__construct();
+			$this->load->helper('generator_helper');
 			$this->role_key = $this->session->userdata('role_key');
 		}
 
@@ -690,8 +691,14 @@
 		}
 
 		// Command
-		public function insert_marker($data){
-			return $this->db->insert($this->table,$data);	
+		public function insert_marker($data, $user_id){
+			$data['id'] = get_UUID();
+			$data['created_at'] = date("Y-m-d H:i:s");
+			$data['updated_at'] = null;
+			$data['deleted_at'] = null;
+			$data['created_by'] = $user_id;
+
+			return $this->db->insert($this->table, $data) ? $data['id'] : false;
 		}
 
 		public function update_marker($data, $id){

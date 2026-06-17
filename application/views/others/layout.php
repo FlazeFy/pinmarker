@@ -91,6 +91,9 @@
     <?php endif; ?>
 </head>
 <body>
+    <script>
+        const tokenKey = localStorage.getItem('auth_token')
+    </script>
     <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|DetailPersonController|DetailGlobalController)', $cleanedUrl)): ?>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
     <?php endif; ?>
