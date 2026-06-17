@@ -5,9 +5,6 @@ require_once(APPPATH . 'controllers/api/BaseApiController.php');
 use GuzzleHttp\Client;
 
 class CommandController extends BaseApiController {    
-    private $allowed_target_sorting_pin;
-    private $allowed_value_sorting_pin;
-    private $allowed_value_condition_pin;
     protected $httpClient;
 
     function __construct(){
@@ -15,14 +12,11 @@ class CommandController extends BaseApiController {
         $this->load->model("PinModel");
         $this->load->model("VisitModel");
         $this->load->model("HistoryModel");
+        $this->load->model("ScheduleModel");
 
         $this->load->helper('validator_helper');
         $this->load->helper('generator_helper');
         $this->load->library('form_validation');
-
-        $this->allowed_target_sorting_pin = ['pin_name','total_visit','created_at'];
-        $this->allowed_value_sorting_pin = ['desc','asc'];
-        $this->allowed_value_condition_pin = [1,0];
 
         $this->httpClient = new Client([
             'base_uri' => 'http://127.0.0.1:1323',
@@ -36,12 +30,31 @@ class CommandController extends BaseApiController {
 
         $success_insert = 0;
 		$failed_insert = 0;
+
+        // Validate pin
         $rules = $this->PinModel->rules(null);
         $this->form_validation->set_rules($rules);
-
         if($this->form_validation->run() == FALSE){
             return api_response(400, 'failed', generate_message(false,'add','pin','validation failed'), validation_errors());
         } else {
+            // Validate schedule
+            $schedules = $this->input->post('schedules');
+            if ($schedules && is_array($schedules)) {
+                foreach ($schedules as $index => $dt) {
+                    $_POST['schedule_day'] = $dt['schedule_day'] ?? null;
+                    $_POST['schedule_hour_start'] = $dt['schedule_hour_start'] ?? null;
+                    $_POST['schedule_hour_end'] = $dt['schedule_hour_end'] ?? null;
+            
+                    $rules = $this->ScheduleModel->rules(null);
+                    $this->form_validation->reset_validation();
+                    $this->form_validation->set_rules($rules);
+            
+                    if ($this->form_validation->run() == FALSE) {
+                        return api_response(400, 'failed', "Schedule invalid at index $index: " . validation_errors(), null);
+                    }
+                }
+            }
+
             $pin_name = $this->input->post('pin_name');
 
             $data = [
@@ -62,9 +75,15 @@ class CommandController extends BaseApiController {
             ];
 
             // This App db
-            if($this->PinModel->insert_marker($data, $user_id)){
+            $inserted_pin = $this->PinModel->insert_marker($data, $user_id);
+            if($inserted_pin){
                 $success_insert++;
                 $this->HistoryModel->insert_history('Add Marker', $pin_name);
+
+                // Insert schedule if provided
+                if ($schedules && is_array($schedules)) {
+                    $this->ScheduleModel->insert_schedules($inserted_pin, $schedules);
+                }
 
                 // Tracker's App db
                 try {
@@ -80,8 +99,7 @@ class CommandController extends BaseApiController {
                         ]
                     ]);
 
-                    if ($response->getStatusCode() == 200) {
-                    } else {
+                    if ($response->getStatusCode() !== 200) {
                         log_message('error', 'API request failed: ' . $response->getBody());
                     }
                 } catch (Exception $e) {

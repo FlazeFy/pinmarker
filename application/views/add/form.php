@@ -118,9 +118,34 @@
     const pin_lat_input = document.getElementById('pin_lat')
     const pin_long_input = document.getElementById('pin_long')
 
-    const submitPin = () => {
+    const buildSchedulePayload = () => {
+        const schedules = []
+
+        days.forEach(day => {
+            const d = day.toLowerCase()
+            const isClosed = $(`.dayoff-check[data-day="${day}"]`).is(':checked')
+            const is24h = $(`.full-day-check[data-day="${day}"]`).is(':checked')
+            const hourStart = $(`input[name="${d}_start"]`).val()
+            const hourEnd = $(`input[name="${d}_end"]`).val()
+
+            if ((hourStart === hourEnd) && !isClosed) return
+            
+            schedules.push({
+                schedule_day: day.substring(0, 3).toUpperCase(),
+                schedule_hour_start: isClosed ? null : hourStart,
+                schedule_hour_end: isClosed ? null : hourEnd,
+                is_24_h: is24h ? 1 : 0,
+                is_closed: isClosed ? 1 : 0
+            })
+        })
+
+        return schedules
+    }
+
+    const postCreatePin = () => {
         Swal.showLoading()
 
+        const isScheduleActive = $('#schedule-toggle').is(':checked')
         const data = {
             pin_name: $('#pin_name').val().trim(),
             pin_desc: $('#pin_desc').val().trim(),
@@ -136,7 +161,8 @@
             pin_email: $('#pin_email').val().trim(),
             pin_address: $('#pin_address').val().trim(),
             is_favorite: $('#is_favorite').is(':checked') ? 1 : 0,
-            is_with_dir: $('#is_with_dir').val()
+            is_with_dir: $('#is_with_dir').val(),
+            schedules: isScheduleActive ? buildSchedulePayload() : []
         }
 
         $.ajax({
@@ -190,13 +216,13 @@
         // Submit marker
         $(document).on('click', '#submit-btn', function (e) {
             e.preventDefault()
-            submitPin()
+            postCreatePin()
         })
 
         // Submit marker with direction
         $(document).on('click', '#submit-visit-wdir-btn', function () {
             $('#is_with_dir').val('true')
-            submitPin()
+            postCreatePin()
         })
     })
 

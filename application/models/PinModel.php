@@ -698,7 +698,7 @@
 			$data['deleted_at'] = null;
 			$data['created_by'] = $user_id;
 
-			return $this->db->insert($this->table, $data);	
+			return $this->db->insert($this->table, $data) ? $data['id'] : false;
 		}
 
 		public function update_marker($data, $id){
