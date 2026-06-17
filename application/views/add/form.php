@@ -1,16 +1,6 @@
 <div class="card">
     <h2 class="card-title">Marker Detail</h2>
     <input hidden id="is_with_dir" name="is_with_dir" value="false">
-    <?php 
-        if($this->session->flashdata('validation_error')){
-            echo "
-                <div class='alert alert-danger' role='alert'>
-                    <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
-                    ".$this->session->flashdata('validation_error')."
-                </div>
-            "; 
-        }
-    ?>
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12">
             <input name="pin_name" id="pin_name" type="text" class="form-control form-validated" maxlength="75" required/>
@@ -20,7 +10,7 @@
             <select name="pin_category" class="form-select" id="pin_category">
                 <?php 
                     foreach($dt_dct_pin_category as $dt){
-                        echo "<option value='$dt->dictionary_name-$dt->dictionary_color'>$dt->dictionary_name</option>";
+                        echo "<option value='$dt->dictionary_name'>$dt->dictionary_name</option>";
                     }
                 ?>
             </select>
@@ -123,25 +113,92 @@
         vertical-align: none !important;
     }
 </style>
-<div class="modal fade" id="importMarkerMap" tabindex="-1" aria-labelledby="addGalleriesLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addGalleriesLabel">Imported Marker Map</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id='close-import-map-modal-btn'></button>
-            </div>
-            <div class="modal-body">
-                <div class="position-relative">
-                    <div id="map-board-imported"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     const pin_lat_input = document.getElementById('pin_lat')
     const pin_long_input = document.getElementById('pin_long')
+
+    const submitPin = () => {
+        Swal.showLoading()
+
+        const data = {
+            pin_name: $('#pin_name').val().trim(),
+            pin_desc: $('#pin_desc').val().trim(),
+            pin_lat: $('#pin_lat').val().trim(),
+            pin_long: $('#pin_long').val().trim(),
+            pin_village: $('#pin_village').val().trim(),
+            pin_suburb: $('#pin_suburb').val().trim(),
+            pin_city: $('#pin_city').val().trim(),
+            pin_country: $('#pin_country').val().trim(),
+            pin_category: $('#pin_category').val(),
+            pin_person: $('#pin_person').val().trim(),
+            pin_call: $('#pin_call').val().trim(),
+            pin_email: $('#pin_email').val().trim(),
+            pin_address: $('#pin_address').val().trim(),
+            is_favorite: $('#is_favorite').is(':checked') ? 1 : 0,
+            is_with_dir: $('#is_with_dir').val()
+        }
+
+        $.ajax({
+            url: '/api/v1/pin/create',
+            method: 'POST',
+            data: data,
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
+            success: (response) => {
+                Swal.hideLoading()
+
+                if (data.is_with_dir === 'true') {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: response.message,
+                        icon: 'success'
+                    }).then(() => {
+                        window.open(`https://www.google.com/maps/dir/?api=1&destination=${data.pin_lat},${data.pin_long}`, '_blank')
+                        window.location.href = '/DashboardController'
+                    })
+                } else {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: response.message,
+                        icon: 'success'
+                    }).then(() => {
+                        window.location.href = '/DashboardController'
+                    })
+                }
+            },
+            error: (response) => {
+                Swal.hideLoading()
+
+                const message = response.responseJSON?.message ?? 'Something went wrong.'
+
+                if (response.status === 400) {
+                    Swal.fire({
+                        title: 'Failed!',
+                        html: message,
+                        icon: 'warning'
+                    })
+                } else {
+                    unknownErrorSwal()
+                }
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        // Submit marker
+        $(document).on('click', '#submit-btn', function (e) {
+            e.preventDefault()
+            submitPin()
+        })
+
+        // Submit marker with direction
+        $(document).on('click', '#submit-visit-wdir-btn', function () {
+            $('#is_with_dir').val('true')
+            submitPin()
+        })
+    })
 
     const read_pin_data_url = () => {
         const data_from_url = read_url_params('add pin')
@@ -181,188 +238,11 @@
     $(document).ready(function() {
         read_pin_data_url()
 
-        $(document).on('click', '#download-template-btn', function() {
-            const fileURL = 'public/file/template_import_pin.csv'
-            const fileName = 'import_pin_template.csv'
-            const link = document.createElement('a')
-            link.href = fileURL
-            link.download = fileName
-            document.body.appendChild(link)
-            link.click()
-            document.body.removeChild(link)
-        })
         $(document).on('click', '#submit-visit-wdir-btn', function() {
             $('#is_with_dir').val('true')
             $('#submit-btn').click()
         })
     })
-
-    const generate_form = () => {
-        const fileInput = $('#pin-data').get(0)
-        const file = fileInput.files[0]
-        loading() 
-
-        if (!file) {
-            Swal.hideLoading()
-            $('#importMarker').modal('hide')
-            Swal.fire({ 
-                title: 'Failed!', 
-                text: 'Please select a file', 
-                icon: 'error' 
-            });
-        } else if (!file.name.endsWith('.csv')) {
-            Swal.hideLoading()
-            $('#importMarker').modal('hide')
-            Swal.fire({ 
-                title: 'Failed!', 
-                text: 'Please select a CSV file', 
-                icon: 'error' 
-            });
-        } else {
-            let reader = new FileReader()
-            reader.readAsText(file)
-
-            reader.onload = function (event) {
-                let csvdata = event.target.result
-                let rowData = csvdata.split('\n')
-                let success_row = 0
-                let failed_row = 0
-                let map2
-                let markers = []
-
-                if (rowData.length > 0 && rowData.length < 201) {
-                    $('#importMarker').modal('hide')
-                    $('#add_multiple_pin').css('display', 'block')
-                    $('#add_pin').css('display', 'none')
-
-                    function initMapImported() {
-                        map2 = new google.maps.Map(document.getElementById("map-board-imported"), {
-                            center: { lat: -6.226838579766097, lng: 106.82157923228753 },
-                            zoom: 12,
-                        });
-                    }
-
-                    function addMarker(props) {
-                        var marker = new google.maps.Marker({
-                            position: props.coords,
-                            map: map2,
-                            icon: props.icon
-                        });
-
-                        if(props.icon){
-                            marker.setIcon(props.icon);
-                        }
-                        if(props.content){
-                            var infoWindow = new google.maps.InfoWindow({
-                                content:props.content
-                            });
-                            marker.addListener('click', function(){
-                                infoWindow.open(map, marker);
-                            });
-                        }
-                    }
-
-                    for (let row = 1; row < rowData.length; row++) {
-                        let rowColData = rowData[row].split(',')
-
-                        if (rowColData.length >= 3) {
-                            let pinName = rowColData[0].trim()
-                            let longitude = rowColData[1].trim()
-                            let latitude = rowColData[2].trim()
-
-                            if (pinName && latitude && longitude) {
-                                if (latitude !== "0" && longitude !== "0") {
-                                    $('#tb_imported_pin tbody').append(`
-                                        <tr id="pin_section_${row}">
-                                            <td style="width:300px;">
-                                                <input class="form-control" name="pin_name[]" value="${pinName}" oninput="dt_search_config(${row},'pin_name', this)">
-                                                <span hidden id="pin_name_dt_holder_${row}">${pinName}</span>
-                                            </td>
-                                            <td>
-                                                <select name="pin_category[]" class="form-select">
-                                                    <?php 
-                                                        foreach($dt_dct_pin_category as $dt){
-                                                            echo "<option value='$dt->dictionary_name-$dt->dictionary_color'>$dt->dictionary_name</option>";
-                                                        }
-                                                    ?>
-                                                </select>
-                                                <a class="btn btn-dark py-1 px-2 float-start using-cat-btn" style='font-size:var(--textSM);' onclick="copy_all_cat(${row})"><i class="fa-solid fa-copy"></i> Using this category for all pin after this</a>
-                                            </td>
-                                            <td>
-                                                <label>Latitude</label>
-                                                <input class="form-control" name="pin_lat[]" value="${latitude}" oninput="dt_search_config(${row},'pin_lat', this)">
-                                                <span hidden id="pin_lat_dt_holder_${row}">${latitude}</span>
-
-                                                <label>Longitude</label>
-                                                <input class="form-control" name="pin_long[]" value="${longitude}" oninput="dt_search_config(${row},'pin_long', this)">
-                                                <span hidden id="pin_long_dt_holder_${row}">${longitude}</span>
-                                            </td>
-                                            <td>
-                                                <textarea class="form-control" name="pin_desc" value=""></textarea>
-                                            </td>
-                                            <td>
-                                                <a class='btn btn-dark d-block mx-auto delete-imported-pin-btn' onclick="delete_imported_pin(${row})"><i class="fa-solid fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                    `)
-                                    success_row++
-
-                                    // markers.push()
-                                    addMarker({
-                                        coords: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
-                                        icon: {
-                                            url: 'https://maps.google.com/mapfiles/ms/icons/red.png',
-                                            scaledSize: new google.maps.Size(40, 40),
-                                        },
-                                        content: `<div>
-                                            <h6>${pinName}</h6>
-                                        </div>
-                                        `
-                                    })
-                                } else {
-                                    failed_row++
-                                }
-                            } else {
-                                failed_row++
-                            }
-                        } else {
-                            failed_row++
-                        }
-                    }
-
-                    Swal.hideLoading()
-                    if (success_row > 0) {
-                        window.initMap = initMapImported()
-                        // $('#tb_imported_pin').DataTable()
-
-                        $('#imported_map_btn_holder').empty().append(`
-                            <a class="btn btn-dark mb-4 py-3 px-4 see-map-btn" data-bs-toggle="modal" data-bs-target="#importMarkerMap">
-                                <i class="fa-solid fa-map"></i> See the Map
-                            </a>
-                        `)
-                        Swal.fire({
-                            title: 'Success!',
-                            text: failed_row === 0 ? `Successfully imported ${success_row} pin` : `Successfully imported ${success_row} pin and ${failed_row} failed`,
-                            icon: 'success',
-                        });
-                    } else {
-                        Swal.fire({
-                            title: 'Failed!',
-                            text: `No pin ready to imported`,
-                            icon: 'error',
-                        });
-                    }
-                } else {
-                    Swal.hideLoading();
-                    Swal.fire({
-                        title: 'Failed!',
-                        text: `Total pin must be below 100. Your pin count is ${rowData.length}`,
-                        icon: 'error',
-                    });
-                }
-            };
-        }
-    };
 
     const check_nearest_pin = () => {
         const lat = $('#pin_lat').val().trim()

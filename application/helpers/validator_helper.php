@@ -22,3 +22,11 @@ if (!function_exists('is_valid_coordinate')) {
         return (float)$lat >= -90 && (float)$lat <= 90 && (float)$long >= -180 && (float)$long <= 180;
     }
 }
+
+if (!function_exists('cleanTrimNull')) {
+    function cleanTrimNull($value) {
+        if ($value === null) return null;
+        $trimmed = trim($value);
+        return $trimmed !== '' ? $trimmed : null;
+    }
+}

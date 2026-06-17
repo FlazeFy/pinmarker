@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once(APPPATH . 'controllers/api/BaseApiController.php');
 
-class PinController extends BaseApiController {    
+class QueryController extends BaseApiController {    
     private $allowed_target_sorting_pin;
     private $allowed_value_sorting_pin;
     private $allowed_value_condition_pin;
