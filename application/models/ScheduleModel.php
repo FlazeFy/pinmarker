@@ -32,6 +32,20 @@
 			];
         }
 
+		// Query
+		public function get_schedule_by_pin_id($pin_id) {
+			$this->db->select("
+				schedule_day, is_24_h, is_closed,
+				DATE_FORMAT(schedule_hour_start, '%H:%i') AS schedule_hour_start,
+				DATE_FORMAT(schedule_hour_end, '%H:%i') AS schedule_hour_end
+			");
+			$this->db->from($this->table);
+			$this->db->where("pin_id", $pin_id);
+			$this->db->order_by("FIELD(schedule_day, 'MON','TUE','WED','THU','FRI','SAT','SUN')", '', false);
+		
+			return $this->db->get()->result();
+		}				
+
 		// Command
 		public function insert_schedules($pin_id, $schedules){
 			foreach ($schedules as $dt) {

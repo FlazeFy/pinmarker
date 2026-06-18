@@ -38,3 +38,7 @@ h2 {
 .text-none.text-center {
     padding: var(--spaceMD);
 }
+
+.swal2-html-container p {
+    margin-bottom: 0;
+}
