@@ -54,8 +54,10 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 // API Routes
+// Auth Module
 $route['api/v1/auth/login'] = 'api/AuthController/post_login';
 
+// Location Module
 $route['api/v1/location/weather'] = 'api/ExternalApiController/get_current_weather';
 $route['api/v1/location/reverse'] = 'api/ExternalApiController/get_nearby_places';
 
@@ -66,15 +68,23 @@ $route['api/v1/pin/pin_category'] = 'api/Pin/QueryController/get_pin_category';
 $route['api/v1/pin/validate_new'] = 'api/Pin/QueryController/get_validate_new_marker';
 $route['api/v1/pin/create'] = 'api/Pin/CommandController/post_pin';
 
+// Global List Module
 $route['api/v1/global_list/my'] = 'api/GlobalListController/get_my_global_list';
 $route['api/v1/global_list/recommended/tag_address'] = 'api/GlobalListController/get_recommended_tag_address';
 
+// History Module
 $route['api/v1/history'] = 'api/HistoryController/get_my_activity';
 
+// Visit Module
 $route['api/v1/visit/by_pin/(:any)'] = 'api/VisitController/get_visit_by_pin_id/$1';
 $route['api/v1/visit/visit_with'] = 'api/VisitController/get_all_visit_with';
 $route['api/v1/visit/visit_with/analyze/(:any)'] = 'api/VisitController/get_person_analyze/$1';
 
+// Review Module
 $route['api/v1/review/(:any)'] = 'api/ReviewController/get_review_by_pin_id/$1';
 
+// News Module
 $route['api/v1/news/(:any)'] = 'api/NewsController/get_news_by_pin_id/$1';
+
+// Schedule Module
+$route['api/v1/schedule'] = 'api/Schedule/QueryController/get_all_schedule';
