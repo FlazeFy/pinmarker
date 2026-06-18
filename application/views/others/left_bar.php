@@ -46,7 +46,7 @@
         <a href="/PersonController" class="nav-item <?= ($cleanedUrl === "PersonController") ? "active" : ""; ?>">
             <i class="fa-solid fa-users"></i> Person
         </a>
-        <a href="/TrackController" class="nav-item">
+        <a href="/ScheduleController" class="nav-item <?= ($cleanedUrl === "ScheduleController") ? "active" : ""; ?>">
             <i class="fa-solid fa-clock"></i> Schedule
         </a>
         <div class="nav-group-label mt-3">Account</div>
