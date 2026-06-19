@@ -27,8 +27,15 @@ class QueryController extends BaseApiController {
         if ($is_favorite === null) $is_favorite = 'all'; 
         $is_visited = $this->input->get('is_visited');
         if ($is_visited === null) $is_visited = 'all'; 
-        $is_open_only = $this->input->get('is_open_only');
-        if ($is_open_only === null) $is_open_only = 'all';
+        $open_status = $this->input->get('open_status');
+        if ($open_status === null) $open_status = 'all';
+
+        // Coordinate param
+        $lat = $this->input->get('lat') ? $this->input->get('lat') : null;
+        $long = $this->input->get('long') ? $this->input->get('long') : null;
+
+        // Max distance param
+        $max_distance = $this->input->get('max_distance') ?? null;
 
         // Query param validator
         if ($is_favorite !== 'all' && !in_array($is_favorite, $this->allowed_value_condition_schedule)) {
@@ -37,11 +44,22 @@ class QueryController extends BaseApiController {
         if ($is_visited !== 'all' && !in_array($is_visited, $this->allowed_value_condition_schedule)) {
             return api_response(400, 'failed', 'is_visited not valid', null);
         }
-        if ($is_open_only !== 'all' && !in_array($is_open_only, $this->allowed_value_condition_schedule)) {
-            return api_response(400, 'failed', 'is_open_only not valid', null);
+        if ($open_status !== 'all' && !in_array($open_status, $this->allowed_value_condition_schedule)) {
+            return api_response(400, 'failed', 'open_status not valid', null);
         }
 
-        $result = $this->ScheduleModel->get_all_schedule($search, $pin_category, $is_favorite, $is_visited, $is_open_only, $user_id);
+        // Max distance query param validator
+        if ($max_distance && !is_valid_positive_number($max_distance) && $max_distance !== "all") {
+            return api_response(400, 'failed', 'max_distance must be a positive number', null);
+        } else if($max_distance){
+            if ($max_distance !== "all") {
+                $max_distance = (int)$max_distance;
+            } else {
+                $max_distance = null;
+            }
+        } 
+
+        $result = $this->ScheduleModel->get_all_schedule($search, $pin_category, $is_favorite, $is_visited, $open_status, $max_distance, $lat, $long, $user_id);
 
         $message = !empty($result) ? 'Schedule fetched' : 'No schedule found';
 

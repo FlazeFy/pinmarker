@@ -13,6 +13,13 @@
         </select>
     </div>
     <div class="map-type-wrap map-search-wrap">
+        <h6>Open Status</h6>
+        <select class="map-range-select" id="open-status-select">
+            <option value="all" selected>All Marker</option>
+            <option value="1">Open Only </option>
+        </select>
+    </div>
+    <div class="map-type-wrap map-search-wrap">
         <h6>Max Range</h6>
         <select class="map-range-select" id="max-range-select">
             <option value="5" selected>5 Km</option>
@@ -21,6 +28,10 @@
             <option value="100">100 Km</option>
             <option value="all">All</option>
         </select>
+    </div>
+    <div class="map-type-wrap map-search-wrap">
+        <h6>Near Location</h6>
+        <input class="map-search-field" id="pin-coordinate" type="text" placeholder="Current location..."/>
     </div>
 </div>
 
@@ -94,3 +105,9 @@
         }
     }
 </style>
+
+<script>
+    let userLat = getCookie('lat')
+    let userLng = getCookie('long')
+    $('#pin-coordinate').val(`${userLat},${userLng}`)
+</script>

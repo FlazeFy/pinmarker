@@ -83,7 +83,10 @@
                     ? activePins.map(dt => `
                         <div class="d-inline-block position-relative">
                             ${dt.is_favorite ? `<i class='fa-solid fa-heart text-danger position-absolute' style="top: -5px; right: 2px;"></i>` : ''}
-                            <span class="tag pointer bg-${dt.is_closed ? 'danger' : 'success'} tag-pin-name" data-pin-id="${dt.id}">${dt.pin_name}</span>
+                            <span class="tag text-start px-3 pointer bg-${dt.is_closed ? 'danger' : 'success'} tag-pin-name" data-pin-id="${dt.id}">
+                                <p class="mb-0">${dt.pin_name}</p>
+                                <p class="mb-0"><i class="fa-solid fa-location-dot"></i> ${dt.distance} Km | ${dt.pin_category}</p>
+                            </span>
                         </div>
                         `).join(' ')
                     : ''
@@ -107,6 +110,13 @@
     }
 
     const fetchSchedule = () => {
+        const search = $('#pin-name-search').val().trim()
+        const viewTypeSelect = $('#view-type-select').val()
+        const is_favorite = viewTypeSelect === "favorite" ? "1" : "all"
+        const open_status = $('#open-status-select').val()
+        const is_visited = viewTypeSelect === "visited" ? "1" : viewTypeSelect === "unvisited" ? "0" : "all"
+        const max_distance = $('#max-range-select').val() !== "all" ? parseInt($('#max-range-select').val()) : null
+
         generateSkeletonTable()
         $('#schedule-error').addClass('d-none')
 
@@ -114,7 +124,13 @@
             url: '/api/v1/schedule',
             method: 'GET',
             data: {
-                
+                search,
+                is_favorite, 
+                is_visited,
+                max_distance,
+                open_status,
+                lat: userLat,
+                long: userLng,
             },
             headers: {
                 'Authorization': `Bearer ${tokenKey}`
@@ -130,7 +146,30 @@
         })
     }
 
-    $(document).ready(() => {
+    let pinSearchDebounce = null
+    $(document).on('input', '#pin-name-search', function() {
+        clearTimeout(pinSearchDebounce)
+        pinSearchDebounce = setTimeout(() => {
+            fetchSchedule()
+            addUrlParam('search', $(this).val())
+        }, debouncerTime)
+    })
+
+    $(document).on('change', '#max-range-select, #view-type-select, #open-status-select', function() {
+        fetchSchedule()
+        addUrlParam($(this).attr('id') === 'max-range-select' ? 'max_distance' : $(this).attr('id') === 'open-status-select' ? 'open_status' : 'view_type', $(this).val())
+    })
+
+    // Validate query param
+    const validateParams = () => {
+        if (search !== "") $('#pin-name-search').val(search)
+        !['favorite','visited','unvisited','all'].includes(view_type) ? removeUrlParam('view_type') : $('#view-type-select').val(view_type)
+        !['1','all'].includes(open_status) ? removeUrlParam('open_status') : $('#open-status-select').val(open_status)
+        !['5','15','30','100','all'].includes(max_distance) ? removeUrlParam('max_distance') : $('#max-range-select').val(max_distance)
+    }
+    
+    $(document).ready(function () {
+        validateParams()
         fetchSchedule()
     })
 </script>

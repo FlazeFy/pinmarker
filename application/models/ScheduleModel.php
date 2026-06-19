@@ -46,12 +46,12 @@
 			return $this->db->get()->result();
 		}	
 		
-		public function get_all_schedule($search, $pin_category, $is_favorite, $is_visited, $is_open_only, $user_id) {
+		public function get_all_schedule($search, $pin_category, $is_favorite, $is_visited, $open_status, $max_distance, $lat, $long, $user_id) {
 			$day_now = strtoupper(date('D'));
     		$hour_now = date('H:i');
 
 			$this->db->select("
-				pin.id, pin_name, schedule_day, is_24_h, is_closed, is_favorite,
+				pin.id, pin_name, schedule_day, is_24_h, is_closed, is_favorite, pin_lat, pin_long, pin_category, 
 				DATE_FORMAT(schedule_hour_start, '%H:%i') AS schedule_hour_start,
 				DATE_FORMAT(schedule_hour_end, '%H:%i') AS schedule_hour_end
 			");
@@ -70,7 +70,7 @@
 			if($is_favorite !== "all"){
 				$this->db->where('is_favorite',(int)$is_favorite);
 			}
-			if ($is_open_only !== 'all' && (int)$is_open_only === 1) {
+			if ($open_status !== 'all' && (int)$open_status === 1) {
 				$this->db->where('is_closed', 0);
 				$this->db->group_start();
 					// same day & open 24h
@@ -98,15 +98,35 @@
 			$this->db->group_by("schedule_day, schedule_hour_start, schedule_hour_end, pin.id");
 			$this->db->order_by("FIELD(schedule_day, 'MON','TUE','WED','THU','FRI','SAT','SUN')", '', false);
 			$this->db->order_by('is_favorite','DESC');
-			$res = $this->db->get()->result();
+			$rows = $this->db->get()->result();
 
-			foreach ($res as $dt) {
+			// Distance filtering
+			$has_distance_filter = ($max_distance !== null && $lat !== null && $long !== null);
+			$filtered_rows = [];
+			foreach ($rows as $dt) {
+				// Data type safety
 				$dt->is_favorite = (int)$dt->is_favorite;
 				$dt->is_24_h = (int)$dt->is_24_h;
 				$dt->is_closed = (int)$dt->is_closed;
+
+				// Distance filtering
+				if ($has_distance_filter) {
+					$dt->distance = calculate_distance($lat, $long, $dt->pin_lat, $dt->pin_long, 'km');
+					if ($dt->distance <= (double)$max_distance) $filtered_rows[] = $dt;
+				} else {
+					$dt->distance = null;
+					$filtered_rows[] = $dt;
+				}
 			}
 
-			return $res;
+			// Sort nearest first
+			if ($has_distance_filter) {
+				usort($filtered_rows, function ($a, $b) {
+					return $a->distance <=> $b->distance;
+				});
+			}
+
+			return $filtered_rows;
 		}
 
 		// Command

@@ -1,7 +1,9 @@
 <script>
     const urlParams = new URLSearchParams(window.location.search)
     const search = urlParams.get('search')
-    let category = urlParams.get('category')
+    const view_type = urlParams.get('view_type')
+    const open_status = urlParams.get('open_status')
+    const max_distance = urlParams.get('max_distance')
 </script>
 
 <div class="d-flex" style="min-height:100vh; background:var(--containerColor);">
