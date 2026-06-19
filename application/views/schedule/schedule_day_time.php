@@ -116,6 +116,9 @@
         const open_status = $('#open-status-select').val()
         const is_visited = viewTypeSelect === "visited" ? "1" : viewTypeSelect === "unvisited" ? "0" : "all"
         const max_distance = $('#max-range-select').val() !== "all" ? parseInt($('#max-range-select').val()) : null
+        const coordinate = $('#pin-coordinate').val().split(",")
+        const lat = coordinate[0]
+        const long = coordinate[1]
 
         generateSkeletonTable()
         $('#schedule-error').addClass('d-none')
@@ -129,8 +132,8 @@
                 is_visited,
                 max_distance,
                 open_status,
-                lat: userLat,
-                long: userLng,
+                lat,
+                long
             },
             headers: {
                 'Authorization': `Bearer ${tokenKey}`

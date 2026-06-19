@@ -30,10 +30,14 @@
         </select>
     </div>
     <div class="map-type-wrap map-search-wrap">
-        <h6>Near Location</h6>
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">Near Location</h6>
+            <a class="btn btn-primary px-2" id="select-search-coordinate"><i class="fa-solid fa-map-location-dot fa-sm"></i></a>
+        </div>
         <input class="map-search-field" id="pin-coordinate" type="text" placeholder="Current location..."/>
     </div>
 </div>
+<?php $this->load->view('schedule/maps_select') ?>
 
 <style>
     .map-toolbar {
