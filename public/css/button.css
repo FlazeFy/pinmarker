@@ -98,9 +98,15 @@
     color: var(--dangerBG);
     background: var(--dangerLightBG) !important;
 }
+.tag.bg-danger p {
+    color: var(--dangerBG);
+}
 .tag.bg-success, .cat-icon.bg-success {
     color: var(--successBG);
     background: var(--successLightBG) !important;
+}
+.tag.bg-success p {
+    color: var(--successBG);
 }
 .tag.bg-primary, .cat-icon.bg-primary {
     color: var(--primaryColor);

@@ -477,3 +477,8 @@ const addUrlParam = (key, value) => {
     url.searchParams.set(key, value)
     history.replaceState(null, '', url)
 }
+
+$(document).on('click', '.tag-pin-name', function(){
+    const pinId = $(this).data('pin-id')
+    window.location.href = `/DetailController/view/${pinId}`
+})

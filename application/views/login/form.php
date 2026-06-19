@@ -95,12 +95,14 @@
             error: (response) => {
                 Swal.hideLoading()
 
-                const message = response.responseJSON?.message ?? 'Wrong username or password'
+                let message = response.responseJSON?.message ?? 'Wrong username or password'
+
+                if (response.responseJSON?.data) message += response.responseJSON?.data
 
                 Swal.fire({
                     icon: 'warning',
                     title: 'Failed!',
-                    text: message
+                    html: message
                 })
             }
         })

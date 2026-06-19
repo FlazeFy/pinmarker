@@ -54,10 +54,33 @@
         </div>
     </div>
     <hr>
-    <label class="mb-0">Description</label>
+    <label class="mb-2">Description</label>
     <?php
         if($dt_detail_pin->pin_desc != null){ 
             echo "<p class='mb-0 text-sm'>$dt_detail_pin->pin_desc</p>";
+        } else {
+            echo "<p class='mb-0 text-none text-sm'>- Not provided -</p>";
+        }
+    ?>
+    <hr>
+    <label class="mb-2">Schedule</label>
+    <?php
+        if($dt_schedule){ 
+            echo "<div class='d-flex flex-wrap gap-1'>";
+            foreach ($dt_schedule as $dt) {
+                if ($dt->is_24_h == 0 && $dt->is_closed == 0) {
+                    $time = "$dt->schedule_hour_start - $dt->schedule_hour_end";
+                } else if ($dt->is_24_h == 1) {
+                    $time = "24h";
+                } else {
+                    $time = "Closed";
+                }
+
+                $bg = $dt->is_closed == 1 ? "bg-danger" : "bg-success";
+
+                echo "<span class='tag $bg'>$dt->schedule_day ($time)</span>";
+            }
+            echo "</div>";
         } else {
             echo "<p class='mb-0 text-none text-sm'>- Not provided -</p>";
         }
