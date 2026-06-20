@@ -4,7 +4,7 @@
     <div class="map-img-wrap">
         <div id="map-board"></div>
     </div>
-    <?php $this->load->view("add/maps_toolbar") ?>
+    <?php $this->load->view("edit/maps_toolbar") ?>
 </div>
 
 <style>
@@ -42,7 +42,7 @@
 
     const map = L.map('map-board', {
         zoomControl: false
-    }).setView([userLat ?? -2.5, userLng ?? 118], 13)
+    }).setView([<?= $dt_detail_pin->pin_lat ?>, <?= $dt_detail_pin->pin_long ?>], 13)
 
     L.control.zoom({ position: 'bottomright' }).addTo(map)
 
@@ -110,6 +110,7 @@
 
     $(document).ready(function () {
         initMap()
+        placeMarker({ lat: <?= $dt_detail_pin->pin_lat ?> , lng: <?= $dt_detail_pin->pin_long ?> })
 
         navigator.permissions.query({ name: 'geolocation' }).then(permission => {
             if (permission.state === 'granted') {
