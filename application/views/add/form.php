@@ -21,10 +21,10 @@
         <div class="col-lg-6 col-md-6 col-sm-12">
             <div class="row">
                 <div class="col-6">
-                    <input name="pin_lat" id="pin_lat" type="text" maxlength="144" class="form-control form-validated" onblur="check_nearest_pin()" required/>
+                    <input name="pin_lat" id="pin_lat" type="text" maxlength="144" class="form-control form-validated" onblur="check_nearest_pin(true, true)" required/>
                 </div>
                 <div class="col-6">
-                    <input name="pin_long" id="pin_long" type="text" maxlength="144" class="form-control form-validated" onblur="check_nearest_pin()" required/>
+                    <input name="pin_long" id="pin_long" type="text" maxlength="144" class="form-control form-validated" onblur="check_nearest_pin(true, true)" required/>
                 </div>
             </div>
         </div>
@@ -270,82 +270,6 @@
         })
     })
 
-    const check_nearest_pin = () => {
-        const lat = $('#pin_lat').val().trim()
-        const long = $('#pin_long').val().trim()
-        let pin_name = $('#pin_name').val().trim()
-        if (pin_name === "") pin_name = null
-
-        if (!lat || !long) return 
-
-        Swal.showLoading()
-
-        $.ajax({
-            url: `/api/v1/pin/validate_new`,
-            data: { lat, long, pin_name },
-            dataType: 'json',
-            contentType: 'application/json',
-            headers: {
-                'Authorization': `Bearer ${tokenKey}`
-            },
-        })
-        .done(function (response) {
-            Swal.hideLoading()
-            const detail = response.data.detail
-            const recommended = response.data.recommended
-
-            $('#pin_address').val(detail.address)
-            $('#pin_city').val(detail.city)
-            $('#pin_village').val(detail.village)
-            $('#pin_suburb').val(detail.suburb)
-            $('#pin_country').val(detail.country)
-
-            $('#recommended-marker-holder').empty()
-            if (recommended && recommended.length > 0) {
-                $('#recommended-section').toggleClass('d-none d-block')
-
-                recommended.forEach(dt => {
-                    $('#recommended-marker-holder').append(`
-                        <a class="tag bg-primary recommended-marker-btn" data-pin-name="${dt.name}" data-pin-lat="${dt.lat}" data-pin-long="${dt.lng}">${dt.name} <span title="Distance">(${dt.distance} m)</span></a>
-                    `)
-                })
-            } else {
-                $('#pin_name').val('')
-                $('#recommended-section').toggleClass('d-block d-none')
-            }
-
-            if (!response.is_found_near) {
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'No other pin detected near this coordinate. You are free to create.',
-                    icon: 'success'
-                })
-            } else {
-                Swal.fire({
-                    title: 'Warning!',
-                    html: response.body.message,
-                    icon: 'info'
-                })
-            }
-        })
-        .fail(function (response) {
-            Swal.hideLoading()
-
-            const statusCode = response.status             
-            if (statusCode === 400 || statusCode === 409) {
-                const message = response.responseJSON?.message ?? 'Something went wrong.'
-
-                Swal.fire({
-                    title: 'Failed',
-                    html: statusCode === 409 ? 'There is another marker who have same name. Make a unique one' : message,
-                    icon: 'warning'
-                })
-            } else if (response.status !== 404) {
-                unknownErrorSwal()
-            }
-        })
-    }
-
     const set_disabled_submit = (val) => {
         $('#submit-visit-wdir-btn').prop('disabled', val)
         $('#submit-btn').prop('disabled', val)
@@ -353,41 +277,10 @@
         $('#pin_name').prevAll('.pin-name-status').remove()
         $('#pin_name').before(!val ? `<span class="pin-name-status tag bg-success ms-2">Valid</span>` : `<span class="pin-name-status tag bg-danger ms-2">Duplicated!</span>`)
     }
- 
-    const check_pin_name_availability = (pin_name) => {
-        Swal.showLoading()
-        $.ajax({
-            url: `/api/v1/pin/validate_new`,
-            data: { pin_name },
-            dataType: 'json',
-            contentType: 'application/json',
-            headers: {
-                'Authorization': `Bearer ${tokenKey}`
-            },
-        })
-        .done(function (response) {
-            Swal.close()
-            set_disabled_submit(false)
-        })
-        .fail(function (response) {
-            Swal.close()
-            
-            if (response.status === 409) {
-                set_disabled_submit(true)
-                Swal.fire({
-                    title: 'Failed!',
-                    text: 'There is another marker who have same name. Make a unique one',
-                    icon: 'error'
-                })
-            } else {
-                unknownErrorSwal()
-            }
-        })
-    }
 
     $('#pin_name').on('blur', function () {
         const pinName = $(this).val().trim()
-        pinName !== "" ? check_pin_name_availability(pinName) : $('#pin_name_validation_status').empty()
+        pinName !== "" ? check_pin_name_availability(pinName, (res) => set_disabled_submit(res)) : $('.pin-name-status').remove()
     })
 
     const delete_imported_pin = (idx) => {

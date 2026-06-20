@@ -57,3 +57,112 @@ const getZoomFromRange = (val) => {
             return 11
     }
 }
+
+const check_nearest_pin = (with_recommend = false, check_name = false) => {
+    const lat = $('#pin_lat').val().trim()
+    const long = $('#pin_long').val().trim()
+    let pin_name = check_name ? $('#pin_name').val().trim() : null
+    if (pin_name === "") pin_name = null
+
+    if (!lat || !long) return 
+
+    Swal.showLoading()
+
+    $.ajax({
+        url: `/api/v1/pin/validate_new`,
+        data: { lat, long, pin_name },
+        dataType: 'json',
+        contentType: 'application/json',
+        headers: {
+            'Authorization': `Bearer ${tokenKey}`
+        },
+    })
+    .done(function (response) {
+        Swal.hideLoading()
+        const detail = response.data.detail
+        const recommended = response.data.recommended
+
+        $('#pin_address').val(detail.address)
+        $('#pin_city').val(detail.city)
+        $('#pin_village').val(detail.village)
+        $('#pin_suburb').val(detail.suburb)
+        $('#pin_country').val(detail.country)
+
+        if (with_recommend) {
+            $('#recommended-marker-holder').empty()
+            if (recommended && recommended.length > 0) {
+                $('#recommended-section').toggleClass('d-none d-block')
+
+                recommended.forEach(dt => {
+                    $('#recommended-marker-holder').append(`
+                        <a class="tag bg-primary recommended-marker-btn" data-pin-name="${dt.name}" data-pin-lat="${dt.lat}" data-pin-long="${dt.lng}">${dt.name} <span title="Distance">(${dt.distance} m)</span></a>
+                    `)
+                })
+            } else {
+                $('#pin_name').val('')
+                $('#recommended-section').toggleClass('d-block d-none')
+            }
+        }
+
+        if (!response.is_found_near) {
+            Swal.fire({
+                title: 'Success!',
+                text: 'No other pin detected near this coordinate. You are free to create.',
+                icon: 'success'
+            })
+        } else {
+            Swal.fire({
+                title: 'Warning!',
+                html: response.body.message,
+                icon: 'info'
+            })
+        }
+    })
+    .fail(function (response) {
+        Swal.hideLoading()
+
+        const statusCode = response.status             
+        if (statusCode === 400 || statusCode === 409) {
+            const message = response.responseJSON?.message ?? 'Something went wrong.'
+
+            Swal.fire({
+                title: 'Failed',
+                html: statusCode === 409 ? 'There is another marker who have same name. Make a unique one' : message,
+                icon: 'warning'
+            })
+        } else if (response.status !== 404) {
+            unknownErrorSwal()
+        }
+    })
+}
+
+const check_pin_name_availability = (pin_name, action) => {
+    Swal.showLoading()
+    $.ajax({
+        url: `/api/v1/pin/validate_new`,
+        data: { pin_name },
+        dataType: 'json',
+        contentType: 'application/json',
+        headers: {
+            'Authorization': `Bearer ${tokenKey}`
+        },
+    })
+    .done(function (response) {
+        Swal.close()
+        action(false)
+    })
+    .fail(function (response) {
+        Swal.close()
+        
+        if (response.status === 409) {
+            action(true)
+            Swal.fire({
+                title: 'Failed!',
+                text: 'There is another marker who have same name. Make a unique one',
+                icon: 'error'
+            })
+        } else {
+            unknownErrorSwal()
+        }
+    })
+}

@@ -175,6 +175,9 @@ body {
     background-color: rgba(240, 34, 116, 0.2);
     border: 2px solid var(--dangerBG);
 }
+.border-danger {
+    border-color: var(--dangerBG) !important;
+}
 .bg-light-warning {
     background-color: rgba(244, 178, 46, 0.25);
 }
@@ -183,6 +186,9 @@ body {
 }
 .bg-primary {
     background: var(--primaryColor) !important;
+}
+.border-primary {
+    border-color: var(--primaryColor) !important;
 }
 .bg-secondary {
     background: rgba(175, 175, 175, 0.15) !important;

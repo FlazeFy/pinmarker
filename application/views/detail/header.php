@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="d-flex flex-wrap gap-2">
-        <a href="/AddController" class="btn btn-primary">
+        <a href="/EditController/view/<?= $dt_detail_pin->id ?>" class="btn btn-primary">
             <i class="fa-solid fa-pen-to-square"></i> Edit Marker
         </a>
         <a class="btn btn-outline" id="btn-print">

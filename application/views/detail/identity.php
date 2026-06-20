@@ -11,11 +11,15 @@
     <div class="row mt-4 text-start">
         <div class="col-lg-4 pb-2">
             <label class="mb-0">Latitude</label>
-            <p class="mb-0 fw-bold"><?= $dt_detail_pin->pin_lat ?></p>
-        </div>
-        <div class="col-lg-4 pb-2">
+            <p class="mb-3 fw-bold"><?= $dt_detail_pin->pin_lat ?></p>
             <label class="mb-0">Longitude</label>
             <p class="mb-0 fw-bold"><?= $dt_detail_pin->pin_long ?></p>
+        </div>
+        <div class="col-lg-4 pb-2">
+            <label class="mb-0">Village, Suburb</label>
+            <p class="mb-3 fw-bold"><?= $dt_detail_pin->pin_village ?? '-' ?>, <?= $dt_detail_pin->pin_suburb ?? '-' ?></p>
+            <label class="mb-0">City, Country</label>
+            <p class="mb-0 fw-bold"><?= $dt_detail_pin->pin_city ?? '-' ?>, <?= $dt_detail_pin->pin_country ?? '-' ?></p>
         </div>
         <div class="col-lg-4 pb-2">
             <label class="mb-0">Address</label>

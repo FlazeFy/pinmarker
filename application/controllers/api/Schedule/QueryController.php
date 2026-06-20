@@ -66,4 +66,16 @@ class QueryController extends BaseApiController {
         // Return API response
         return api_response(200, 'success', $message, $result);
     }
+
+    public function get_schedule_by_pin_id($pin_id) {
+        // Validate path param
+        if (!check_uuid($pin_id)) return api_response(400, 'failed', 'pin_id must be valid uuid', null);
+
+        $result = $this->ScheduleModel->get_schedule_by_pin_id($pin_id);
+
+        $message = !empty($result) ? 'Schedule fetched' : 'No schedule found';
+
+        // Return API response
+        return api_response(200, 'success', $message, $result);
+    }
 }

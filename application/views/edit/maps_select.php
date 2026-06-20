@@ -4,7 +4,7 @@
     <div class="map-img-wrap">
         <div id="map-board"></div>
     </div>
-    <?php $this->load->view("add/maps_toolbar") ?>
+    <?php $this->load->view("edit/maps_toolbar") ?>
 </div>
 
 <style>
@@ -42,7 +42,7 @@
 
     const map = L.map('map-board', {
         zoomControl: false
-    }).setView([userLat ?? -2.5, userLng ?? 118], 13)
+    }).setView([<?= $dt_detail_pin->pin_lat ?>, <?= $dt_detail_pin->pin_long ?>], 13)
 
     L.control.zoom({ position: 'bottomright' }).addTo(map)
 
@@ -80,7 +80,13 @@
     const onMapClick = (e) => {
         placeMarker(e.latlng)
         addContentCoor(e.latlng, 'pin_lat', 'pin_long')
-        check_nearest_pin(true, true)
+        check_nearest_pin_edit()
+    }
+
+    const check_nearest_pin_edit = () => {
+        const pinNameNew = $('#pin_name').val().trim().toLowerCase()
+
+        check_nearest_pin(false, pinNameOld === pinNameNew ? false : true)
     }
 
     const initMap = () => {
@@ -105,11 +111,12 @@
         $('#pin_long').val(pinLong)
         
         placeMarker({ lat: pinLat, lng: pinLong})
-        check_pin_name_availability(pinName, (res) => set_disabled_submit(res))
+        check_pin_name_availability(pinName)
     })
 
     $(document).ready(function () {
         initMap()
+        placeMarker({ lat: <?= $dt_detail_pin->pin_lat ?> , lng: <?= $dt_detail_pin->pin_long ?> })
 
         navigator.permissions.query({ name: 'geolocation' }).then(permission => {
             if (permission.state === 'granted') {

@@ -24,57 +24,6 @@ class DetailPersonController extends CI_Controller {
 		$this->telegram = new Api($telegram_token);
 	}
 
-	public function view($name)
-	{
-		if($this->AuthModel->current_user()){
-			$data = [];
-			$year = $this->session->userdata('year_filter') ?? date('Y');
-
-			$data['is_mobile_device'] = is_mobile_device();
-			if($data['is_mobile_device']){
-				$per_page = 8;
-			} else {
-				$per_page = 14;
-			}
-			$offset = 0;
-
-			$data['is_signed'] = true;
-			$data['active_page'] = 'detail_person';
-			$data['raw_name'] = str_replace("%20"," ",$name);
-			$data['clean_name'] = ucwords(str_replace("%20"," ",$name));
-			$data['total_appearance'] = $this->VisitModel->get_total_appearance($name);
-
-			if($this->session->userdata('page_visit')){
-				$offset = $this->session->userdata('page_visit') * $per_page;
-			}
-			$data['dt_visit_by_person'] = $this->VisitModel->get_visit_by_person($name, $per_page, $offset);
-			$data['dt_pin_by_person'] = $this->PinModel->get_pin_by_person($name);
-			$data['dt_visit_pertime_hour'] = $this->VisitModel->get_visit_pertime_by_person($name,'hour');
-			$data['dt_visit_pertime_year'] = $this->VisitModel->get_visit_pertime_by_person($name,'month',$year);
-			$data['dt_visit_pertime_dayname'] = $this->VisitModel->get_visit_pertime_by_person($name,'dayname',null);
-			$data['dt_visit_location'] = $this->VisitModel->get_visit_location_by_person($name,true);
-			$data['dt_visit_location_category'] = $this->VisitModel->get_visit_location_category_by_person($name);
-			$data['dt_visit_location_favorite'] = $this->VisitModel->get_visit_location_favorite_by_person($name);
-			$data['dt_visit_daily_hour_by_person'] = $this->VisitModel->get_visit_daily_hour_by_person($name);
-			$data['dt_visit_person_summary'] = $this->VisitModel->get_visit_person_summary($name);
-			$data['dt_visit_trends'] = $this->VisitModel->get_visit_trends($name);
-			$data['dt_review_history'] = $this->ReviewModel->get_review_by_context($name,'person');
-			$data['dt_available_year'] = $this->MultiModel->get_available_year();
-
-			$data['title_page'] = 'Detail | Person | '.$data['clean_name'];
-			$data['content'] = $this->load->view('detail_person/index',$data,true);
-			$this->load->view('others/layout', $data);
-		} else {
-			redirect('LoginController');
-		}
-	}
-
-	public function navigate($name,$page){
-		$this->session->set_userdata('page_visit', $page);
-
-		redirect("DetailPersonController/view/$name");
-	}
-
 	public function print_visit($person)
 	{		
 		$user_id = $this->session->userdata('user_id');
@@ -158,14 +107,6 @@ class DetailPersonController extends CI_Controller {
 		} else {
 			$this->session->set_flashdata('message_error', generate_message(false,'generate','document','no data to generated'));
 		}
-		redirect("DetailPersonController/view/$name");
-	}
-
-	public function filter_year($name){
-		$year = $this->input->post('year_filter');
-		$this->session->set_userdata('year_filter', $year);
-		$this->session->set_flashdata('message_success', generate_message(true,'change filter of','year',null));
-
 		redirect("DetailPersonController/view/$name");
 	}
 }

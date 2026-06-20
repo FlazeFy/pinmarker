@@ -27,7 +27,7 @@
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
     <link href="http://127.0.0.1:8080/public/css/frame.css" rel="stylesheet"/>
     
-    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|DetailPersonController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController)', $cleanedUrl)): ?>
         <!-- Maps CSS -->
         <link href="http://127.0.0.1:8080/public/css/maps.css" rel="stylesheet"/>
     <?php endif; ?>
@@ -40,7 +40,7 @@
         <link href="http://127.0.0.1:8080/public/css/sidebar.css" rel="stylesheet"/>
     <?php endif; ?>
 
-    <?php if(preg_match('(LoginController|GlobalListController|DetailGlobalController|DetailPersonController|AddGlobalListController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(LoginController|GlobalListController|DetailGlobalController|AddGlobalListController)', $cleanedUrl)): ?>
         <!-- Pin CSS -->
         <link href="http://127.0.0.1:8080/public/css/pin.css" rel="stylesheet"/>
     <?php endif; ?>
@@ -69,12 +69,12 @@
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
     <?php endif; ?>
 
-    <?php if(preg_match('(LandingController|DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|PersonController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(LandingController|DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|PersonController|EditController)', $cleanedUrl)): ?>
         <!-- Maps JS -->
         <script src="http://127.0.0.1:8080/public/js/maps.js"></script>
     <?php endif; ?>
 
-    <?php if(preg_match('(DashboardController|MyProfileController|DetailController|DetailPersonController|PersonController|EmbedController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(DashboardController|MyProfileController|DetailController|PersonController|EmbedController)', $cleanedUrl)): ?>
         <!--Apex Chart-->
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <script src="http://127.0.0.1:8080/public/js/chart.js"></script>
@@ -94,7 +94,7 @@
     <script>
         const tokenKey = localStorage.getItem('auth_token')
     </script>
-    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|DetailPersonController|DetailGlobalController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|DetailVisitController|MapsController|TrackController|DetailGlobalController)', $cleanedUrl)): ?>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
     <?php endif; ?>
 
