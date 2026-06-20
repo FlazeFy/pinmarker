@@ -88,3 +88,4 @@ $route['api/v1/news/(:any)'] = 'api/NewsController/get_news_by_pin_id/$1';
 
 // Schedule Module
 $route['api/v1/schedule'] = 'api/Schedule/QueryController/get_all_schedule';
+$route['api/v1/schedule/(:any)'] = 'api/Schedule/QueryController/get_schedule_by_pin_id/$1';
