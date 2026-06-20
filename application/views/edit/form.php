@@ -1,6 +1,5 @@
 <div class="card mb-4">
     <h2 class="card-title">Marker Detail</h2>
-    <input hidden id="is_with_dir" name="is_with_dir" value="false">
     <input hidden id="pin_name_old" value="<?= $dt_detail_pin->pin_name ?>" type="text"/>
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12">
@@ -67,6 +66,7 @@
 
 <script>
     const pinNameOld = $('#pin_name_old').val().toLowerCase()
+    const id = '<?= $dt_detail_pin->id ?>';
 
     const set_disabled_submit = (val) => {
         $('#submit-btn').prop('disabled', val)
@@ -78,5 +78,75 @@
     $(document).on('blur','#pin_name',function(){
         const pinName = $(this).val().trim().toLowerCase()
         pinNameOld !== pinName && pinName !== "" && check_pin_name_availability(pinName, (res) => { set_disabled_submit(res) })
+    })
+
+    const putUpdatePin = (id) => {
+        Swal.showLoading()
+
+        const data = {
+            pin_name: $('#pin_name').val().trim(),
+            pin_desc: $('#pin_desc').val().trim(),
+            pin_lat: $('#pin_lat').val().trim(),
+            pin_long: $('#pin_long').val().trim(),
+            pin_village: $('#pin_village').val().trim(),
+            pin_suburb: $('#pin_suburb').val().trim(),
+            pin_city: $('#pin_city').val().trim(),
+            pin_country: $('#pin_country').val().trim(),
+            pin_category: $('#pin_category').val(),
+            pin_person: $('#pin_person').val().trim(),
+            pin_call: $('#pin_call').val().trim(),
+            pin_email: $('#pin_email').val().trim(),
+            pin_address: $('#pin_address').val().trim(),
+            is_favorite: $('#is_favorite').is(':checked') ? 1 : 0,
+        }
+
+        $.ajax({
+            url: `/api/v1/pin/update/${id}`,
+            method: 'POST',
+            data: data,
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
+            success: (response) => {
+                Swal.hideLoading()
+
+                Swal.fire({
+                    title: 'Success!',
+                    text: response.message,
+                    icon: 'success'
+                }).then(() => {
+                    window.location.href = `/DetailController/view/${id}`
+                })
+            },
+            error: (response) => {
+                Swal.hideLoading()
+
+                const message = response.responseJSON?.message ?? 'Something went wrong.'
+
+                if (response.status === 400) {
+                    Swal.fire({
+                        title: 'Failed!',
+                        html: message,
+                        icon: 'warning'
+                    })
+                } else {
+                    unknownErrorSwal()
+                }
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        // Submit marker
+        $(document).on('click', '#submit-btn', function (e) {
+            e.preventDefault()
+            putUpdatePin(id)
+        })
+
+        // Submit marker with direction
+        $(document).on('click', '#submit-visit-wdir-btn', function () {
+            $('#is_with_dir').val('true')
+            putUpdatePin(id)
+        })
     })
 </script>

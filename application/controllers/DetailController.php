@@ -7,6 +7,8 @@ use Telegram\Bot\FileUpload\InputFile;
 use Dompdf\Options;
 
 class DetailController extends CI_Controller {
+	const SESSION_KEY = 'user_id';
+
 	function __construct(){
 		parent::__construct();
 		$this->load->model('AuthModel');
@@ -32,6 +34,7 @@ class DetailController extends CI_Controller {
 	{
 		if($this->AuthModel->current_user()){
 			$data = [];
+			$user_id = $this->session->userdata(self::SESSION_KEY);
 			$data['is_mobile_device'] = is_mobile_device();
 
 			if($data['is_mobile_device']){
@@ -47,7 +50,7 @@ class DetailController extends CI_Controller {
 
 			$data['is_signed'] = true;
 			$data['active_page']= 'list';
-            $data['dt_detail_pin']= $this->PinModel->get_pin_by_id($id);
+            $data['dt_detail_pin']= $this->PinModel->get_pin_by_id($id, $user_id);
             $data['dt_visit_history']= $this->VisitModel->get_visit_history_by_pin_id($id, $per_page, $offset);
             $data['dt_my_personal_pin']= $this->PinModel->get_pin_by_category('Personal', $id);
 			$data['dt_all_my_pin_name']= $this->PinModel->get_all_my_pin_name();
@@ -68,12 +71,13 @@ class DetailController extends CI_Controller {
 	}
 
 	public function favorite_toogle($id){
+		$user_id = $this->session->userdata(self::SESSION_KEY);
+
 		$data = [
 			'is_favorite' => $this->input->post('is_favorite'),
-			'updated_at' => date('Y-m-d H:i:s'), 
 		];
 
-		$this->PinModel->update_marker($data, $id);
+		$this->PinModel->update_marker($data, $id, $user_id);
 		redirect("/DetailController/view/$id");
 	}
 

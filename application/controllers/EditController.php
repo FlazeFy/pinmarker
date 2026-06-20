@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class EditController extends CI_Controller {
 	protected $httpClient;
+	const SESSION_KEY = 'user_id';
 
 	function __construct(){
 		parent::__construct();
@@ -17,9 +18,11 @@ class EditController extends CI_Controller {
 	{
 		if($this->AuthModel->current_user()){
 			$data = [];
+			$user_id = $this->session->userdata(self::SESSION_KEY);
+
 			$data['active_page']= 'list';
 			$data['dt_dct_pin_category']= $this->DictionaryModel->get_dictionary_by_type('pin_category');
-			$data['dt_detail_pin']= $this->PinModel->get_pin_by_id($id);
+			$data['dt_detail_pin']= $this->PinModel->get_pin_by_id($id, $user_id);
 			$data['is_mobile_device'] = is_mobile_device();
 			$data['is_signed'] = true;
 
