@@ -24,7 +24,7 @@ class CommandController extends BaseApiController {
         ]);
     }
 
-    public function post_pin(){
+    public function post_create_pin(){
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -114,5 +114,47 @@ class CommandController extends BaseApiController {
 
         // Return API response
         return api_response(201, 'success', $message, $data);
+    }
+
+    public function put_update_pin($pin_id){
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
+        // Validate pin
+        $rules = $this->PinModel->rules(null);
+        $this->form_validation->set_rules($rules);
+        if($this->form_validation->run() == FALSE){
+            return api_response(400, 'failed', generate_message(false,'update','pin','validation failed'), validation_errors());
+        } else {
+            // Check existence
+            $found = $this->PinModel->get_pin_by_id($pin_id, $user_id);
+            if (!$found) return api_response(404, 'failed', 'Marker not found', null);
+
+            $pin_name = $this->input->post('pin_name');
+            $data = [
+                'pin_name' => $pin_name,
+                'pin_desc' => cleanTrimNull($this->input->post('pin_desc')),
+                'pin_lat' => cleanTrimNull($this->input->post('pin_lat')),
+                'pin_long' => cleanTrimNull($this->input->post('pin_long')),
+                'pin_village' => cleanTrimNull($this->input->post('pin_village')),
+                'pin_suburb' => cleanTrimNull($this->input->post('pin_suburb')),
+                'pin_city' => cleanTrimNull($this->input->post('pin_city')),
+                'pin_country' => cleanTrimNull($this->input->post('pin_country')),
+                'pin_category' => cleanTrimNull($this->input->post('pin_category')),
+                'pin_person' => cleanTrimNull($this->input->post('pin_person')),
+                'pin_call' => cleanTrimNull($this->input->post('pin_call')),
+                'pin_email' => cleanTrimNull($this->input->post('pin_email')),
+                'pin_address' => cleanTrimNull($this->input->post('pin_address')),
+                'is_favorite' => $this->input->post('is_favorite')
+            ];
+
+            $updated_pin = $this->PinModel->update_marker($data, $pin_id, $user_id);
+            if (!$updated_pin) return api_response(500, 'failed', 'Marker failed to update', null);
+
+            $this->HistoryModel->insert_history('Edit Marker', $pin_name);
+
+            // Return API response
+            return api_response(200, 'success', 'Marker updated', null);
+        }        
     }
 }

@@ -447,18 +447,17 @@
 			return $query->result();
 		}
 
-		public function get_pin_by_id($id){
-			$this->db->select('pin.id, pin_name, pin_desc, pin_lat, pin_long, pin_category, pin_person, pin_call, pin_email, pin_address, is_favorite, pin.created_at, pin.created_by, pin.updated_at, pin.deleted_at, dictionary_color as pin_color');
+		public function get_pin_by_id($id, $user_id){
+			$this->db->select('pin.*, dictionary_color as pin_color');
 			$this->db->from($this->table);
-			$this->db->join('dictionary','dictionary.dictionary_name = pin.pin_category');
+			$this->db->join('dictionary', 'pin.pin_category = dictionary.dictionary_name', 'left');
 			$condition = [
 				'pin.id' => $id,
-                'deleted_at' => null,
-				'pin.created_by' => $this->session->userdata(self::SESSION_KEY)
+				'pin.created_by' => $user_id
             ];
 			$this->db->where($condition);
 
-			return $data = $this->db->get()->row();
+			return $this->db->get()->row();
 		}
 
 		public function get_pin_coor_by_id($id){
@@ -701,9 +700,12 @@
 			return $this->db->insert($this->table, $data) ? $data['id'] : false;
 		}
 
-		public function update_marker($data, $id){
+		public function update_marker($data, $id, $user_id){
 			$this->db->where('id', $id);
-			return $this->db->update($this->table,$data);	
+			$this->db->where('created_by', $user_id);
+			$data['updated_at'] = date("Y-m-d H:i:s");
+
+			return $this->db->update($this->table, $data);	
 		}
 	}
 ?>

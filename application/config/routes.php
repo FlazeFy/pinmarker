@@ -66,7 +66,8 @@ $route['api/v1/pin'] = 'api/Pin/QueryController/get_all_pin';
 $route['api/v1/pin/maps'] = 'api/Pin/QueryController/get_all_pin_maps';
 $route['api/v1/pin/pin_category'] = 'api/Pin/QueryController/get_pin_category';
 $route['api/v1/pin/validate_new'] = 'api/Pin/QueryController/get_validate_new_marker';
-$route['api/v1/pin/create'] = 'api/Pin/CommandController/post_pin';
+$route['api/v1/pin/create'] = 'api/Pin/CommandController/post_create_pin';
+$route['api/v1/pin/update/(:any)'] = 'api/Pin/CommandController/put_update_pin/$1';
 
 // Global List Module
 $route['api/v1/global_list/my'] = 'api/GlobalListController/get_my_global_list';
