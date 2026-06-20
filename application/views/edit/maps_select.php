@@ -80,7 +80,13 @@
     const onMapClick = (e) => {
         placeMarker(e.latlng)
         addContentCoor(e.latlng, 'pin_lat', 'pin_long')
-        check_nearest_pin()
+        check_nearest_pin_edit()
+    }
+
+    const check_nearest_pin_edit = () => {
+        const pinNameNew = $('#pin_name').val().trim().toLowerCase()
+
+        check_nearest_pin(false, pinNameOld === pinNameNew ? false : true)
     }
 
     const initMap = () => {

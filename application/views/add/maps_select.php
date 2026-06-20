@@ -80,7 +80,7 @@
     const onMapClick = (e) => {
         placeMarker(e.latlng)
         addContentCoor(e.latlng, 'pin_lat', 'pin_long')
-        check_nearest_pin()
+        check_nearest_pin(true, true)
     }
 
     const initMap = () => {
@@ -105,7 +105,7 @@
         $('#pin_long').val(pinLong)
         
         placeMarker({ lat: pinLat, lng: pinLong})
-        check_pin_name_availability(pinName)
+        check_pin_name_availability(pinName, (res) => set_disabled_submit(res))
     })
 
     $(document).ready(function () {
