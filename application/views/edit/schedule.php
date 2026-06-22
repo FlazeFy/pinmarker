@@ -10,7 +10,6 @@
 </div>
 
 <script>
-    const id = "<?= $dt_detail_pin->id ?>"
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
     const buildScheduleRows = () => {
@@ -48,7 +47,7 @@
         return html
     }
 
-    const fetchSchedule = () => {
+    const fetchSchedule = (id) => {
         const holder = '#schedule-holder'
         const submitButton = '#save-schedule-button'
 
@@ -62,7 +61,6 @@
         `)
         $(submitButton).attr('disabled',true)
 
-        const id = "<?= $dt_detail_pin->id ?>"
         $.ajax({
             url: `/api/v1/schedule/${id}`,
             method: 'GET',
@@ -147,6 +145,55 @@
         })
 
         fetchSchedule(id)
+    })
+
+    const postEditSchedule = (id) => {
+        Swal.showLoading()
+
+        const data = {
+            schedules: buildSchedulePayload()
+        }
+
+        $.ajax({
+            url: `/api/v1/schedule/edit/${id}`,
+            method: 'POST',
+            data: data,
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
+            success: (response) => {
+                Swal.hideLoading()
+                Swal.fire({
+                    title: 'Success!',
+                    text: response.message,
+                    icon: 'success'
+                }).then(() => {
+                    fetchSchedule(id)
+                })
+            },
+            error: (response) => {
+                Swal.hideLoading()
+
+                const message = response.responseJSON?.message ?? 'Something went wrong.'
+
+                if (response.status === 400) {
+                    Swal.fire({
+                        title: 'Failed!',
+                        html: message,
+                        icon: 'warning'
+                    })
+                } else {
+                    unknownErrorSwal()
+                }
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        $(document).on('click', '#save-schedule-button', function (e) {
+            e.preventDefault()
+            postEditSchedule(id)
+        })
     })
 </script>
 

@@ -66,3 +66,27 @@ $(document).ready(function() {
         initMap()
     })
 })
+
+const buildSchedulePayload = () => {
+    const schedules = []
+
+    days.forEach(day => {
+        const d = day.toLowerCase()
+        const isClosed = $(`.dayoff-check[data-day="${day}"]`).is(':checked')
+        const is24h = $(`.full-day-check[data-day="${day}"]`).is(':checked')
+        const hourStart = $(`input[name="${d}_start"]`).val()
+        const hourEnd = $(`input[name="${d}_end"]`).val()
+
+        if ((hourStart === hourEnd) && !isClosed) return
+        
+        schedules.push({
+            schedule_day: day.substring(0, 3).toUpperCase(),
+            schedule_hour_start: isClosed ? null : hourStart,
+            schedule_hour_end: isClosed ? null : hourEnd,
+            is_24_h: is24h ? 1 : 0,
+            is_closed: isClosed ? 1 : 0
+        })
+    })
+
+    return schedules
+}
