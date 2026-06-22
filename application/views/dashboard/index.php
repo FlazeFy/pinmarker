@@ -15,6 +15,7 @@
                 <div class="col-xl-4 col-lg-5">
                     <?php $this->load->view("dashboard/mini_profile"); ?>
                     <?php $this->load->view("dashboard/recent_activity"); ?>
+                    <?php $this->load->view("dashboard/news_around_me"); ?>
                     <?php $this->load->view("dashboard/sync"); ?>
                 </div>
             </div>

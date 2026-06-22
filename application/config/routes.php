@@ -86,6 +86,7 @@ $route['api/v1/review/(:any)'] = 'api/ReviewController/get_review_by_pin_id/$1';
 
 // News Module
 $route['api/v1/news/(:any)'] = 'api/NewsController/get_news_by_pin_id/$1';
+$route['api/v1/news/by/coordinate'] = 'api/NewsController/get_news_around_me';
 
 // Schedule Module
 $route['api/v1/schedule'] = 'api/Schedule/QueryController/get_all_schedule';

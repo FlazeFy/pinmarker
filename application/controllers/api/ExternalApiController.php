@@ -27,7 +27,7 @@ class ExternalApiController extends CI_Controller {
         if(file_exists($cache_path) && (time() - filemtime($cache_path)) < 600){
             $cached = json_decode(file_get_contents($cache_path), true);
 
-            return api_response(200, $cached['status'], $cached['message'], $cached['data']);
+            if ($cached['data']) return api_response(200, $cached['status'], $cached['message'], $cached['data']);
         }
 
         // API Endpoint
@@ -58,6 +58,11 @@ class ExternalApiController extends CI_Controller {
             'data' => $response_decode['data']
         ];
 
+        if (!$payload['data']) {
+            if (file_exists($cache_path)) unlink($cache_path);
+            return api_response(404, 'failed', 'weather fetched', null);
+        }
+
         // Save cache
         file_put_contents($cache_path, json_encode($payload));
 
@@ -66,7 +71,7 @@ class ExternalApiController extends CI_Controller {
             $http_code,
             $http_code === 200 ? 'success' : 'failed',
             'weather fetched',
-            $response_decode['data']
+            $payload['data']
         );
     }
 
@@ -136,11 +141,13 @@ class ExternalApiController extends CI_Controller {
                 'lat' => (float)$lat,
                 'long' => (float)$long
             ],
-            'data' => $response_decode['data']
+            'data' => $response_decode['data'] ?? null
         ];
     
         // Save cache
-        file_put_contents($cache_path, json_encode($payload));
+        if ($http_code === 200 && isset($response_decode['data']['detail']) && !empty($response_decode['data']['detail'])) {
+            file_put_contents($cache_path, json_encode($payload));
+        }
     
         // Return API response
         return api_response(

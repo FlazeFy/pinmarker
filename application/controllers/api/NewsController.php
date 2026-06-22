@@ -135,4 +135,83 @@ class NewsController extends BaseApiController {
             ]
         );
     }
+
+    public function get_news_around_me(){
+        $lat = $this->input->get('lat');
+        $long = $this->input->get('long');
+    
+        // Validate coordinate
+        if (!$lat || !$long) return api_response(400, 'failed', 'coordinate is required', null);
+    
+        // Cache directory
+        $cache_dir = APPPATH . 'cache/';
+    
+        // Find existing cache
+        $cache_files = glob($cache_dir . 'news_around_me_*.json');
+    
+        foreach ($cache_files as $file) {
+            $cached = json_decode(file_get_contents($file), true);
+    
+            // Skip invalid cache
+            if (!isset($cached['coordinate']['lat']) || !isset($cached['coordinate']['long'])) continue;
+    
+            $cached_lat = $cached['coordinate']['lat'];
+            $cached_long = $cached['coordinate']['long'];
+    
+            // Calculate distance
+            $distance = calculate_distance($lat, $long, $cached_lat, $cached_long, 'm');
+    
+            // Use existing cache if distance < 1 km & cache < 24 hr
+            if ($distance <= 1000 && (time() - filemtime($file)) < 86400) {
+                return api_response(200, $cached['status'], $cached['message'], $cached['data']);
+            }
+        }
+    
+        // Cache key
+        $cache_key = 'news_around_me_' . md5($lat . '_' . $long);
+    
+        // Cache file
+        $cache_path = $cache_dir . $cache_key . '.json';
+    
+        // API Endpoint
+        $url = "{$this->flazenHandBaseUrl}/news/search/by_coordinate?lat=$lat&long=$long&keyword=Culinary%20spots";
+    
+        // CURL request
+        $curl = curl_init();
+    
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTPGET => true
+        ]);
+    
+        $response = curl_exec($curl);
+        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    
+        curl_close($curl);
+    
+        // Decode response
+        $response_decode = json_decode($response, true);
+    
+        // Response payload
+        $payload = [
+            'status' => $http_code === 200 ? 'success' : 'failed',
+            'message' => 'news fetched',
+            'data' => $response_decode['data'] ?? null
+        ];
+
+        // Save cache
+        if ($http_code === 200 && isset($response_decode['data']['news']) && !empty($response_decode['data']['news'])) {
+            file_put_contents($cache_path, json_encode($payload));
+        }
+        
+        // Return API response
+        return api_response(
+            $http_code,
+            $http_code === 200 ? 'success' : 'failed',
+            'news fetched',
+            $response_decode['data']
+        );
+    }
 }
