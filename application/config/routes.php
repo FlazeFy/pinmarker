@@ -90,4 +90,5 @@ $route['api/v1/news/by/coordinate'] = 'api/NewsController/get_news_around_me';
 
 // Schedule Module
 $route['api/v1/schedule'] = 'api/Schedule/QueryController/get_all_schedule';
+$route['api/v1/schedule/edit/(:any)'] = 'api/Schedule/CommandController/put_update_schedule/$1';
 $route['api/v1/schedule/(:any)'] = 'api/Schedule/QueryController/get_schedule_by_pin_id/$1';

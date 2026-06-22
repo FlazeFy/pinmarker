@@ -147,5 +147,11 @@
 		
 			return true;
 		}
+
+		public function delete_schedules($pin_id){
+			return $this->db->delete($this->table,[
+				'pin_id' => $pin_id
+			]);
+		}	
 	}
 ?>
