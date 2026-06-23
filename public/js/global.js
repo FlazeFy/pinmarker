@@ -360,6 +360,24 @@ const renderNoMessageBox = (target, context) => {
     `)
 }
 
+const failedAuth = () => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Session Expired',
+        text: 'Your session has expired. Please sign in again to continue.',
+        confirmButtonText: 'Go to Login',
+        allowOutsideClick: false,
+        allowEscapeKey: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const continueUrl = encodeURIComponent(window.location.pathname + window.location.search)
+            localStorage.clear()
+            sessionStorage.clear()
+            window.location.href = `LoginController?continue=${continueUrl}`
+        }
+    })
+}
+
 const getSelectedTag = (target) => {
     return $(`.filter-chip.${target}.active`).map(function(){
         return $(this).data('filter')

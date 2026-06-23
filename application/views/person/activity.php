@@ -100,7 +100,8 @@
 
                 page >= totalPage ? $('#person-see-more').hide() : $('#person-see-more').show().prop('disabled', false).text('See More')
             },
-            error: () => {
+            error: (response) => {
+                if (response.status === 401) failedAuth()
                 if (!append) {
                     $(holder).html(`
                         <div class="text-center py-3">

@@ -34,6 +34,10 @@ class QueryController extends BaseApiController {
         $lat = $this->input->get('lat') ? $this->input->get('lat') : null;
         $long = $this->input->get('long') ? $this->input->get('long') : null;
 
+        if (($lat && !$long) || (!$lat && $long)) {
+            return api_response(400, 'failed', 'coordinate not valid', null);
+        }
+
         // Max distance param
         $max_distance = $this->input->get('max_distance') ?? null;
 

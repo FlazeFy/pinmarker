@@ -87,21 +87,21 @@
                         const day = dayMap[dt.schedule_day]
                         const dayLabel = day.charAt(0).toUpperCase() + day.slice(1)
 
-                        $(`.schedule-item[data-day="${day}"]`).addClass(`border border-${dt.is_closed === '1' ? 'danger' : 'primary'} border-2`)
+                        $(`.schedule-item[data-day="${day}"]`).addClass(`border border-${dt.is_closed === 1 ? 'danger' : 'primary'} border-2`)
                         $(`input[name="${day}_start"]`).val(dt.schedule_hour_start)
                         $(`input[name="${day}_end"]`).val(dt.schedule_hour_end)
 
-                        if (dt.is_closed === '1') {
+                        if (dt.is_closed === 1) {
                             $(`.dayoff-check[data-day="${dayLabel}"]`).prop('checked', true).trigger('change')
-                        } else if (dt.is_24_h === '1') {
+                        } else if (dt.is_24_h === 1) {
                             $(`.full-day-check[data-day="${dayLabel}"]`).prop('checked', true).trigger('change')
                         }
                     })
                 }
             },
-            error: () => {
+            error: (response) => {
+                if (response.status === 401) failedAuth()
                 $(holder).html(buildScheduleRows())
-
             },
             complete: () => {
                 $(submitButton).attr('disabled',false)
@@ -173,6 +173,7 @@
             },
             error: (response) => {
                 Swal.hideLoading()
+                if (response.status === 401) failedAuth()
 
                 const message = response.responseJSON?.message ?? 'Something went wrong.'
 

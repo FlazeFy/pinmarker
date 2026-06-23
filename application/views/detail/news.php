@@ -94,7 +94,8 @@
                     $('#news-see-more-button').show().prop('disabled', false).text('See More')
                 }
             },
-            error: () => {
+            error: (response) => {
+                if (response.status === 401) failedAuth()
                 if (!append) {
                     $(holder).html(`
                         <div class="text-center py-3">

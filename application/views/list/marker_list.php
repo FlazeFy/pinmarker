@@ -149,7 +149,8 @@
                 const endItem = response.data.end_item
                 renderPagination(page, totalPage, startItem, endItem, totalItem, paginationInfoHolder)
             },
-            error: () => {
+            error: (response) => {
+                if (response.status === 401) failedAuth()
                 $(holder).html(`
                     <div class="empty-state text-danger">
                         <i class="fa-solid fa-triangle-exclamation"></i>

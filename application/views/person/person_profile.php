@@ -105,7 +105,8 @@
                 getReviews(data.reviews)      
                 getFavoriteTag(data.favorite_tag)
             },
-            error: () => {
+            error: (response) => {
+                if (response.status === 401) failedAuth()
                 Swal.fire({
                     title: 'Error!',
                     text: `Failed to fetch person analyze`,

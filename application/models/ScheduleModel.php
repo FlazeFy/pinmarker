@@ -42,8 +42,14 @@
 			$this->db->from($this->table);
 			$this->db->where("pin_id", $pin_id);
 			$this->db->order_by("FIELD(schedule_day, 'MON','TUE','WED','THU','FRI','SAT','SUN')", '', false);
+			$res = $this->db->get()->result();
+
+			foreach ($res as $dt) {
+				$dt->is_closed = (int)$dt->is_closed;
+				$dt->is_24_h = (int)$dt->is_24_h;
+			}
 		
-			return $this->db->get()->result();
+			return $res;
 		}	
 		
 		public function get_all_schedule($search, $pin_category, $is_favorite, $is_visited, $open_status, $max_distance, $lat, $long, $user_id) {
@@ -64,8 +70,8 @@
 				$this->db->like('pin_name', $search, 'both');
 			}
 			if($pin_category){
-				$category = str_replace("%20", " ", $category);
-				$this->db->where('pin_category',$category);
+				$pin_category = str_replace("%20", " ", $pin_category);
+				$this->db->where('pin_category',$pin_category);
 			}
 			if($is_favorite !== "all"){
 				$this->db->where('is_favorite',(int)$is_favorite);
@@ -117,6 +123,8 @@
 					$dt->distance = null;
 					$filtered_rows[] = $dt;
 				}
+
+				unset($dt->pin_lat, $dt->pin_long);
 			}
 
 			// Sort nearest first

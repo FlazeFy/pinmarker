@@ -145,7 +145,8 @@
                 $('#newsIndicators').html(indicatorsEl)
                 $('#newsItems').html(itemsEl)
             },
-            error: () => {
+            error: (response) => {
+                if (response.status === 401) failedAuth()
                 $('#newsItems').html(`
                     <div class='carousel-item active'>
                         <div style='opacity:.7; font-size:var(--textSM);'>
