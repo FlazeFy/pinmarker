@@ -242,6 +242,9 @@ body {
 }
 .text-sm {
     font-size: var(--textSM);
+} 
+.text-xsm {
+    font-size: var(--textXSM);
 }   
 .text-md {
     font-size: var(--textMD) !important;

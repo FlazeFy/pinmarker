@@ -373,7 +373,7 @@ const failedAuth = () => {
             const continueUrl = encodeURIComponent(window.location.pathname + window.location.search)
             localStorage.clear()
             sessionStorage.clear()
-            window.location.href = `LoginController?continue=${continueUrl}`
+            window.location.href = `/LoginController?continue=${continueUrl}`
         }
     })
 }
