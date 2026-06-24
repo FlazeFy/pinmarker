@@ -1,60 +1,48 @@
 <div class="card mb-4">
     <h2 class="card-title">Visit Detail</h2>
-    <form action="/AddVisitController/add_visit" method="POST" id='add-visit-form'>
-        <?php 
-            if($this->session->flashdata('validation_error')){
-                echo "
-                    <div class='alert alert-danger' role='alert'>
-                        <h5><i class='fa-solid fa-triangle-exclamation'></i> Error</h5>
-                        ".$this->session->flashdata('validation_error')."
-                    </div>
-                "; 
-            }
-        ?>
-        <input hidden id="type_add" name="type_add" value="visit">
-        <input hidden id="with_dir" name="coordinate_dir">
-        <div id="add_pin_form"></div>
-        <div id="add-form-holder">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <?php $this->load->view("add_visit/marker_search"); ?>
+    <input hidden id="type_add" name="type_add" value="visit">
+    <input hidden id="with_dir" name="coordinate_dir">
+    <div id="add_pin_form"></div>
+    <div id="add-form-holder">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <?php $this->load->view("add_visit/marker_search"); ?>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <label>Visit By</label>
+                <select name="visit_by" class="form-select" id="visit_by">
+                    <?php 
+                        foreach($dt_dct_visit_by as $dt){
+                            echo "<option value='$dt->dictionary_name'>$dt->dictionary_name</option>";
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                <input name="visit_date" id="visit_date" type="date" class="form-control form-validated" required/>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                <input name="visit_hour" id="visit_hour" type="time" class="form-control form-validated" required/>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <textarea name="visit_with" id="visit_with" rows="5" class="form-control form-validated visit-with" maxlength='500'></textarea>
+                <div class="d-flex justify-content-start">
+                    <a class="btn btn-success see-person-btn py-1 text-sm px-2" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> Add Person</a>
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <label>Visit By</label>
-                    <select name="visit_by" class="form-select" id="visit_by">
-                        <?php 
-                            foreach($dt_dct_visit_by as $dt){
-                                echo "<option value='$dt->dictionary_name'>$dt->dictionary_name</option>";
-                            }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                    <input name="visit_date" id="visit_date" type="date" class="form-control form-validated" required/>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                    <input name="visit_hour" id="visit_hour" type="time" class="form-control form-validated" required/>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <textarea name="visit_with" id="visit_with" rows="5" class="form-control form-validated visit-with" maxlength='500'></textarea>
-                    <div class="d-flex justify-content-start">
-                        <a class="btn btn-success see-person-btn py-1 text-sm px-2" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> Add Person</a>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <textarea name="visit_desc" id="visit_desc" rows="5" class="form-control form-validated" maxlength='255'></textarea>
-                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <textarea name="visit_desc" id="visit_desc" rows="5" class="form-control form-validated" maxlength='255'></textarea>
             </div>
         </div>
-        <div class="row mt-4">
-            <div class="col-md-6 col-sm-12" id="save_visit_n_go">
-                <a class="btn btn-outline-primary w-100 py-3 mb-2" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
-            </div>
-            <div class="col-md-6 col-sm-12" id='save-visit-btn-holder'>
-                <button class="btn btn-success w-100 py-3" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>
-            </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6 col-sm-12" id="save_visit_n_go">
+            <a class="btn btn-outline-primary w-100 py-3 mb-2" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
         </div>
-    </form>
+        <div class="col-md-6 col-sm-12" id='save-visit-btn-holder'>
+            <button class="btn btn-success w-100 py-3" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>
+        </div>
+    </div>
 </div>
 
 <?php $this->load->view('add_visit/my_contact'); ?>

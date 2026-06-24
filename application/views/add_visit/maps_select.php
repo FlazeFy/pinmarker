@@ -1,4 +1,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
 <div class="map-area mb-4">
     <div class="map-img-wrap">
@@ -34,11 +37,10 @@
     }
 </style>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 <script>
     let userLat = getCookie('lat')
     let userLng = getCookie('long')
+    let routingControl = null
 
     const map = L.map('map-board', {
         zoomControl: false
@@ -81,6 +83,68 @@
         setTimeout(() => {
             map.invalidateSize()
         }, 300)
+    }
+
+    const showDirection = (originLat, originLng, destinationLat, destinationLng) => {
+        if (!originLat || !originLng) return
+        if (routingControl) map.removeControl(routingControl)
+
+        Swal.fire({
+            title: 'Preparing the route...',
+            text: 'Please wait a moment.',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        })
+
+        routingControl = L.Routing.control({
+            waypoints: [
+                L.latLng(originLat, originLng),
+                L.latLng(destinationLat, destinationLng)
+            ],
+            routeWhileDragging: false,
+            addWaypoints: false,
+            draggableWaypoints: false,
+            fitSelectedRoutes: true,
+            show: false,
+            createMarker: () => null,
+            lineOptions: {
+                styles: [
+                    {
+                        color: getComputedStyle(document.documentElement).getPropertyValue('--primaryColor').trim(),
+                        opacity: 0.9,
+                        weight: 6
+                    }
+                ]
+            }
+        })
+        .on('routesfound', () => {
+            Swal.close()
+        })
+        .on('routingerror', () => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Route Not Found',
+                text: 'Unable to prepare the route.'
+            })
+        })
+        .addTo(map)
+    }
+
+    const showPinOnMap = (lat, lng) => {
+        const latLng = {
+            lat: parseFloat(lat), lng: parseFloat(lng)
+        }
+
+        placeMarker(latLng)
+        map.flyTo([latLng.lat, latLng.lng], 17, {
+            animate: true,
+            duration: 0.8
+        })
+
+        showDirection(userLat, userLng, latLng.lat, latLng.lng)
     }
 
     $(document).on('click', '#focus-map-button', function () {
@@ -131,6 +195,6 @@
         $('.map-type').on('click', function () {
             const type = $(this).data('type')
             switchMapType(type, map, tileLayer)
-        })
+        })  
     })
 </script>

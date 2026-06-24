@@ -113,7 +113,7 @@
         const imgEl = dt.pin_img ? `<img class="pin-item-img" src="${dt.pin_img}" alt="${dt.pin_name}" loading="lazy"/>` : `<div class="pin-item-img-placeholder"><i class="fa-solid fa-building"></i></div>`
 
         return `
-            <div class="pin-item" data-name="${dt.pin_name}">
+            <div class="pin-item" data-id="${dt.id}" data-name="${dt.pin_name}" data-lat="${dt.pin_lat}" data-lng="${dt.pin_long}">
                 ${imgEl}
                 <div class="d-flex flex-column">
                     <div class="text-sm fw-bold mb-1">${dt.pin_name}</div>
@@ -178,9 +178,15 @@
     })
 
     $inner.on('click', '.pin-item', function () {
-        $('#pinNameInput').val($(this).data('name'))
-        $('#pinNameInput').data('id', $(this).data('id'))
+        const name = $(this).data('name')
+        const id = $(this).data('id')
+        const lat = $(this).data('lat')
+        const lng = $(this).data('lng')
+
+        $input.val(name)
+        $input.data('id', id)
         hideDropdown()
+        showPinOnMap(lat, lng)
     })
 
     $(document).on('click', function (e) {
@@ -202,8 +208,14 @@
         } else if (e.key === 'Enter') {
             if ($active.length) {
                 e.preventDefault()
-                $input.val($active.data('name'))
+                const name = $active.data('name')
+                const id = $active.data('id')
+                const lat = $active.data('lat')
+                const lng = $active.data('lng')
+                $input.val(name)
+                $input.data('id', id)
                 hideDropdown()
+                showPinOnMap(lat, lng)
             }
         } else if (e.key === 'Escape') {
             hideDropdown()

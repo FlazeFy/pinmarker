@@ -17,8 +17,8 @@
         </div>
     </div>
     <nav class="sidebar-nav flex-grow-1">
-        <a href="/DetailController/add_visit" class="btn btn-success mb-2">
-            <i class="fa-solid fa-circle-plus"></i> Add New Visit
+        <a href="/AddVisitController" class="btn btn-success mb-2">
+            <i class="fa-solid fa-circle-plus"></i> Add Visit
         </a>
         <div class="nav-group-label">Overview</div>
         <a href="/DashboardController" class="nav-item <?= ($cleanedUrl === "DashboardController") ? "active" : ""; ?>">
