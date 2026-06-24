@@ -397,6 +397,52 @@
 			return $data = $this->db->get()->result();
 		}
 
+		public function get_all_pin_search_format($user_id, $pin_name = null) {
+			$this->db->select("
+				id, pin_name, pin_category, pin_image, pin_lat, pin_long, is_favorite,
+				CASE
+					WHEN pin_village IS NOT NULL AND TRIM(pin_village) <> '' THEN CONCAT(pin_village, ', ', pin_city)
+					WHEN (pin_village IS NULL OR TRIM(pin_village) = '')
+						AND pin_suburb IS NOT NULL AND TRIM(pin_suburb) <> '' THEN CONCAT(pin_suburb, ', ', pin_city)
+					WHEN (pin_village IS NULL OR TRIM(pin_village) = '') AND (pin_city IS NOT NULL AND pin_country IS NOT NULL)
+						AND (pin_suburb IS NULL OR TRIM(pin_suburb) = '') THEN CONCAT(pin_city, ', ', pin_country)
+					ELSE pin_address
+				END AS pin_final_address
+			", false);
+			$this->db->from($this->table);
+			$this->db->where([
+				'deleted_at' => null,
+				'created_by' => $user_id
+			]);
+		
+			// Search filter
+			if (!empty($pin_name)) {
+				$pin_name = strtolower($pin_name);
+		
+				$this->db->group_start();
+					$this->db->like('LOWER(pin_name)', $pin_name, 'both', false);
+					$this->db->or_like('LOWER(pin_category)', $pin_name, 'both', false);
+					$this->db->or_like("
+						LOWER(
+							CASE
+								WHEN pin_village IS NOT NULL AND TRIM(pin_village) <> '' THEN CONCAT(pin_village, ', ', pin_city)
+								WHEN (pin_village IS NULL OR TRIM(pin_village) = '')
+									AND pin_suburb IS NOT NULL AND TRIM(pin_suburb) <> '' THEN CONCAT(pin_suburb, ', ', pin_city)
+								WHEN (pin_village IS NULL OR TRIM(pin_village) = '') AND (pin_city IS NOT NULL AND pin_country IS NOT NULL)
+									AND (pin_suburb IS NULL OR TRIM(pin_suburb) = '') THEN CONCAT(pin_city, ', ', pin_country)
+								ELSE pin_address
+							END
+						)
+					", $pin_name, 'both', false);
+				$this->db->group_end();
+			}
+		
+			$this->db->order_by('is_favorite', 'DESC');
+			$this->db->order_by('pin_name', 'ASC');
+		
+			return $this->db->get()->result();
+		}
+
 		public function get_pin_name_by_id($id){
 			$this->db->select('pin_name');
 			$this->db->from($this->table);
