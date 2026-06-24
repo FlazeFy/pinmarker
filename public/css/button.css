@@ -48,6 +48,12 @@
 .btn-primary-outline {
     background: transparent !important;
     border: 1.5px solid var(--primaryColor);
+}
+.btn-danger-outline {
+    background: transparent !important;
+    border: 1.5px solid var(--dangerBG);
+}
+.btn-danger-outline, .btn-primary-outline {
     color: var(--secondaryColor) !important;
 }
 .btn-outline {

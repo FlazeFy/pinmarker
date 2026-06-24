@@ -31,8 +31,11 @@ class LoginController extends CI_Controller {
 		} else {
 			$username = $this->input->post('username');
 			$password = $this->input->post('password');
+			$continue = $this->input->post('continue');
 
 			if($this->AuthModel->login($username, $password)){
+				if (!empty($continue) && strpos($continue, '/') === 0) redirect($continue);
+
 				redirect('/DashboardController');
 			} else {
 				$this->session->set_flashdata('message_error', generate_message(false,'login','to your account','wrong username or password'));

@@ -8,6 +8,7 @@
         <p class="card-sub">Sign in to your account to continue exploring.</p>
         <hr>
         <form action="/LoginController/login" method="POST">
+            <input hidden name="continue" id="continue" value=""/>
             <div class="field mb-3 text-start">
                 <label class="form-label" for="username">Email or Username</label>
                 <div class="form-control-wrap">
@@ -109,6 +110,15 @@
     }
 
     $(document).ready(function () {
+        const params = new URLSearchParams(window.location.search)
+        const continueUrl = params.get('continue')
+
+        if (continueUrl) {
+            $('#continue').val(continueUrl)
+            const page = continueUrl.replace(/^\//, '').split('/')[0]
+            $('.btn-submit').html(`Sign In<br><span class="text-sm">And continue at /${page}</span>`)
+        }
+        
         $(document).on('click', '.btn-submit', function (e) {
             postLogin()
         })

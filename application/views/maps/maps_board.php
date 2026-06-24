@@ -227,7 +227,8 @@
                         map.setView([pins[0].pin_lat, pins[0].pin_long], zoomValueFocusMarker)
                     }
                 },
-                error: () => {
+                error: (response) => {
+                    if (response.status === 401) return failedAuth()
                     $('.region-desc').text('Failed fetch nearby pins.')
                 }
             })

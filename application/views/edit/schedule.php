@@ -4,13 +4,15 @@
             <h2 class="card-title mb-1">Schedule</h2>
             <p class="card-sub text-secondary">Add the place's operational hours so we can provide better trip advice.</p>
         </div>
-        <button class="btn btn-success py-1 px-3" id="save-schedule-button"><i class="fa-solid fa-floppy-disk"></i> Save Schedule</button>
+        <div class="d-flex gap-2">
+            <button class="btn btn-danger py-1 px-3 d-none" id="delete-schedule-button"><i class="fa-solid fa-trash"></i></button>
+            <button class="btn btn-success py-1 px-3" id="save-schedule-button"><i class="fa-solid fa-floppy-disk"></i> Save Schedule</button>
+        </div>
     </div>
     <div id="schedule-holder" class="row"></div>
 </div>
 
 <script>
-    const id = "<?= $dt_detail_pin->id ?>"
     const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
     const buildScheduleRows = () => {
@@ -20,7 +22,10 @@
             html += `
                 <div class="col-md-6 col-sm-12 mb-2">
                     <div class="container p-3 pb-1 pt-2 mb-2 schedule-item" data-day="${dayLower}">
-                        <label>${day}</label>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label>${day}</label>
+                            <span class="remove-schedule-button-holder ${dayLower}"></span>
+                        </div>
                         <div class="d-flex gap-3 align-items-center text-sm">
                             <div>
                                 <label class="fw-normal text-secondary">From</label>
@@ -48,7 +53,7 @@
         return html
     }
 
-    const fetchSchedule = () => {
+    const fetchSchedule = (id) => {
         const holder = '#schedule-holder'
         const submitButton = '#save-schedule-button'
 
@@ -62,19 +67,17 @@
         `)
         $(submitButton).attr('disabled',true)
 
-        const id = "<?= $dt_detail_pin->id ?>"
         $.ajax({
             url: `/api/v1/schedule/${id}`,
             method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${tokenKey}`
-            },
             success: (response) => {
                 const rows = response.data || []
 
                 $(holder).html(buildScheduleRows())
 
                 if (rows.length > 0) {
+                    $('#delete-schedule-button').removeClass('d-none')
+
                     const dayMap = {
                         MON: 'monday',
                         TUE: 'tuesday',
@@ -89,21 +92,26 @@
                         const day = dayMap[dt.schedule_day]
                         const dayLabel = day.charAt(0).toUpperCase() + day.slice(1)
 
-                        $(`.schedule-item[data-day="${day}"]`).addClass(`border border-${dt.is_closed === '1' ? 'danger' : 'primary'} border-2`)
+                        $(`.schedule-item[data-day="${day}"]`).addClass(`border border-${dt.is_closed === 1 ? 'danger' : 'primary'} border-2`)
                         $(`input[name="${day}_start"]`).val(dt.schedule_hour_start)
                         $(`input[name="${day}_end"]`).val(dt.schedule_hour_end)
 
-                        if (dt.is_closed === '1') {
+                        if (dt.is_closed === 1) {
                             $(`.dayoff-check[data-day="${dayLabel}"]`).prop('checked', true).trigger('change')
-                        } else if (dt.is_24_h === '1') {
+                        } else if (dt.is_24_h === 1) {
                             $(`.full-day-check[data-day="${dayLabel}"]`).prop('checked', true).trigger('change')
                         }
+
+                        if (dt.schedule_hour_start || dt.schedule_hour_end || dt.is_closed === 1 || dt.is_24_h === 1) {
+                            $(`.remove-schedule-button-holder.${day}`).append('<a class="btn btn-danger-outline text-xsm py-1 px-2"><i class="fa-solid fa-trash"></i> Remove</a>')
+                        }
                     })
+                } else {
+                    $('#delete-schedule-button').addClass('d-none')
                 }
             },
-            error: () => {
+            error: (response) => {
                 $(holder).html(buildScheduleRows())
-
             },
             complete: () => {
                 $(submitButton).attr('disabled',false)
@@ -147,6 +155,137 @@
         })
 
         fetchSchedule(id)
+    })
+
+    const postEditSchedule = (id) => {
+        Swal.showLoading()
+
+        const data = {
+            schedules: buildSchedulePayload()
+        }
+
+        $.ajax({
+            url: `/api/v1/schedule/edit/${id}`,
+            method: 'POST',
+            data: data,
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
+            success: (response) => {
+                Swal.hideLoading()
+                Swal.fire({
+                    title: 'Success!',
+                    text: response.message,
+                    icon: 'success'
+                }).then(() => {
+                    fetchSchedule(id)
+                })
+            },
+            error: (response) => {
+                Swal.hideLoading()
+                if (response.status === 401) return failedAuth()
+
+                const message = response.responseJSON?.message ?? 'Something went wrong.'
+
+                if (response.status === 400) {
+                    Swal.fire({
+                        title: 'Failed!',
+                        html: message,
+                        icon: 'warning'
+                    })
+                } else {
+                    unknownErrorSwal()
+                }
+            }
+        })
+    }
+
+    const deleteSchedule = (id) => {
+        Swal.showLoading()
+
+        $.ajax({
+            url: `/api/v1/schedule/delete/${id}`,
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
+            success: (response) => {
+                Swal.hideLoading()
+                Swal.fire({
+                    title: 'Success!',
+                    text: response.message,
+                    icon: 'success'
+                }).then(() => {
+                    fetchSchedule(id)
+                })
+            },
+            error: (response) => {
+                Swal.hideLoading()
+                if (response.status === 401) return failedAuth()
+
+                const message = response.responseJSON?.message ?? 'Something went wrong.'
+
+                if (response.status === 400) {
+                    Swal.fire({
+                        title: 'Failed!',
+                        html: message,
+                        icon: 'warning'
+                    })
+                } else {
+                    unknownErrorSwal()
+                }
+            }
+        })
+    }
+
+    const countRemainingSchedule = () => {
+        let count = 0
+
+        $('.schedule-item').each(function () {
+            const hasChecked = $(this).find('input[type="checkbox"]:checked').length > 0
+            const start = $(this).find('input[name$="_start"]').val()
+            const end = $(this).find('input[name$="_end"]').val()
+
+            if (hasChecked || (start !== '00:00' && end !== '00:00')) count++
+        })
+
+        return count
+    }
+
+    $(document).ready(function () {
+        $(document).on('click', '#save-schedule-button', function (e) {
+            e.preventDefault()
+            postEditSchedule(id)
+        })
+
+        $(document).on('click', '.remove-schedule-button-holder', function (e) {
+            const remainingSchedule = countRemainingSchedule()
+            
+            if (remainingSchedule > 1) {
+                const container = $(this).closest('.schedule-item')
+                const day = container.data('day')
+
+                container.find(`input[name="${day}_start"]`).val('00:00')
+                container.find(`input[name="${day}_end"]`).val('00:00')
+                container.find('input[type="checkbox"]').prop('checked', false)
+                postEditSchedule(id)
+            } else {
+                deleteSchedule(id)
+            }
+        })
+
+        $(document).on('click', '#delete-schedule-button', function (e) {
+            Swal.fire({
+                title: "Are you sure?",
+                html: `Want to remove all schedule`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            })
+            .then((result) => {
+                if (result.isConfirmed) deleteSchedule(id)
+            })
+        })
     })
 </script>
 

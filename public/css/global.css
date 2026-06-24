@@ -241,7 +241,10 @@ body {
     text-decoration: underline;
 }
 .text-sm {
-    font-size: var(--textSM);
+    font-size: var(--textSM) !important;
+} 
+.text-xsm {
+    font-size: var(--textXSM) !important;
 }   
 .text-md {
     font-size: var(--textMD) !important;
