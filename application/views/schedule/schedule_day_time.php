@@ -143,7 +143,7 @@
                 generateOperationalTable(rows)
             },
             error: (response) => {
-                if (response.status === 401) failedAuth()
+                if (response.status === 401) return failedAuth()
                 $('#operationalTable').html('')
                 $('#schedule-error').removeClass('d-none')
             }

@@ -106,7 +106,7 @@
                 getFavoriteTag(data.favorite_tag)
             },
             error: (response) => {
-                if (response.status === 401) failedAuth()
+                if (response.status === 401) return failedAuth()
                 Swal.fire({
                     title: 'Error!',
                     text: `Failed to fetch person analyze`,

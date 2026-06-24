@@ -19,7 +19,10 @@
             html += `
                 <div class="col-md-6 col-sm-12 mb-2">
                     <div class="container p-3 pb-1 pt-2 mb-2 schedule-item" data-day="${dayLower}">
-                        <label>${day}</label>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label>${day}</label>
+                            <span class="remove-schedule-button-holder ${dayLower}"></span>
+                        </div>
                         <div class="d-flex gap-3 align-items-center text-sm">
                             <div>
                                 <label class="fw-normal text-secondary">From</label>
@@ -64,9 +67,6 @@
         $.ajax({
             url: `/api/v1/schedule/${id}`,
             method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${tokenKey}`
-            },
             success: (response) => {
                 const rows = response.data || []
 
@@ -96,11 +96,14 @@
                         } else if (dt.is_24_h === 1) {
                             $(`.full-day-check[data-day="${dayLabel}"]`).prop('checked', true).trigger('change')
                         }
+
+                        if (dt.schedule_hour_start || dt.schedule_hour_end || dt.is_closed === 1 || dt.is_24_h === 1) {
+                            $(`.remove-schedule-button-holder.${day}`).append('<a class="btn btn-danger-outline text-xsm py-1 px-2"><i class="fa-solid fa-trash"></i> Remove</a>')
+                        }
                     })
                 }
             },
             error: (response) => {
-                if (response.status === 401) failedAuth()
                 $(holder).html(buildScheduleRows())
             },
             complete: () => {
@@ -173,7 +176,7 @@
             },
             error: (response) => {
                 Swal.hideLoading()
-                if (response.status === 401) failedAuth()
+                if (response.status === 401) return failedAuth()
 
                 const message = response.responseJSON?.message ?? 'Something went wrong.'
 
@@ -193,6 +196,16 @@
     $(document).ready(function () {
         $(document).on('click', '#save-schedule-button', function (e) {
             e.preventDefault()
+            postEditSchedule(id)
+        })
+
+        $(document).on('click', '.remove-schedule-button-holder', function (e) {
+            const container = $(this).closest('.schedule-item')
+            const day = container.data('day')
+
+            container.find(`input[name="${day}_start"]`).val('00:00')
+            container.find(`input[name="${day}_end"]`).val('00:00')
+            container.find('input[type="checkbox"]').prop('checked', false)
             postEditSchedule(id)
         })
     })

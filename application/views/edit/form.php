@@ -120,7 +120,7 @@
             },
             error: (response) => {
                 Swal.hideLoading()
-                if (response.status === 401) failedAuth()
+                if (response.status === 401) return failedAuth()
 
                 const message = response.responseJSON?.message ?? 'Something went wrong.'
 

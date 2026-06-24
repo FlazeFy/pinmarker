@@ -100,7 +100,7 @@
                 }
             },
             error: (response) => {
-                if (response.status === 401) failedAuth()
+                if (response.status === 401) return failedAuth()
                 if (!append) {
                     $(holder).html(`
                         <div class="text-center py-3">

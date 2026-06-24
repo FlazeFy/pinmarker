@@ -64,7 +64,7 @@
                 `)
             },
             error: (response) => {
-                if (response.status === 401) failedAuth()
+                if (response.status === 401) return failedAuth()
                 $(holder).html('<span class="tag bg-danger py-2 px-3"><i class="fa-solid fa-triangle-exclamation"></i> Failed fetch weather</span>')
             }
         })

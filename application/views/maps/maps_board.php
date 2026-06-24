@@ -228,7 +228,7 @@
                     }
                 },
                 error: (response) => {
-                    if (response.status === 401) failedAuth()
+                    if (response.status === 401) return failedAuth()
                     $('.region-desc').text('Failed fetch nearby pins.')
                 }
             })

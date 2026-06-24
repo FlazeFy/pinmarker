@@ -121,7 +121,7 @@
                 }
             },
             error: (response) => {
-                if (response.status === 401) failedAuth()
+                if (response.status === 401) return failedAuth()
                 if (!append) $(holder).html(`<span class='text-none text-center'>- Failed fetch nearest-marker -</span>`)
                 $('#nearest-marker-see-more-button').hide()
             },

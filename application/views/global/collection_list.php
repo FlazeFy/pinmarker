@@ -146,7 +146,7 @@
                 renderPagination(page, totalPage, startItem, endItem, totalItem, paginationInfoHolder)
             },
             error: (response) => {
-                if (response.status === 401) failedAuth()
+                if (response.status === 401) return failedAuth()
                 $(holder).html(`
                     <div class="empty-state text-danger">
                         <i class="fa-solid fa-triangle-exclamation"></i>
