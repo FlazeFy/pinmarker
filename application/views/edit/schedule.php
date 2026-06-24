@@ -4,7 +4,10 @@
             <h2 class="card-title mb-1">Schedule</h2>
             <p class="card-sub text-secondary">Add the place's operational hours so we can provide better trip advice.</p>
         </div>
-        <button class="btn btn-success py-1 px-3" id="save-schedule-button"><i class="fa-solid fa-floppy-disk"></i> Save Schedule</button>
+        <div class="d-flex gap-2">
+            <button class="btn btn-danger py-1 px-3 d-none" id="delete-schedule-button"><i class="fa-solid fa-trash"></i></button>
+            <button class="btn btn-success py-1 px-3" id="save-schedule-button"><i class="fa-solid fa-floppy-disk"></i> Save Schedule</button>
+        </div>
     </div>
     <div id="schedule-holder" class="row"></div>
 </div>
@@ -73,6 +76,8 @@
                 $(holder).html(buildScheduleRows())
 
                 if (rows.length > 0) {
+                    $('#delete-schedule-button').removeClass('d-none')
+
                     const dayMap = {
                         MON: 'monday',
                         TUE: 'tuesday',
@@ -101,6 +106,8 @@
                             $(`.remove-schedule-button-holder.${day}`).append('<a class="btn btn-danger-outline text-xsm py-1 px-2"><i class="fa-solid fa-trash"></i> Remove</a>')
                         }
                     })
+                } else {
+                    $('#delete-schedule-button').addClass('d-none')
                 }
             },
             error: (response) => {
@@ -193,6 +200,58 @@
         })
     }
 
+    const deleteSchedule = (id) => {
+        Swal.showLoading()
+
+        $.ajax({
+            url: `/api/v1/schedule/delete/${id}`,
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
+            success: (response) => {
+                Swal.hideLoading()
+                Swal.fire({
+                    title: 'Success!',
+                    text: response.message,
+                    icon: 'success'
+                }).then(() => {
+                    fetchSchedule(id)
+                })
+            },
+            error: (response) => {
+                Swal.hideLoading()
+                if (response.status === 401) return failedAuth()
+
+                const message = response.responseJSON?.message ?? 'Something went wrong.'
+
+                if (response.status === 400) {
+                    Swal.fire({
+                        title: 'Failed!',
+                        html: message,
+                        icon: 'warning'
+                    })
+                } else {
+                    unknownErrorSwal()
+                }
+            }
+        })
+    }
+
+    const countRemainingSchedule = () => {
+        let count = 0
+
+        $('.schedule-item').each(function () {
+            const hasChecked = $(this).find('input[type="checkbox"]:checked').length > 0
+            const start = $(this).find('input[name$="_start"]').val()
+            const end = $(this).find('input[name$="_end"]').val()
+
+            if (hasChecked || (start !== '00:00' && end !== '00:00')) count++
+        })
+
+        return count
+    }
+
     $(document).ready(function () {
         $(document).on('click', '#save-schedule-button', function (e) {
             e.preventDefault()
@@ -200,13 +259,32 @@
         })
 
         $(document).on('click', '.remove-schedule-button-holder', function (e) {
-            const container = $(this).closest('.schedule-item')
-            const day = container.data('day')
+            const remainingSchedule = countRemainingSchedule()
+            
+            if (remainingSchedule > 1) {
+                const container = $(this).closest('.schedule-item')
+                const day = container.data('day')
 
-            container.find(`input[name="${day}_start"]`).val('00:00')
-            container.find(`input[name="${day}_end"]`).val('00:00')
-            container.find('input[type="checkbox"]').prop('checked', false)
-            postEditSchedule(id)
+                container.find(`input[name="${day}_start"]`).val('00:00')
+                container.find(`input[name="${day}_end"]`).val('00:00')
+                container.find('input[type="checkbox"]').prop('checked', false)
+                postEditSchedule(id)
+            } else {
+                deleteSchedule(id)
+            }
+        })
+
+        $(document).on('click', '#delete-schedule-button', function (e) {
+            Swal.fire({
+                title: "Are you sure?",
+                html: `Want to remove all schedule`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, delete it!"
+            })
+            .then((result) => {
+                if (result.isConfirmed) deleteSchedule(id)
+            })
         })
     })
 </script>
