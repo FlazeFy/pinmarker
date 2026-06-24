@@ -22,7 +22,7 @@ class CommandController extends BaseApiController {
         ]);
     }
 
-    public function put_update_schedule($pin_id){
+    public function put_update_schedule($pin_id) {
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -57,5 +57,20 @@ class CommandController extends BaseApiController {
 
         // Return API response
         return api_response(201, 'success', 'Schedule updated', null);
+    }
+
+    public function delete_schedule_by_pin_id($pin_id) {
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
+        // Check existence
+        $found = $this->PinModel->get_pin_by_id($pin_id, $user_id);
+        if (!$found) return api_response(404, 'failed', 'Marker not found', null);
+
+        // Repo : Delete old schedule
+        $this->ScheduleModel->delete_schedules($pin_id);
+        
+        // Return API response
+        return api_response(200, 'success', 'Schedule deleted', null);
     }
 }
