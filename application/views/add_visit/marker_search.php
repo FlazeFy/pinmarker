@@ -99,20 +99,15 @@
 </div>
 
 <script>
-    const PIN_DATA = [
-        {
-            pin_name: 'Ayam Bebek Kari Pedas Darmawangsa',
-            pin_category: 'Restaurant',
-            pin_address: 'Jl. Darmawangsa No.12, Kebayoran Baru',
-            pin_img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=80&q=70'
-        },
-        {
-            pin_name: 'Kopi Kenangan Sudirman',
-            pin_category: 'Cafe',
-            pin_address: 'Jl. Jend. Sudirman Kav. 52, Jakarta',
-            pin_img: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=80&q=70'
-        }
-    ]
+    let debounceTimer
+    let searchRequest = null
+    const $input = $('#pinNameInput')
+    const $dropdown = $('#pinDropdown')
+    const $inner = $('#pinDropdownInner')
+    const showDropdown = () => $dropdown.addClass('show')
+    const hideDropdown = () => $dropdown.removeClass('show')
+    const renderLoading = () => `<div class="pin-dropdown-state"><i class="fa-solid fa-magnifying-glass"></i>Searching...</div>`
+    const renderEmpty = () => `<div class="pin-dropdown-state"><i class="fa-solid fa-triangle-exclamation"></i>No markers found</div>`
 
     const renderItem = (dt) => {
         const imgEl = dt.pin_img ? `<img class="pin-item-img" src="${dt.pin_img}" alt="${dt.pin_name}" loading="lazy"/>` : `<div class="pin-item-img-placeholder"><i class="fa-solid fa-building"></i></div>`
@@ -124,56 +119,67 @@
                     <div class="text-sm fw-bold mb-1">${dt.pin_name}</div>
                     <div class="d-flex gap-1">
                         <span class="tag bg-info">${dt.pin_category}</span>
-                        <span class="tag bg-success"><i class="fa-solid fa-location-dot"></i> ${dt.pin_address}</span>
+                        <span class="tag bg-success"><i class="fa-solid fa-location-dot"></i> ${dt.pin_final_address}</span>
                     </div>
                 </div>
             </div>`
     }
 
-    let debounceTimer
-    const $input = $('#pinNameInput')
-    const $dropdown = $('#pinDropdown')
-    const $inner = $('#pinDropdownInner')
-    const showDropdown = () => $dropdown.addClass('show')
-    const hideDropdown = () => $dropdown.removeClass('show')
-    const renderLoading = () => `<div class="pin-dropdown-state"><i class="fa-solid fa-magnifying-glass"></i>Searching...</div>`
-    const renderEmpty = () => `<div class="pin-dropdown-state"><i class="fa-solid fa-triangle-exclamation"></i>No markers found</div>`
+    const fetchPinSearch = query => {
+        if (searchRequest) searchRequest.abort()
 
-    const search = (query) => {
         $inner.html(renderLoading())
         showDropdown()
 
-        clearTimeout(debounceTimer)
-        debounceTimer = setTimeout(() => {
-            const q = query.trim().toLowerCase()
-            const results = PIN_DATA.filter(dt => dt.pin_name.toLowerCase().includes(q) || dt.pin_category.toLowerCase().includes(q) || dt.pin_address.toLowerCase().includes(q))
-            results.length === 0 ? $inner.html(renderEmpty()) : $inner.html(results.map(renderItem).join(''))
-        }, 280)
+        searchRequest = $.ajax({
+            url: '/api/v1/pin/search',
+            method: 'GET',
+            data: {
+                pin_name: query
+            },
+            headers: {
+                Authorization: `Bearer ${tokenKey}`
+            },
+            success: response => {
+                const data = response.data ?? []
+
+                if (data.length === 0) {
+                    $inner.html(renderEmpty())
+                    return
+                }
+
+                $inner.html(data.map(renderItem).join(''))
+            },
+            error: response => {
+                if (response.status === 401) return failedAuth()
+                if (response.statusText === 'abort') return
+
+                $inner.html(`
+                    <div class="pin-dropdown-state text-danger">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        Failed fetch marker
+                    </div>
+                `)
+            }
+        })
     }
 
-    $input.on('focus', function () {
-        const val = $(this).val().trim()
-        if (val.length === 0) {
-            $inner.html(PIN_DATA.map(renderItem).join(''))
-            showDropdown()
-        } else {
-            search(val)
-        }
-    })
+    const search = query => {
+        clearTimeout(debounceTimer)
 
-    $input.on('input', function () {
-        const val = $(this).val().trim()
-        if (val.length === 0) {
-            $inner.html(PIN_DATA.map(renderItem).join(''))
-            showDropdown()
-        } else {
-            search(val)
-        }
+        debounceTimer = setTimeout(() => {
+            fetchPinSearch(query)
+        }, 750)
+    }
+
+    $input.on('focus input', function () {
+        const keyword = $(this).val().trim()
+        search(keyword)
     })
 
     $inner.on('click', '.pin-item', function () {
-        const name = $(this).data('name')
-        $input.val(name)
+        $('#pinNameInput').val($(this).data('name'))
+        $('#pinNameInput').data('id', $(this).data('id'))
         hideDropdown()
     })
 
