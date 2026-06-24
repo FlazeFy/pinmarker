@@ -33,7 +33,7 @@
         <a href="/ListController" class="nav-item <?= ($cleanedUrl === "ListController" || $cleanedUrl === "DetailController") ? "active" : ""; ?>">
             <i class="fa-solid fa-list"></i> My Marker
         </a>
-        <a href="/HistoryController" class="nav-item <?= ($cleanedUrl === "HistoryController") ? "active" : ""; ?>">
+        <a href="/HistoryController" class="nav-item <?= (in_array($cleanedUrl, ["HistoryController", "AddVisitController"])) ? "active" : ""; ?>">
             <i class="fa-solid fa-clock-rotate-left"></i> History
         </a>
         <a href="/TrackController" class="nav-item">

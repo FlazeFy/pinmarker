@@ -1,5 +1,17 @@
-<a class="btn btn-danger mb-4 <?php if (!$is_mobile_device){ echo "py-3"; } else { echo "py-2"; } ?> px-4" href="/HistoryController" id="back-page-btn"><i class="fa-solid fa-arrow-left"></i><?php if (!$is_mobile_device){ echo " Back"; } ?></a>
-<div class="container-fluid" id="add_visit-section">
-    <h2>Add Visit</h2><hr>
-    <?php $this->load->view('add_visit/form'); ?>
+<div class="d-flex" style="min-height:100vh; background:var(--containerColor);">
+    <?php $this->load->view("others/left_bar"); ?>
+    <div class="main-wrap">
+        <?php $this->load->view("others/top_bar"); ?>
+        <div class="content">
+            <?php $this->load->view("add_visit/header"); ?>
+            <div class="row mb-4">
+                <div class="col-lg-8">
+                    <?php $this->load->view('add_visit/form'); ?>
+                </div>
+                <div class="col-lg-4">
+                    <?php $this->load->view('add_visit/maps_select'); ?>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
