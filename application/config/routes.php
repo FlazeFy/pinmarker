@@ -59,6 +59,7 @@ $route['api/v1/auth/login'] = 'api/AuthController/post_login';
 
 // Location Module
 $route['api/v1/location/weather'] = 'api/ExternalApiController/get_current_weather';
+$route['api/v1/location/forecast'] = 'api/ExternalApiController/get_weather_forecast';
 $route['api/v1/location/reverse'] = 'api/ExternalApiController/get_nearby_places';
 
 // Pin Module
