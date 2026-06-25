@@ -41,6 +41,8 @@
     let userLat = getCookie('lat')
     let userLng = getCookie('long')
     let routingControl = null
+    let marker = null
+    let userMarker = null
 
     const map = L.map('map-board', {
         zoomControl: false
@@ -53,21 +55,14 @@
         { attribution: '&copy; OpenStreetMap contributors' }
     ).addTo(map)
 
-    let marker = null
-    let userMarker = null
-
     const placeMarker = (latLng) => {
-        if (marker) {
-            map.removeLayer(marker)
-        }
+        if (marker) map.removeLayer(marker)
 
         marker = L.marker([latLng.lat, latLng.lng]).addTo(map)
     }
 
     const placeUserMarker = (lat, lng) => {
-        if (userMarker) {
-            map.removeLayer(userMarker)
-        }
+        if (userMarker) map.removeLayer(userMarker)
 
         userMarker = L.circleMarker([lat, lng], {
             radius: 10,
@@ -79,64 +74,10 @@
         }).addTo(map)
     }
 
-    const initMap = () => {
-        setTimeout(() => {
-            map.invalidateSize()
-        }, 300)
-    }
-
-    const showDirection = (originLat, originLng, destinationLat, destinationLng) => {
-        if (!originLat || !originLng) return
-        if (routingControl) map.removeControl(routingControl)
-
-        Swal.fire({
-            title: 'Preparing the route...',
-            text: 'Please wait a moment.',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            didOpen: () => {
-                Swal.showLoading()
-            }
-        })
-
-        routingControl = L.Routing.control({
-            waypoints: [
-                L.latLng(originLat, originLng),
-                L.latLng(destinationLat, destinationLng)
-            ],
-            routeWhileDragging: false,
-            addWaypoints: false,
-            draggableWaypoints: false,
-            fitSelectedRoutes: true,
-            show: false,
-            createMarker: () => null,
-            lineOptions: {
-                styles: [
-                    {
-                        color: getComputedStyle(document.documentElement).getPropertyValue('--primaryColor').trim(),
-                        opacity: 0.9,
-                        weight: 6
-                    }
-                ]
-            }
-        })
-        .on('routesfound', () => {
-            Swal.close()
-        })
-        .on('routingerror', () => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Route Not Found',
-                text: 'Unable to prepare the route.'
-            })
-        })
-        .addTo(map)
-    }
+    const initMap = () => setTimeout(() => map.invalidateSize(), 300)
 
     const showPinOnMap = (lat, lng) => {
-        const latLng = {
-            lat: parseFloat(lat), lng: parseFloat(lng)
-        }
+        const latLng = { lat: parseFloat(lat), lng: parseFloat(lng)}
 
         placeMarker(latLng)
         map.flyTo([latLng.lat, latLng.lng], 17, {
@@ -144,7 +85,8 @@
             duration: 0.8
         })
 
-        showDirection(userLat, userLng, latLng.lat, latLng.lng)
+        routingControl = showDirection(map, routingControl, userLat, userLng, latLng.lat, latLng.lng, '#pin_to_pin_distance_count', '#pin_to_pin_duration_count')
+        $('#destination-info-section').removeClass('d-none')
     }
 
     $(document).on('click', '#focus-map-button', function () {

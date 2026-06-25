@@ -10,6 +10,7 @@
                 </div>
                 <div class="col-lg-4">
                     <?php $this->load->view('add_visit/maps_select'); ?>
+                    <?php $this->load->view('add_visit/destination_info'); ?>
                 </div>
             </div>
         </div>
