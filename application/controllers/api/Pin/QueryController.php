@@ -271,6 +271,38 @@ class QueryController extends BaseApiController {
         );
     }
 
+    public function get_all_pin_search_format(){
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+        $pin_name = $this->input->get('pin_name') ?? null;
+
+        // Query param validator
+        if ($pin_name && strlen($pin_name) > 144) {
+            return api_response(400, 'failed', 'pin_name must be less than 144 characters', null);
+        }
+
+        // Cache key
+        $cache_key = 'pin_search_' . $user_id . '_' . md5($pin_name ?? '');
+        $cache_path = APPPATH . 'cache/' . $cache_key . '.json';
+
+        // Return cache if exists (5 minutes)
+        if (file_exists($cache_path) && (time() - filemtime($cache_path)) < 300) {
+            $data = json_decode(file_get_contents($cache_path), true);
+
+            $message = !empty($data) ? 'Pin fetched' : 'No pin found';
+            return api_response(!empty($data) ? 200 : 404, !empty($data) ? 'success' : 'failed', $message, $data);
+        }
+
+        // Query database
+        $data = $this->PinModel->get_all_pin_search_format($user_id, $pin_name);
+
+        // Save only data
+        file_put_contents($cache_path, json_encode($data));
+
+        // Return API response
+        return api_response(200, 'success', $message, $data);
+    }
+
     public function get_pin_category(){
         $this->authenticate();
         $user_id = $this->auth_user_id;

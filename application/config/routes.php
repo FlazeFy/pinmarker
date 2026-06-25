@@ -59,10 +59,12 @@ $route['api/v1/auth/login'] = 'api/AuthController/post_login';
 
 // Location Module
 $route['api/v1/location/weather'] = 'api/ExternalApiController/get_current_weather';
+$route['api/v1/location/forecast'] = 'api/ExternalApiController/get_weather_forecast';
 $route['api/v1/location/reverse'] = 'api/ExternalApiController/get_nearby_places';
 
 // Pin Module
 $route['api/v1/pin'] = 'api/Pin/QueryController/get_all_pin';
+$route['api/v1/pin/search'] = 'api/Pin/QueryController/get_all_pin_search_format';
 $route['api/v1/pin/maps'] = 'api/Pin/QueryController/get_all_pin_maps';
 $route['api/v1/pin/pin_category'] = 'api/Pin/QueryController/get_pin_category';
 $route['api/v1/pin/validate_new'] = 'api/Pin/QueryController/get_validate_new_marker';

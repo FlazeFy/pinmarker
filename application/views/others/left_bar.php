@@ -17,8 +17,8 @@
         </div>
     </div>
     <nav class="sidebar-nav flex-grow-1">
-        <a href="/DetailController/add_visit" class="btn btn-success mb-2">
-            <i class="fa-solid fa-circle-plus"></i> Add New Visit
+        <a href="/AddVisitController" class="btn btn-success mb-2">
+            <i class="fa-solid fa-circle-plus"></i> Add Visit
         </a>
         <div class="nav-group-label">Overview</div>
         <a href="/DashboardController" class="nav-item <?= ($cleanedUrl === "DashboardController") ? "active" : ""; ?>">
@@ -33,7 +33,7 @@
         <a href="/ListController" class="nav-item <?= ($cleanedUrl === "ListController" || $cleanedUrl === "DetailController") ? "active" : ""; ?>">
             <i class="fa-solid fa-list"></i> My Marker
         </a>
-        <a href="/HistoryController" class="nav-item <?= ($cleanedUrl === "HistoryController") ? "active" : ""; ?>">
+        <a href="/HistoryController" class="nav-item <?= (in_array($cleanedUrl, ["HistoryController", "AddVisitController"])) ? "active" : ""; ?>">
             <i class="fa-solid fa-clock-rotate-left"></i> History
         </a>
         <a href="/TrackController" class="nav-item">

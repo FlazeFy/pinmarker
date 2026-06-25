@@ -1,12 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once(APPPATH . 'controllers/api/BaseApiController.php');
 
-class ExternalApiController extends CI_Controller {
+class ExternalApiController extends BaseApiController {    
     private $flazenHandBaseUrl;
     function __construct(){
         parent::__construct();
 
         $this->flazenHandBaseUrl = "http://127.0.0.1:8000/api/v1";
+        $this->load->model("WeatherForecastCacheModel");
+        $this->load->model("PinModel");
     }
 
     // From FlazenHand app
@@ -156,5 +159,132 @@ class ExternalApiController extends CI_Controller {
             'reverse location fetched',
             $response_decode['data']
         );
+    }
+
+    public function get_weather_forecast(){
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+        
+        $pin_id = $this->input->get('pin_id');
+        $lat = $this->input->get('lat');
+        $long = $this->input->get('long');
+        $start_date = $this->input->get('start_date');
+        $end_date = $this->input->get('end_date');
+    
+        // Validate
+        if(!$pin_id) return api_response(400, 'failed', 'pin_id is required', null);
+        if(!$lat || !$long) return api_response(400, 'failed', 'coordinate is required', null);
+        if(!$start_date || !$end_date) return api_response(400, 'failed', 'date is required', null);
+    
+        // Check marker ownership
+        $pin = $this->PinModel->get_pin_by_id($pin_id, $user_id);
+        if(!$pin) return api_response(404, 'failed', 'Marker not found', null);
+    
+        // Model : Get cache by pin
+        $cache = $this->WeatherForecastCacheModel->get_cache_by_pin($pin_id, $start_date);
+        if(!$cache){
+            // Model : Get cache by nearby coordinate (3 KM)
+            $cache = $this->WeatherForecastCacheModel->get_cache_nearby($lat, $long, $start_date);
+    
+            // Reuse nearby cache for this pin
+            if($cache){
+                // Model : Create cache 
+                $this->WeatherForecastCacheModel->create_cache($pin_id, $lat, $long, $cache->start_date, $cache->end_date, $cache->timezone);
+                // Model : Get cache by pin id
+                $newCache = $this->WeatherForecastCacheModel->get_cache_by_pin($pin_id, $start_date);
+                // Model : Get cache detail by id
+                $details = $this->WeatherForecastCacheModel->get_cache_detail($cache->id);
+    
+                $weather = [];
+                $air = [];
+                foreach($details as $dt){
+                    $weather[] = [
+                        'datetime' => $dt->forecast_datetime,
+                        'temperature' => (float)$dt->temperature,
+                        'feels_like' => (float)$dt->feels_like,
+                        'humidity' => (int)$dt->humidity,
+                        'wind_speed' => (float)$dt->wind_speed,
+                        'code' => (int)$dt->weather_code
+                    ];
+    
+                    $air[] = [
+                        'datetime' => $dt->forecast_datetime,
+                        'aqi' => (int)$dt->aqi,
+                        'pm2_5' => (float)$dt->pm2_5,
+                        'pm10' => (float)$dt->pm10,
+                        'co' => (float)$dt->carbon_monoxide,
+                        'no2' => (float)$dt->nitrogen_dioxide
+                    ];
+                }
+    
+                // Model : Create cache detail
+                $this->WeatherForecastCacheModel->create_cache_details($newCache->id, $weather, $air);
+    
+                return api_response(200, 'success', 'weather forecast fetched', [
+                    'timezone' => $cache->timezone,
+                    'weather' => $weather,
+                    'air' => $air
+                ]);
+            }
+        }else{
+            // Get cache detail
+            $details = $this->WeatherForecastCacheModel->get_cache_detail($cache->id);
+    
+            $weather = [];
+            $air = [];
+            foreach($details as $dt){
+                $weather[] = [
+                    'datetime' => $dt->forecast_datetime,
+                    'temperature' => (float)$dt->temperature,
+                    'feels_like' => (float)$dt->feels_like,
+                    'humidity' => (int)$dt->humidity,
+                    'wind_speed' => (float)$dt->wind_speed,
+                    'code' => (int)$dt->weather_code
+                ];
+    
+                $air[] = [
+                    'datetime' => $dt->forecast_datetime,
+                    'aqi' => (int)$dt->aqi,
+                    'pm2_5' => (float)$dt->pm2_5,
+                    'pm10' => (float)$dt->pm10,
+                    'co' => (float)$dt->carbon_monoxide,
+                    'no2' => (float)$dt->nitrogen_dioxide
+                ];
+            }
+    
+            return api_response(200, 'success', 'weather forecast fetched', [
+                'timezone' => $cache->timezone,
+                'weather' => $weather,
+                'air' => $air
+            ]);
+        }
+    
+        // External API
+        $url = "{$this->flazenHandBaseUrl}/locations/forecast?lat={$lat}&long={$long}&start_date={$start_date}&end_date={$end_date}";
+    
+        $curl = curl_init();
+    
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTPGET => true
+        ]);
+    
+        $response = curl_exec($curl);
+        $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    
+        curl_close($curl);
+    
+        $response_decode = json_decode($response, true);
+        if ($http_code != 200 || empty($response_decode['data'])) return api_response(500, 'failed', 'Failed fetch weather forecast', null);
+    
+        $forecast = $response_decode['data'];
+
+        // Model : Create cache & detail
+        $forecast_cache_id = $this->WeatherForecastCacheModel->create_cache($pin_id, $lat, $long, $start_date, $end_date, $forecast['timezone']);
+        $this->WeatherForecastCacheModel->create_cache_details($forecast_cache_id, $forecast['weather'], $forecast['air']);
+    
+        return api_response(200, 'success', 'weather forecast fetched', $forecast);
     }
 }

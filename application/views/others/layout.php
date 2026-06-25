@@ -144,9 +144,12 @@
         });
     </script>
 
-    <?php if(preg_match('(DetailGlobalController|AddGlobalListController|EditController|AddController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(DetailGlobalController|AddGlobalListController|EditController|AddController|AddVisitController)', $cleanedUrl)): ?>
         <!-- Manage Pin -->
         <script src="http://127.0.0.1:8080/public/js/manage_pin.js"></script>
+    <?php endif; ?>
+    <?php if(preg_match('(AddVisitController)', $cleanedUrl)): ?>
+        <script src="http://127.0.0.1:8080/public/js/weather.js"></script>
     <?php endif; ?>
 </body>
 </html>

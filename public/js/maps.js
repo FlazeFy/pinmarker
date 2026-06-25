@@ -166,3 +166,62 @@ const check_pin_name_availability = (pin_name, action) => {
         }
     })
 }
+
+const showDirection = (map, routingControl, originLat, originLng, destinationLat, destinationLng, distanceValHolder = null, durationValHolder =  null) => {
+    if (!originLat || !originLng) return
+    if (routingControl) map.removeControl(routingControl)
+
+    Swal.fire({
+        title: 'Preparing the route...',
+        text: 'Please wait a moment.',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    })
+
+    routingControl = L.Routing.control({
+        waypoints: [
+            L.latLng(originLat, originLng),
+            L.latLng(destinationLat, destinationLng)
+        ],
+        routeWhileDragging: false,
+        addWaypoints: false,
+        draggableWaypoints: false,
+        fitSelectedRoutes: true,
+        show: false,
+        createMarker: () => null,
+        lineOptions: {
+            styles: [
+                {
+                    color: getComputedStyle(document.documentElement).getPropertyValue('--primaryColor').trim(),
+                    opacity: 0.9,
+                    weight: 6
+                }
+            ]
+        }
+    })
+    .on('routesfound', (e) => {
+        const route = e.routes[0]
+        const distance = (route.summary.totalDistance / 1000).toFixed(2)
+        const totalMinutes = Math.round(route.summary.totalTime / 60)
+        const hours = Math.floor(totalMinutes / 60)
+        const minutes = totalMinutes % 60
+        const duration = hours > 0 ? `${hours} hr ${minutes} min` : `${minutes} min`
+
+        if (distanceValHolder) $(distanceValHolder).text(`${distance} Km`)
+        if (durationValHolder) $(durationValHolder).text(duration)
+        Swal.close()
+    })
+    .on('routingerror', () => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Route Not Found',
+            text: 'Unable to prepare the route.'
+        })
+    })
+    .addTo(map)
+
+    return routingControl
+}
