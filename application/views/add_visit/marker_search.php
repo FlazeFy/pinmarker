@@ -92,18 +92,18 @@
 
 <label class="form-label-custom">Pin Name</label>
 <div class="pin-autocomplete-wrapper">
-    <input type="text" id="pinNameInput" class="form-control form-control-custom" placeholder="Search marker..." autocomplete="off"/>
-    <div class="pin-dropdown" id="pinDropdown">
-        <div class="pin-dropdown-inner" id="pinDropdownInner"></div>
+    <input type="text" id="pin_name-input" class="form-control form-control-custom" placeholder="Search marker..." autocomplete="off"/>
+    <div class="pin-dropdown" id="pin-dropdown">
+        <div class="pin-dropdown-inner" id="pin-dropdown-inner"></div>
     </div>
 </div>
 
 <script>
     let debounceTimer
     let searchRequest = null
-    const $input = $('#pinNameInput')
-    const $dropdown = $('#pinDropdown')
-    const $inner = $('#pinDropdownInner')
+    const $inputPinName = $('#pin_name-input')
+    const $dropdown = $('#pin-dropdown')
+    const $inner = $('#pin-dropdown-inner')
     const showDropdown = () => $dropdown.addClass('show')
     const hideDropdown = () => $dropdown.removeClass('show')
     const renderLoading = () => `<div class="pin-dropdown-state"><i class="fa-solid fa-magnifying-glass"></i>Searching...</div>`
@@ -166,13 +166,10 @@
 
     const search = query => {
         clearTimeout(debounceTimer)
-
-        debounceTimer = setTimeout(() => {
-            fetchPinSearch(query)
-        }, 750)
+        debounceTimer = setTimeout(() => fetchPinSearch(query), 750)
     }
 
-    $input.on('focus input', function () {
+    $inputPinName.on('focus input', function () {
         const keyword = $(this).val().trim()
         search(keyword)
     })
@@ -183,17 +180,22 @@
         const lat = $(this).data('lat')
         const lng = $(this).data('lng')
 
-        $input.val(name)
-        $input.data('id', id)
+        $inputPinName.val(name)
+        $inputPinName.data('id', id)
+        $inputPinName.data('lat', lat)
+        $inputPinName.data('lng', lng)
         hideDropdown()
         showPinOnMap(lat, lng)
+
+        const date = $('#visit_date').val().trim()
+        if (date) fetchForecast(id, lat, lng, date)
     })
 
     $(document).on('click', function (e) {
         if (!$(e.target).closest('.pin-autocomplete-wrapper').length) hideDropdown()
     })
 
-    $input.on('keydown', function (e) {
+    $inputPinName.on('keydown', function (e) {
         const $items = $inner.find('.pin-item')
         const $active = $items.filter('.active')
 
@@ -212,10 +214,14 @@
                 const id = $active.data('id')
                 const lat = $active.data('lat')
                 const lng = $active.data('lng')
-                $input.val(name)
-                $input.data('id', id)
+                
+                $inputPinName.val(name)
+                $inputPinName.data('id', id)
                 hideDropdown()
                 showPinOnMap(lat, lng)
+
+                const date = $('#visit_date').val().trim()
+                if (date) fetchForecast(id, lat, lng, date)
             }
         } else if (e.key === 'Escape') {
             hideDropdown()
@@ -226,9 +232,9 @@
         const $active = $inner.find('.pin-item.active')
         if ($active.length) {
             const itemTop = $active[0].offsetTop
-            const itemH   = $active[0].offsetHeight
+            const itemH = $active[0].offsetHeight
             const innerST = $inner[0].scrollTop
-            const innerH  = $inner[0].clientHeight
+            const innerH = $inner[0].clientHeight
 
             if (itemTop < innerST) {
                 $inner[0].scrollTop = itemTop

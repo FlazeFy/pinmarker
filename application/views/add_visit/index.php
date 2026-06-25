@@ -7,6 +7,7 @@
             <div class="row mb-4">
                 <div class="col-lg-8">
                     <?php $this->load->view('add_visit/form'); ?>
+                    <?php $this->load->view('add_visit/forecast_info'); ?>
                 </div>
                 <div class="col-lg-4">
                     <?php $this->load->view('add_visit/maps_select'); ?>

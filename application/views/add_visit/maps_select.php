@@ -57,7 +57,6 @@
 
     const placeMarker = (latLng) => {
         if (marker) map.removeLayer(marker)
-
         marker = L.marker([latLng.lat, latLng.lng]).addTo(map)
     }
 
