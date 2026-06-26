@@ -63,7 +63,6 @@
     <script src="http://127.0.0.1:8080/public/js/global.js"></script>
 
     <?php if(preg_match('(AddVisitController)', $cleanedUrl)): ?>
-        <!-- Maps JS -->
         <script src="http://127.0.0.1:8080/public/js/validator.js"></script>
     <?php endif; ?>
 

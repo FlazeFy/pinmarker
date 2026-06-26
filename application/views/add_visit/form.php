@@ -26,7 +26,7 @@
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <textarea name="visit_with" id="visit_with" rows="5" class="form-control form-validated visit-with" maxlength='500'></textarea>
                 <div class="d-flex justify-content-start">
-                    <a class="btn btn-success see-person-btn py-1 text-sm px-2" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> Add Person</a>
+                    <?php $this->load->view('add_visit/visit_companion'); ?>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
@@ -43,8 +43,6 @@
         </div>
     </div>
 </div>
-
-<?php $this->load->view('add_visit/my_contact'); ?>
 
 <script>
     let selected_color = ''
