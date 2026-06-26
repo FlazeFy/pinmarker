@@ -133,11 +133,14 @@
 
         $(this).toggleClass('active')
 
-        if (isActive) {
-            const current = $('#visit_with').val().split(',').map(n => n.trim()).filter(n => n.toLowerCase() !== name)
-            $('#visit_with').val(current.join(', '))
-        } else {
-            syncVisitWith()
+        if (!isActive) {
+            const current = $('#visit_with').val().split(',').map(n => n.trim()).filter(n => n !== '')
+            const alreadyExists = current.some(n => n.toLowerCase() === name)
+            
+            if (!alreadyExists) {
+                current.push($(this).data('name'))
+                $('#visit_with').val(current.join(', '))
+            }
         }
 
         cleanListPerson('.visit-with')
