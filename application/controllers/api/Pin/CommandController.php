@@ -25,6 +25,7 @@ class CommandController extends BaseApiController {
     }
 
     public function post_create_pin(){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -78,7 +79,7 @@ class CommandController extends BaseApiController {
             $inserted_pin = $this->PinModel->insert_marker($data, $user_id);
             if($inserted_pin){
                 $success_insert++;
-                $this->HistoryModel->insert_history('Add Marker', $pin_name);
+                $this->HistoryModel->insert_history('Add Marker', $pin_name, $user_id);
 
                 // Insert schedule if provided
                 if ($schedules && is_array($schedules)) {
@@ -117,6 +118,7 @@ class CommandController extends BaseApiController {
     }
 
     public function put_update_pin($pin_id){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 

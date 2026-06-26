@@ -9,6 +9,7 @@
 
 		public function __construct() {
 			parent::__construct();
+			$this->load->helper('generator_helper');
 			$this->role_key = $this->session->userdata('role_key');
 			$this->month_name = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		}
@@ -1022,8 +1023,12 @@
 		}
 		
 		// Command
-		public function insert_visit($data){
-			return $this->db->insert($this->table,$data);	
+		public function insert_visit($data, $user_id){
+			$data['id'] = get_UUID();
+			$data['updated_at'] = null;
+			$data['created_by'] = $user_id;
+
+			return $this->db->insert($this->table, $data) ? $data['id'] : false;
 		}
 		public function update_visit($data,$id){
 			$this->db->where('id', $id);

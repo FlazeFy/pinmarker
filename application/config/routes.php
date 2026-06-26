@@ -82,6 +82,7 @@ $route['api/v1/history'] = 'api/history/QueryController/get_my_activity';
 $route['api/v1/visit/by_pin/(:any)'] = 'api/visit/QueryController/get_visit_by_pin_id/$1';
 $route['api/v1/visit/visit_with'] = 'api/visit/QueryController/get_all_visit_with';
 $route['api/v1/visit/visit_with/analyze/(:any)'] = 'api/visit/QueryController/get_person_analyze/$1';
+$route['api/v1/visit/create'] = 'api/visit/CommandController/post_create_visit';
 
 // Review Module
 $route['api/v1/review/(:any)'] = 'api/review/QueryController/get_review_by_pin_id/$1';
