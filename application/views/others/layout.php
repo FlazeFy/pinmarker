@@ -62,6 +62,11 @@
 
     <script src="http://127.0.0.1:8080/public/js/global.js"></script>
 
+    <?php if(preg_match('(AddVisitController)', $cleanedUrl)): ?>
+        <!-- Maps JS -->
+        <script src="http://127.0.0.1:8080/public/js/validator.js"></script>
+    <?php endif; ?>
+
     <?php if(preg_match('(AddGlobalListController|DetailGlobalController)', $cleanedUrl)): ?>
         <!-- Jquery DataTables -->
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>

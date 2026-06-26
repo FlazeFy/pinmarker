@@ -79,6 +79,11 @@
     }
 
     const fetchForecast = (pinId, lat, lng, date) => {
+        if (!isFutureDateTime(date)) {
+            $('#forecast-info-section').addClass('d-none')
+            return
+        }
+
         if (forecastRequest) forecastRequest.abort()
 
         $('#forecast-holder').html(renderForecastLoading())
