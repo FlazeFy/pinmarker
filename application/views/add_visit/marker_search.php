@@ -125,7 +125,7 @@
             </div>`
     }
 
-    const fetchPinSearch = query => {
+    const fetchPinSearch = (search) => {
         if (searchRequest) searchRequest.abort()
 
         $inner.html(renderLoading())
@@ -134,9 +134,7 @@
         searchRequest = $.ajax({
             url: '/api/v1/pin/search',
             method: 'GET',
-            data: {
-                pin_name: query
-            },
+            data: { search },
             headers: {
                 Authorization: `Bearer ${tokenKey}`
             },
@@ -164,9 +162,9 @@
         })
     }
 
-    const search = query => {
+    const search = (search) => {
         clearTimeout(debounceTimer)
-        debounceTimer = setTimeout(() => fetchPinSearch(query), 750)
+        debounceTimer = setTimeout(() => fetchPinSearch(search), 750)
     }
 
     $inputPinName.on('focus input', function () {

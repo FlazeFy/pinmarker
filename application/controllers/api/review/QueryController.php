@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once(APPPATH . 'controllers/api/BaseApiController.php');
 
-class ReviewController extends BaseApiController {    
+class QueryController extends BaseApiController {    
     function __construct(){
         parent::__construct();
         $this->load->model("ReviewModel");
@@ -11,6 +11,7 @@ class ReviewController extends BaseApiController {
     }
 
     public function get_review_by_pin_id($pin_id){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -21,6 +22,7 @@ class ReviewController extends BaseApiController {
         $per_page = $this->input->get('per_page') ?? 14;
         $page = $this->input->get('page') ?? 1;
 
+        // Validation pagination
         if (!is_valid_positive_number($page)) {
             return api_response(400, 'failed', 'page must be a positive number', null);
         } else {
@@ -37,6 +39,7 @@ class ReviewController extends BaseApiController {
         $per_page = max(1, $per_page);
         $offset = ($page - 1) * $per_page;
 
+        // Model : Get review by context (pin)
         $result = $this->ReviewModel->get_review_by_context($per_page, $offset, $pin_id, "pin", $user_id);
         $message = !empty($result['data']) ? 'Review fetched' : 'No review found';
 

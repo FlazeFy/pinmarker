@@ -397,7 +397,7 @@
 			return $data = $this->db->get()->result();
 		}
 
-		public function get_all_pin_search_format($user_id, $pin_name = null) {
+		public function get_all_pin_search_format($user_id, $search = null) {
 			$this->db->select("
 				id, pin_name, pin_category, pin_image, pin_lat, pin_long, is_favorite,
 				CASE
@@ -416,12 +416,12 @@
 			]);
 		
 			// Search filter
-			if (!empty($pin_name)) {
-				$pin_name = strtolower($pin_name);
+			if (!empty($search)) {
+				$search = strtolower($search);
 		
 				$this->db->group_start();
-					$this->db->like('LOWER(pin_name)', $pin_name, 'both', false);
-					$this->db->or_like('LOWER(pin_category)', $pin_name, 'both', false);
+					$this->db->like('LOWER(pin_name)', $search, 'both', false);
+					$this->db->or_like('LOWER(pin_category)', $search, 'both', false);
 					$this->db->or_like("
 						LOWER(
 							CASE
@@ -433,14 +433,21 @@
 								ELSE pin_address
 							END
 						)
-					", $pin_name, 'both', false);
+					", $search, 'both', false);
 				$this->db->group_end();
 			}
 		
 			$this->db->order_by('is_favorite', 'DESC');
 			$this->db->order_by('pin_name', 'ASC');
+			$res = $this->db->get()->result();
+
+			foreach ($res as $dt) {
+				$dt->is_favorite = (int)$dt->is_favorite;
+				$dt->pin_lat = (double)$dt->pin_lat;
+				$dt->pin_long = (double)$dt->pin_long;
+			}
 		
-			return $this->db->get()->result();
+			return $res;
 		}
 
 		public function get_pin_name_by_id($id){

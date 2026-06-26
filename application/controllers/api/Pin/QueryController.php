@@ -20,6 +20,7 @@ class QueryController extends BaseApiController {
     }
 
     public function get_all_pin(){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -56,6 +57,8 @@ class QueryController extends BaseApiController {
         if ($is_visited !== 'all' && !in_array($is_visited, $this->allowed_value_condition_pin)) {
             return api_response(400, 'failed', 'is_visited not valid', null);
         }
+
+        // Validation pagination
         if (!is_valid_positive_number($page)) {
             return api_response(400, 'failed', 'page must be a positive number', null);
         }
@@ -68,14 +71,17 @@ class QueryController extends BaseApiController {
         $per_page = max(1, $per_page);
         $offset = ($page - 1) * $per_page;
 
+        // Model : Get all pin by user
         $result = $this->PinModel->get_all_pin($search, $pin_category, $is_favorite, $with_companion, $visit_with, $is_visited, $per_page, $offset, $sorting, $user_id);
         
+        // Model : Get all used category
         $categories = $this->PinModel->get_pin_category($user_id);
         foreach ($categories as $dt) {
             unset($dt->dictionary_icon);
         }
         unset($dt);
 
+        // Model : Get visit with (trip companion)
         $companions = $with_companion === "1" ? $this->VisitModel->get_visit_withs($user_id) : null;
 
         $message = !empty($result['data']) ? 'Pin fetched' : 'No pins found';
@@ -100,6 +106,7 @@ class QueryController extends BaseApiController {
     }
 
     public function get_all_pin_maps(){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -111,6 +118,12 @@ class QueryController extends BaseApiController {
         // Coordinate param
         $lat = $this->input->get('lat') ? $this->input->get('lat') : null;
         $long = $this->input->get('long') ? $this->input->get('long') : null;
+
+        if ($lat || $long) {
+            // Validate coordinate
+            $invalid_coordinate = check_coordinate($lat, $long);
+            if ($invalid_coordinate) return api_response(400, 'failed', $invalid_coordinate, null);
+        }
         
         // Total item per page param
         $per_page = $this->input->get('per_page');
@@ -167,6 +180,7 @@ class QueryController extends BaseApiController {
             $offset = 0;
         }
 
+        // Model : Get all pin (maps format)
         $result = $this->PinModel->get_all_pin_maps_format($search, $pin_category, $lat, $long, $max_distance, $is_favorite, $is_visited, $per_page, $offset, $user_id);
 
         $message = !empty($result['data']) ? 'Pin fetched' : 'No pins found';
@@ -191,6 +205,7 @@ class QueryController extends BaseApiController {
     }
 
     public function get_validate_new_marker(){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -203,7 +218,8 @@ class QueryController extends BaseApiController {
         // Nearest marker
         if ($lat && $long) {
             // Validate coordinate
-            if (!is_valid_coordinate($lat,$long)) return api_response(400, 'failed', 'coordinate is not valid', null);
+            $invalid_coordinate = check_coordinate($lat, $long);
+            if ($invalid_coordinate) return api_response(400, 'failed', $invalid_coordinate, null);
 
             // API Endpoint
             $url = "{$this->flazenHandBaseUrl}/locations/reverse?lat=$lat&long=$long";
@@ -232,6 +248,8 @@ class QueryController extends BaseApiController {
             // Existing marker
             $max_distance = 0.5;
             $max_item = 10;
+
+            // Model : Get all pin (maps format)
             $result = $this->PinModel->get_all_pin_maps_format(null, null, $lat, $long, $max_distance, null, null, $max_item, 1, $user_id);
             $existing = count($result['data']) > 0 ? $result['data'] : null;
         } else {
@@ -240,7 +258,7 @@ class QueryController extends BaseApiController {
             $existing = null;
         }
 
-        // Pin name availability
+        // Model : Pin name availability
         $is_used = $pin_name ? $this->PinModel->get_pin_availability($pin_name, $user_id, null) : false;
 
         if ($existing) {
@@ -272,17 +290,20 @@ class QueryController extends BaseApiController {
     }
 
     public function get_all_pin_search_format(){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
-        $pin_name = $this->input->get('pin_name') ?? null;
+        
+        // Query param
+        $search = $this->input->get('search') ?? null;
 
         // Query param validator
-        if ($pin_name && strlen($pin_name) > 144) {
-            return api_response(400, 'failed', 'pin_name must be less than 144 characters', null);
+        if ($search && strlen($search) > 144) {
+            return api_response(400, 'failed', 'search must be less than 144 characters', null);
         }
 
         // Cache key
-        $cache_key = 'pin_search_' . $user_id . '_' . md5($pin_name ?? '');
+        $cache_key = 'pin_search_' . $user_id . '_' . md5($search ?? '');
         $cache_path = APPPATH . 'cache/' . $cache_key . '.json';
 
         // Return cache if exists (5 minutes)
@@ -293,10 +314,10 @@ class QueryController extends BaseApiController {
             return api_response(!empty($data) ? 200 : 404, !empty($data) ? 'success' : 'failed', $message, $data);
         }
 
-        // Query database
-        $data = $this->PinModel->get_all_pin_search_format($user_id, $pin_name);
+        // Model : Get all pin (maps format)
+        $data = $this->PinModel->get_all_pin_search_format($user_id, $search);
 
-        // Save only data
+        // Cache store
         file_put_contents($cache_path, json_encode($data));
 
         // Return API response
@@ -304,9 +325,11 @@ class QueryController extends BaseApiController {
     }
 
     public function get_pin_category(){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
+        // Model : Get pin category
         $data = $this->PinModel->get_pin_category($user_id);
         $message = !empty($data) ? 'Pin category fetched' : 'No pin category found';
 
