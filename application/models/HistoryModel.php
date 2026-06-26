@@ -3,7 +3,6 @@
 
 	class HistoryModel extends CI_Model {
         private $table = "history";
-        const SESSION_KEY = 'user_id';
 
         function __construct(){
             parent::__construct();
@@ -32,13 +31,13 @@
 		}
 
         // Command
-		public function insert_history($type, $ctx){
+		public function insert_history($type, $ctx, $user_id){
             $data = [
                 'id' => get_UUID(), 
                 'history_type' => $type,
                 'history_context' => $ctx, 
                 'created_at' => date("Y-m-d H:i:s"), 
-			    'created_by' => $this->session->userdata(self::SESSION_KEY),
+			    'created_by' => $user_id,
             ];
 
 			$this->db->insert($this->table,$data);	

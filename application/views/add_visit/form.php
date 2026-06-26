@@ -1,7 +1,6 @@
 <div class="card mb-4">
     <h2 class="card-title">Visit Detail</h2>
     <input hidden id="type_add" name="type_add" value="visit">
-    <input hidden id="with_dir" name="coordinate_dir">
     <div id="add_pin_form"></div>
     <div id="add-form-holder">
         <div class="row">
@@ -27,7 +26,7 @@
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <textarea name="visit_with" id="visit_with" rows="5" class="form-control form-validated visit-with" maxlength='500'></textarea>
                 <div class="d-flex justify-content-start">
-                    <a class="btn btn-success see-person-btn py-1 text-sm px-2" data-bs-toggle='modal' data-bs-target='#myContactModel'><i class="fa-solid fa-user-plus"></i> Add Person</a>
+                    <?php $this->load->view('add_visit/visit_companion'); ?>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
@@ -37,15 +36,13 @@
     </div>
     <div class="row mt-4">
         <div class="col-md-6 col-sm-12" id="save_visit_n_go">
-            <a class="btn btn-outline-primary w-100 py-3 mb-2" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
+            <a class="btn btn-outline-primary w-100 py-3 mb-2" id='submit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
         </div>
         <div class="col-md-6 col-sm-12" id='save-visit-btn-holder'>
-            <button class="btn btn-success w-100 py-3" type="Submit" id='submit-visit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>
+            <button class="btn btn-success w-100 py-3" type="Submit" id='submit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Visit</button>
         </div>
     </div>
 </div>
-
-<?php $this->load->view('add_visit/my_contact'); ?>
 
 <script>
     let selected_color = ''
@@ -102,18 +99,6 @@
                 <button class="btn btn-success w-100 py-3" type="Submit" id='submit-btn'><i class="fa-solid fa-floppy-disk"></i> Save ${count_visit}Visit</button>
             `)
         })
-
-        $(document).on('click', '#submit-visit-wdir-btn', function() {
-            if($('#type_add').val() == 'visit'){
-                $('#with_dir').val($('#pin_id').val().split('/')[1])
-            } else if($('#type_add').val() == 'pin_visit'){
-                $('#with_dir').val(`${$('#pin_lat').val()},${$('#pin_long').val()}`)
-            } else if($('#type_add').val() == 'multi'){
-                $('#with_dir').val('multi')
-            }
-
-            $('#submit-visit-btn').click()
-        })
     })
 
     function resetForm(){
@@ -137,4 +122,73 @@
             <a class="btn btn-success w-100 py-3" style="border: 2.5px solid black;" id='submit-visit-wdir-btn'><i class="fa-solid fa-location-arrow"></i> Save Visit & Set Direction</a>
         `)
     } 
+
+    const postCreateVisit = (isOpenMap) => {
+        Swal.showLoading()
+
+        const pin_id = $('#pin_name').data('id')
+        const pinLat = $('#pin_name').data('lat')
+        const pinLong = $('#pin_name').data('lng')
+        const visit_date = $('#visit_date').val().trim()
+        const visit_hour = $('#visit_hour').val().trim()
+        const type_visit = isFutureDateTime(`${visit_date} ${visit_hour}`) ? 'plan' : 'history' 
+
+        const data = {
+            pin_id,
+            visit_desc: $('#visit_desc').val().trim(),
+            visit_by: $('#visit_by').val().trim(),
+            visit_with: $('#visit_with').val().trim(),
+            visit_date,
+            visit_hour,
+            type_visit 
+        }
+
+        $.ajax({
+            url: '/api/v1/visit/create',
+            method: 'POST',
+            data,
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
+            success: (response) => {
+                Swal.hideLoading()
+                const data = response.data
+
+                const id = data.id
+                Swal.fire({
+                    title: 'Success!',
+                    text: response.message,
+                    icon: 'success'
+                }).then(() => {
+                    if (isOpenMap) window.open(`https://www.google.com/maps/dir/?api=1&destination=${pinLat},${pinLong}`, '_blank')
+                    window.location.href = `/EditVisitController/${id}`
+                })
+            },
+            error: (response) => {
+                if (response.status === 401) return failedAuth()
+                Swal.hideLoading()
+
+                const message = response.responseJSON?.message ?? 'Something went wrong.'
+
+                if (response.status === 400) {
+                    Swal.fire({
+                        title: 'Failed!',
+                        html: message,
+                        icon: 'warning'
+                    })
+                } else {
+                    unknownErrorSwal()
+                }
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        $(document).on('click', '#submit-btn', function (e) {
+            postCreateVisit(false)
+        })
+        $(document).on('click', '#submit-wdir-btn', function () {
+            postCreateVisit(true)
+        })
+    })
 </script>

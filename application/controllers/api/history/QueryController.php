@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once(APPPATH . 'controllers/api/BaseApiController.php');
 
-class HistoryController extends BaseApiController {    
+class QueryController extends BaseApiController {    
     function __construct(){
         parent::__construct();
         $this->load->model("HistoryModel");
@@ -10,6 +10,7 @@ class HistoryController extends BaseApiController {
     }
 
     public function get_my_activity(){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -17,6 +18,7 @@ class HistoryController extends BaseApiController {
         $per_page = $this->input->get('per_page') ?? 14;
         $page = $this->input->get('page') ?? 1;
 
+        // Validation pagination
         if (!is_valid_positive_number($page)) {
             return api_response(400, 'failed', 'page must be a positive number', null);
         } else {
@@ -33,6 +35,7 @@ class HistoryController extends BaseApiController {
         $per_page = max(1, $per_page);
         $offset = ($page - 1) * $per_page;
 
+        // Model : Get activity by user
         $data = $this->HistoryModel->get_my_activity($per_page, $offset, $user_id);
         $message = !empty($data) ? 'History fetched' : 'No history found';
 

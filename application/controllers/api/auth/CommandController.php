@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class AuthController extends CI_Controller {
+class CommandController extends CI_Controller {
     function __construct(){
         parent::__construct();
         $this->load->model('AuthModel');
@@ -29,12 +29,12 @@ class AuthController extends CI_Controller {
             // Validate param
             if (!$username || !$password) return api_response(400, 'failed', 'username and password are required', null);
 
-            // Authenticate user
+            // Model : Authenticate user by username / email and password
             $user = $this->AuthModel->api_login($username, $password);
 
             if (!$user) return api_response(401, 'failed', 'wrong username or password', null);
 
-            // Generate token
+            // Model : Generate token
             $token = $this->AuthModel->create_token($user['id'], $user['role']);
 
             // Return API response

@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once(APPPATH . 'controllers/api/BaseApiController.php');
 
-class NewsController extends BaseApiController {   
+class QueryController extends BaseApiController {   
     private $flazenHandBaseUrl;
  
     function __construct(){
@@ -15,6 +15,7 @@ class NewsController extends BaseApiController {
     }
 
     public function get_news_by_pin_id($pin_id){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -25,6 +26,7 @@ class NewsController extends BaseApiController {
         $per_page = $this->input->get('per_page') ?? 14;
         $page = $this->input->get('page') ?? 1;
 
+        // Validation pagination
         if (!is_valid_positive_number($page)) {
             return api_response(400, 'failed', 'page must be a positive number', null);
         } else {
@@ -41,10 +43,10 @@ class NewsController extends BaseApiController {
         $per_page = max(1, $per_page);
         $offset = ($page - 1) * $per_page;
 
-        // Get existing news by pin id
+        // Model : Get existing news by pin id
         $result = $this->NewsModel->get_news_by_pin_id($per_page, $offset, $pin_id, $user_id);
         if (empty($result['data'])) {
-            // Get pin name from id
+            // Model : Get pin name from id
             $pin_name = $this->PinModel->get_pin_name_by_id($pin_id);
             if (!$pin_name) return api_response(404, 'failed', 'pin_id not found', null);
 
@@ -87,7 +89,7 @@ class NewsController extends BaseApiController {
             foreach ($result_external as $dt) {
                 $published_at = date('Y-m-d H:i:s', strtotime($dt['published_at']));
 
-                // Store external news api 
+                // Model : Store external news api 
                 $this->NewsModel->create_news($pin_id, $dt['title'], $dt['url'], $dt['source'], $published_at);
             }
 
@@ -137,11 +139,13 @@ class NewsController extends BaseApiController {
     }
 
     public function get_news_around_me(){
+        // Query param
         $lat = $this->input->get('lat');
         $long = $this->input->get('long');
     
         // Validate coordinate
-        if (!$lat || !$long) return api_response(400, 'failed', 'coordinate is required', null);
+        $invalid_coordinate = check_coordinate($lat, $long);
+        if ($invalid_coordinate) return api_response(400, 'failed', $invalid_coordinate, null);
     
         // Cache directory
         $cache_dir = APPPATH . 'cache/';

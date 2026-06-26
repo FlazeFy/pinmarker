@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once(APPPATH . 'controllers/api/BaseApiController.php');
 
-class VisitController extends BaseApiController {    
+class QueryController extends BaseApiController {    
     function __construct(){
         parent::__construct();
         $this->load->model("VisitModel");
@@ -14,6 +14,7 @@ class VisitController extends BaseApiController {
     }
 
     public function get_all_visit_with(){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -22,6 +23,7 @@ class VisitController extends BaseApiController {
         $per_page = $this->input->get('per_page') ?? 14;
         $page = $this->input->get('page') ?? 1;
 
+        // Validation pagination
         if (!is_valid_positive_number($page)) {
             return api_response(400, 'failed', 'page must be a positive number', null);
         } else {
@@ -38,6 +40,7 @@ class VisitController extends BaseApiController {
         $per_page = max(1, $per_page);
         $offset = ($page - 1) * $per_page;
 
+        // Model : Get all visit with (companion)
         $result = $this->VisitModel->get_all_visit_with($search, $per_page, $offset, $user_id);
         $message = !empty($result['data']) ? 'Visit companion fetched' : 'No visit companion found';
 
@@ -59,6 +62,7 @@ class VisitController extends BaseApiController {
     }
 
     public function get_visit_by_pin_id($pin_id){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -70,6 +74,7 @@ class VisitController extends BaseApiController {
         $per_page = $this->input->get('per_page') ?? 14;
         $page = $this->input->get('page') ?? 1;
 
+        // Validation pagination
         if (!is_valid_positive_number($page)) {
             return api_response(400, 'failed', 'page must be a positive number', null);
         } else {
@@ -81,11 +86,16 @@ class VisitController extends BaseApiController {
             $per_page = (int)$per_page;
         }
 
+        // Check marker ownership
+        $pin = $this->PinModel->get_pin_by_id($pin_id, $user_id);
+        if(!$pin) return api_response(404, 'failed', 'Marker not found', null);
+
         // Pagination calculation
         $page = max(1, $page);
         $per_page = max(1, $per_page);
         $offset = ($page - 1) * $per_page;
 
+        // Model : Get visit by pin id
         $result = $this->VisitModel->get_visit_by_pin_id($search, $pin_id, $per_page, $offset, $user_id);
         $message = !empty($result['data']) ? 'Visit fetched' : 'No visit found';
 
@@ -107,6 +117,7 @@ class VisitController extends BaseApiController {
     }
 
     public function get_person_analyze($name){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -122,7 +133,14 @@ class VisitController extends BaseApiController {
         // Coordinate param
         $lat = $this->input->get('lat') ? $this->input->get('lat') : null;
         $long = $this->input->get('long') ? $this->input->get('long') : null;
+        
+        // Validate coordinate
+        if ($lat || $long) {
+            $invalid_coordinate = check_coordinate($lat, $long);
+            if ($invalid_coordinate) return api_response(400, 'failed', $invalid_coordinate, null);
+        }
 
+        // Validation pagination
         if (!is_valid_positive_number($page_visit_history)) {
             return api_response(400, 'failed', 'page_visit_history must be a positive number', null);
         } else {
@@ -190,8 +208,9 @@ class VisitController extends BaseApiController {
             $data['visit_person_summary']->avg_distance = round($total_distance / $total_appearance, 1);
         }
 
-        // Pagination model
+        // Model : Get review by context (person name)
         $data['reviews'] = $this->ReviewModel->get_review_by_context($per_page_review, $offset_review, $name, "person", $user_id);
+        // Model : Get visit by person name
         $data['visit_by_person'] = $this->VisitModel->get_visit_by_person($name, $per_page_visit_history, $offset_visit_history, $user_id);
         
         // Return API response

@@ -16,6 +16,7 @@ class QueryController extends BaseApiController {
     }
 
     public function get_all_schedule(){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -34,8 +35,10 @@ class QueryController extends BaseApiController {
         $lat = $this->input->get('lat') ? $this->input->get('lat') : null;
         $long = $this->input->get('long') ? $this->input->get('long') : null;
 
-        if (($lat && !$long) || (!$lat && $long)) {
-            return api_response(400, 'failed', 'coordinate not valid', null);
+        // Validate coordinate
+        if ($lat || $long) {
+            $invalid_coordinate = check_coordinate($lat, $long);
+            if ($invalid_coordinate) return api_response(400, 'failed', $invalid_coordinate, null);
         }
 
         // Max distance param
@@ -63,6 +66,7 @@ class QueryController extends BaseApiController {
             }
         } 
 
+        // Model : Get all schedule by user 
         $result = $this->ScheduleModel->get_all_schedule($search, $pin_category, $is_favorite, $is_visited, $open_status, $max_distance, $lat, $long, $user_id);
 
         $message = !empty($result) ? 'Schedule fetched' : 'No schedule found';
@@ -75,6 +79,7 @@ class QueryController extends BaseApiController {
         // Validate path param
         if (!check_uuid($pin_id)) return api_response(400, 'failed', 'pin_id must be valid uuid', null);
 
+        // Model : Get schedule by marker
         $result = $this->ScheduleModel->get_schedule_by_pin_id($pin_id);
 
         $message = !empty($result) ? 'Schedule fetched' : 'No schedule found';

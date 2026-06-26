@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once(APPPATH . 'controllers/api/BaseApiController.php');
 
-class ExternalApiController extends BaseApiController {    
+class QueryController extends BaseApiController {    
     private $flazenHandBaseUrl;
     function __construct(){
         parent::__construct();
@@ -10,15 +10,22 @@ class ExternalApiController extends BaseApiController {
         $this->flazenHandBaseUrl = "http://127.0.0.1:8000/api/v1";
         $this->load->model("WeatherForecastCacheModel");
         $this->load->model("PinModel");
+        $this->load->helper('validator_helper');
     }
 
     // From FlazenHand app
     public function get_current_weather(){
+        // Auth guard
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
+        // Query param
         $lat = $this->input->get('lat');
         $long = $this->input->get('long');
 
         // Validate coordinate
-        if(!$lat || !$long) return api_response(400, 'failed', 'coordinate is required', null);
+        $invalid_coordinate = check_coordinate($lat, $long);
+        if ($invalid_coordinate) return api_response(400, 'failed', $invalid_coordinate, null);
 
         // Cache key
         $cache_key = 'weather_' . md5($lat . '_' . $long);
@@ -33,7 +40,7 @@ class ExternalApiController extends BaseApiController {
             if ($cached['data']) return api_response(200, $cached['status'], $cached['message'], $cached['data']);
         }
 
-        // API Endpoint
+        // External API - FlazenHand
         $url = "{$this->flazenHandBaseUrl}/locations/weather?lat=$lat&long=$long";
 
         // CURL request
@@ -79,11 +86,17 @@ class ExternalApiController extends BaseApiController {
     }
 
     public function get_nearby_places(){
+        // Auth guard
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
+        // Query param
         $lat = $this->input->get('lat');
         $long = $this->input->get('long');
     
         // Validate coordinate
-        if (!$lat || !$long) return api_response(400, 'failed', 'coordinate is required', null);
+        $invalid_coordinate = check_coordinate($lat, $long);
+        if ($invalid_coordinate) return api_response(400, 'failed', $invalid_coordinate, null);
     
         // Cache directory
         $cache_dir = APPPATH . 'cache/';
@@ -115,7 +128,7 @@ class ExternalApiController extends BaseApiController {
         // Cache file
         $cache_path = $cache_dir . $cache_key . '.json';
     
-        // API Endpoint
+        // External API - FlazenHand
         $url = "{$this->flazenHandBaseUrl}/locations/reverse?lat=$lat&long=$long";
     
         // CURL request
@@ -162,19 +175,39 @@ class ExternalApiController extends BaseApiController {
     }
 
     public function get_weather_forecast(){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
         
+        // Query param
         $pin_id = $this->input->get('pin_id');
         $lat = $this->input->get('lat');
         $long = $this->input->get('long');
         $start_date = $this->input->get('start_date');
         $end_date = $this->input->get('end_date');
     
-        // Validate
-        if(!$pin_id) return api_response(400, 'failed', 'pin_id is required', null);
-        if(!$lat || !$long) return api_response(400, 'failed', 'coordinate is required', null);
-        if(!$start_date || !$end_date) return api_response(400, 'failed', 'date is required', null);
+        // Validate pin id
+        if (!$pin_id) return api_response(400, 'failed', 'pin_id is required', null);
+        if (!check_uuid($pin_id)) return api_response(400, 'failed', 'pin_id must be valid uuid', null);
+
+        // Validate coordinate
+        $invalid_coordinate = check_coordinate($lat, $long);
+        if ($invalid_coordinate) return api_response(400, 'failed', $invalid_coordinate, null);
+
+        // Validate date
+        if (!$start_date || !$end_date) return api_response(400, 'failed', 'date is required', null);
+        $start = DateTime::createFromFormat('Y-m-d', $start_date);
+        $end = DateTime::createFromFormat('Y-m-d', $end_date);
+
+        if (!$start || $start->format('Y-m-d') !== $start_date || !$end || $end->format('Y-m-d') !== $end_date) {
+            return api_response(400, 'failed', 'date must use format YYYY-MM-DD', null);
+        }
+
+        $today = new DateTime(date('Y-m-d'));
+        $maxDate = (clone $today)->modify('+14 days');
+        if ($start < $today) return api_response(400, 'failed', 'start_date must be today or later', null);
+        if ($end < $start) return api_response(400, 'failed', 'end_date must be equal to or after start_date', null);
+        if ($start > $maxDate || $end > $maxDate) return api_response(400, 'failed', 'date must be within 14 days from today', null);
     
         // Check marker ownership
         $pin = $this->PinModel->get_pin_by_id($pin_id, $user_id);
@@ -259,7 +292,7 @@ class ExternalApiController extends BaseApiController {
             ]);
         }
     
-        // External API
+        // External API - FlazenHand
         $url = "{$this->flazenHandBaseUrl}/locations/forecast?lat={$lat}&long={$long}&start_date={$start_date}&end_date={$end_date}";
     
         $curl = curl_init();

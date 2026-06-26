@@ -23,10 +23,14 @@ class CommandController extends BaseApiController {
     }
 
     public function put_update_schedule($pin_id) {
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
-        // Check existence
+        // Validate path param
+        if (!check_uuid($pin_id)) return api_response(400, 'failed', 'pin_id must be valid uuid', null);
+
+        // Model : Check pin existence
         $found = $this->PinModel->get_pin_by_id($pin_id, $user_id);
         if (!$found) return api_response(404, 'failed', 'Marker not found', null);
          
@@ -50,9 +54,9 @@ class CommandController extends BaseApiController {
             }
         }
 
-        // Repo : Delete old schedule
+        // Model : Delete old schedule
         $this->ScheduleModel->delete_schedules($pin_id);
-        // Repo : insert new schedule
+        // Model : Create new schedule
         $this->ScheduleModel->insert_schedules($pin_id, $schedules);
 
         // Return API response
@@ -60,6 +64,7 @@ class CommandController extends BaseApiController {
     }
 
     public function delete_schedule_by_pin_id($pin_id) {
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -67,7 +72,7 @@ class CommandController extends BaseApiController {
         $found = $this->PinModel->get_pin_by_id($pin_id, $user_id);
         if (!$found) return api_response(404, 'failed', 'Marker not found', null);
 
-        // Repo : Delete old schedule
+        // Model : Delete old schedule
         $this->ScheduleModel->delete_schedules($pin_id);
         
         // Return API response

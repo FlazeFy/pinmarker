@@ -92,7 +92,7 @@
 
 <label class="form-label-custom">Pin Name</label>
 <div class="pin-autocomplete-wrapper">
-    <input type="text" id="pin_name-input" class="form-control form-control-custom" placeholder="Search marker..." autocomplete="off"/>
+    <input type="text" id="pin_name" class="form-control form-control-custom" placeholder="Search marker..." autocomplete="off"/>
     <div class="pin-dropdown" id="pin-dropdown">
         <div class="pin-dropdown-inner" id="pin-dropdown-inner"></div>
     </div>
@@ -101,7 +101,7 @@
 <script>
     let debounceTimer
     let searchRequest = null
-    const $inputPinName = $('#pin_name-input')
+    const $inputPinName = $('#pin_name')
     const $dropdown = $('#pin-dropdown')
     const $inner = $('#pin-dropdown-inner')
     const showDropdown = () => $dropdown.addClass('show')
@@ -125,7 +125,7 @@
             </div>`
     }
 
-    const fetchPinSearch = query => {
+    const fetchPinSearch = (search) => {
         if (searchRequest) searchRequest.abort()
 
         $inner.html(renderLoading())
@@ -134,9 +134,7 @@
         searchRequest = $.ajax({
             url: '/api/v1/pin/search',
             method: 'GET',
-            data: {
-                pin_name: query
-            },
+            data: { search },
             headers: {
                 Authorization: `Bearer ${tokenKey}`
             },
@@ -164,9 +162,9 @@
         })
     }
 
-    const search = query => {
+    const search = (search) => {
         clearTimeout(debounceTimer)
-        debounceTimer = setTimeout(() => fetchPinSearch(query), 750)
+        debounceTimer = setTimeout(() => fetchPinSearch(search), 750)
     }
 
     $inputPinName.on('focus input', function () {

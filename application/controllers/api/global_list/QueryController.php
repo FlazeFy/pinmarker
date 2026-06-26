@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require_once(APPPATH . 'controllers/api/BaseApiController.php');
 
-class GlobalListController extends BaseApiController {    
+class QueryController extends BaseApiController {    
     private $allowed_target_sorting_pin;
     private $allowed_value_sorting_pin;
     private $allowed_value_condition_pin;
@@ -18,6 +18,7 @@ class GlobalListController extends BaseApiController {
     }
 
     public function get_my_global_list(){
+        // Auth guard
         $this->authenticate();
         $user_id = $this->auth_user_id;
 
@@ -43,6 +44,8 @@ class GlobalListController extends BaseApiController {
         if (!in_array($with_companion, $this->allowed_value_condition_pin)) {
             return api_response(400, 'failed', 'with_companion not valid', null);
         }
+
+        // Validation pagination
         if (!is_valid_positive_number($page)) {
             return api_response(400, 'failed', 'page must be a positive number', null);
         }
@@ -55,6 +58,7 @@ class GlobalListController extends BaseApiController {
         $per_page = max(1, $per_page);
         $offset = ($page - 1) * $per_page;
 
+        // Model : Get global list by user
         $result = $this->GlobalListModel->get_my_global_list($search, $with_companion, $visit_with, $per_page, $offset, $sorting, $user_id);
         $companions = $with_companion === "1" ? $this->VisitModel->get_visit_withs($user_id) : null;
 
@@ -79,17 +83,22 @@ class GlobalListController extends BaseApiController {
     }
 
     public function get_recommended_tag_address(){
+        // Query param
         $limit_pin_address = $this->input->get('limit_pin_address') ? (int)$this->input->get('limit_pin_address') : 6;
         $limit_tag = $this->input->get('limit_tag') ? (int)$this->input->get('limit_tag') : 12;
 
+        // Validation limit pin 
         if (!is_valid_positive_number($limit_pin_address)) {
             return api_response(400, 'failed', 'limit_pin_address must be a positive number', null);
         }
+        // Validation limit tag
         if (!is_valid_positive_number($limit_tag)) {
             return api_response(400, 'failed', 'limit_tag must be a positive number', null);
         }
 
+        // Model : Get recommended pin address
         $res_pin_address = $this->GlobalListModel->get_recommended_pin_address($limit_pin_address);
+        // Model : Get recommended tag
         $res_tags = $this->GlobalListModel->get_recommended_tag($limit_tag);
 
         $message = !empty($res_pin_address) || !empty($res_tags) ? 'Global list fetched' : 'No global list found';
