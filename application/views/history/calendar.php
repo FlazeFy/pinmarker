@@ -244,7 +244,7 @@
                 ?>
             ],
             eventClick:  function(info, jsEvent, view) {
-                window.location.href = "/DetailVisitController/view/" +info.event.extendedProps.id;
+                window.location.href = "/EditVisitController/view/" +info.event.extendedProps.id;
             },
         });
         calendar.render();

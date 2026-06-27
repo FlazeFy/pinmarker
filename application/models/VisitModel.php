@@ -80,38 +80,33 @@
 			return $data = $this->db->get()->result();
 		}
 
-		public function get_visit_by_id($id){
-			$user_id = $this->session->userdata(self::SESSION_KEY);
-			$select_query = 'pin_name, pin_desc, pin_lat, pin_long, pin_category, pin.id as pin_id, visit_desc, visit_by, visit_with, visit.created_at, visit.updated_at';
-
-			$this->db->select($select_query);
+		public function get_visit_by_id($id, $user_id){
+			$this->db->select("pin_id, pin_name, pin_category, pin_image, visit.id, visit_desc, visit_by, visit_with, visit.created_at, visit.updated_at, is_favorite, pin_lat, pin_long,
+				CASE
+					WHEN pin_village IS NOT NULL AND TRIM(pin_village) <> '' THEN CONCAT(pin_village, ', ', pin_city)
+					WHEN (pin_village IS NULL OR TRIM(pin_village) = '')
+						AND pin_suburb IS NOT NULL AND TRIM(pin_suburb) <> '' THEN CONCAT(pin_suburb, ', ', pin_city)
+					WHEN (pin_village IS NULL OR TRIM(pin_village) = '') AND (pin_city IS NOT NULL AND pin_country IS NOT NULL)
+						AND (pin_suburb IS NULL OR TRIM(pin_suburb) = '') THEN CONCAT(pin_city, ', ', pin_country)
+					ELSE pin_address
+				END AS pin_final_address
+			");
 			$this->db->from($this->table);
-			$this->db->join('pin','visit.pin_id = pin.id', 'left');
-			$condition_normal = [
+			$this->db->join('pin','visit.pin_id = pin.id');
+			$condition = [
                 'pin.deleted_at' => null,
 				'visit.id' => $id,
 				'pin.created_by' => $user_id,
 				'visit.created_by' => $user_id
             ];
-			$this->db->where($condition_normal);
-			$this->db->limit(1);
+			$this->db->where($condition);
 			$data = $this->db->get()->row();
-			if($data){
-				return $data;
-			} else {
-				$this->db->select($select_query);
-				$this->db->from($this->table);
-				$this->db->join('pin','visit.pin_id = pin.id', 'left');
-				$condition_custom = [
-					'visit.id' => $id,
-					'visit.created_by' => $user_id
-				];
-				$this->db->where($condition_custom);
-				$this->db->order_by('visit.created_at','desc');
-				$this->db->limit(1);
-				$data = $this->db->get()->row();
-				return $data;
-			}
+
+			$data->is_favorite = (int)$data->is_favorite;
+			$data->pin_lat = (double)$data->pin_lat;
+			$data->pin_long = (double)$data->pin_long;
+
+			return $data;
 		}
 
 		public function get_total_all(){

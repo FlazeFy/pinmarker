@@ -399,7 +399,7 @@
 
 		public function get_all_pin_search_format($user_id, $search = null) {
 			$this->db->select("
-				id, pin_name, pin_category, pin_image, pin_lat, pin_long, is_favorite,
+				id as pin_id, pin_name, pin_category, pin_image, pin_lat, pin_long, is_favorite,
 				CASE
 					WHEN pin_village IS NOT NULL AND TRIM(pin_village) <> '' THEN CONCAT(pin_village, ', ', pin_city)
 					WHEN (pin_village IS NULL OR TRIM(pin_village) = '')

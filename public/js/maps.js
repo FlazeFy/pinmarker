@@ -167,7 +167,49 @@ const check_pin_name_availability = (pin_name, action) => {
     })
 }
 
-const showDirection = (map, routingControl, originLat, originLng, destinationLat, destinationLng, distanceValHolder = null, durationValHolder =  null) => {
+const renderMarkerItemShort = (dt) => {
+    const imgEl = dt.pin_image ? `<img class="pin-item-img" src="${dt.pin_image}" alt="${dt.pin_name}" loading="lazy"/>` : `<div class="pin-item-img-placeholder"><i class="fa-solid fa-building"></i></div>`
+    const isFavoriteEl = dt.is_favorite === 0 ? `<span class='position-absolute text-danger' style='top: -7.5px; right: -7.5px;'><i class='fa-solid fa-heart'></i></span>` : ''
+
+    return `
+        <div class="pin-item" data-id="${dt.pin_id}" data-name="${dt.pin_name}" data-lat="${dt.pin_lat}" data-lng="${dt.pin_long}">
+            <div class="position-relative">
+                ${imgEl}
+                ${isFavoriteEl}
+            </div>
+            <div class="d-flex flex-column">
+                <div class="text-sm fw-bold mb-1">${dt.pin_name}</div>
+                <div class="d-flex gap-1">
+                    <span class="tag bg-info">${dt.pin_category}</span>
+                    <span class="tag bg-success"><i class="fa-solid fa-location-dot"></i> ${dt.pin_final_address}</span>
+                </div>
+            </div>
+        </div>`
+}
+
+let _marker = null
+
+const placeMarker = (latLng, map) => {
+    if (!map) return
+    if (_marker) map.removeLayer(_marker)
+    _marker = L.marker([latLng.lat, latLng.lng]).addTo(map)
+}
+
+const showPinOnMap = (lat, lng, map, routingControl, userLat, userLng) => {
+    const latLng = { lat: parseFloat(lat), lng: parseFloat(lng) }
+    placeMarker(latLng, map)
+
+    const targetPoint = map.project([latLng.lat, latLng.lng], 17).subtract([map.getSize().x * 0.25, 0])
+    const targetLatLng = map.unproject(targetPoint, 17)
+    map.flyTo(targetLatLng, 17, { animate: true, duration: 0.8 })
+
+    const newRoutingControl = showDirection(map, routingControl, userLat, userLng, latLng.lat, latLng.lng, '#pin_to_pin_distance_count', '#pin_to_pin_duration_count')
+    $('#destination-info-section').removeClass('d-none')
+
+    return newRoutingControl
+}
+
+const showDirection = (map, routingControl, originLat, originLng, destinationLat, destinationLng, distanceValHolder = null, durationValHolder = null, fitLeft = null) => {
     if (!originLat || !originLng) return
     if (routingControl) map.removeControl(routingControl)
 
@@ -182,14 +224,11 @@ const showDirection = (map, routingControl, originLat, originLng, destinationLat
     })
 
     routingControl = L.Routing.control({
-        waypoints: [
-            L.latLng(originLat, originLng),
-            L.latLng(destinationLat, destinationLng)
-        ],
+        waypoints: [L.latLng(originLat, originLng), L.latLng(destinationLat, destinationLng)],
         routeWhileDragging: false,
         addWaypoints: false,
         draggableWaypoints: false,
-        fitSelectedRoutes: true,
+        fitSelectedRoutes: fitLeft === null,
         show: false,
         createMarker: () => null,
         lineOptions: {
@@ -212,6 +251,16 @@ const showDirection = (map, routingControl, originLat, originLng, destinationLat
 
         if (distanceValHolder) $(distanceValHolder).text(`${distance} Km`)
         if (durationValHolder) $(durationValHolder).text(duration)
+        if (fitLeft === true) {
+            const bounds = L.latLngBounds([originLat, originLng], [destinationLat, destinationLng])
+            map.flyToBounds(bounds, {
+                paddingTopLeft: [20, 20],
+                paddingBottomRight: [map.getSize().x * 0.5 + 20, 20],
+                animate: true,
+                duration: 1.2
+            })
+        }
+
         Swal.close()
     })
     .on('routingerror', () => {
