@@ -216,4 +216,20 @@ class QueryController extends BaseApiController {
         // Return API response
         return api_response(200, 'success', $message, $data);
     }
+
+    public function get_visit_by_id($id){
+        // Auth guard
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
+        // Validate path param
+        if (!check_uuid($id)) return api_response(400, 'failed', 'id must be valid uuid', null);
+
+        // Model : Get visit by id
+        $result = $this->VisitModel->get_visit_by_id($id, $user_id);
+        $message = $result ? 'Visit fetched' : 'No visit found';
+
+        // Return API response
+        return api_response(200, 'success', $message, $result);
+    }
 }

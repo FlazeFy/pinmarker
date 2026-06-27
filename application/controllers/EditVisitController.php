@@ -17,6 +17,7 @@ class EditVisitController extends CI_Controller {
 			$data = [];
 			$data['active_page']= 'history';
 			$data['dt_dct_visit_by']= $this->DictionaryModel->get_dictionary_by_type('visit_by');
+            $data['id']= $id;
 			$data['is_mobile_device'] = is_mobile_device();
 			$data['is_signed'] = true;
 

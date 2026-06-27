@@ -79,6 +79,7 @@ $route['api/v1/global_list/recommended/tag_address'] = 'api/global_list/QueryCon
 $route['api/v1/history'] = 'api/history/QueryController/get_my_activity';
 
 // Visit Module
+$route['api/v1/visit/by_id/(:any)'] = 'api/visit/QueryController/get_visit_by_id/$1';
 $route['api/v1/visit/by_pin/(:any)'] = 'api/visit/QueryController/get_visit_by_pin_id/$1';
 $route['api/v1/visit/visit_with'] = 'api/visit/QueryController/get_all_visit_with';
 $route['api/v1/visit/visit_with/analyze/(:any)'] = 'api/visit/QueryController/get_person_analyze/$1';
