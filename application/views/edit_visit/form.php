@@ -5,8 +5,8 @@
     <div id="add-form-holder">
         <div class="row">
             <div class="col-12">
-                <label>Pin Name</label>
-                <div class=""></div>
+                <label>Marker</label>
+                <div id="pin_name"></div>
             </div>
             <div class="col-lg-5 col-md-6 col-sm-12">
                 <label>Visit By</label>
@@ -37,3 +37,7 @@
     </div>
     <button class="btn btn-success w-100 py-3 mt-3" type="Submit" id='submit-btn'><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
 </div>
+
+<script>
+   
+</script>

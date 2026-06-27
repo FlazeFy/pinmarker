@@ -9,6 +9,7 @@
         left: 0;
         width: 100%;
         background: #fff;
+        padding-inline: var(--spaceXXSM);
         border-radius: var(--roundedMD);
         box-shadow: 0 8px 32px rgba(30, 33, 36, 0.14), 0 1.5px 6px rgba(99, 91, 255, 0.07);
         border: 1.5px solid rgba(99, 91, 255, 0.13);
@@ -42,41 +43,6 @@
         border-radius: 99px;
     }
 
-    .pin-item {
-        display: flex;
-        align-items: center;
-        gap: var(--spaceSM);
-        padding: var(--spaceSM) var(--spaceMD);
-        cursor: pointer;
-        transition: background 0.13s;
-        border-bottom: 1px solid rgba(0,0,0,0.04);
-    }
-    .pin-item:last-child {
-        border-bottom: none;
-    }
-    .pin-item:hover, .pin-item.active {
-        background: var(--primaryLightColor);
-    }
-    .pin-item-img {
-        width: 44px;
-        height: 44px;
-        border-radius: var(--roundedMini);
-        object-fit: cover;
-        flex-shrink: 0;
-        background: var(--silverLightColor);
-    }
-    .pin-item-img-placeholder {
-        width: 44px;
-        height: 44px;
-        border-radius: var(--roundedMini);
-        background: var(--primaryLightColor);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        color: var(--primaryColor);
-        font-size: var(--textXLG);
-    }
     .pin-dropdown-state {
         padding: var(--spaceLG) var(--spaceMD);
         text-align: center;
@@ -109,22 +75,6 @@
     const renderLoading = () => `<div class="pin-dropdown-state"><i class="fa-solid fa-magnifying-glass"></i>Searching...</div>`
     const renderEmpty = () => `<div class="pin-dropdown-state"><i class="fa-solid fa-triangle-exclamation"></i>No markers found</div>`
 
-    const renderItem = (dt) => {
-        const imgEl = dt.pin_img ? `<img class="pin-item-img" src="${dt.pin_img}" alt="${dt.pin_name}" loading="lazy"/>` : `<div class="pin-item-img-placeholder"><i class="fa-solid fa-building"></i></div>`
-
-        return `
-            <div class="pin-item" data-id="${dt.id}" data-name="${dt.pin_name}" data-lat="${dt.pin_lat}" data-lng="${dt.pin_long}">
-                ${imgEl}
-                <div class="d-flex flex-column">
-                    <div class="text-sm fw-bold mb-1">${dt.pin_name}</div>
-                    <div class="d-flex gap-1">
-                        <span class="tag bg-info">${dt.pin_category}</span>
-                        <span class="tag bg-success"><i class="fa-solid fa-location-dot"></i> ${dt.pin_final_address}</span>
-                    </div>
-                </div>
-            </div>`
-    }
-
     const fetchPinSearch = (search) => {
         if (searchRequest) searchRequest.abort()
 
@@ -146,7 +96,7 @@
                     return
                 }
 
-                $inner.html(data.map(renderItem).join(''))
+                $inner.html(data.map(renderMarkerItemShort).join(''))
             },
             error: response => {
                 if (response.status === 401) return failedAuth()
@@ -172,21 +122,23 @@
         search(keyword)
     })
 
-    $inner.on('click', '.pin-item', function () {
-        const name = $(this).data('name')
-        const id = $(this).data('id')
-        const lat = $(this).data('lat')
-        const lng = $(this).data('lng')
+    $(document).ready(function () {
+        $inner.on('click', '.pin-item', function () {
+            const name = $(this).data('name')
+            const id = $(this).data('id')
+            const lat = $(this).data('lat')
+            const lng = $(this).data('lng')
 
-        $inputPinName.val(name)
-        $inputPinName.data('id', id)
-        $inputPinName.data('lat', lat)
-        $inputPinName.data('lng', lng)
-        hideDropdown()
-        showPinOnMap(lat, lng)
+            $inputPinName.val(name)
+            $inputPinName.data('id', id)
+            $inputPinName.data('lat', lat)
+            $inputPinName.data('lng', lng)
+            hideDropdown()
+            routingControl = showPinOnMap(lat, lng, map, routingControl, userLat, userLng)
 
-        const date = $('#visit_date').val().trim()
-        if (date) fetchForecast(id, lat, lng, date)
+            const date = $('#visit_date').val().trim()
+            if (date) fetchForecast(id, lat, lng, date)
+        })
     })
 
     $(document).on('click', function (e) {
@@ -216,7 +168,7 @@
                 $inputPinName.val(name)
                 $inputPinName.data('id', id)
                 hideDropdown()
-                showPinOnMap(lat, lng)
+                routingControl = showPinOnMap(lat, lng, map, routingControl, userLat, userLng)
 
                 const date = $('#visit_date').val().trim()
                 if (date) fetchForecast(id, lat, lng, date)

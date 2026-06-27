@@ -55,11 +55,6 @@
         { attribution: '&copy; OpenStreetMap contributors' }
     ).addTo(map)
 
-    const placeMarker = (latLng) => {
-        if (marker) map.removeLayer(marker)
-        marker = L.marker([latLng.lat, latLng.lng]).addTo(map)
-    }
-
     const placeUserMarker = (lat, lng) => {
         if (userMarker) map.removeLayer(userMarker)
 
@@ -74,19 +69,6 @@
     }
 
     const initMap = () => setTimeout(() => map.invalidateSize(), 300)
-
-    const showPinOnMap = (lat, lng) => {
-        const latLng = { lat: parseFloat(lat), lng: parseFloat(lng)}
-
-        placeMarker(latLng)
-        map.flyTo([latLng.lat, latLng.lng], 17, {
-            animate: true,
-            duration: 0.8
-        })
-
-        routingControl = showDirection(map, routingControl, userLat, userLng, latLng.lat, latLng.lng, '#pin_to_pin_distance_count', '#pin_to_pin_duration_count')
-        $('#destination-info-section').removeClass('d-none')
-    }
 
     $(document).on('click', '#focus-map-button', function () {
         map.setView([userLat, userLng], 13)

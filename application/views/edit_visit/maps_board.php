@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
 <div class="map-area mb-4">
     <div id="map-board"></div>
@@ -7,7 +9,9 @@
         <?php $this->load->view("edit/maps_toolbar") ?>
     </div>
     <div class="map-right-panel">
-        <?php $this->load->view('edit_visit/form'); ?>
+        <div class="map-form-box">
+            <?php $this->load->view('edit_visit/form'); ?>
+        </div>
     </div>
 </div>
 
@@ -68,6 +72,10 @@
         padding: 1.25rem;
         pointer-events: none;
     }
+    .map-form-box{
+        pointer-events: all;
+        border-radius: var(--roundedXLG);
+    }
     .coord-label{
         font-size: .7rem;
         font-weight: 600;
@@ -126,8 +134,8 @@
             userLat = lat
             userLng = lng
             placeUserMarker(lat, lng)
-            map.setView([lat, lng], 15)
-            map.panBy([map.getSize().x * 0.25, 0], { animate: false })
+            const targetPoint = map.project([lat, lng], 15).subtract([map.getSize().x * 0.25, 0])
+            map.setView(map.unproject(targetPoint, 15), 15)
         }
 
         const requestGeolocation = () => {
@@ -167,8 +175,68 @@
         })
 
         $(document).on('click', '#focus-map-button', function () {
-            map.setView([userLat, userLng], 15)
-            map.panBy([map.getSize().x * 0.25, 0], { animate: true })
+            const targetPoint = map.project([userLat, userLng], 15).subtract([map.getSize().x * 0.25, 0])
+            map.flyTo(map.unproject(targetPoint, 15), 15, { animate: true, duration: 0.8 })
         })
     })
+
+    let routingControl = null
+
+    const fetchVisit = (id) => {
+        $.ajax({
+            url: `/api/v1/visit/by_id/${id}`,
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
+            success: (response) => {
+                const data = response.data
+                const dt = new Date(data.created_at)
+                const date = dt.toISOString().split('T')[0]
+                const hour = dt.toTimeString().slice(0, 5)
+
+                $('#pin_name').html(renderMarkerItemShort(data))
+                $('#pin-name-display').text(data.pin_name ?? '-')
+                $('#visit_by').val(data.visit_by)
+                $('#visit_date').val(date)
+                $('#visit_hour').val(hour)
+                $('#visit_with').val(data.visit_with)
+                $('#visit_desc').val(data.visit_desc)
+
+                const pinLat = parseFloat(data.pin_lat)
+                const pinLng = parseFloat(data.pin_long)
+
+                showPinOnMap(pinLat, pinLng, map)
+                setTimeout(() => {
+                    const bounds = L.latLngBounds([pinLat, pinLng], [parseFloat(userLat), parseFloat(userLng)])
+
+                    map.flyToBounds(bounds, {
+                        paddingTopLeft: [20, 20],
+                        paddingBottomRight: [map.getSize().x * 0.5 + 20, 20],
+                        animate: true,
+                        duration: 1.2
+                    })
+
+                    map.once('moveend', () => {
+                        routingControl = showDirection(map, routingControl, parseFloat(userLat), parseFloat(userLng), pinLat, pinLng, '#pin_to_pin_distance_count', '#pin_to_pin_duration_count', true)
+                        $('#destination-info-section').removeClass('d-none')
+                    })
+                }, 350)
+            },
+            error: (response) => {
+                if (response.status === 401) return failedAuth()
+                $('.map-form-box').append(`
+                    <div class="text-center py-3">
+                        <span class="tag bg-danger"><i class="fa-solid fa-triangle-exclamation"></i> Failed fetch visit</span>
+                    </div>
+                `)
+            }
+        })
+    }
+
+    $(document).on('click','.pin-item',function(){
+        window.location.href = `/DetailController/view/${$(this).data('id')}`
+    })
+
+    fetchVisit('<?= $id ?>')
 </script>

@@ -40,7 +40,7 @@
         <link href="http://127.0.0.1:8080/public/css/sidebar.css" rel="stylesheet"/>
     <?php endif; ?>
 
-    <?php if(preg_match('(LoginController|GlobalListController|DetailGlobalController|AddGlobalListController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(LoginController|GlobalListController|DetailGlobalController|AddGlobalListController|AddVisitController|EditVisitController)', $cleanedUrl)): ?>
         <!-- Pin CSS -->
         <link href="http://127.0.0.1:8080/public/css/pin.css" rel="stylesheet"/>
     <?php endif; ?>
@@ -73,7 +73,7 @@
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
     <?php endif; ?>
 
-    <?php if(preg_match('(LandingController|DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|EditVisitController|MapsController|TrackController|PersonController|EditController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(LandingController|DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|EditVisitController|MapsController|TrackController|PersonController|EditController|EditVisitController)', $cleanedUrl)): ?>
         <!-- Maps JS -->
         <script src="http://127.0.0.1:8080/public/js/maps.js"></script>
     <?php endif; ?>
