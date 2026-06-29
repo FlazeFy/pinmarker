@@ -42,5 +42,61 @@
 </div>
 
 <script>
-   
+    const putUpdateVisit = (id) => {
+        Swal.showLoading()
+
+        const visit_date = $('#visit_date').val().trim()
+        const visit_hour = $('#visit_hour').val().trim()
+
+        const data = {
+            visit_desc: $('#visit_desc').val().trim(),
+            visit_by: $('#visit_by').val().trim(),
+            visit_with: $('#visit_with').val().trim(),
+            visit_date,
+            visit_hour,
+        }
+
+        $.ajax({
+            url: `/api/v1/visit/edit/${id}`,
+            method: 'POST',
+            data,
+            headers: {
+                'Authorization': `Bearer ${tokenKey}`
+            },
+            success: (response) => {
+                Swal.hideLoading()
+                
+                Swal.fire({
+                    title: 'Success!',
+                    text: response.message,
+                    icon: 'success'
+                }).then(() => {
+                    fetchVisit(id)
+                })
+            },
+            error: (response) => {
+                if (response.status === 401) return failedAuth()
+                Swal.hideLoading()
+
+                const message = response.responseJSON?.message ?? 'Something went wrong.'
+
+                if (response.status === 400) {
+                    Swal.fire({
+                        title: 'Failed!',
+                        html: message,
+                        icon: 'warning'
+                    })
+                } else {
+                    unknownErrorSwal()
+                }
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        $(document).on('click', '#submit-btn', function (e) {
+            const id = takeIdFromPath('EditVisitController')
+            putUpdateVisit(id)
+        })
+    })
 </script>

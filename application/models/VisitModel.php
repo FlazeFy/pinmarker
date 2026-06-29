@@ -1056,10 +1056,14 @@
 
 			return $this->db->insert($this->table, $data) ? $data['id'] : false;
 		}
-		public function update_visit($data,$id){
+
+		public function update_visit($data, $id, $user_id){
 			$this->db->where('id', $id);
-			return $this->db->update($this->table,$data);	
+			$this->db->where('created_by', $user_id);
+
+			return $this->db->update($this->table, $data);	
 		}
+		
 		public function delete_visit($id, $user_id){
 			return $this->db->delete($this->table,[
 				'id' => $id,
