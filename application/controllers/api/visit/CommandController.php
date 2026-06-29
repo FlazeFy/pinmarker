@@ -72,4 +72,27 @@ class CommandController extends BaseApiController {
             }
         }        
     }
+
+    public function delete_visit_by_id($id) {
+        // Auth guard
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
+        // Validate path param
+        if (!check_uuid($id)) return api_response(400, 'failed', 'id must be valid uuid', null);
+
+        // Model : Get visit by id
+        $visit = $this->VisitModel->get_visit_by_id($id, $user_id);
+        if (!$visit) return api_response(404, 'failed', 'Visit not found', null);
+
+        // Model : Delete visit by id
+        $deleted = $this->VisitModel->delete_visit($id, $user_id);
+        if (!$deleted) return api_response(404, 'failed', 'Visit not found', null);
+
+        // Model : Add deleted visit history
+        $this->HistoryModel->insert_history('Delete visit', "$visit->pin_name at $visit->pin_name", $user_id);			
+
+        // Return API response
+        return api_response(200, 'success', "Visit deleted", $data);
+    }
 }

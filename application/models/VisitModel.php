@@ -1060,8 +1060,11 @@
 			$this->db->where('id', $id);
 			return $this->db->update($this->table,$data);	
 		}
-		public function delete_visit($id){
-			return $this->db->delete($this->table,['id'=>$id]);	
+		public function delete_visit($id, $user_id){
+			return $this->db->delete($this->table,[
+				'id' => $id,
+				'created_by' => $user_id
+			]);	
 		}
 	}
 ?>
