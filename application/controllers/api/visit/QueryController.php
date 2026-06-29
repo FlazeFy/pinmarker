@@ -227,9 +227,16 @@ class QueryController extends BaseApiController {
 
         // Model : Get visit by id
         $result = $this->VisitModel->get_visit_by_id($id, $user_id);
-        $message = $result ? 'Visit fetched' : 'No visit found';
+        if (!$result) return api_response(200, 'success', 'No visit found', null);
+
+        // Model : Get visit that near current visit datetime
+        $visit_before = $this->VisitModel->get_visit_period_near($result->created_at, $user_id, 'before');
+        $visit_after = $this->VisitModel->get_visit_period_near($result->created_at, $user_id, 'after');
+
+        $result->visit_before = $visit_before;
+        $result->visit_after = $visit_after;
 
         // Return API response
-        return api_response(200, 'success', $message, $result);
+        return api_response(200, 'success', 'Visit fetched', $result);
     }
 }

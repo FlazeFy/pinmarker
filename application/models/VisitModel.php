@@ -102,11 +102,42 @@
 			$this->db->where($condition);
 			$data = $this->db->get()->row();
 
+			if (!$data) return null;
+
 			$data->is_favorite = (int)$data->is_favorite;
 			$data->pin_lat = (double)$data->pin_lat;
 			$data->pin_long = (double)$data->pin_long;
 
 			return $data;
+		}
+
+		public function get_visit_period_near($created_at, $user_id, $period) {
+			$operator = $period === 'before' ? '<' : '>';
+			$order = $period === 'before' ? 'DESC' : 'ASC';
+		
+			$this->db->select("visit.id, pin_id, pin_name, pin_image, visit.created_at, pin_category, 
+				CASE
+					WHEN pin_village IS NOT NULL AND TRIM(pin_village) <> '' THEN CONCAT(pin_village, ', ', pin_city)
+					WHEN (pin_village IS NULL OR TRIM(pin_village) = '')
+						AND pin_suburb IS NOT NULL AND TRIM(pin_suburb) <> '' THEN CONCAT(pin_suburb, ', ', pin_city)
+					WHEN (pin_village IS NULL OR TRIM(pin_village) = '') AND (pin_city IS NOT NULL AND pin_country IS NOT NULL)
+						AND (pin_suburb IS NULL OR TRIM(pin_suburb) = '') THEN CONCAT(pin_city, ', ', pin_country)
+					ELSE pin_address
+				END AS pin_final_address
+			");
+			$this->db->from($this->table);
+			$this->db->join('pin', 'visit.pin_id = pin.id');
+			$condition = [
+				'pin.deleted_at' => null,
+				'visit.created_by' => $user_id,
+				'pin.created_by' => $user_id,
+			];
+			$this->db->where($condition);
+			$this->db->where("visit.created_at $operator", $created_at);
+			$this->db->order_by('visit.created_at', $order);
+			$this->db->limit(1);
+		
+			return $this->db->get()->row() ?? null;
 		}
 
 		public function get_total_all(){
@@ -190,7 +221,7 @@
 		}
 
 		public function get_visit_by_pin_id($search, $pin_id, $per_page, $offset, $user_id) {
-			$this->db->select('visit_by, visit_desc, visit.created_at, visit_with');
+			$this->db->select('visit.id, visit_by, visit_desc, visit.created_at, visit_with');
 			$this->db->from('pin');
             $this->db->join('visit','visit.pin_id = pin.id');
 			$condition = [
