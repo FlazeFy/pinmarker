@@ -6,7 +6,13 @@
     $cleanedUrl = $segments[0] ?? null;   
 ?>
 
-<aside class="sidebar">
+<button class="sidebar-toggle-btn d-lg-none" id="sidebarToggleBtn">
+    <i class="fa-solid fa-bars"></i>
+</button>
+
+<div class="sidebar-overlay d-none" id="sidebarOverlay"></div>
+
+<aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
         <div class="sidebar-logo">
             <i class="fa-solid fa-map-pin"></i>
@@ -60,3 +66,33 @@
         </a>
     </div>
 </aside>
+
+<script>
+    $(() => {
+        const $sidebar = $('#sidebar')
+        const $overlay = $('#sidebarOverlay')
+        const $toggleBtn = $('#sidebarToggleBtn')
+
+        const openSidebar = () => {
+            $sidebar.addClass('sidebar-open')
+            $toggleBtn.addClass('bg-danger').html('<i class="fa-solid fa-xmark"></i>')
+            $overlay.removeClass('d-none')
+        }
+
+        const closeSidebar = () => {
+            $sidebar.removeClass('sidebar-open')
+            $toggleBtn.removeClass('bg-danger').html('<i class="fa-solid fa-bars"></i>')
+            $overlay.addClass('d-none')
+        }
+
+        $toggleBtn.on('click', () => {
+            $sidebar.hasClass('sidebar-open') ? closeSidebar() : openSidebar()
+        })
+
+        $overlay.on('click', () => closeSidebar())
+
+        $(window).on('resize', () => {
+            if ($(window).width() >= 992) closeSidebar()
+        })
+    })
+</script>

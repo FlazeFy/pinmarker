@@ -187,6 +187,20 @@ const renderMarkerItemShort = (dt) => {
         </div>`
 }
 
+const renderVisitItemShort = (dt, type) => {
+    return `
+        <div class="visit-item ${type === "next" ? "text-end" : "text-start"}" data-id="${dt.id}">
+            <label class="capitalize">${type}</label>
+            <hr class="my-1">
+            <div class="d-flex flex-column">
+                <p class="text-sm fw-bold mb-0">Visit at ${dt.pin_name}</p>
+                <div class="m-0">
+                    <div class="tag bg-info"><i class="fa-solid fa-calendar"></i> ${datetimeText(dt.created_at)}</div>
+                </div>
+            </div>
+        </div>`
+}
+
 let _marker = null
 
 const placeMarker = (latLng, map) => {

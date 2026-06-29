@@ -81,16 +81,21 @@
     display: flex;
     align-items: center;
     gap: var(--spaceSM);
-    padding: var(--spaceSM) var(--spaceMD);
-    cursor: pointer;
-    transition: background 0.13s;
     border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+.visit-item {
+    background: var(--whiteColor);
+}
+.visit-item, .pin-item {
+    cursor: pointer;
+    padding: var(--spaceSM) var(--spaceMD);
+    transition: background 0.13s;
     border-radius: var(--roundedMD);
 }
 .pin-item:last-child {
     border-bottom: none;
 }
-.pin-item:hover, .pin-item.active {
+.pin-item:hover, .pin-item.active, .visit-item:hover {
     background: var(--primaryLightColor);
 }
 .pin-item-img {
