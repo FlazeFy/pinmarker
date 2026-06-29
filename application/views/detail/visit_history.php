@@ -67,7 +67,7 @@
                 let html = ''
                 rows.forEach(dt => {
                     html += `
-                        <div class='activity-item mb-0'>
+                        <div class='activity-item mb-0' data-id="${dt.id}">
                             <div class='activity-thumb'>
                                 <img src='https://lh3.googleusercontent.com/aida-public/AB6AXuB9TgxRWJZ1lxyBC2boJYHByBkeSaroy5x0M-AVvRCH_M7rWkJDFoVc1Lykvj4iQd7LMnmKIZdneHmRaXwFC9lv7_R60HRIGCVjEjIOXZfaa7J7VxkudxcVJ4rY3Rgs-ylDPPCviUANS--Z29u4nWUV66EasfeFSHxoNl_DXhJTkoVFcwXP083QKchtEh0pwmn4zKaOzhGVc1BczkDGjALzZe6T1f9_UaS1XcyhLg9yioAdJ4m4iYi-5GEJreWku7OO99GdpvvHlmjT' alt=''>
                             </div>
@@ -122,6 +122,11 @@
     $(document).on('click', '#visit-see-more-button', function() {
         page++
         fetchVisit(true)
+    })
+
+    $(document).on('click', '.activity-item', function() {
+        const id = $(this).data('id')
+        window.location.href = `/EditVisitController/view/${id}`
     })
 
     $(document).ready(() => {

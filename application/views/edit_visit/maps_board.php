@@ -11,6 +11,7 @@
     <div class="map-right-panel">
         <div class="map-form-box">
             <?php $this->load->view('edit_visit/form'); ?>
+            <?php $this->load->view('edit_visit/near_period'); ?>
         </div>
     </div>
 </div>
@@ -202,6 +203,9 @@
                 $('#visit_hour').val(hour)
                 $('#visit_with').val(data.visit_with)
                 $('#visit_desc').val(data.visit_desc)
+
+                data.visit_before ? $('#previous-visit-button').html(renderVisitItemShort(data.visit_before, 'previous')) : $('#previous-visit-button').hide()
+                data.visit_after ? $('#next-visit-button').html(renderVisitItemShort(data.visit_after, 'next')) : $('#next-visit-button').hide()
 
                 const pinLat = parseFloat(data.pin_lat)
                 const pinLng = parseFloat(data.pin_long)
