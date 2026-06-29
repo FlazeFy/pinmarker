@@ -496,6 +496,13 @@ const addUrlParam = (key, value) => {
     history.replaceState(null, '', url)
 }
 
+const takeIdFromPath = (page) => window.location.pathname.replace(`/${page}/view/`, '').split('?')[0]
+
+const changeIdInPath = (page, newId) => {
+    const newPath = `/${page}/view/${newId}`
+    window.history.pushState(null, '', newPath)
+}
+
 $(document).on('click', '.tag-pin-name', function(){
     const pinId = $(this).data('pin-id')
     window.location.href = `/DetailController/view/${pinId}`

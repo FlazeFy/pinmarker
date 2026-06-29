@@ -1,5 +1,8 @@
 <div class="card">
-    <h2 class="card-title">Visit Detail</h2>
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="card-title">Visit Detail</h2>
+        <?php $this->load->view("edit_visit/delete"); ?>
+    </div>
     <input hidden id="type_add" name="type_add" value="visit">
     <div id="add_pin_form"></div>
     <div id="add-form-holder">

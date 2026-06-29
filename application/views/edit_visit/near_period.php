@@ -6,6 +6,7 @@
 <script>
     $(document).on('click', '.visit-item', function(){
         const id = $(this).data('id')
+        changeIdInPath('EditController', id)
         fetchVisit(id)
     })
 </script>
