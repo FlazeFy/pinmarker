@@ -73,6 +73,7 @@ $route['api/v1/pin/update/(:any)'] = 'api/pin/CommandController/put_update_pin/$
 
 // Global List Module
 $route['api/v1/global_list/my'] = 'api/global_list/QueryController/get_my_global_list';
+$route['api/v1/global_list/detail/(:any)'] = 'api/global_list/QueryController/get_global_list_by_id/$1';
 $route['api/v1/global_list/recommended/tag_address'] = 'api/global_list/QueryController/get_recommended_tag_address';
 
 // History Module
