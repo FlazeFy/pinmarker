@@ -3,7 +3,8 @@
 
 	class GlobalListModel extends CI_Model {
 		private $table = "global_list";
-		private $table_rel = "global_list_pin_relation";
+		private $table_rel_pin = "global_list_pin_relation";
+		private $table_rel_tag = "global_list_tag_relation";
         const SESSION_KEY = 'user_id';
 
 		public function rules()
@@ -137,14 +138,12 @@
 			return $data;
 		}
 
-		public function get_detail_list_by_id($id){
+		public function get_detail_list_by_id($id, $user_id = null){
 			$this->db->select("$this->table.id, list_name, list_desc, $this->table.created_at, $this->table.updated_at, username as created_by");
 			$this->db->from($this->table);
 			$this->db->join('user',"user.id = $this->table.created_by");
-			$condition = [
-				"$this->table.id" => $id,
-            ];
-			$this->db->where($condition);
+			$this->db->where("$this->table.id", $id);
+			if ($user_id) $this->db->where("created_by", $user_id);
 
 			return $data = $this->db->get()->row();
 		}
@@ -259,24 +258,51 @@
     		return $query->result();
 		}
 
+		public function is_name_available($user_id, $list_name, $id = null) {
+			$this->db->select("1");
+			$this->db->from($this->table);
+			$this->db->where("created_by", $user_id);
+			$this->db->where("LOWER(list_name)", strtolower($list_name));
+			if ($id) $this->db->where("id", "!=", $id);
+			$data = $this->db->get()->result();
+
+			return $data ? false : true;
+		}
+
 		// Command
 		public function insert($data){
 			return $this->db->insert($this->table,$data);	
 		}
+
 		public function insert_rel($data){
 			return $this->db->insert($this->table_rel,$data);	
 		}
-		public function update_list($id,$data)
-        {
-            return $this->db->update($this->table, $data, ['id' => $id]);
+
+		public function update_list($id, $data, $user_id){
+			$data['updated_at'] = date('Y-m-d H:i:s');
+            return $this->db->update($this->table, $data, [
+				'id' => $id,
+				'created_by' => $user_id,
+			]);
         }
-		public function delete_global_list($id){
+
+		public function delete_global_list($id, $user_id){
     		return $this->db->delete($this->table,[
-				'id'=>$id
+				'id' => $id,
+				'created_by' => $user_id
 			]);
 		}
-		public function delete_global_list_rel($data){
-    		return $this->db->delete($this->table_rel,$data);
+
+		public function delete_global_list_pin($list_id){
+    		return $this->db->delete($this->table_rel_pin, [
+				'list_id' => $list_id
+			]);
+		}
+
+		public function delete_global_list_tag($list_id){
+    		return $this->db->delete($this->table_rel_tag, [
+				'list_id' => $list_id
+			]);
 		}
 	}
 ?>

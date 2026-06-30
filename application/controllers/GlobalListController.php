@@ -27,4 +27,18 @@ class GlobalListController extends CI_Controller {
 			redirect('LoginController');
 		}
 	}
+
+	public function view($id)
+	{
+		$user_id = null;
+
+		$data['is_signed'] = $this->AuthModel->current_user() ? true : false;
+		$data['active_page']= 'global_list';
+		$data['is_mobile_device'] = is_mobile_device();
+		$data['title_page'] = 'Global List | Detail';
+		$data['id'] = $id;
+		$data['content'] = $this->load->view('detail_global/index',$data,true);
+
+		$this->load->view('others/layout', $data);
+	}
 }

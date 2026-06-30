@@ -82,6 +82,24 @@ class QueryController extends BaseApiController {
         );
     }
 
+    public function get_global_list_by_id($id){
+        // Validate path param
+        if (!check_uuid($id)) return api_response(400, 'failed', 'id must be valid uuid', null);
+
+        // Model : Get global list by id
+        $result = $this->GlobalListModel->get_detail_list_by_id($id);
+        if (!$result) return api_response(404, 'failed', 'No global list found', null);
+
+        // Model : Get pin by global list id
+        $pins = $this->GlobalListModel->get_pin_list_by_id($id);
+
+        // Return API response
+        return api_response(200, 'success', 'Global list fetched' , [
+            'detail' => $result,
+            'pin' => $pins
+        ]);
+    }
+
     public function get_recommended_tag_address(){
         // Query param
         $limit_pin_address = $this->input->get('limit_pin_address') ? (int)$this->input->get('limit_pin_address') : 6;
