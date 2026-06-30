@@ -250,10 +250,11 @@
                 const detail = data.detail
                 const pins = data.pin ?? []
 
-                $('#list_name').val(detail.list_name ?? '-')
-                $('#list_desc').val(detail.list_desc ?? '-')
+                $('#list_name').val(detail.list_name)
+                $('#list_desc').val(detail.list_desc)
                 $('#global-list-name-text').text(`> ${detail.list_name}`)
                 $('#created_at').text(datetimeText(detail.created_at))
+                detail.updated_at && $('#updated_at').html(`<p class="text-muted text-sm">Updated at : ${datetimeText(detail.updated_at)}</p>`)
 
                 renderAllPins(pins)
             },
