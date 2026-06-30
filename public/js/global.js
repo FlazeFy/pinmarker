@@ -1,4 +1,4 @@
-const debouncerTime = 2000 
+const debouncerTime = 1500 
 const zoomValueFocusMarker = 17
 const weatherFetchInterval = 300000
 

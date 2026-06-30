@@ -116,7 +116,7 @@
                                     </div>
                                 </div>
                                 <div class="col-actions">
-                                    <a href="/GlobalListController/detail/bolu" class="btn btn-see-more w-100">
+                                    <a href="/GlobalListController/view/${dt.id}" class="btn btn-see-more w-100">
                                         See Detail
                                     </a>
                                     <button class="btn btn-outline"><i class="fa-solid fa-share-nodes"></i></button>
