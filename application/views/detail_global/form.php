@@ -1,6 +1,7 @@
 <div class="card">
     <div class="d-flex justify-content-between align-items-center">
         <h2 class="card-title">List Detail</h2>
+        <?php $this->load->view("detail_global/delete"); ?>
     </div>
     <div class="row position-relative" id="detail-row">
         <div class="col-md-6 col-sm-12 position-absolute d-flex flex-column" style="top: 0; bottom: 0; left: 0;">

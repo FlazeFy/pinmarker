@@ -286,9 +286,10 @@
 			]);
         }
 
-		public function delete_global_list($id){
+		public function delete_global_list($id, $user_id){
     		return $this->db->delete($this->table,[
-				'id'=>$id
+				'id' => $id,
+				'created_by' => $user_id
 			]);
 		}
 
