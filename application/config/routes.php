@@ -76,6 +76,7 @@ $route['api/v1/global_list/my'] = 'api/global_list/QueryController/get_my_global
 $route['api/v1/global_list/detail/(:any)'] = 'api/global_list/QueryController/get_global_list_by_id/$1';
 $route['api/v1/global_list/recommended/tag_address'] = 'api/global_list/QueryController/get_recommended_tag_address';
 $route['api/v1/global_list/edit/(:any)'] = 'api/global_list/CommandController/put_update_global_list_by_id/$1';
+$route['api/v1/global_list/delete/(:any)'] = 'api/global_list/CommandController/delete_global_list_by_id/$1';
 
 // History Module
 $route['api/v1/history'] = 'api/history/QueryController/get_my_activity';

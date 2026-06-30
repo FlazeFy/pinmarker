@@ -64,4 +64,33 @@ class CommandController extends BaseApiController {
             }
         } 
     }
+
+    public function delete_global_list_by_id($id) {
+        // Auth guard
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
+        // Validate path param
+        if (!check_uuid($id)) return api_response(400, 'failed', 'id must be valid uuid', null);
+
+        // Model : Get list by id
+        $listOld = $this->GlobalListModel->get_detail_list_by_id($id, $user_id);
+        if (!$listOld) return api_response(200, 'success', 'No list found', null);
+
+        // Model : Delete list by id
+        $list_deleted = $this->GlobalListModel->delete_global_list($id, $user_id);
+        if ($list_deleted) {
+            // Model : Delete list relation by id
+            $this->GlobalListModel->delete_global_list_pin($id);
+            $this->GlobalListModel->delete_global_list_tag($id);
+			
+            // Model : Add deleted global list history
+            $this->HistoryModel->insert_history('Delete list', $listOld->list_name, $user_id);			
+
+            // Return API response
+            return api_response(200, 'success', "List deleted", $data);
+        } else {
+            return api_response(500, 'failed', 'Something went wrong', null);
+        }
+    }
 }

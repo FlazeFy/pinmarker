@@ -97,20 +97,6 @@ class DetailGlobalController extends CI_Controller {
 		redirect("DetailGlobalController/view/$list_id");
 	}
 
-	public function delete_global_list($list_id){
-		if($this->GlobalListModel->delete_global_list($list_id)){
-			if($this->GlobalListModel->delete_global_list_rel(['list_id'=>$list_id])){
-				$this->session->set_flashdata('message_success', generate_message(true,'permanently delete','list',null));
-			} else {
-				$this->session->set_flashdata('message_error', generate_message(false,'remove','pin',null));
-			}
-		} else {
-			$this->session->set_flashdata('message_error', generate_message(false,'permanently delete','list',null));
-		}
-		
-		redirect("GlobalListController");
-	}
-
 	public function edit_toggle($id){
 		$is_edit = $this->session->userdata('is_global_edit_mode');
 		if($is_edit == false){

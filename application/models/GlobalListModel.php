@@ -3,7 +3,8 @@
 
 	class GlobalListModel extends CI_Model {
 		private $table = "global_list";
-		private $table_rel = "global_list_pin_relation";
+		private $table_rel_pin = "global_list_pin_relation";
+		private $table_rel_tag = "global_list_tag_relation";
         const SESSION_KEY = 'user_id';
 
 		public function rules()
@@ -291,8 +292,16 @@
 			]);
 		}
 
-		public function delete_global_list_rel($data){
-    		return $this->db->delete($this->table_rel,$data);
+		public function delete_global_list_pin($list_id){
+    		return $this->db->delete($this->table_rel_pin, [
+				'list_id' => $list_id
+			]);
+		}
+
+		public function delete_global_list_tag($list_id){
+    		return $this->db->delete($this->table_rel_tag, [
+				'list_id' => $list_id
+			]);
 		}
 	}
 ?>
