@@ -125,13 +125,13 @@ body {
 
 /* Transition */
 .nav-item, .dropdown-item, .section-help, .fc-daygrid-event, .fc-timegrid-event, .fc-popover.fc-more-popover, .fc-popover-close, .autocomplete-items div, .btn-change-image
-, .reset-image-btn, .btn-account-attach, .pin-box, .gallery-btn, .progressBar li:before, .tag, .card, .btn, .icon-btn, .page-btn {
+, .reset-image-btn, .btn-account-attach, .pin-box, .gallery-btn, .progressBar li:before, .tag, .card, .btn, .icon-btn, .page-btn, .leaflet-popup-close-button {
     -webkit-transition: all 0.25s;
     -o-transition: all 0.25s;
     transition: all 0.25s;
 }
 
-.shadow {
+.shadow, .leaflet-popup-close-button {
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
 }
 .bordered {

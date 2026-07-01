@@ -148,12 +148,22 @@
             marker.bindPopup(`
                 <div class="place-popup">
                     <h3>${dt.pin_name}</h3>
-                    <p class="popup-address">${dt.pin_address ?? '-'}</p>
-                    <hr>
                     <div class="popup-info">
-                        <div>
-                            <span>Category</span>
-                            <h5>${dt.pin_category}</h5>
+                        <span>${dt.pin_address}</span>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="popup-info">
+                                <span>Category</span>
+                                <p>${dt.pin_category}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="popup-info">
+                                <span>Created At</span>
+                                <p>${datetimeText(dt.created_at)}</p>
+                            </div>
                         </div>
                     </div>
                 </div>

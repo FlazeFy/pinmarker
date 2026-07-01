@@ -27,7 +27,7 @@
     <link href="http://127.0.0.1:8080/public/css/global.css" rel="stylesheet"/>
     <link href="http://127.0.0.1:8080/public/css/frame.css" rel="stylesheet"/>
     
-    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|EditVisitController|MapsController|TrackController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|EditVisitController|MapsController|TrackController|PersonController)', $cleanedUrl)): ?>
         <!-- Maps CSS -->
         <link href="http://127.0.0.1:8080/public/css/maps.css" rel="stylesheet"/>
     <?php endif; ?>

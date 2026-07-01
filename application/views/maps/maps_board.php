@@ -156,24 +156,38 @@
                         marker.bindPopup(`
                             <div class="place-popup">
                                 <h3>${dt.pin_name}</h3>
-                                <p class="popup-address">${dt.pin_address ?? '-'}</p>
-                                <hr>
                                 <div class="popup-info">
-                                    <div>
-                                        <span>Category</span>
-                                        <h5>${dt.pin_category}</h5>
-                                    </div>
+                                    <span>${dt.pin_address ?? '-'}</span>
                                 </div>
-                                <div class="popup-info mt-2">
-                                    <div>
-                                        <span>Distance</span>
-                                        <h5>${dt.distance} km</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="popup-info">
+                                            <span>Category</span>
+                                            <p>${dt.pin_category}</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="popup-info mt-2">
-                                    <div>
-                                        <span>Total Visit</span>
-                                        <h5>${dt.total_visit}</h5>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="popup-info">
+                                            <span>Total Visit</span>
+                                            <p>${dt.total_visit}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="popup-info">
+                                            <span>Distance</span>
+                                            <p>${dt.distance} km</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        ${
+                                            dt.last_visit_at ? `
+                                                <div class="popup-info">
+                                                    <span>Last Visit</span>
+                                                    <p>${datetimeText(dt.last_visit_at)}</p>
+                                                </div>
+                                            ` : ''
+                                        }
                                     </div>
                                 </div>
                             </div>

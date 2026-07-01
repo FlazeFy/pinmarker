@@ -1,37 +1,49 @@
+/* Popup Card */
+.place-popup {
+    padding: var(--spaceLG);
+    background: white;
+}
+.place-popup .popup-info p {
+    margin: 0;
+    font-weight: 600;
+}
+.place-popup h3 {
+    font-size: var(--textJumbo);
+    margin-bottom: 0 !important;
+    color: var(--primaryColor);
+    font-weight: 800;
+}
+.place-popup hr {
+    margin: var(--spaceMD) 0;
+    border-color: #e5e7eb;
+}
+
 /* Popup Information */
 .popup-info {
     display: flex;
-    align-items: center;
-    gap: 18px;
-    margin-bottom: 22px;
+    flex-direction: column;
+    align-items: start;
+    padding-bottom: var(--spaceSM);
 }
 .popup-info span {
-    font-size: 13px;
-    font-weight: 700;
+    font-size: var(--textMD);
+    font-weight: 600;
     color: #94a3b8;
 }
-.popup-info h5 {
-    margin: 0;
-    font-size: 20px;
-    color: #1e293b;
-    font-weight: 700;
+
+.leaflet-popup-close-button {
+    padding: var(--spaceMini);
+    color: var(--whiteColor) !important;
+    border-radius: var(--roundedMD);
+    height: 36px !important;
+    width: 36px !important;
+    background: var(--dangerBG) !important;
+    position: absolute !important;
+    top: -12.5px !important;
+    right: -12.5px !important;
 }
-.popup-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-}
-.popup-icon.green {
-    background: rgba(6, 95, 70, .1);
-    color: #065f46;
-}
-.popup-icon.blue {
-    background: rgba(37, 99, 235, .1);
-    color: #2563eb;
+.leaflet-popup-close-button:hover {
+    transform: scale(1.15);
 }
 
 /* Leaflet Popup */
@@ -47,33 +59,4 @@
 }
 .leaflet-popup-tip {
     box-shadow: none;
-}
-
-/* Popup Card */
-.map-placeholder .place-popup {
-    padding: 32px;
-    background: white;
-}
-.map-placeholder .popup-label {
-    color: #6b9d92;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    margin-bottom: 12px;
-}
-.map-placeholder .place-popup h3 {
-    font-size: 34px;
-    line-height: 1.1;
-    margin-bottom: 18px;
-    color: #1e293b;
-    font-weight: 800;
-}
-.map-placeholder .popup-address {
-    color: #64748b;
-    font-size: 18px;
-    margin-bottom: 24px;
-}
-.map-placeholder .place-popup hr {
-    margin: 24px 0;
-    border-color: #e5e7eb;
 }

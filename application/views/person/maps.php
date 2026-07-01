@@ -109,28 +109,34 @@
                 <div class="place-popup">
                     <h3>${dt.pin_name}</h3>
                     <hr>
-                    <div class="popup-info">
-                        <div>
-                            <span>Category</span>
-                            <h5>${dt.pin_category}</h5>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6">
+                            <div class="popup-info">
+                                <span>Category</span>
+                                <p>${dt.pin_category}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="popup-info mt-2">
-                        <div>
-                            <span>Total Visit</span>
-                            <h5>${dt.total_visit}</h5>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="popup-info">
+                                <span>Total Visit</span>
+                                <p>${dt.total_visit}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="popup-info mt-2">
-                        <div>
-                            <span>Last Visit</span>
-                            <h5>${dt.last_visit_at}</h5>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="popup-info">
+                                <span>Favorite</span>
+                                <p>${parseInt(dt.is_favorite) === 1 ? 'Yes' : 'No'}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="popup-info mt-2">
-                        <div>
-                            <span>Favorite</span>
-                            <h5>${parseInt(dt.is_favorite) === 1 ? 'Yes' : 'No'}</h5>
+                        <div class="col-md-6 col-sm-12">
+                            ${
+                                dt.last_visit_at ? `
+                                    <div class="popup-info">
+                                        <span>Last Visit</span>
+                                        <p>${datetimeText(dt.last_visit_at)}</p>
+                                    </div>
+                                ` : ''
+                            }
                         </div>
                     </div>
                 </div>

@@ -156,15 +156,14 @@
                         marker.bindPopup(`
                             <div class="place-popup">
                                 <h3>${place.name}</h3>
-                                <p class="popup-address">${place.amenity}</p>
-                                <hr>
                                 <div class="popup-info">
-                                    <div class="popup-icon green">
-                                        <i class="fa-solid fa-location-dot"></i>
-                                    </div>
-                                    <div>
+                                    <span>${place.amenity}</span>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="popup-info">
                                         <span>Distance</span>
-                                        <h5>${place.distance} m</h5>
+                                        <p>${place.distance} km</p>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column gap-2 mt-4">
@@ -246,15 +245,23 @@
                         marker.bindPopup(`
                             <div class="place-popup">
                                 <h3>${dt.pin_name}</h3>
-                                <p class="popup-address">${dt.pin_address}</p>
-                                <hr>
                                 <div class="popup-info">
-                                    <div class="popup-icon green">
-                                        <i class="fa-solid fa-location-dot"></i>
-                                    </div>
                                     <div>
-                                        <span>Distance</span>
-                                        <h5>${dt.distance} m</h5>
+                                        <span>${dt.pin_address}</span>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="popup-info">
+                                            <span>Distance</span>
+                                            <h5>${dt.distance} m</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="popup-info">
+                                            
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="d-flex flex-column gap-2 mt-4">

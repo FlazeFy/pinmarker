@@ -168,8 +168,8 @@
 		public function get_global_list_pin_by_pin_id($pin_id) {
 			$this->db->select("list_name, $this->table.id");
 			$this->db->from($this->table);
-			$this->db->join($this->table_rel,"$this->table.id = $this->table_rel.list_id");
-			$this->db->join('pin',"$this->table_rel.pin_id = pin.id");
+			$this->db->join($this->table_rel_pin,"$this->table.id = $this->table_rel_pin.list_id");
+			$this->db->join('pin',"$this->table_rel_pin.pin_id = pin.id");
 			$condition = [
 				'pin_id' => $pin_id,
 				'pin.created_by' => $this->session->userdata(self::SESSION_KEY)
@@ -184,9 +184,9 @@
 		public function get_global_list_tag_by_pin_id($pin_id) {
 			$this->db->select("tag_name");
 			$this->db->from($this->table);
-			$this->db->join($this->table_rel,"$this->table.id = $this->table_rel.list_id");
-			$this->db->join("global_list_tag_relation","global_list_tag_relation.list_id = $this->table_rel.list_id");
-			$this->db->join('pin',"$this->table_rel.pin_id = pin.id");
+			$this->db->join($this->table_rel_pin,"$this->table.id = $this->table_rel_pin.list_id");
+			$this->db->join("global_list_tag_relation","global_list_tag_relation.list_id = $this->table_rel_pin.list_id");
+			$this->db->join('pin',"$this->table_rel_pin.pin_id = pin.id");
 			$condition = [
 				'pin_id' => $pin_id,
 				'pin.created_by' => $this->session->userdata(self::SESSION_KEY)
@@ -275,7 +275,7 @@
 		}
 
 		public function insert_rel($data){
-			return $this->db->insert($this->table_rel,$data);	
+			return $this->db->insert($this->table_rel_pin,$data);	
 		}
 
 		public function update_list($id, $data, $user_id){
