@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-
 <div class="map-area">
     <div class="map-img-wrap">
         <div id="map-board"></div>
@@ -34,8 +32,6 @@
     }
 </style>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 <script>
     const LOCATION_COORDS = {
         lat: <?= $dt_detail_pin->pin_lat ?>,
@@ -58,27 +54,12 @@
     let marker = null
 
     const renderLocation = () => {
-        if (marker) {
-            map.removeLayer(marker)
-        }
+        if (marker) map.removeLayer(marker)
 
         marker = L.marker([
             LOCATION_COORDS.lat,
             LOCATION_COORDS.lng
         ]).addTo(map)
-
-        marker.bindPopup(`
-            <div class="place-popup">
-                <h3>${LOCATION_COORDS.name}</h3>
-                <hr>
-                <div class="popup-info">
-                    <div>
-                        <span>Category</span>
-                        <h5>${LOCATION_COORDS.category}</h5>
-                    </div>
-                </div>
-            </div>
-        `)
 
         map.setView([LOCATION_COORDS.lat, LOCATION_COORDS.lng], 13)
     }

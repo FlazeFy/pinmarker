@@ -50,5 +50,39 @@
 
             return $res_final;
 		}
+
+        public function get_tag_list_by_id($list_id) {
+            $this->db->select("tag_name");
+            $this->db->from($this->table);
+            $this->db->where("list_id", $list_id);
+            $this->db->order_by("tag_name", "asc");
+            return $this->db->get()->result();
+        }
+
+        // Command
+        public function insert_tag_by_id($list_id, $list_tag) {
+            if (empty($list_tag)) return;
+        
+            $tags = explode(',', $list_tag);
+        
+            foreach ($tags as $tag) {
+                $tag_name = trim($tag);
+                if (empty($tag_name)) continue;
+        
+                $data = [];
+                $data['id'] = get_UUID();
+                $data['list_id'] = $list_id;
+                $data['tag_name'] = $tag_name;
+                $data['created_at'] = date("Y-m-d H:i:s");
+        
+                $this->db->insert($this->table, $data);
+            }
+        }
+
+        public function delete_tag_by_id($list_id) {
+            return $this->db->delete($this->table, [
+				'list_id' => $list_id
+			]);
+        }
 	}
 ?>

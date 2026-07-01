@@ -10,6 +10,7 @@ class QueryController extends BaseApiController {
     function __construct(){
         parent::__construct();
         $this->load->model("GlobalListModel");
+        $this->load->model("GlobalListTagRelationModel");
         $this->load->model("VisitModel");
         $this->load->helper('validator_helper');
         $this->allowed_target_sorting_pin = ['list_name','total_visit','created_at'];
@@ -93,10 +94,14 @@ class QueryController extends BaseApiController {
         // Model : Get pin by global list id
         $pins = $this->GlobalListModel->get_pin_list_by_id($id);
 
+        // Model : Get tags by global list id
+        $tags = $this->GlobalListTagRelationModel->get_tag_list_by_id($id);
+
         // Return API response
         return api_response(200, 'success', 'Global list fetched' , [
             'detail' => $result,
-            'pin' => $pins
+            'pin' => $pins,
+            'tag' => $tags
         ]);
     }
 

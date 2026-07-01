@@ -1,7 +1,10 @@
 <div class="card">
-    <div class="d-flex justify-content-between align-items-center">
-        <h2 class="card-title">List Detail</h2>
-        <?php $this->load->view("detail_global/delete"); ?>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="card-title mb-0">List Detail</h2>
+        <div class="d-flex gap-2">
+            <a class='btn btn-primary py-1 px-3' id="manage-tag-btn" data-bs-toggle="modal" data-bs-target="#manage-tag-modal"><i class='fa-solid fa-hashtag'></i> Manage Tags</a>
+            <?php $this->load->view("detail_global/delete"); ?>
+        </div>
     </div>
     <div class="row position-relative" id="detail-row">
         <div class="col-md-6 col-sm-12 position-absolute d-flex flex-column" style="top: 0; bottom: 0; left: 0;">

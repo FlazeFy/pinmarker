@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-
 <div class="map-area">
     <div class="map-img-wrap">
         <div id="map-board"></div>
@@ -35,8 +33,6 @@
     }
 </style>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 <script>
     let userLat = getCookie('lat')
     let userLng = getCookie('long')
@@ -71,6 +67,7 @@
     $(document).ready(function () {
         const max_distance = $('#max-range-select').val() !== "all" ? parseInt($('#max-range-select').val()) : "all"
         let markers = []
+        let oldMarkers = []
 
         L.control.zoom({ position: 'bottomright' }).addTo(map)
         let tileLayer = L.tileLayer(
@@ -156,24 +153,47 @@
                         marker.bindPopup(`
                             <div class="place-popup">
                                 <h3>${dt.pin_name}</h3>
-                                <p class="popup-address">${dt.pin_address ?? '-'}</p>
-                                <hr>
                                 <div class="popup-info">
-                                    <div>
-                                        <span>Category</span>
-                                        <h5>${dt.pin_category}</h5>
+                                    <span>${dt.pin_address ?? '-'}</span>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="popup-info">
+                                            <span>Category</span>
+                                            <p>${dt.pin_category}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="popup-info">
+                                            <span>Total Visit</span>
+                                            <p>${dt.total_visit}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="popup-info">
+                                            <span>Distance</span>
+                                            <p>${dt.distance} km</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        ${
+                                            dt.last_visit_at ? `
+                                                <div class="popup-info">
+                                                    <span>Last Visit</span>
+                                                    <p>${datetimeText(dt.last_visit_at)}</p>
+                                                </div>
+                                            ` : ''
+                                        }
                                     </div>
                                 </div>
-                                <div class="popup-info mt-2">
-                                    <div>
-                                        <span>Distance</span>
-                                        <h5>${dt.distance} km</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <button class="btn btn-success w-100 set-direction" data-pin-lat="${dt.pin_lat}" data-pin-long="${dt.pin_long}" data-pin-name="${dt.pin_name}">Set Direction</button>
                                     </div>
-                                </div>
-                                <div class="popup-info mt-2">
-                                    <div>
-                                        <span>Total Visit</span>
-                                        <h5>${dt.total_visit}</h5>
+                                    <div class="col-md-6 col-sm-12">
+                                        <a class="btn btn-primary" href="/DetailController/view/${dt.id}">Detail</a>
                                     </div>
                                 </div>
                             </div>
@@ -272,10 +292,12 @@
             addUrlParam('map_type', type)
         })
 
+        let routingControl = null
         $(document).on('click', '.cat-item:not(.active)', function() {
             $('.cat-item').removeClass('active')
             $('.cat-body').empty()
             $(this).toggleClass('active')
+            exitRoute()
             fetchNearbyPins()
         })
 
@@ -288,10 +310,28 @@
             addUrlParam($(this).attr('id') === 'max-range-select' ? 'max_distance' : 'view_type', $(this).val())
         })
 
+        const exitRoute = () => {
+            $('.exit-route-button').addClass('d-none')
+            $('.region-label').text('Current Region Focus')
+            map.removeControl(routingControl)
+            routingControl = null
+
+            markers = oldMarkers
+            markers.forEach(marker => marker.addTo(map))
+            oldMarkers = []
+
+            const max_distance = $('#max-range-select').val() !== "all" ? parseInt($('#max-range-select').val()) : null
+            $('.region-desc').text(`${markers.length} places detected${max_distance ? ` within ${max_distance} km radius.`:''}`)
+        }
+
         $(document).on('click', '.activity-item', function() {
             const lat = $(this).data('lat')
             const long = $(this).data('long')
+
+            if (routingControl) exitRoute()
+
             map.setView([lat, long], zoomValueFocusMarker)
+            openPopUpMap(markers, lat, long)
         })
 
         let pinSearchDebounce = null
@@ -346,6 +386,29 @@
         
         $(document).ready(function () {
             validateParams()
+        })
+
+        $(document).on('click', '.set-direction', function () {
+            const lat = $(this).data('pin-lat')
+            const lng = $(this).data('pin-long')
+            const pinName = $(this).data('pin-name')
+
+            oldMarkers = markers
+            markers.forEach(marker => {
+                const mLat = marker.getLatLng().lat
+                const mLng = marker.getLatLng().lng
+                if (mLat !== parseFloat(lat) || mLng !== parseFloat(lng)) map.removeLayer(marker)
+            })
+
+            $('.region-label').text('Current Route')
+            $('.region-desc').html(`From your location to <b>${pinName}</b> with distance <b class="route-distance">...</b> and duration about <b class="route-duration">...</b>`)
+            $('.exit-route-button').removeClass('d-none')
+
+            routingControl = showDirection(map, routingControl, parseFloat(userLat), parseFloat(userLng), lat, lng, '.route-distance', '.route-duration')
+        })
+
+        $(document).on('click', '.exit-route-button', function () {
+            exitRoute()
         })
     })
 </script>

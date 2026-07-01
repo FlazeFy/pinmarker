@@ -16,9 +16,6 @@
     </div>
 </div>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 <script>
     let pickerMap = null
     let pickerMarker = null

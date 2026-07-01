@@ -11,6 +11,7 @@ class CommandController extends BaseApiController {
         parent::__construct();
         $this->load->model("PinModel");
         $this->load->model("GlobalListModel");
+        $this->load->model("GlobalListTagRelationModel");
         $this->load->model("HistoryModel");
         $this->load->model("AuthModel");
 
@@ -63,6 +64,27 @@ class CommandController extends BaseApiController {
                 return api_response(500, 'failed', 'Something went wrong', null);
             }
         } 
+    }
+
+    public function put_update_global_list_tag_by_id($id) {
+        // Auth guard
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
+        // Validate path param
+        if (!check_uuid($id)) return api_response(400, 'failed', 'id must be valid uuid', null);
+
+        // Validate tag
+        $list_tag = cleanTrimNull($this->input->post('list_tag'));
+
+        // Model : Delete old tag by list id
+        $this->GlobalListTagRelationModel->delete_tag_by_id($id);
+
+        // Model : Insert tag by list id
+        $this->GlobalListTagRelationModel->insert_tag_by_id($id, $list_tag);
+        
+        // Return API response
+        return api_response(200, 'success', "Tag updated", null);
     }
 
     public function delete_global_list_by_id($id) {

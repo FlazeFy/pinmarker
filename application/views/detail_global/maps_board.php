@@ -1,8 +1,3 @@
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
-
 <div class="map-area mb-4">
     <div id="map-board"></div>
     <div class="map-left-overlay">
@@ -101,7 +96,7 @@
     let userLat = getCookie('lat')
     let userLng = getCookie('long')
     let userMarker = null
-    let pinMarkers = []
+    let markers = []
 
     const defaultLat = userLat ?? -6.2088
     const defaultLng = userLng ?? 106.8456
@@ -129,8 +124,8 @@
     }
 
     const clearPinMarkers = () => {
-        pinMarkers.forEach(marker => map.removeLayer(marker))
-        pinMarkers = []
+        markers.forEach(marker => map.removeLayer(marker))
+        markers = []
     }
 
     const renderAllPins = (pins) => {
@@ -148,18 +143,30 @@
             marker.bindPopup(`
                 <div class="place-popup">
                     <h3>${dt.pin_name}</h3>
-                    <p class="popup-address">${dt.pin_address ?? '-'}</p>
-                    <hr>
                     <div class="popup-info">
-                        <div>
-                            <span>Category</span>
-                            <h5>${dt.pin_category}</h5>
+                        <span>${dt.pin_address}</span>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="popup-info">
+                                <span>Category</span>
+                                <p>${dt.pin_category}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="popup-info">
+                                <span>Created At</span>
+                                <p>${datetimeText(dt.created_at)}</p>
+                            </div>
                         </div>
                     </div>
+                    <hr>
+                    <button class="btn btn-success w-100 set-direction" data-pin-lat="${dt.pin_lat}" data-pin-long="${dt.pin_long}" data-pin-name="${dt.pin_name}">Set Direction</button>
                 </div>
             `)
 
-            pinMarkers.push(marker)
+            markers.push(marker)
 
             const isFavoriteEl = dt.is_favorite == 1 ? "<span class='fav-dot'><i class='fa-solid fa-heart'></i></span>" : ""
 
@@ -180,8 +187,8 @@
             `
         })
 
-        if (pinMarkers.length > 0) {
-            const group = L.featureGroup(pinMarkers)
+        if (markers.length > 0) {
+            const group = L.featureGroup(markers)
             map.fitBounds(group.getBounds().pad(0.2))
             $(holder).html(listPinEl)
         }
@@ -206,9 +213,7 @@
             })
         }
 
-        if (userLat !== null && userLng !== null) {
-            applyLocation(parseFloat(userLat), parseFloat(userLng))
-        }
+        if (userLat !== null && userLng !== null) applyLocation(parseFloat(userLat), parseFloat(userLng))
 
         navigator.permissions.query({ name: 'geolocation' }).then(permission => {
             if (permission.state === 'granted') {
@@ -248,7 +253,8 @@
             success: (response) => {
                 const data = response.data
                 const detail = data.detail
-                const pins = data.pin ?? []
+                const pins = data.pin
+                const tags = data.tag
 
                 $('#list_name').val(detail.list_name)
                 $('#list_desc').val(detail.list_desc)
@@ -257,6 +263,7 @@
                 detail.updated_at && $('#updated_at').html(`<p class="text-muted text-sm">Updated at : ${datetimeText(detail.updated_at)}</p>`)
 
                 renderAllPins(pins)
+                renderAllTags(tags)
             },
             error: (response) => {
                 if (response.status === 401) return failedAuth()
@@ -270,10 +277,17 @@
     }
 
     let routingControl = null
-
     $(document).on('click', '.activity-item', function () {
         const lat = parseFloat($(this).data('lat'))
         const lng = parseFloat($(this).data('long'))
+        routingControl = showDirection(map, routingControl, parseFloat(userLat), parseFloat(userLng), lat, lng)
+
+        openPopUpMap(markers, lat, lng)
+    })
+
+    $(document).on('click', '.set-direction', function () {
+        const lat = $(this).data('pin-lat')
+        const lng = $(this).data('pin-long')
         routingControl = showDirection(map, routingControl, parseFloat(userLat), parseFloat(userLng), lat, lng)
     })
 
