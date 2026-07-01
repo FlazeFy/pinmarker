@@ -292,10 +292,12 @@
             addUrlParam('map_type', type)
         })
 
+        let routingControl = null
         $(document).on('click', '.cat-item:not(.active)', function() {
             $('.cat-item').removeClass('active')
             $('.cat-body').empty()
             $(this).toggleClass('active')
+            exitRoute()
             fetchNearbyPins()
         })
 
@@ -308,7 +310,6 @@
             addUrlParam($(this).attr('id') === 'max-range-select' ? 'max_distance' : 'view_type', $(this).val())
         })
 
-        let routingControl = null
         const exitRoute = () => {
             $('.exit-route-button').addClass('d-none')
             $('.region-label').text('Current Region Focus')
@@ -330,10 +331,7 @@
             if (routingControl) exitRoute()
 
             map.setView([lat, long], zoomValueFocusMarker)
-            const target = markers.find(marker => {
-                return marker.getLatLng().lat === parseFloat(lat) && marker.getLatLng().lng === parseFloat(long)
-            })
-            if (target) target.openPopup()
+            openPopUpMap(markers, lat, long)
         })
 
         let pinSearchDebounce = null

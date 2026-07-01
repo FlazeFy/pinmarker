@@ -58,6 +58,13 @@ const getZoomFromRange = (val) => {
     }
 }
 
+const openPopUpMap = (markers, lat, long) => {
+    const target = markers.find(marker => {
+        return marker.getLatLng().lat === parseFloat(lat) && marker.getLatLng().lng === parseFloat(long)
+    })
+    if (target) target.openPopup()
+}
+
 const check_nearest_pin = (with_recommend = false, check_name = false) => {
     const lat = $('#pin_lat').val().trim()
     const long = $('#pin_long').val().trim()

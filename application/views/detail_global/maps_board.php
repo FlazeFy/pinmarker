@@ -96,7 +96,7 @@
     let userLat = getCookie('lat')
     let userLng = getCookie('long')
     let userMarker = null
-    let pinMarkers = []
+    let markers = []
 
     const defaultLat = userLat ?? -6.2088
     const defaultLng = userLng ?? 106.8456
@@ -124,8 +124,8 @@
     }
 
     const clearPinMarkers = () => {
-        pinMarkers.forEach(marker => map.removeLayer(marker))
-        pinMarkers = []
+        markers.forEach(marker => map.removeLayer(marker))
+        markers = []
     }
 
     const renderAllPins = (pins) => {
@@ -161,10 +161,12 @@
                             </div>
                         </div>
                     </div>
+                    <hr>
+                    <button class="btn btn-success w-100 set-direction" data-pin-lat="${dt.pin_lat}" data-pin-long="${dt.pin_long}" data-pin-name="${dt.pin_name}">Set Direction</button>
                 </div>
             `)
 
-            pinMarkers.push(marker)
+            markers.push(marker)
 
             const isFavoriteEl = dt.is_favorite == 1 ? "<span class='fav-dot'><i class='fa-solid fa-heart'></i></span>" : ""
 
@@ -185,8 +187,8 @@
             `
         })
 
-        if (pinMarkers.length > 0) {
-            const group = L.featureGroup(pinMarkers)
+        if (markers.length > 0) {
+            const group = L.featureGroup(markers)
             map.fitBounds(group.getBounds().pad(0.2))
             $(holder).html(listPinEl)
         }
@@ -275,10 +277,17 @@
     }
 
     let routingControl = null
-
     $(document).on('click', '.activity-item', function () {
         const lat = parseFloat($(this).data('lat'))
         const lng = parseFloat($(this).data('long'))
+        routingControl = showDirection(map, routingControl, parseFloat(userLat), parseFloat(userLng), lat, lng)
+
+        openPopUpMap(markers, lat, lng)
+    })
+
+    $(document).on('click', '.set-direction', function () {
+        const lat = $(this).data('pin-lat')
+        const lng = $(this).data('pin-long')
         routingControl = showDirection(map, routingControl, parseFloat(userLat), parseFloat(userLng), lat, lng)
     })
 
