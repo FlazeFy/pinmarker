@@ -216,9 +216,7 @@
             })
         }
 
-        if (userLat !== null && userLng !== null) {
-            applyLocation(parseFloat(userLat), parseFloat(userLng))
-        }
+        if (userLat !== null && userLng !== null) applyLocation(parseFloat(userLat), parseFloat(userLng))
 
         navigator.permissions.query({ name: 'geolocation' }).then(permission => {
             if (permission.state === 'granted') {
@@ -258,7 +256,8 @@
             success: (response) => {
                 const data = response.data
                 const detail = data.detail
-                const pins = data.pin ?? []
+                const pins = data.pin
+                const tags = data.tag
 
                 $('#list_name').val(detail.list_name)
                 $('#list_desc').val(detail.list_desc)
@@ -267,6 +266,7 @@
                 detail.updated_at && $('#updated_at').html(`<p class="text-muted text-sm">Updated at : ${datetimeText(detail.updated_at)}</p>`)
 
                 renderAllPins(pins)
+                renderAllTags(tags)
             },
             error: (response) => {
                 if (response.status === 401) return failedAuth()

@@ -5,6 +5,7 @@
         <div class="content">
             <?php $this->load->view("detail_global/header"); ?>
             <?php $this->load->view("detail_global/maps_board"); ?>
+            <?php $this->load->view("detail_global/tag_manage"); ?>
         </div>
     </div>
 </div>
