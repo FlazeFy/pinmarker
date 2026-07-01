@@ -73,7 +73,12 @@
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
     <?php endif; ?>
 
-    <?php if(preg_match('(LandingController|DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|EditVisitController|MapsController|TrackController|PersonController|EditController|EditVisitController)', $cleanedUrl)): ?>
+    <?php if(preg_match('(LandingController|DetailController|GlobalListController|GlobalMapsController|AddController|AddVisitController|EditVisitController|MapsController|TrackController|PersonController|EditController|EditVisitController|ScheduleController)', $cleanedUrl)): ?>
+        <!-- Leaflet -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
         <!-- Maps JS -->
         <script src="http://127.0.0.1:8080/public/js/maps.js"></script>
     <?php endif; ?>

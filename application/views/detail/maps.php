@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-
 <div class="map-area">
     <div class="map-img-wrap">
         <div id="map-board"></div>
@@ -33,8 +31,6 @@
         border-radius: var(--roundedMD);
     }
 </style>
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
     const LOCATION_COORDS = {

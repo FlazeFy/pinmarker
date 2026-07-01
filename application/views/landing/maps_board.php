@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-    
 <div class="d-flex justify-content-between p-2 text-start">
     <div>
         <h2 class="section-title">Nearest Markers</h2>
@@ -16,7 +14,6 @@
     </div>
 </div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>

@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-
 <div class="map-area mb-4">
     <div class="map-img-wrap">
         <div id="map-board"></div>
@@ -34,8 +32,6 @@
     }
 </style>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 <script>
     let userLat = getCookie('lat')
     let userLng = getCookie('long')
@@ -54,7 +50,7 @@
     let marker = null
     let userMarker = null
 
-    const placeMarker = (latLng) => {
+    const placeNewMarker = (latLng) => {
         if (marker) {
             map.removeLayer(marker)
         }
@@ -78,7 +74,7 @@
     }
 
     const onMapClick = (e) => {
-        placeMarker(e.latlng)
+        placeNewMarker(e.latlng)
         addContentCoor(e.latlng, 'pin_lat', 'pin_long')
         check_nearest_pin_edit()
     }
@@ -110,13 +106,13 @@
         $('#pin_lat').val(pinLat)
         $('#pin_long').val(pinLong)
         
-        placeMarker({ lat: pinLat, lng: pinLong})
+        placeNewMarker({ lat: pinLat, lng: pinLong})
         check_pin_name_availability(pinName)
     })
 
     $(document).ready(function () {
         initMap()
-        placeMarker({ lat: <?= $dt_detail_pin->pin_lat ?> , lng: <?= $dt_detail_pin->pin_long ?> })
+        placeNewMarker({ lat: <?= $dt_detail_pin->pin_lat ?> , lng: <?= $dt_detail_pin->pin_long ?> })
 
         navigator.permissions.query({ name: 'geolocation' }).then(permission => {
             if (permission.state === 'granted') {

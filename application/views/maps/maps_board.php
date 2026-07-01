@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-
 <div class="map-area">
     <div class="map-img-wrap">
         <div id="map-board"></div>
@@ -35,8 +33,6 @@
     }
 </style>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 <script>
     let userLat = getCookie('lat')
     let userLng = getCookie('long')
@@ -71,6 +67,7 @@
     $(document).ready(function () {
         const max_distance = $('#max-range-select').val() !== "all" ? parseInt($('#max-range-select').val()) : "all"
         let markers = []
+        let oldMarkers = []
 
         L.control.zoom({ position: 'bottomright' }).addTo(map)
         let tileLayer = L.tileLayer(
@@ -190,6 +187,15 @@
                                         }
                                     </div>
                                 </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <button class="btn btn-success w-100 set-direction" data-pin-lat="${dt.pin_lat}" data-pin-long="${dt.pin_long}" data-pin-name="${dt.pin_name}">Set Direction</button>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <a class="btn btn-primary" href="/DetailController/view/${dt.id}">Detail</a>
+                                    </div>
+                                </div>
                             </div>
                         `)
 
@@ -302,10 +308,32 @@
             addUrlParam($(this).attr('id') === 'max-range-select' ? 'max_distance' : 'view_type', $(this).val())
         })
 
+        let routingControl = null
+        const exitRoute = () => {
+            $('.exit-route-button').addClass('d-none')
+            $('.region-label').text('Current Region Focus')
+            map.removeControl(routingControl)
+            routingControl = null
+
+            markers = oldMarkers
+            markers.forEach(marker => marker.addTo(map))
+            oldMarkers = []
+
+            const max_distance = $('#max-range-select').val() !== "all" ? parseInt($('#max-range-select').val()) : null
+            $('.region-desc').text(`${markers.length} places detected${max_distance ? ` within ${max_distance} km radius.`:''}`)
+        }
+
         $(document).on('click', '.activity-item', function() {
             const lat = $(this).data('lat')
             const long = $(this).data('long')
+
+            if (routingControl) exitRoute()
+
             map.setView([lat, long], zoomValueFocusMarker)
+            const target = markers.find(marker => {
+                return marker.getLatLng().lat === parseFloat(lat) && marker.getLatLng().lng === parseFloat(long)
+            })
+            if (target) target.openPopup()
         })
 
         let pinSearchDebounce = null
@@ -360,6 +388,29 @@
         
         $(document).ready(function () {
             validateParams()
+        })
+
+        $(document).on('click', '.set-direction', function () {
+            const lat = $(this).data('pin-lat')
+            const lng = $(this).data('pin-long')
+            const pinName = $(this).data('pin-name')
+
+            oldMarkers = markers
+            markers.forEach(marker => {
+                const mLat = marker.getLatLng().lat
+                const mLng = marker.getLatLng().lng
+                if (mLat !== parseFloat(lat) || mLng !== parseFloat(lng)) map.removeLayer(marker)
+            })
+
+            $('.region-label').text('Current Route')
+            $('.region-desc').html(`From your location to <b>${pinName}</b> with distance <b class="route-distance">...</b> and duration about <b class="route-duration">...</b>`)
+            $('.exit-route-button').removeClass('d-none')
+
+            routingControl = showDirection(map, routingControl, parseFloat(userLat), parseFloat(userLng), lat, lng, '.route-distance', '.route-duration')
+        })
+
+        $(document).on('click', '.exit-route-button', function () {
+            exitRoute()
         })
     })
 </script>
