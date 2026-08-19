@@ -42,9 +42,6 @@
         <a href="/HistoryController" class="nav-item <?= (in_array($cleanedUrl, ["HistoryController", "AddVisitController"])) ? "active" : ""; ?>">
             <i class="fa-solid fa-clock-rotate-left"></i> History
         </a>
-        <a href="/TrackController" class="nav-item">
-            <i class="fa-solid fa-route"></i> Track
-        </a>
         <div class="nav-group-label mt-3">Analytics</div>
         <a href="/SuggestionController" class="nav-item">
             <i class="fa-solid fa-robot"></i> Trip Suggestion

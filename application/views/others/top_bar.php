@@ -12,12 +12,12 @@
             <button class="icon-btn"><i class="fa-regular fa-circle-question"></i></button>
         </div>
         <div class="topnav-divider"></div>
-        <div class="d-flex align-items-center gap-2">
+        <button class="d-flex align-items-center gap-2 bg-transparent border-0" onclick="window.location.href='/MyProfileController'">
             <div class="text-end">
-                <div class="fw-bold" id="username-top-bar-text">jalanjalan</div>
+                <div class="fw-bold" id="username-top-bar-text">@<?= $this->session->userdata('username') ?></div>
                 <div class="page-sub">Explorer Level 5</div>
             </div>
             <img src="http://127.0.0.1:8080/public/images/avatar.png" alt="avatar" class="avatar-sm">
-        </div>
+        </button>
     </div>
 </header>
