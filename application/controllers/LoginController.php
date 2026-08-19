@@ -35,6 +35,7 @@ class LoginController extends CI_Controller {
 
 			if($this->AuthModel->login($username, $password)){
 				if (!empty($continue) && strpos($continue, '/') === 0) redirect($continue);
+				$this->session->set_userdata('username', $username);
 
 				redirect('/DashboardController');
 			} else {

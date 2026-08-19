@@ -488,9 +488,8 @@
 			return $result;
 		}
 
-		public function get_visit_activity_by_date($date){
-			$user_id = $this->session->userdata(self::SESSION_KEY);
-			$date_query = "DATE_FORMAT(visit.created_at, '%Y-%m-%d') =";
+		public function get_visit_activity_by_date($date, $user_id){
+			$date_query = "DATE_FORMAT(visit.created_at, '%d-%m-%Y') =";
 
 			$this->db->select('pin_name, visit_desc, visit_by, visit_with, visit.created_at');
 			$this->db->from($this->table);
