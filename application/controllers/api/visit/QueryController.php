@@ -239,4 +239,16 @@ class QueryController extends BaseApiController {
         // Return API response
         return api_response(200, 'success', 'Visit fetched', $result);
     }
+
+    public function get_visit_by_date($date){
+        // Auth guard
+        $this->authenticate();
+        $user_id = $this->auth_user_id;
+
+        // Model : Get visit by date
+        $result = $this->VisitModel->get_visit_activity_by_date($date, $user_id);
+
+        // Return API response
+        return api_response(200, 'success', 'Visit fetched', $result);
+    }
 }

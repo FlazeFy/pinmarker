@@ -85,6 +85,20 @@
             toolbar: {
                 show: false
             },
+            events: {
+                dataPointSelection: function (event, chartContext, config) {
+                    let seriesIndex = config.seriesIndex
+                    let dataPointIndex = config.dataPointIndex
+
+                    let series = config.w.config.series[seriesIndex]
+                    let dataPoint = series.data[dataPointIndex]
+
+                    let [year, month, day] = dataPoint.x.split('-')
+                    let formattedDate = `${day}-${month}-${year}`
+
+                    fetchVisitByDate(formattedDate)
+                }
+            },
         },
         dataLabels: {
             enabled: false,
