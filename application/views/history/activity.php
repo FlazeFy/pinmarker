@@ -17,6 +17,7 @@
         if (isLoading) return
         isLoading = true
         const holder = '#activity-holder'
+        const seeMoreEl = '#activity-see-more'
 
         if (!append) {
             $(holder).html(`
@@ -44,7 +45,8 @@
             `)
         }
 
-        $('#activity-see-more').prop('disabled', true).text('Loading...')
+        $(seeMoreEl).prop('disabled', true).text('Loading...')
+        $(holder).empty()
 
         $.ajax({
             url: '/api/v1/history',
@@ -56,6 +58,16 @@
             success: (response) => {
                 const rows = response.data.data || []
                 totalPage = response.data.total_page || 1
+
+                if (rows.length === 0) {
+                    $(holder).html(`
+                        <div class='text-center text-secondary'>
+                            <img class='img img-fluid m-1' style='max-width:200px;' src='http://127.0.0.1:8080/public/images/empty_item.png'>
+                            <h6>No visit history found</h6>
+                        </div>
+                    `)
+                    return
+                }
 
                 let html = ''
                 rows.forEach(dt => {
@@ -98,9 +110,9 @@
                 }
 
                 if (page >= totalPage) {
-                    $('#activity-see-more').hide()
+                    $(seeMoreEl).hide()
                 } else {
-                    $('#activity-see-more').show().prop('disabled', false).text('See More')
+                    $(seeMoreEl).show().prop('disabled', false).text('See More')
                 }
             },
             error: (response) => {
@@ -115,7 +127,7 @@
                     `)
                 }
 
-                $('#activity-see-more').prop('disabled', false).text('See More')
+                $(seeMoreEl).prop('disabled', false).text('See More')
             },
             complete: () => {
                 isLoading = false

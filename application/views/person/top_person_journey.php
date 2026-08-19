@@ -15,7 +15,7 @@
                     if ($person_before != $dt->name) {
                         if ($person_before !== null) {
                             echo "{
-                                name: '".ucwords($person_before)."',
+                                name: ".json_encode(ucwords($person_before)).",
                                 data: [" . implode(",", $person_data[$person_before]) . "]
                             },";
                         }
@@ -26,12 +26,12 @@
                     $person_data[$dt->name][] = $dt->total;
 
                     if (!in_array($dt->visit_at, $months)) {
-                        $months[] = "'$dt->visit_at'";
+                        $months[] = $dt->visit_at;
                     }
                 }
                 if ($person_before !== null) {
                     echo "{
-                        name: '$person_before',
+                        name: ".json_encode(ucwords($person_before)).",
                         data: [" . implode(",", $person_data[$person_before]) . "]
                     },";
                 }
@@ -65,7 +65,7 @@
             size: 1
         },
         xaxis: {
-            categories: [<?php echo implode(",", $months); ?>],
+            categories: <?= json_encode($months) ?>,
         },
         yaxis: {
             title: {
@@ -82,4 +82,3 @@
     var chart = new ApexCharts(document.querySelector("#MultiLine_TopPersonJourney"), options);
     chart.render();
 </script>
-
